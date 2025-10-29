@@ -1,0 +1,57 @@
+<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLActor</id><coordinates><x>216</x><y>81</y><w>54</w><h>99</h></coordinates><panel_attributes>Πελάτης</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>675</x><y>225</y><w>54</w><h>99</h></coordinates><panel_attributes>Χρήστης</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>630</x><y>549</y><w>144</w><h>99</h></coordinates><panel_attributes>Ετοιμασίας παραγγελίας</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>486</x><y>522</y><w>126</w><h>99</h></coordinates><panel_attributes>Εξυπηρέτηση πελατών</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>666</x><y>387</y><w>72</w><h>99</h></coordinates><panel_attributes>Υπάλληλος</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>801</x><y>522</y><w>126</w><h>99</h></coordinates><panel_attributes>Ανανέωσης καταλόγου</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>729</x><y>441</y><w>135</w><h>90</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>130;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>549</x><y>432</y><w>126</w><h>90</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;80;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>693</x><y>468</y><w>27</w><h>90</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>UMLActor</id><coordinates><x>270</x><y>441</y><w>72</w><h>99</h></coordinates><panel_attributes>Διανομέας</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>45</x><y>666</y><w>144</w><h>99</h></coordinates><panel_attributes>Ημερολόγιο συστήματος</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>1098</x><y>279</y><w>126</w><h>99</h></coordinates><panel_attributes>Διαχειριστής (admin)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>693</x><y>315</y><w>27</w><h>81</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>639</x><y>36</y><w>126</w><h>36</h></coordinates><panel_attributes>Σύστημα 
+ταυτοποίησης 
+halign=center
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>342</x><y>396</y><w>342</w><h>63</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;50;360;10</additional_attributes></element><element><id>Relation</id><coordinates><x>126</x><y>684</y><w>162</w><h>36</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>270</x><y>684</y><w>153</w><h>45</h></coordinates><panel_attributes>Ενημερώσεις για 
+παραγγελία
+fontsize=11
+halign=center
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1053</x><y>360</y><w>72</w><h>108</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;100;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1152</x><y>369</y><w>27</w><h>99</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1206</x><y>369</y><w>72</w><h>108</h></coordinates><panel_attributes></panel_attributes><additional_attributes>60;100;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>981</x><y>450</y><w>117</w><h>54</h></coordinates><panel_attributes>Διαχείριση λογαρισμού
+υπαλλήλου
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>1107</x><y>450</y><w>117</w><h>63</h></coordinates><panel_attributes>Εντολές ανανέωσης
+καταλόγου προϊόντων
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>1233</x><y>459</y><w>117</w><h>54</h></coordinates><panel_attributes>Παραγγελίες από
+προμηθευτές
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>477</x><y>675</y><w>117</w><h>63</h></coordinates><panel_attributes>Επικοινωνία με τους
+πελάτεες
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>531</x><y>603</y><w>27</w><h>90</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>603</x><y>702</y><w>135</w><h>72</h></coordinates><panel_attributes>Συγκέντρωση προΪόντων 
+της παραγγελίας
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>657</x><y>630</y><w>27</w><h>90</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>945</x><y>630</y><w>135</w><h>72</h></coordinates><panel_attributes>Εκτέλεση της ανανέωσης 
+του καταλόγου των
+προϊόντων 
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>216</x><y>468</y><w>81</w><h>108</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;100;70;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>144</x><y>558</y><w>126</w><h>63</h></coordinates><panel_attributes>Παράδοση παραγγελίας/
+ολοκλήρωση 
+της διαδικασίας
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>63</x><y>144</y><w>126</w><h>54</h></coordinates><panel_attributes>Διαχείριση λογαριασμού 
+πελάτη
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>162</x><y>153</y><w>72</w><h>117</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;110;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>261</x><y>135</y><w>90</w><h>108</h></coordinates><panel_attributes></panel_attributes><additional_attributes>80;100;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>306</x><y>225</y><w>117</w><h>54</h></coordinates><panel_attributes>πραγματοποίηση
+παραγγελίας
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>207</x><y>252</y><w>117</w><h>45</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;includes&gt;&gt;</panel_attributes><additional_attributes>110;20;10;30</additional_attributes></element><element><id>Relation</id><coordinates><x>693</x><y>153</y><w>27</w><h>81</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>648</x><y>126</y><w>108</w><h>36</h></coordinates><panel_attributes>Ταυτοποίηση
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>693</x><y>63</y><w>27</w><h>81</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>243</y><w>396</w><h>81</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>420;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>261</x><y>99</y><w>423</w><h>153</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;450;150</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>378</y><w>126</w><h>36</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>828</x><y>369</y><w>117</w><h>54</h></coordinates><panel_attributes>Διαχείριση στοιχείων 
+υπαλλήλου
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>936</x><y>405</y><w>90</w><h>72</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;includes&gt;&gt;</panel_attributes><additional_attributes>40;60;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>99</x><y>252</y><w>117</w><h>54</h></coordinates><panel_attributes>Αναζήτηση προϊόντων
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>135</x><y>90</y><w>99</w><h>72</h></coordinates><panel_attributes></panel_attributes><additional_attributes>15;60;90;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>63</x><y>18</y><w>126</w><h>54</h></coordinates><panel_attributes>Παρακολούθηση 
+παραγγελίας
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>171</x><y>45</y><w>72</w><h>54</h></coordinates><panel_attributes></panel_attributes><additional_attributes>15;10;60;40</additional_attributes></element><element><id>Relation</id><coordinates><x>765</x><y>630</y><w>81</w><h>99</h></coordinates><panel_attributes></panel_attributes><additional_attributes>70;90;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>765</x><y>711</y><w>135</w><h>63</h></coordinates><panel_attributes>Έλεγχος επαρκούς
+αποθέματος
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>891</x><y>549</y><w>135</w><h>99</h></coordinates><panel_attributes></panel_attributes><additional_attributes>130;90;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>990</x><y>747</y><w>135</w><h>63</h></coordinates><panel_attributes>Αίτημα για προμήθεια
+αποθέματος
+fontsize=10
+halign=center</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>891</x><y>738</y><w>117</w><h>54</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>110;40;10;10</additional_attributes></element></diagram>
