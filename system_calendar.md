@@ -21,4 +21,4 @@
 1. Το σύστημα ενημερώνει τον πελάτη για νέα εκτιμώμενη ώρα παράδοσης 
 
 Διάγραμμα Δραστηριότητων 
-![Διάγραμμα Δραστηριότητων](\docs\markdown\uml\flow_diagram_system_calendar.png)
+![Διάγραμμα Δραστηριότητων](./docs/markdown/uml/flow_diagram_system_calendar.png)
