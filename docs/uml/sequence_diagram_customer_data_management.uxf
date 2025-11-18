@@ -1,0 +1,43 @@
+<diagram program="umletino" version="15.1"><zoom_level>6</zoom_level><element><id>UMLActor</id><coordinates><x>48</x><y>0</y><w>42</w><h>66</h></coordinates><panel_attributes>Πελάτης</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLFrame</id><coordinates><x>0</x><y>72</y><w>366</w><h>30</h></coordinates><panel_attributes>ref
+--
+Ταυτοποίηση Χρήστη</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>60</x><y>192</y><w>18</w><h>180</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>60</x><y>36</y><w>18</w><h>786</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;1290</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>210</x><y>132</y><w>60</w><h>18</h></coordinates><panel_attributes>:UI Πελάτη</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>228</x><y>192</y><w>24</w><h>162</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>144</y><w>18</w><h>882</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;1450</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>378</x><y>138</y><w>108</w><h>24</h></coordinates><panel_attributes>:Ελεγκτής Στοιχείων 
+Λογαριασμού</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>414</x><y>210</y><w>24</w><h>120</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>156</y><w>18</w><h>882</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;1450</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>630</x><y>150</y><w>78</w><h>18</h></coordinates><panel_attributes>:Πελάτης</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>648</x><y>240</y><w>24</w><h>66</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>654</x><y>162</y><w>18</w><h>882</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;1450</additional_attributes></element><element><id>Relation</id><coordinates><x>72</x><y>192</y><w>168</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Προβολή στοιχείων Λογαριασμού / Προφίλ
+fontsize=10</panel_attributes><additional_attributes>260;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>246</x><y>216</y><w>180</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Αίτημα Προβολής Στοιχείων
+fontsize=12</panel_attributes><additional_attributes>280;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>432</x><y>240</y><w>228</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Ανάκτηση στοιχείων Λογαριασμού / Προφίλ
+fontsize=12</panel_attributes><additional_attributes>360;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>432</x><y>282</y><w>228</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+Επιστοφή Στοιχείων</panel_attributes><additional_attributes>10;20;360;20</additional_attributes></element><element><id>Relation</id><coordinates><x>246</x><y>306</y><w>180</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+Παράδοση Στοιχείων</panel_attributes><additional_attributes>10;20;280;20</additional_attributes></element><element><id>Relation</id><coordinates><x>72</x><y>330</y><w>168</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+ΕμφάνισηΣτοιχείων</panel_attributes><additional_attributes>10;20;260;20</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>30</x><y>408</y><w>684</w><h>168</h></coordinates><panel_attributes>loop
+--
+[Μέχρι να μην επιθυμεί άλλη αλλαγή]
+fontsize=20</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLFrame</id><coordinates><x>198</x><y>738</y><w>498</w><h>192</h></coordinates><panel_attributes>alt
+--
+[Αποθήκευση]
+fontsize=20</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>72</x><y>696</y><w>174</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Αποθήκευση ή Ακύρωση  Αλλαγών Στοιχείων
+fontsize=10</panel_attributes><additional_attributes>270;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>192</x><y>828</y><w>516</w><h>30</h></coordinates><panel_attributes>lt=.
+[else]
+fontsize=20</panel_attributes><additional_attributes>10;30;840;30</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>774</y><w>186</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Αίτημα Αποθήκευση Αλλαγών Στοιχείων
+fontsize=12</panel_attributes><additional_attributes>290;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>792</y><w>252</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Αποθήκευση Αλλαγών
+fontsize=12</panel_attributes><additional_attributes>400;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>804</y><w>252</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+Επιστροφή Αλλαγών</panel_attributes><additional_attributes>10;20;400;20</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>816</y><w>204</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+Εμφάνιση Αλλαγών</panel_attributes><additional_attributes>10;20;320;20</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>858</y><w>204</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Αίτημα  Ακύρωση Αλλαγών Στοιχείων
+fontsize=12</panel_attributes><additional_attributes>320;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>876</y><w>252</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Ακύρωση Αλλαγών
+fontsize=12</panel_attributes><additional_attributes>400;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>894</y><w>252</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+"Οι αλλαγές Ακυρώθηκαν"</panel_attributes><additional_attributes>10;20;400;20</additional_attributes></element><element><id>Relation</id><coordinates><x>60</x><y>420</y><w>192</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Αλλαγή Στοιχείου
+fontsize=12</panel_attributes><additional_attributes>300;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>462</y><w>204</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Αίτημα Αλλαγής Στοιχείου
+fontsize=12</panel_attributes><additional_attributes>320;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>486</y><w>252</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
+Αλλαγή Στοιχείου του Λογαριασμού/Προφίλ
+fontsize=12</panel_attributes><additional_attributes>400;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>426</x><y>510</y><w>246</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+Επιστοφή Αλλαγής</panel_attributes><additional_attributes>10;20;390;20</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>528</y><w>204</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+Παράδοση Αλλαγής</panel_attributes><additional_attributes>10;20;320;20</additional_attributes></element><element><id>Relation</id><coordinates><x>60</x><y>546</y><w>192</w><h>24</h></coordinates><panel_attributes>lt=&lt;.
+Εμφάνιση Αλλαγής</panel_attributes><additional_attributes>10;20;300;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>60</x><y>696</y><w>18</w><h>42</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>234</x><y>696</y><w>12</w><h>36</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element></diagram>
