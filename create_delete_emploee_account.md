@@ -20,7 +20,7 @@
 1) Τερματισμός περίπτωσης χρήσης
 
   Διάγραμμα δραστηριοτήτων  
-![Διάγραμμα δραστηριοτήτων](docs\markdown\uml\create_delete_emploee_account.png)  
+![Διάγραμμα δραστηριοτήτων](docs/markdown/uml/create_delete_emploee_account.png)  
 
   Διάγραμμα ακολουθίας  
-![Διάγραμμα ακολουθίας](docs\markdown\uml\create_delete_employee_acccount_seq.png)
+![Διάγραμμα ακολουθίας](docs/markdown/uml/create_delete_employee_acccount_seq.png)
