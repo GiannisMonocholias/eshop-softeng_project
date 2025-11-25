@@ -30,7 +30,7 @@
 1. Η ΠΧ τερματίζει
 
 Διάγραμμα Δραστηριότητων
-![Διάγραμμα Δραστηριοτήτων](docs/markdown/uml/flow_diagram_order_customer.png)
+![Διάγραμμα Δραστηριοτήτων](../docs/markdown/uml/Activity_Diagrams/flow_diagram_order_customer.png)
 
 Διάγραμμα Ακολουθίας
-![Διάγραμμα Ακολουθίας](docs/markdown/uml/sequence_diagram_order_customer.png)
+![Διάγραμμα Ακολουθίας](../docs/markdown/uml/Sequence_Diagrams/sequence_diagram_order_customer.png)

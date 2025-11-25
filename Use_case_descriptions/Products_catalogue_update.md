@@ -29,7 +29,7 @@
    
 
     Διάγραμμα δραστηριοτήτων   
-![Διάγραμμα δραστηριοτήτων](docs/markdown/uml/Products_catalogue_update.png)
+![Διάγραμμα δραστηριοτήτων](../docs/markdown/uml/Activity_Diagrams/Products_catalogue_update.png)
 
     Διάγραμμα ακολουθίας  
-![Διάγραμμα ακολουθίας](docs/markdown/uml/sequence_products_catalogue_update.png)
+![Διάγραμμα ακολουθίας](../docs/markdown/uml/Sequence_Diagrams/sequence_products_catalogue_update.png)

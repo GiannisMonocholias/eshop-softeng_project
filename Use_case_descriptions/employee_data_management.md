@@ -23,8 +23,8 @@
 2. Το σύστημα αποθηκεύει τις αλλαγές στα στοιχεία του υπαλλήλου
 
    Διάγραμμα δραστηριοτήτων  
-![Διάγραμμα δραστηριοτήτων](docs/markdown/uml/employee_data_management.png)
+![Διάγραμμα δραστηριοτήτων](../docs/markdown/uml/Activity_Diagrams/employee_data_management.png)
 
    Διάγραμμα ακολουθίας  
-![Διάγραμμα ακολουθίας](docs/markdown/uml/sequence_employee_data_management.png)  
+![Διάγραμμα ακολουθίας](../docs/markdown/uml/Sequence_Diagrams/sequence_employee_data_management.png)  
 

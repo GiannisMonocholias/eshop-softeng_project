@@ -13,8 +13,8 @@
  3) Αφού την βρει ενημερώνει την κατάστασή της  
 
    Διάγραμμα δραστηριοτήτων  
-![Διάγραμμα δραστηριοτήτων](docs/markdown/uml/delivery.png)  
+![Διάγραμμα δραστηριοτήτων](../docs/markdown/uml/Activity_Diagrams/delivery.png)  
 
    Διάγραμμα ακολουθίας
-![Διάγραμμα ακολουθίας](docs/markdown/uml/delivery_seq.png)
+![Διάγραμμα ακολουθίας](../docs/markdown/uml/Sequence_Diagrams/delivery_seq.png)
 

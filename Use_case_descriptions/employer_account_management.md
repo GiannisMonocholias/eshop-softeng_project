@@ -11,7 +11,7 @@
 3) Επιλέγει και εκτελεί όποια από τισ ενέργειες επιθυμεί  
 
    Διάγραμμα δραστηριοτήτων  
-![Διάγραμμα δραστηριοτήτων](docs/markdown/uml/employer_account_management.png)  
+![Διάγραμμα δραστηριοτήτων](../docs/markdown/uml/Activity_Diagrams/employer_account_management.png)  
 
    Διάγραμμα ακολουθίας
-![Διάγραμμα ακολουθίας](docs/markdown/uml/employer_account_management_seq.png)
+![Διάγραμμα ακολουθίας](../docs/markdown/uml/Sequence_Diagrams/employer_account_management_seq.png)

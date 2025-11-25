@@ -27,7 +27,7 @@
 
 
     Διάγραμμα δραστηριοτήτων
-![Διάγραμμα δραστηριοτήτων](docs/markdown/uml/Identification.png)
+![Διάγραμμα δραστηριοτήτων](../docs/markdown/uml/Activity_Diagrams/Identification.png)
 
     Διάγραμμα ακολουθίας  
-![Διάγραμμα ακολουθίας](docs/markdown/uml/sequence_Identification.png)
+![Διάγραμμα ακολουθίας](../docs/markdown/uml/Sequence_Diagrams/sequence_Identification.png)
