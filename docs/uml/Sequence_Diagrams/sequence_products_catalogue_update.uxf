@@ -1,8 +1,6 @@
-<diagram program="umletino" version="15.1"><zoom_level>11</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLActor</id><coordinates><x>132</x><y>0</y><w>132</w><h>132</h></coordinates><panel_attributes>Υπάλληλος ανανέωσης
+<diagram program="umletino" version="15.1"><zoom_level>11</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLActor</id><coordinates><x>99</x><y>88</y><w>132</w><h>132</h></coordinates><panel_attributes>Υπάλληλος ανανέωσης
 καταλόγου
-fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>176</x><y>121</y><w>33</w><h>693</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;610</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>143</x><y>143</y><w>726</w><h>66</h></coordinates><panel_attributes>ref
---
-Ταυτοποίηση Χρήστη</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>253</x><y>220</y><w>154</w><h>44</h></coordinates><panel_attributes>:UI υπαλλήλου ανανέωσης
+fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>176</x><y>198</y><w>33</w><h>616</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;540</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>253</x><y>220</y><w>154</w><h>44</h></coordinates><panel_attributes>:UI υπαλλήλου ανανέωσης
 καταλόγου
 fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>319</x><y>253</y><w>33</w><h>561</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;490</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>429</x><y>220</y><w>154</w><h>44</h></coordinates><panel_attributes>:Ελεγκτής ανανέωσης 
 καταλόγου
