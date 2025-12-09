@@ -1,0 +1,182 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UpdateRequestsRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: UpdateRequestsRepository (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UpdateRequestsRepository</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;
+&nbsp;public class UpdateRequestsRepository {
+&nbsp;
+&nbsp;    private static UpdateRequestsRepository instance;
+&nbsp;
+&nbsp;    private HashMap&lt;Integer,CatalogueUpdateRequest&gt; requests;
+&nbsp;
+<b class="fc">&nbsp;    private UpdateRequestsRepository(){</b>
+<b class="fc">&nbsp;        requests = new HashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static UpdateRequestsRepository getInstance(){
+<b class="fc">&nbsp;        if (instance == null){</b>
+<b class="fc">&nbsp;            instance = new UpdateRequestsRepository();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public CatalogueUpdateRequest getUpdateRequest(int requestId){
+<b class="fc">&nbsp;        if(requests.containsKey(requestId))</b>
+<b class="fc">&nbsp;            return requests.get(requestId);</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addUpdateRequest(CatalogueUpdateRequest request){
+<b class="fc">&nbsp;        if(request != null) {</b>
+<b class="fc">&nbsp;            if (!requests.containsKey(request.getId())) {</b>
+<b class="fc">&nbsp;                requests.put(request.getId(), request);</b>
+&nbsp;            }
+&nbsp;            else {
+<b class="fc">&nbsp;                throw new IllegalArgumentException(&quot;Request already in repository&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        else {
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Request argument must not be null&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deleteUpdateRequest(CatalogueUpdateRequest request){
+<b class="fc">&nbsp;        if(request != null) {</b>
+<b class="fc">&nbsp;            if (requests.containsKey(request.getId())) {</b>
+<b class="fc">&nbsp;                requests.remove(request.getId());</b>
+&nbsp;            }
+&nbsp;            else {
+<b class="fc">&nbsp;                throw new IllegalArgumentException(&quot;Request is not in repository&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        else {
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Request argument must not be null&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public HashMap&lt;Integer,CatalogueUpdateRequest&gt; getUpdateRequests(){
+<b class="fc">&nbsp;        return new HashMap&lt;&gt;(requests);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void clear(){
+<b class="fc">&nbsp;        requests.clear();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-09 21:04</div>
+</div>
+</body>
+</html>

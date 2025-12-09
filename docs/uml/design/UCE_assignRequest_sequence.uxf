@@ -1,0 +1,29 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLGeneric</id><coordinates><x>100</x><y>40</y><w>170</w><h>30</h></coordinates><panel_attributes>UpdateCatalogueEmployee</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>170</x><y>60</y><w>30</w><h>670</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;650</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>170</x><y>80</y><w>20</w><h>550</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>80</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+assignRequest(requestId)
+fontsize=10</panel_attributes><additional_attributes>10;20;170;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>320</x><y>40</y><w>190</w><h>40</h></coordinates><panel_attributes>assignedRequests:HashMap&lt;Integer, 
+CatalogueUpdateRequest&gt;
+fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>400</x><y>70</y><w>30</w><h>660</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;640</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>540</x><y>50</y><w>190</w><h>30</h></coordinates><panel_attributes>UpdateRequestsRepository
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>70</y><w>30</w><h>660</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;640</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>120</y><w>460</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+assignRequest(requestId)
+fontsize=10</panel_attributes><additional_attributes>10;20;440;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>620</x><y>120</y><w>20</w><h>100</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>170</y><w>460</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+containsRequest = containsKey(requestId)
+fontsize=10</panel_attributes><additional_attributes>10;20;440;20</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>90</x><y>220</y><w>210</w><h>80</h></coordinates><panel_attributes>opt
+--
+[!containsRequest]
+fontsize=10
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>90</x><y>260</y><w>100</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+false</panel_attributes><additional_attributes>10;20;80;20</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>310</y><w>460</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+selectedRequest = getUpdateRequest(requestId)
+fontsize=10</panel_attributes><additional_attributes>10;20;440;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>620</x><y>310</y><w>20</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>360</y><w>240</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+containsRequest = containsKey(requestId)
+fontsize=10</panel_attributes><additional_attributes>10;20;220;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>400</x><y>360</y><w>20</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLFrame</id><coordinates><x>90</x><y>410</y><w>350</w><h>140</h></coordinates><panel_attributes>alt
+--
+[!containsRequest]
+fontsize=10
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>80</x><y>480</y><w>380</w><h>40</h></coordinates><panel_attributes>lt=.
+[else]
+fontsize=10</panel_attributes><additional_attributes>10;20;360;20</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>450</y><w>240</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+put(requestId, selectedRequest)
+fontsize=10</panel_attributes><additional_attributes>10;20;220;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>400</x><y>450</y><w>20</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>90</x><y>510</y><w>100</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+false</panel_attributes><additional_attributes>10;20;80;20</additional_attributes></element><element><id>Relation</id><coordinates><x>90</x><y>570</y><w>100</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+true</panel_attributes><additional_attributes>10;20;80;20</additional_attributes></element></diagram>

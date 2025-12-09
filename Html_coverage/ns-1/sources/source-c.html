@@ -1,0 +1,177 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Deliverer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Deliverer (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Deliverer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.2%
+  </span>
+  <span class="absValue">
+    (15/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;public class Deliverer extends Employee{
+&nbsp;
+&nbsp;    private int max_quantity;
+&nbsp;    private boolean available;
+&nbsp;    private ArrayList&lt;Order&gt; orders;
+&nbsp;
+&nbsp;
+&nbsp;    Deliverer(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress,
+&nbsp;              String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate,int quan ,
+&nbsp;              boolean available , ArrayList&lt;Order&gt; orders){
+<b class="fc">&nbsp;        super(username, firstname, password, lastname, phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);</b>
+<b class="fc">&nbsp;        this.max_quantity = quan;</b>
+<b class="fc">&nbsp;        this.available = available;</b>
+<b class="fc">&nbsp;        this.orders = orders;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getQuantity(){
+<b class="fc">&nbsp;        return max_quantity;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setQuantity(int quan){
+<b class="fc">&nbsp;        this.max_quantity = quan;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean getAvailability(){
+<b class="fc">&nbsp;        return available;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAvailability(boolean available){
+<b class="fc">&nbsp;        this.available = available;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ArrayList&lt;Order&gt; getOrders(){
+<b class="fc">&nbsp;        return new ArrayList&lt;&gt;(orders);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addOrder(Order order){
+<b class="pc">&nbsp;        if(orders.size() &lt; max_quantity){</b>
+<b class="fc">&nbsp;            orders.add(order);</b>
+&nbsp;        }else{
+<b class="nc">&nbsp;            setAvailability(false);</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Η λίστα του διανομέα είναι γεμάτη&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean checkfor(Order order){
+<b class="fc">&nbsp;        if(orders.contains(order)){</b>
+<b class="fc">&nbsp;            order.setPaid(true);</b>
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-09 21:04</div>
+</div>
+</body>
+</html>

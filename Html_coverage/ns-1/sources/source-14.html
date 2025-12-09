@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Order</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Order (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Order</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;public class Order {
+&nbsp;    private String ordercode;
+&nbsp;    private Date submissiondate;
+&nbsp;    private Date deliverydate;
+&nbsp;    private StatusType orderstatus;
+&nbsp;    private boolean paid;
+&nbsp;    private PaymentType paymentmethod;
+&nbsp;    private ShoppingCart shoppingCart;
+&nbsp;    private Money total_amount;
+&nbsp;
+&nbsp;
+&nbsp;//ENUM ORDERSTATUS
+&nbsp;    public Order (String ordercode, Date submissiondate ,StatusType orderstatus,
+<b class="fc">&nbsp;                  boolean paid, PaymentType paymentmethod,Date deliverydate,ShoppingCart shoppingCart) {</b>
+<b class="fc">&nbsp;        this.ordercode = ordercode;</b>
+<b class="fc">&nbsp;        this.submissiondate = submissiondate;</b>
+<b class="fc">&nbsp;       this.deliverydate = deliverydate;</b>
+<b class="fc">&nbsp;        this.orderstatus = orderstatus;</b>
+<b class="fc">&nbsp;        this.paid = paid;</b>
+<b class="fc">&nbsp;        this.paymentmethod = paymentmethod;</b>
+<b class="fc">&nbsp;        this.shoppingCart=shoppingCart.copy ();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Money getTotal_amount ( ) {
+<b class="fc">&nbsp;        return total_amount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTotal_amount (Money total_amount) {
+<b class="fc">&nbsp;        this.total_amount = total_amount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getOrdercode ( ) {
+<b class="fc">&nbsp;        return ordercode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setOrdercode (String ordercode) {
+<b class="fc">&nbsp;        this.ordercode = ordercode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Date getSubmissiondate ( ) {
+<b class="fc">&nbsp;        return submissiondate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setSubmissiondate (Date submissiondate) {
+<b class="fc">&nbsp;        this.submissiondate = submissiondate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Date getDeliverydate ( ) {
+<b class="fc">&nbsp;        return deliverydate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDeliverydate (Date deliverydate) {
+<b class="fc">&nbsp;        this.deliverydate = deliverydate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public StatusType getOrderstatus ( ) {
+<b class="fc">&nbsp;        return orderstatus;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setOrderstatus (StatusType orderstatus) {
+<b class="fc">&nbsp;        this.orderstatus = orderstatus;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean getPaid ( ) {
+<b class="fc">&nbsp;        return paid;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPaid (boolean paid) {
+<b class="fc">&nbsp;        this.paid = paid;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public PaymentType getPaymentmethod ( ) {
+<b class="fc">&nbsp;        return paymentmethod;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPaymentmethod (PaymentType paymentmethod) {
+<b class="fc">&nbsp;        this.paymentmethod = paymentmethod;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ShoppingCart getShoppingCart ( ) {
+<b class="fc">&nbsp;        return shoppingCart;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setShoppingCart (ShoppingCart shoppingCart) {
+<b class="fc">&nbsp;        this.shoppingCart = shoppingCart;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-09 21:04</div>
+</div>
+</body>
+</html>

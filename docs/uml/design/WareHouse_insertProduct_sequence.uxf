@@ -1,0 +1,26 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLGeneric</id><coordinates><x>130</x><y>50</y><w>170</w><h>30</h></coordinates><panel_attributes>ProductsWareHouse</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>70</y><w>30</w><h>530</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;510</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>200</x><y>100</y><w>20</w><h>460</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLFrame</id><coordinates><x>20</x><y>150</y><w>270</w><h>80</h></coordinates><panel_attributes>opt
+--
+[type == null]
+fontsize=10
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>20</x><y>190</y><w>200</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+new IllegalArgumentException()
+fontsize=10</panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>100</y><w>220</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+insertProduct(type)
+fontsize=10
+</panel_attributes><additional_attributes>10;20;200;20</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>80</y><w>30</w><h>530</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;510</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>330</x><y>50</y><w>190</w><h>40</h></coordinates><panel_attributes>productStocks:HashMap&lt;ProductType,
+Integer&gt;
+fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLFrame</id><coordinates><x>20</x><y>300</y><w>530</w><h>190</h></coordinates><panel_attributes>alt
+--
+[!containsType]
+fontsize=10
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>10</x><y>370</y><w>560</w><h>40</h></coordinates><panel_attributes>lt=.
+[else]
+fontsize=10</panel_attributes><additional_attributes>10;20;540;20</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>240</y><w>230</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+containsType=containsKey(type)
+fontsize=10
+</panel_attributes><additional_attributes>10;20;210;20</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>340</y><w>230</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+put(type, 0)
+fontsize=10
+</panel_attributes><additional_attributes>10;20;210;20</additional_attributes></element><element><id>Relation</id><coordinates><x>20</x><y>400</y><w>200</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+new IllegalArgumentException()
+fontsize=10</panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>420</x><y>250</y><w>20</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>420</x><y>350</y><w>20</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element></diagram>

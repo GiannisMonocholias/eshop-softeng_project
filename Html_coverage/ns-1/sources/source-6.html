@@ -1,0 +1,159 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CatalogueUpdateRequest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: CatalogueUpdateRequest (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CatalogueUpdateRequest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;public class CatalogueUpdateRequest{
+&nbsp;    private  int requestId;
+&nbsp;    private final Date submissionDate;
+&nbsp;    private Date dateModified;
+&nbsp;    private  AllowedRequest type;
+&nbsp;    private  ProductType product;
+&nbsp;    private String updateDescription;
+<b class="fc">&nbsp;    private boolean executed=false;</b>
+&nbsp;
+<b class="fc">&nbsp;    public CatalogueUpdateRequest(Date submissionDate, String updateDescription, ProductType product, AllowedRequest type, int requestId) {</b>
+<b class="fc">&nbsp;        this.submissionDate = this.dateModified = submissionDate;</b>
+<b class="fc">&nbsp;        this.updateDescription = updateDescription;</b>
+<b class="fc">&nbsp;        this.product = product;</b>
+<b class="fc">&nbsp;        this.type = type;</b>
+<b class="fc">&nbsp;        this.requestId = requestId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    public  int getId(){return requestId;}</b>
+&nbsp;
+&nbsp;    public Date getDateModified() {
+<b class="fc">&nbsp;        return dateModified;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setDateModified(Date newDateModified){this.dateModified = newDateModified;}</b>
+&nbsp;
+&nbsp;    public String getUpdateDescription() {
+<b class="fc">&nbsp;        return updateDescription;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setUpdateDescription(String newDescription){this.updateDescription = newDescription;}</b>
+&nbsp;
+&nbsp;    public ProductType getProduct() {
+<b class="fc">&nbsp;        return product;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setProduct(ProductType type){this.product = type;}</b>
+&nbsp;
+&nbsp;    public AllowedRequest getType() {
+<b class="fc">&nbsp;        return type;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public void setType(AllowedRequest requestType){this.type = requestType;}</b>
+&nbsp;
+&nbsp;    public Boolean getExecuted() {
+<b class="fc">&nbsp;        return executed;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setExecuted(Boolean executed) {
+<b class="fc">&nbsp;        this.executed = executed;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-09 21:04</div>
+</div>
+</body>
+</html>

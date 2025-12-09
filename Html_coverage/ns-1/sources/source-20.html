@@ -1,0 +1,208 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UpdateCatalogueEmployee</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: UpdateCatalogueEmployee (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UpdateCatalogueEmployee</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/21)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UpdateCatalogueEmployee$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/22)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;
+&nbsp;public  class UpdateCatalogueEmployee extends Employee{
+&nbsp;    private int totalCatalogueUpdates;
+&nbsp;    HashMap&lt;Integer, CatalogueUpdateRequest&gt; assignedRequests;
+&nbsp;
+&nbsp;    public UpdateCatalogueEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate) {
+<b class="fc">&nbsp;        super(username, firstname, password, lastname, phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);</b>
+<b class="fc">&nbsp;        this.totalCatalogueUpdates = 0;</b>
+<b class="fc">&nbsp;        assignedRequests = new HashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public int getTotalCatalogueUpdates() {
+<b class="fc">&nbsp;        return totalCatalogueUpdates;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public boolean assignRequest(int requestId){
+<b class="fc">&nbsp;        if(!UpdateRequestsRepository.getInstance().getUpdateRequests().containsKey(requestId))</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;
+<b class="fc">&nbsp;        CatalogueUpdateRequest selectedRequest = UpdateRequestsRepository.getInstance().getUpdateRequest(requestId);</b>
+<b class="fc">&nbsp;        if(!assignedRequests.containsKey(requestId))</b>
+<b class="fc">&nbsp;            assignedRequests.put(requestId, selectedRequest);</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return false;</b>
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CatalogueUpdateRequest selectRequest(int requestId){
+<b class="fc">&nbsp;        if(!assignedRequests.containsKey(requestId))</b>
+<b class="fc">&nbsp;            return  null;</b>
+&nbsp;
+<b class="fc">&nbsp;        return assignedRequests.get(requestId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public void executeUpdate(CatalogueUpdateRequest request){
+<b class="fc">&nbsp;        if(request == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Request cannot be null&quot;);</b>
+&nbsp;
+<b class="pc">&nbsp;        switch(request.getType()){</b>
+&nbsp;            case INSERT_PRODUCT:
+<b class="fc">&nbsp;                ProductTypesRepository.getInstance().addProductType(request.getProduct());</b>
+&nbsp;                break;
+&nbsp;            case DELETE_PRODUCT:
+<b class="fc">&nbsp;                ProductTypesRepository.getInstance().deleteProductType(request.getProduct());</b>
+&nbsp;                break;
+&nbsp;            case PROCESS_PRODUCT:
+<b class="fc">&nbsp;                ProductTypesRepository.getInstance().processProduct(request.getProduct());</b>
+&nbsp;                break;
+&nbsp;        }
+<b class="fc">&nbsp;        totalCatalogueUpdates++;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-09 21:04</div>
+</div>
+</body>
+</html>

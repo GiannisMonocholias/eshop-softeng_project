@@ -1,0 +1,261 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Customer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Customer (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Customer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (12/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.3%
+  </span>
+  <span class="absValue">
+    (48/52)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.6%
+  </span>
+  <span class="absValue">
+    (65/68)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;public class Customer extends User {
+&nbsp;    private String customer_id;
+&nbsp;    private Date registdate;
+&nbsp;    private ShoppingCart shoppingCart;
+&nbsp;    private SystemCalendar systemCalendar;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    public Customer (String username, String firstname, String password, String lastname, String phoneNumber,
+&nbsp;                     EmailAddress emailaddress, String customer_id, Date registdate) {
+<b class="fc">&nbsp;        super ( username, firstname, password, lastname, phoneNumber, emailaddress );</b>
+<b class="fc">&nbsp;        this.customer_id = customer_id;</b>
+<b class="fc">&nbsp;        this.registdate = registdate;</b>
+<b class="fc">&nbsp;        CustomerRepository.getInstance ().addCustomer ( this );</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Date getRegistdateDate ( ) {
+<b class="fc">&nbsp;        return registdate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCustomer_id ( ) {
+<b class="fc">&nbsp;        return customer_id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCustomer_id (String customer_id) {
+<b class="nc">&nbsp;        this.customer_id = customer_id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ShoppingCart getShoppingCart ( ) {
+<b class="fc">&nbsp;        return shoppingCart;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setShoppingCart (ShoppingCart shoppingCart) {
+<b class="fc">&nbsp;        this.shoppingCart = shoppingCart;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public SystemCalendar getSystemCalendar ( ) {
+<b class="nc">&nbsp;        return systemCalendar;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setSystemCalendar (SystemCalendar systemCalendar) {
+<b class="nc">&nbsp;        this.systemCalendar = systemCalendar;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ProductType findProduct (HashMap&lt;String, ProductType&gt; products, String prodcode) {
+<b class="fc">&nbsp;        if ( products.isEmpty ( ) ) return null;</b>
+<b class="pc">&nbsp;        if ( !products.containsKey ( prodcode ) ) return null;</b>
+<b class="fc">&nbsp;        return products.get ( prodcode );</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public void addItemToCart (ProductType productType, int quantity) {//edo bazo to product pou epistrefei h findProduct
+<b class="fc">&nbsp;        if ( this.shoppingCart == null ) shoppingCart = new ShoppingCart ( this );</b>
+<b class="fc">&nbsp;        if ( productType == null ) throw new IllegalArgumentException ( &quot;The product is null.&quot; );</b>
+<b class="fc">&nbsp;        if ( quantity &lt;= 0 ) throw new IllegalArgumentException ( &quot;The quantity must be &gt; 0.&quot; );</b>
+&nbsp;        int currentQty;
+<b class="fc">&nbsp;        for ( CartItem item : shoppingCart.getItems ( ) ) {</b>
+<b class="fc">&nbsp;            if ( item.getProductType ( ).getProductCode ( ).equals ( productType.getProductCode ( ) ) ) {</b>
+<b class="fc">&nbsp;                currentQty = item.getQuantity ( );</b>
+<b class="fc">&nbsp;                item.setQuantity ( currentQty + quantity );</b>
+&nbsp;                return;
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        CartItem newItem = new CartItem ( productType, quantity );</b>
+<b class="fc">&nbsp;        shoppingCart.addItem ( newItem );</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void removeItemFromCart (ProductType productType, int quantity) {
+<b class="fc">&nbsp;        if ( shoppingCart == null )</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException ( &quot;Shopping cart is empty&quot; );</b>
+<b class="fc">&nbsp;        if ( productType == null )</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException ( &quot;Product cannot be null&quot; );</b>
+<b class="fc">&nbsp;        if ( quantity &lt;= 0 )</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException ( &quot;Quantity must be &gt;0&quot; );</b>
+<b class="fc">&nbsp;        CartItem targetItem = null;</b>
+<b class="fc">&nbsp;        for ( CartItem item : this.shoppingCart.getItems ( ) ) {</b>
+<b class="fc">&nbsp;            if ( item.getProductType ( ).getProductCode ( ).equals ( productType.getProductCode ( ) ) ) {</b>
+<b class="fc">&nbsp;                targetItem = item;</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        if ( targetItem == null ) throw new IllegalArgumentException ( &quot;The product isn&#39;t in shopping cart!!!&quot; );</b>
+<b class="fc">&nbsp;        int currentquantity = targetItem.getQuantity ( );</b>
+<b class="fc">&nbsp;        if ( quantity == currentquantity ) {</b>
+<b class="fc">&nbsp;            shoppingCart.removeItem ( targetItem );</b>
+<b class="fc">&nbsp;        } else if ( quantity &lt; currentquantity ) {</b>
+<b class="fc">&nbsp;            targetItem.setQuantity ( currentquantity - quantity );</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new IllegalArgumentException ( &quot;There is no available quantity to deduct the amount given&quot; );</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public Order Checkout ( ) {
+<b class="fc">&nbsp;        if ( shoppingCart == null ) return null;</b>
+<b class="fc">&nbsp;        Date deliverydate = new Date ( );</b>
+<b class="fc">&nbsp;        deliverydate.changeDays ( 30 );</b>
+<b class="fc">&nbsp;        String orderCode = &quot;ORD-&quot; + UUID.randomUUID ( ).toString ( );</b>
+<b class="fc">&nbsp;        Order neworder = new Order ( orderCode, new Date ( ), StatusType.NEW, false, PaymentType.CASH, deliverydate, shoppingCart );</b>
+<b class="fc">&nbsp;       neworder.setTotal_amount ( shoppingCart.getTotalCost () );</b>
+<b class="fc">&nbsp;        return neworder;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void selectPaymentType (PaymentType paymentType, String cardNumber, Order order) {
+<b class="fc">&nbsp;        if ( order == null )</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException ( &quot;Order cannot be null!!!&quot; );</b>
+<b class="fc">&nbsp;        if ( paymentType == null )</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException ( &quot;Payment type cannot be null !!!&quot; );</b>
+&nbsp;
+<b class="pc">&nbsp;        if ( paymentType == PaymentType.CARD ) {</b>
+<b class="fc">&nbsp;            if ( !cardNumber.matches ( &quot;\\d{4}-\\d{4}-\\d{4}-\\d{4}&quot; ) )</b>
+<b class="fc">&nbsp;                throw new IllegalArgumentException ( &quot;Invalid card number format&quot; );</b>
+&nbsp;            else {
+<b class="fc">&nbsp;                order.setPaymentmethod ( PaymentType.CARD );</b>
+<b class="fc">&nbsp;                order.setPaid ( true );</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void Confirm (String confirmchoice, Order order) {
+<b class="fc">&nbsp;        if ( order == null ) throw new IllegalArgumentException ( &quot;Order cannot be null!!!&quot; );</b>
+<b class="fc">&nbsp;        if ( confirmchoice == null || confirmchoice.equals ( &quot;&quot; ) )</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException ( &quot;Confirmchoice cannot be null or empty string!!!&quot; );</b>
+<b class="pc">&nbsp;        if ( confirmchoice.equals ( &quot;CONFIRM&quot; ) ) {</b>
+<b class="fc">&nbsp;            OrdersRepository.getInstance ( ).addOrder ( order );</b>
+<b class="pc">&nbsp;            if ( shoppingCart != null ) shoppingCart.setOrder ( order );</b>
+<b class="fc">&nbsp;            shoppingCart = null;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void remove() {
+<b class="fc">&nbsp;        CustomerRepository repo = CustomerRepository.getInstance();</b>
+<b class="fc">&nbsp;        String id = this.getCustomer_id();</b>
+<b class="fc">&nbsp;        if (repo.getCustomers().containsKey(id)) {</b>
+<b class="fc">&nbsp;            repo.removeCustomer(this);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            throw new IllegalStateException(&quot;This customer does not exist in the CustomerRepository!!!&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-09 21:04</div>
+</div>
+</body>
+</html>

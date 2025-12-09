@@ -1,0 +1,30 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLGeneric</id><coordinates><x>100</x><y>53</y><w>170</w><h>30</h></coordinates><panel_attributes>UpdateCatalogueEmployee</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>170</x><y>73</y><w>30</w><h>670</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;650</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>170</x><y>93</y><w>20</w><h>550</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>103</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+executeUpdate(request)
+fontsize=10</panel_attributes><additional_attributes>10;20;170;20</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>0</x><y>153</y><w>330</w><h>80</h></coordinates><panel_attributes>opt
+--
+[request == null]
+fontsize=10
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>193</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+new IllegalArgumentException()
+fontsize=10</panel_attributes><additional_attributes>10;20;170;20</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>10</x><y>303</y><w>330</w><h>280</h></coordinates><panel_attributes>alt
+--
+[type == INSERT_PRODUCT]
+fontsize=10
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>393</y><w>360</w><h>40</h></coordinates><panel_attributes>lt=.
+[type == DELETE_PRODUCT]
+fontsize=10</panel_attributes><additional_attributes>10;20;340;20</additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>493</y><w>360</w><h>40</h></coordinates><panel_attributes>lt=.
+[type == PROCESS_PRODUCT]
+fontsize=10</panel_attributes><additional_attributes>10;20;340;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>530</x><y>53</y><w>170</w><h>30</h></coordinates><panel_attributes>ProductTypesRepository</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>73</y><w>30</w><h>670</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;650</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>73</y><w>30</w><h>680</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;660</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>350</x><y>53</y><w>170</w><h>30</h></coordinates><panel_attributes>request:CatalogueUpdateRequest
+fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>333</y><w>260</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+product = getProduct()
+fontsize=10</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>420</x><y>333</y><w>20</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>373</y><w>440</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+addProductType(product)
+fontsize=10</panel_attributes><additional_attributes>10;20;420;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>600</x><y>383</y><w>20</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>423</y><w>260</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+product = getProduct()
+fontsize=10</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>420</x><y>423</y><w>20</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>463</y><w>440</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+deleteProductType(product)
+fontsize=10</panel_attributes><additional_attributes>10;20;420;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>600</x><y>473</y><w>20</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>513</y><w>260</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+product = getProduct()
+fontsize=10</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>420</x><y>513</y><w>20</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>543</y><w>440</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+processProduct(product)
+fontsize=10</panel_attributes><additional_attributes>10;20;420;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>600</x><y>553</y><w>20</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element></diagram>

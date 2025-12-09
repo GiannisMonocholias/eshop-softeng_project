@@ -1,0 +1,243 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductsWareHouse</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductsWareHouse (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductsWareHouse</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.9%
+  </span>
+  <span class="absValue">
+    (13/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.3%
+  </span>
+  <span class="absValue">
+    (28/30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97.8%
+  </span>
+  <span class="absValue">
+    (45/46)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;public class ProductsWareHouse {
+&nbsp;
+&nbsp;    private static ProductsWareHouse instance;
+&nbsp;
+<b class="fc">&nbsp;    private int maxCapacity = 1000;</b>
+&nbsp;    private double totalProducts;
+&nbsp;
+&nbsp;    private HashMap&lt;ProductType,Integer&gt; productStocks;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    private ProductsWareHouse() {</b>
+<b class="fc">&nbsp;        this.totalProducts = 0;</b>
+<b class="fc">&nbsp;        this.productStocks = new HashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static ProductsWareHouse getInstance(){
+<b class="fc">&nbsp;        if(instance == null){</b>
+<b class="fc">&nbsp;            instance = new ProductsWareHouse();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getProductStock(ProductType type){
+<b class="fc">&nbsp;        if(type == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;type argument cannot be null&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(productStocks.containsKey(type))</b>
+<b class="fc">&nbsp;            return  productStocks.get(type);</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getCapacityUtilization() {
+<b class="nc">&nbsp;        return totalProducts &gt; 0 ? (double) totalProducts/maxCapacity : 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public void insertProduct(ProductType type) {
+<b class="fc">&nbsp;        if(type == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;type argument cannot be null&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(!productStocks.containsKey(type)) {</b>
+<b class="fc">&nbsp;            productStocks.put(type, 0);</b>
+&nbsp;        }
+&nbsp;        else{
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;The provided type already exists in stock&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    public  void deleteProduct(ProductType type) throws NoSuchElementException {
+<b class="fc">&nbsp;        if(type == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;type argument cannot be null&quot;);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        if(!productStocks.containsKey(type))</b>
+<b class="fc">&nbsp;            throw new NoSuchElementException(&quot;Product not in stock&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        productStocks.remove(type);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean increaseProductStock(ProductType type,int amount){
+<b class="fc">&nbsp;        if(!productStocks.containsKey(type)){</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if(!isValidAmount(amount)){</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        int previousValue =productStocks.get(type);</b>
+<b class="fc">&nbsp;        productStocks.put(type, previousValue + amount);</b>
+&nbsp;
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean decreaseProductStock(ProductType type,int amount){
+<b class="fc">&nbsp;        if(!productStocks.containsKey(type)){</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if(!isValidAmount(amount)){</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        int previousValue =productStocks.get(type);</b>
+<b class="fc">&nbsp;        if(sufficientStock(type, amount))</b>
+<b class="fc">&nbsp;            productStocks.put(type, previousValue - amount);</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return false;</b>
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean sufficientStock(ProductType type, int amount){
+<b class="fc">&nbsp;        int previousValue =productStocks.get(type);</b>
+<b class="fc">&nbsp;        return (previousValue - amount &gt; 0);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isValidAmount(int amount){
+<b class="fc">&nbsp;        return amount &gt; 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public HashMap&lt;ProductType, Integer&gt; getProductStocks() {
+<b class="fc">&nbsp;        return productStocks;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public int getMaxCapacity() {
+<b class="fc">&nbsp;        return maxCapacity;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setMaxCapacity(int maxCapacity) {
+<b class="fc">&nbsp;        this.maxCapacity = maxCapacity;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void clear(){
+<b class="fc">&nbsp;        productStocks.clear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-09 21:04</div>
+</div>
+</body>
+</html>
