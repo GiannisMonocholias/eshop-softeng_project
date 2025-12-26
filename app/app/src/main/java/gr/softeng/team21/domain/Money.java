@@ -54,5 +54,8 @@ public class Money {
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        return this.amount.toString()+this.currency.toString();
+    }
 }
