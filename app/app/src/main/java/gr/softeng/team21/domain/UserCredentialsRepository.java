@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public class UserCredentialsRepository {
     private static UserCredentialsRepository instance;
-    private HashMap<String, User> credentialsMap; // username → password (hashed στην πράξη)
+    private HashMap<String, User> credentialsMap;
 
     private UserCredentialsRepository() {
         credentialsMap = new HashMap<>();
