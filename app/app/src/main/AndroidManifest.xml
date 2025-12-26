@@ -12,7 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.product.ProductDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.contact.editdata.PhoneActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.contact.editdata.EmailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.contact.editdata.PasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.contact.editdata.UsernameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.contact.editdata.AddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.user.User_EditData_activity"
+            android:exported="true" />
+        <activity
+            android:name=".view.customer.CustomerHomePageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +41,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.customer.Customer_FindProduct_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".view.MainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

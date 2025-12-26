@@ -6,7 +6,7 @@ public class ProductType {
     private Money price;
     private String productcode;
 
-    public ProductType (String productname,String description, Money price, String productcode) {
+    public ProductType(String productname, String description, Money price, String productcode) {
         this.productname = productname;
         this.description = description;
         this.price = price;
@@ -14,35 +14,40 @@ public class ProductType {
 
     }
 
-    public String getProductname ( ) {
+    public String getProductname() {
         return productname;
     }
 
-    public void setProductname (String productname) {
+    public void setProductname(String productname) {
         this.productname = productname;
     }
 
-    public String getDescription ( ) {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription (String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public Money getPrice ( ) {
+    public Money getPrice() {
         return price;
     }
 
-    public void setPrice (Money price) {
+    public void setPrice(Money price) {
         this.price = price;
     }
 
-    public String getProductCode ( ) {
+    public String getProductCode() {
         return productcode;
     }
 
-    public void setProductcode (String productcode) {
+    public void setProductcode(String productcode) {
         this.productcode = productcode;
+    }
+
+    @Override
+    public String toString() {
+        return productname + "---" + price;
     }
 }
