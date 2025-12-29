@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/OrdPrepEmpMenu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#766F6F"
+    tools:context=".view.employee.customerServiceEmployee.CustomerServiceMenuActivity">
+
+    <TextView
+        android:id="@+id/txtOrdPrepEmpMenuName"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#009688"
+        android:elevation="12dp"
+        android:gravity="center"
+        android:text="ΟΝΟΜΑ ΥΠΑΛΛΗΛΟΥ"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtOrdPrepEmpMenuWelcomeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="ΚΑΛΩΣΗΡΘΑΤΕ!"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtOrdPrepEmpMenuName" />
+
+    <Button
+        android:id="@+id/btnOrdPrepEmpMenuAssignedOrders"
+        android:layout_width="382dp"
+        android:layout_height="115dp"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="#673AB7"
+        android:text="Οι παραγγελίες μου"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.413"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtOrdPrepEmpMenuWelcomeMessage"
+         />
+
+    <Button
+        android:id="@+id/btnOrdPrepEmpMenuAssignNewOrder"
+        android:layout_width="377dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#673AB7"
+        android:text="Ανάληψη νέων παραγγελιών"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnOrdPrepEmpMenuAssignedOrders" />
+
+    <Button
+        android:id="@+id/btnOrdPrepEmpMenuLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#BF211D"
+        android:drawableLeft="@drawable/account_logout"
+        android:elevation="8dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Αποσύνδεση"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

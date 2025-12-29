@@ -51,5 +51,6 @@ public class CatalogueUpdateRequest{
     public void setExecuted(Boolean executed) {
         this.executed = executed;
     }
+    public Date getSubmissionDate() {return submissionDate;}
 
 }

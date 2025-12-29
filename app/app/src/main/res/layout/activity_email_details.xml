@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/EmailDetails"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.contact.EmailDetailsActivity">
+
+    <TextView
+        android:id="@+id/txtEmailFrom2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="55dp"
+        android:text="Από: "
+        android:textColor="#424242"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtEmailSenderName2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="55dp"
+        android:text="Όνομα αποστολέα"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtEmailSenderEmail2"
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_marginStart="13dp"
+        android:text="email αποστολέα"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderName" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:layout_marginTop="14dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/edtEmailReceiver2"
+        android:layout_width="335dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:hint="Διεύθυνση παραλήπτη"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsReceiver"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail" />
+
+    <TextView
+        android:id="@+id/txtEmailReceiver2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:text="Προς: "
+        android:textColor="#424242"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsFrom" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:layout_marginTop="14dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/txtEmailSendSubject2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:text="Θέμα: "
+        android:textColor="#424242"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsReceiver" />
+
+    <EditText
+        android:id="@+id/edtEmailSubject2"
+        android:layout_width="335dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:hint="Θέμα μηνύματος"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsEmailSubject"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver" />
+
+    <EditText
+        android:id="@+id/edtEmailBody2"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Συμπληρώστε το μήνυμα"
+        android:inputType="textMultiLine"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/view3EmailDetails" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewEmailCompsition"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        tools:context=".view.user.EmailCompositionActivity"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="-16dp">
+
+        <TextView
+            android:id="@+id/txtEmailDetailsFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="Από: "
+            android:textColor="#424242"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtEmailDetailsReceiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"
+            android:text="Προς: "
+            android:textColor="#424242"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsFrom" />
+
+        <TextView
+            android:id="@+id/txtEmailDetailsEmailSubject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"
+            android:text="Θέμα: "
+            android:textColor="#424242"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsReceiver" />
+
+        <TextView
+            android:id="@+id/txtEmailDetailsSenderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="20dp"
+            android:text="Όνομα αποστολέα"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtEmailDetailsReceiverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="17dp"
+            android:text="Όνομα παραλήπτη"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsReceiver"
+            app:layout_constraintTop_toBottomOf="@+id/viewEmailDetails" />
+
+        <TextView
+            android:id="@+id/txtEmailDetailsEmailSubjectValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="22dp"
+            android:text="Θέμα μηνύματος"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsEmailSubject"
+            app:layout_constraintTop_toBottomOf="@+id/view2EmailDetails" />
+
+        <TextView
+            android:id="@+id/txtEmailDetailsSenderEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="13dp"
+            android:layout_marginStart="13dp"
+            android:text="email αποστολέα"
+            android:textColor="#000000"
+            android:textSize="10sp"
+            app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderName" />
+
+        <TextView
+            android:id="@+id/txtEmailDetailsReceiverEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="13dp"
+            android:layout_marginStart="8dp"
+            android:text="email παραλήπτη"
+            android:textColor="#000000"
+            android:textSize="10sp"
+            app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsReceiver"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsReceiverName" />
+
+        <View
+            android:id="@+id/viewEmailDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_marginTop="14dp"
+            android:background="#E0E0E0"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <View
+            android:id="@+id/view2EmailDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_marginTop="14dp"
+            android:background="#E0E0E0"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsReceiverEmail"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <View
+            android:id="@+id/view3EmailDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="3dp"
+            android:layout_marginTop="16dp"
+            android:background="#E0E0E0"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsEmailSubjectValue"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="449dp" />
+
+        <TextView
+            android:id="@+id/txtEmailDetailsEmailBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="13dp"
+            android:text="Περιεχόμενο μηνύματος"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3EmailDetails" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

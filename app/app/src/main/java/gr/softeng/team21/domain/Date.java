@@ -30,4 +30,9 @@ public class Date {
         return date.getYear();
     }
 
+    @Override
+    public String toString(){
+        return getDay() + "/" + getMonth() + "/" + getYear();
+    }
+
 }

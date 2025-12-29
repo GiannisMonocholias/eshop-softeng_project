@@ -23,6 +23,9 @@ public class CustomerRepository {
         return customers;
     }
 
+    public Customer getCustomer(String id){
+        return customers.get(id);
+    }
     public void addCustomer(Customer customer) {
         if (customer != null) {
             String id = customer.getCustomer_id();

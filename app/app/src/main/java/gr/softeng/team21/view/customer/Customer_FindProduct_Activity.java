@@ -1,5 +1,7 @@
 package gr.softeng.team21.view.customer;
 
+import gr.softeng.team21.R;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -14,11 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
-import gr.softeng.team21.R;
 import gr.softeng.team21.domain.ProductRepositoryInitializer;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.ProductTypesRepository;
 import gr.softeng.team21.view.product.ProductDetailsActivity;
+
 
 public class Customer_FindProduct_Activity extends AppCompatActivity {
 
@@ -35,7 +37,7 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_customer_find_product);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activityCseDashboard), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;

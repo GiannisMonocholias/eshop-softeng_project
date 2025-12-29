@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/txtItemProductStockProductCode"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="Κωδικός Προϊόντος:"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockProductCodeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginStart="7dp"
+        android:text="#product 3402"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/txtItemProductStockProductCode"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockSubTotalValue"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:text="1200 "
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/txtItemProductStockSubTotal"
+        app:layout_constraintTop_toBottomOf="@+id/txtItemProductStockProductNameValue" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockProductNameValue"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="12dp"
+        android:text="Laptop Dell"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/txtItemProductStockProductName"
+        app:layout_constraintTop_toBottomOf="@+id/txtItemProductStockProductCodeValue" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="12dp"
+        android:text="Όνομα Προϊόντος:"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtItemProductStockProductCode" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockSubTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="12dp"
+        android:text="Τιμή: "
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/txtItemProductStockStockQuantityValue"
+        app:layout_constraintTop_toBottomOf="@+id/txtItemProductStockProductNameValue" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockRequestedQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Ζητούμενη:"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtItemProductStockProductName" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockRequestedQuantityValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="2"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txtItemProductStockRequestedQuantity"
+        app:layout_constraintStart_toEndOf="@+id/txtItemProductStockRequestedQuantity" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockStockQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="12dp"
+        android:text="Απόθεμα:"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/txtItemProductStockRequestedQuantityValue"
+        app:layout_constraintTop_toBottomOf="@+id/txtItemProductStockProductName" />
+
+    <TextView
+        android:id="@+id/txtItemProductStockStockQuantityValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="15"
+        android:textColor="#2E7D32"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txtItemProductStockStockQuantity"
+        app:layout_constraintStart_toEndOf="@+id/txtItemProductStockStockQuantity" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

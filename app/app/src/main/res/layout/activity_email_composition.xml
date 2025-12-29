@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewEmailCompsition"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".view.user.EmailCompositionActivity">
+
+    <TextView
+        android:id="@+id/txtEmailDetailsFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="55dp"
+        android:text="Από: "
+        android:textColor="#424242"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtEmailDetailsReceiver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:text="Προς: "
+        android:textColor="#424242"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsFrom" />
+
+    <TextView
+        android:id="@+id/txtEmailDetailsEmailSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:text="Θέμα: "
+        android:textColor="#424242"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsReceiver" />
+
+    <TextView
+        android:id="@+id/txtEmailDetailsSenderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="55dp"
+        android:text="Όνομα αποστολέα"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtEmailDetailsSenderEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_marginStart="13dp"
+        android:text="email αποστολέα"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderName" />
+
+    <EditText
+        android:id="@+id/edtEmailDetailsReceiver"
+        android:layout_width="335dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:hint="Διεύθυνση παραλήπτη"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsReceiver"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail" />
+
+    <EditText
+        android:id="@+id/edtEmailSubject"
+        android:layout_width="335dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="27dp"
+        android:ems="10"
+        android:hint="Θέμα μηνύματος"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsEmailSubject"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver" />
+
+    <View
+        android:id="@+id/viewEmailDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:layout_marginTop="14dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <View
+        android:id="@+id/view2EmailDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:layout_marginTop="14dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <View
+        android:id="@+id/view3EmailDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:layout_marginTop="14dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmailSubject"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btnEmailSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="#2196F3"
+        android:drawableLeft="@drawable/send_email_icon"
+        android:text="Αποστολή"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="449dp" />
+
+    <EditText
+        android:id="@+id/edtEmailBody"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Συμπληρώστε το μήνυμα"
+        android:inputType="textMultiLine"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/view3EmailDetails" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

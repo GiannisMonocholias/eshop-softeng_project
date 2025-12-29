@@ -2,7 +2,6 @@ package gr.softeng.team21.view.product;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +18,6 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.ProductTypesRepository;
-import gr.softeng.team21.view.customer.Customer_FindProduct_Activity;
 import gr.softeng.team21.view.user.User_EditData_activity;
 
 public class ProductDetailsActivity extends AppCompatActivity {
@@ -39,7 +37,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_details);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activityCseDashboard), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;

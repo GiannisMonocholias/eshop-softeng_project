@@ -23,6 +23,10 @@ public class EmployeeRepository {
         return employees;
     }
 
+    public Employee getEmployee(String id){
+        return employees.get(id);
+    }
+
     public void addEmployee(Employee employee){
         if(employee != null){
             if(!employees.containsKey(employee.getEmployeeId())){

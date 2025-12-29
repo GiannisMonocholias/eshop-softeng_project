@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Team21">
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteDeleteProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteProcessProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteInsertProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.AssignedRequestsToExecuteActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.AvailableRequestsToAssignActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.UpdateCatalogueEmployeeMenuActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.order.orderDetails.OrderDetailsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.EmailDetailsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.OrderPreparationEmployeeMenuActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.AssignedOrdersToPrepareActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.AvailableOrdersToAssignActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.user.EmailCompositionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.customerServiceEmployee.OrderStatusActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.customerServiceEmployee.EmailListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.customerServiceEmployee.CustomerServiceMenuActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.product.ProductDetailsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.PhoneActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.EmailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.PasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.UsernameActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.AddressActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.user.User_EditData_activity"
+            android:exported="true" />
+        <activity
+            android:name=".view.customer.CustomerHomePageActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.customer.Customer_FindProduct_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".view.MainActivity"
+            android:exported="true" />
+    </application>
+
+</manifest>
