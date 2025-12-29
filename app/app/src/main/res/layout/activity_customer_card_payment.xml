@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="#4B4545"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".view.customer.CustomerCardPaymentActivity">
+
+    <TextView
+        android:id="@+id/txtCustomerCardPaymentActivityHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Πληρωμή με Κάρτα"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#009688"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/edittxtCustomerCardPaymentActivityCardNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:background="#FFFFFF"
+        android:hint="Αριθμός Κάρτας"
+        android:inputType="phone"
+        android:digits="0123456789-"
+        android:maxLength="19"
+        android:padding="15dp"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerCardPaymentActivityHeader"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Button
+        android:id="@+id/btnCustomerCardPaymentActivityPayment"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#009688"
+        android:text="Πληρωμή"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

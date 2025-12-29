@@ -48,5 +48,11 @@ public class CartItem {
         return productType;
     }
 
+    @Override
+    public String toString() {
+        String productName=productType.getProductname();
+        String totalStr=subtotal_amount.toString();
+        return productName + " (x" + quantity + ") -- " + totalStr;
+    }
 
 }

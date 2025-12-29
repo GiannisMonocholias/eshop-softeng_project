@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4B4545"
+    tools:context=".view.customer.CustomerShoppingCartActivity">
+
+
+    <TextView
+        android:id="@+id/txtCustomerShoppingCartActivityHeader"
+        android:layout_width="411dp"
+        android:layout_height="59dp"
+
+        android:layout_marginTop="4dp"
+
+        android:background="#009688"
+        android:backgroundTint="#009688"
+        android:fontFamily="sans-serif-medium"
+        android:text="Καλάθι Αγοράς"
+        android:textAlignment="center"
+        android:textColor="#F8F7F7"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtCustomerShoppingCartActivityTotalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Σύνολο: 0.00 €"
+        android:textColor="#009688"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerShoppingCartActivityHeader" />
+
+    <Button
+        android:id="@+id/btnCustomerShoppingCartActivityPayment"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:text="Συνέχεια στην Πληρωμή"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ListView
+        android:id="@+id/ViewlistCustomerShoppingCartActivity"
+        android:layout_width="394dp"
+        android:layout_height="395dp"
+        android:layout_marginTop="56dp"
+        android:cacheColorHint="#009688"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerShoppingCartActivityTotalPrice" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,20 +5,22 @@
     android:id="@+id/activityCseDashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#4B4545"
     tools:context=".view.customer.CustomerHomePageActivity">
 
     <TextView
         android:id="@+id/txtCustomerHomePageHeader"
-        android:layout_width="393dp"
-        android:layout_height="55dp"
+        android:layout_width="411dp"
+        android:layout_height="59dp"
 
         android:layout_marginTop="16dp"
 
-        android:background="#0CD7C4"
-        android:backgroundTint="#0CD7C4"
+        android:background="#009688"
+        android:backgroundTint="#009688"
         android:fontFamily="sans-serif-medium"
         android:text="Επιλέξτε την λειτουργία που θέλετε"
-        android:textColor="#2D2D2D"
+        android:textAlignment="center"
+        android:textColor="#F8F7F7"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,19 +33,18 @@
         android:layout_width="245dp"
         android:layout_height="48dp"
         android:layout_marginTop="88dp"
-        android:backgroundTint="#0CD7C4"
+        android:backgroundTint="#009688"
         android:text="Αναζήτηση Προϊόντων"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCustomerHomePageHeader"
-        app:strokeColor="#0CD7C4" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerHomePageHeader" />
 
     <Button
         android:id="@+id/btnCustomerHomePageEditData"
         android:layout_width="250dp"
         android:layout_height="53dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#0CD7C4"
+        android:backgroundTint="#009688"
         android:text="Επεξεργασία Στοιχείων Προφίλ"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -55,7 +56,7 @@
         android:layout_width="245dp"
         android:layout_height="46dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#0CD7C4"
+        android:backgroundTint="#009688"
         android:text="Αποσύνδεση"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
@@ -67,7 +68,7 @@
         android:layout_width="236dp"
         android:layout_height="48dp"
         android:layout_marginTop="28dp"
-        android:backgroundTint="#0CD7C4"
+        android:backgroundTint="#009688"
         android:text="Διαγραφή Λογαριασμού"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

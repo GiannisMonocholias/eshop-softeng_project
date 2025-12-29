@@ -45,7 +45,7 @@ public class ProductRepositoryInitializer {
 
             // --- 9. Accessories ---
             products.addProductType(new ProductType("Sony WH-1000XM5", "Ασύρματα ακουστικά με κορυφαία ακύρωση θορύβου.", new Money(BigDecimal.valueOf(329.00), "€"), "TECH-017"));
-            products.addProductType(new ProductType("HyperX Cloud II", "Ακουστικά gaming με άνετα μαξιλαράκια αφρού μνήμης.", new Money(BigDecimal.valueOf(75.00), "€"), "TECH-018"));
+            products.addProductType(new ProductType("Razer Kraken", "Ενσύρματα gaming ακουστικά με ήχο 7.1 Surround, οδηγούς 50mm και μαξιλαράκια Cooling Gel για μέγιστη άνεση.", new Money(BigDecimal.valueOf(79.90), "€"), "TECH-018"));
             products.addProductType(new ProductType("Logitech C920 HD Pro", "Web κάμερα υψηλής ευκρίνειας 1080p.", new Money(BigDecimal.valueOf(65.50), "€"), "TECH-019"));
             products.addProductType(new ProductType("iPad Air 5th Gen", "Tablet με επεξεργαστή M1 και οθόνη Liquid Retina.", new Money(BigDecimal.valueOf(679.00), "€"), "TECH-020"));
 

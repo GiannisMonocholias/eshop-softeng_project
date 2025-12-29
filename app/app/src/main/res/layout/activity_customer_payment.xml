@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".view.customer.CustomerPaymentActivity">
+
+    <TextView
+        android:id="@+id/txtCustomerPaymentActivityHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Επιλογή Τρόπου Πληρωμής"
+        android:textColor="#009688"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/txtCustomerPaymentActivityFinalAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Σύνολο: 0.00 €"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerPaymentActivityHeader" />
+
+    <TextView
+        android:id="@+id/txtCustomerPaymentActivityPayMethodLabel"
+        android:layout_width="280dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="60dp"
+        android:text="Τρόπος Πληρωμής:"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerPaymentActivityFinalAmount" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupCustomerPaymentActivity"
+        android:layout_width="371dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="28dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerPaymentActivityPayMethodLabel">
+
+        <RadioButton
+            android:id="@+id/rbCustomerPaymentActivityCash"
+            android:layout_width="109dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:checked="true"
+            android:text="Μετρητά" />
+
+        <RadioButton
+            android:id="@+id/rbCustomerPaymentActivityCard"
+            android:layout_width="93dp"
+            android:layout_height="match_parent"
+            android:text="Κάρτα" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnCustomerPaymentActivityPayment"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#009688"
+        android:text="Πληρωμή"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

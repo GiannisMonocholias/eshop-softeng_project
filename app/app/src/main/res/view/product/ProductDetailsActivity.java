@@ -1,9 +1,7 @@
 package gr.softeng.team21.view.product;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +18,6 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.ProductTypesRepository;
-import gr.softeng.team21.view.customer.Customer_FindProduct_Activity;
 import gr.softeng.team21.view.user.User_EditData_activity;
 
 public class ProductDetailsActivity extends AppCompatActivity {
@@ -98,8 +95,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private int getImageResIdByCode(String code) {
-        String codeimg = code.toLowerCase().replace("-", "_");
-        int resId = getResources().getIdentifier(codeimg, "drawable", getPackageName());
-        return resId;
+        switch (code) {
+            case "TECH-001": return R.drawable.TECH_001;
+           // case "TECH-002": return R.drawable.macbook_img;
+            default: return android.R.drawable.ic_menu_gallery;
+        }
     }
 }
