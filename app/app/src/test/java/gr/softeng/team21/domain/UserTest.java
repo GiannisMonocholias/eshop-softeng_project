@@ -5,14 +5,18 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+
 public class UserTest {
 
     private Employee sender;
     private Employee recipient;
     private Customer customer;
-    private EmailProviderStub senderProvider;
-    private EmailProviderStub recipientProvider;
-    private EmailProviderStub customerProvider;
+    private EmailDAOMemory senderProvider;
+    private EmailDAOMemory recipientProvider;
+    private EmailDAOMemory customerProvider;
 
     @Before
     public void setUp() {
@@ -27,9 +31,9 @@ public class UserTest {
                 "697123456", customerEmailAddress, "CUST-001", new Date());
 
 
-        senderProvider = new EmailProviderStub();
-        recipientProvider = new EmailProviderStub();
-        customerProvider = new EmailProviderStub();
+        senderProvider = new EmailDAOMemory();
+        recipientProvider = new EmailDAOMemory();
+        customerProvider = new EmailDAOMemory();
 
         sender.setEmailProviderStub(senderProvider);
         recipient.setEmailProviderStub(recipientProvider);
@@ -212,7 +216,7 @@ public class UserTest {
 
     @After
     public void tearDownTest(){
-        EmployeeRepository.getInstance().clear();
-        CustomerRepository.getInstance().getCustomers().clear();
+        EmployeeDAOMemory.getInstance().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
     }
 }

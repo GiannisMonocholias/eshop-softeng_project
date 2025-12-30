@@ -7,14 +7,17 @@ import static org.junit.Assert.*;
 
 import java.util.NoSuchElementException;
 
-public class UserCredentialsRepositoryTest {
-    private UserCredentialsRepository repository;
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
+
+public class UserCredentialsDAOMemoryTest {
+    private UserCredentialsDAOMemory repository;
 
     @Before
     public void setUp() throws Exception {
-        this.repository = UserCredentialsRepository.getInstance();
+        this.repository = UserCredentialsDAOMemory.getInstance();
         repository.clear();
-        CustomerRepository.getInstance().getCustomers().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
     }
 
     @Test
@@ -24,7 +27,7 @@ public class UserCredentialsRepositoryTest {
 
     @Test
     public void getInstanceReturnsSameReferencesTest() {
-        UserCredentialsRepository repository1 = UserCredentialsRepository.getInstance();
+        UserCredentialsDAOMemory repository1 = UserCredentialsDAOMemory.getInstance();
         assertSame(repository1, repository);
     }
 
@@ -104,6 +107,6 @@ public class UserCredentialsRepositoryTest {
     @After
     public void tearDown() throws Exception {
         repository.clear();
-        CustomerRepository.getInstance().getCustomers().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
     }
 }

@@ -15,9 +15,9 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.ProductRepositoryInitializer;
+import gr.softeng.team21.domain.Initializer;
 import gr.softeng.team21.domain.ProductType;
-import gr.softeng.team21.domain.ProductTypesRepository;
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.view.product.ProductDetailsActivity;
 
 public class Customer_FindProduct_Activity extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_customer_find_product);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.delivererOrdersList), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -45,7 +45,7 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
         listView = findViewById(R.id.ViewlistProductActivity);
 
         // 1. Γέμισμα δεδομένων (αν είναι άδεια)
-        ProductRepositoryInitializer.InitializeProducts();
+        Initializer.InitializeProducts();
 
         // 2. Αρχική Εμφάνιση
         refreshList();
@@ -86,12 +86,12 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
 
     private void refreshList() {
         displayedProducts.clear();
-        displayedProducts.addAll(ProductTypesRepository.getInstance().getProducts().values());
+        displayedProducts.addAll(ProductTypeDAOMemory.getInstance().getProducts().values());
     }
 
     private void filter(String text) {
         displayedProducts.clear();
-        ArrayList<ProductType> allProducts = new ArrayList<>(ProductTypesRepository.getInstance().getProducts().values());
+        ArrayList<ProductType> allProducts = new ArrayList<>(ProductTypeDAOMemory.getInstance().getProducts().values());
 
         if (text.isEmpty()) {
             displayedProducts.addAll(allProducts);

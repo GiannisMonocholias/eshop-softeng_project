@@ -2,6 +2,8 @@ package gr.softeng.team21.domain;
 
 import java.util.HashMap;
 
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+
 public class TestHelper {
     private static Money priceMonitor = new Money(150, "€");
     private static ProductType monitor = new ProductType("Samsung 24\"", "Full HD Monitor", priceMonitor, "m101");
@@ -19,7 +21,7 @@ public class TestHelper {
 
 
     public static void addProductsManually() {
-        ProductTypesRepository repo = ProductTypesRepository.getInstance();
+        ProductTypeDAOMemory repo = ProductTypeDAOMemory.getInstance();
 
         if (repo.getProduct(laptop.getProductCode ()) == null) {
             repo.addProductType(laptop);
@@ -35,11 +37,11 @@ public class TestHelper {
         }
     }
     public static void clear(){
-        ProductTypesRepository.getInstance ().clear ();
+        ProductTypeDAOMemory.getInstance ().clear ();
     }
 
     public static HashMap<String,ProductType> getProducts ( ) {
-        return ProductTypesRepository.getInstance ( ).getProducts ( );
+        return ProductTypeDAOMemory.getInstance ( ).getProducts ( );
     }
     public static Money getPriceLaptop ( ) {
         return priceLaptop;

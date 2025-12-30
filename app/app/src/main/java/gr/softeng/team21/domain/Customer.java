@@ -1,6 +1,10 @@
 package gr.softeng.team21.domain;
 
 import java.util.*;
+
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.OrderDAOMemory;
+
 public class Customer extends User {
     private String customer_id;
     private Date registdate;
@@ -14,7 +18,7 @@ public class Customer extends User {
         super ( username, firstname, password, lastname, phoneNumber, emailaddress );
         this.customer_id = customer_id;
         this.registdate = registdate;
-        CustomerRepository.getInstance ().addCustomer ( this );
+        CustomerDAOMemory.getInstance ().addCustomer ( this );
     }
 
     public Date getRegistdateDate ( ) {
@@ -126,14 +130,14 @@ public class Customer extends User {
         if ( confirmchoice == null || confirmchoice.equals ( "" ) )
             throw new IllegalArgumentException ( "Confirmchoice cannot be null or empty string!!!" );
         if ( confirmchoice.equals ( "CONFIRM" ) ) {
-            OrdersRepository.getInstance ( ).addOrder ( order );
+            OrderDAOMemory.getInstance ( ).addOrder ( order );
             if ( shoppingCart != null ) shoppingCart.setOrder ( order );
             shoppingCart = null;
         }
     }
 
     public void remove() {
-        CustomerRepository repo = CustomerRepository.getInstance();
+        CustomerDAOMemory repo = CustomerDAOMemory.getInstance();
         String id = this.getCustomer_id();
         if (repo.getCustomers().containsKey(id)) {
             repo.removeCustomer(this);

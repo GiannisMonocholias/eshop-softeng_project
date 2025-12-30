@@ -1,27 +1,28 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.memorydao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
-public class ProductsWareHouse {
+import gr.softeng.team21.domain.ProductType;
 
-    private static ProductsWareHouse instance;
+public class ProductsWareHouseDAOMemory {
 
-    private int maxCapacity = 1000;
-    private double totalProducts;
+    private static ProductsWareHouseDAOMemory instance;
 
-    private HashMap<ProductType,Integer> productStocks;
+    private static int maxCapacity = 1000;
+    private static double totalProducts;
+
+    private static HashMap<ProductType,Integer> productStocks;
 
 
-    private ProductsWareHouse() {
+    private ProductsWareHouseDAOMemory() {
         this.totalProducts = 0;
         this.productStocks = new HashMap<>();
     }
 
-    public static ProductsWareHouse getInstance(){
+    public static ProductsWareHouseDAOMemory getInstance(){
         if(instance == null){
-            instance = new ProductsWareHouse();
+            instance = new ProductsWareHouseDAOMemory();
         }
         return instance;
     }

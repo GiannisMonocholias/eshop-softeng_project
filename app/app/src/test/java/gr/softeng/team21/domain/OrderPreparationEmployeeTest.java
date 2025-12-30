@@ -8,31 +8,37 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+import gr.softeng.team21.memorydao.EmailDAOMemory;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.OrderDAOMemory;
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
+
 public class OrderPreparationEmployeeTest {
     private String orderId;
     private OrderPreparationEmployee employee;
     private CustomerServiceEmployee customerServiceEmployee;
     private Deliverer deliverer;
-    private OrdersRepository ordersRepository;
+    private OrderDAOMemory orderDAOMemory;
 
     @Before
     public void setUp(){
-        OrdersRepository.getInstance().clear();
-        EmployeeRepository.getInstance().clear();
-        ProductsWareHouse.getInstance().clear();
-        ProductTypesRepository.getInstance().clear();
+        OrderDAOMemory.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
+        ProductsWareHouseDAOMemory.getInstance().clear();
+        ProductTypeDAOMemory.getInstance().clear();
 
         Admin.getInstance();
-        Admin.getInstance().setEmailProviderStub(new EmailProviderStub());
+        Admin.getInstance().setEmailProviderStub(new EmailDAOMemory());
 
 
         employee = new OrderPreparationEmployee("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"OPE_1",100,1000,
                 8,EmployeeState.ACTIVE, new Date(3,5,2025));
-        employee.setEmailProviderStub(new EmailProviderStub());
+        employee.setEmailProviderStub(new EmailDAOMemory());
 
-        ordersRepository = OrdersRepository.getInstance();
-        ordersRepository.addOrder(new Order("order1245", new Date(20,5,2025),StatusType.NEW,false,PaymentType.CASH, new Date(),new ShoppingCart()));
+        orderDAOMemory = OrderDAOMemory.getInstance();
+        orderDAOMemory.addOrder(new Order("order1245", new Date(20,5,2025),StatusType.NEW,false,PaymentType.CASH, new Date(),new ShoppingCart()));
 
         deliverer =new Deliverer("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"DEL_1",100,1000,8,
@@ -41,7 +47,7 @@ public class OrderPreparationEmployeeTest {
         customerServiceEmployee = new CustomerServiceEmployee("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"CSE_1",100,1000,
                 8,EmployeeState.ACTIVE, new Date(3,5,2025));
-        customerServiceEmployee.setEmailProviderStub(new EmailProviderStub());
+        customerServiceEmployee.setEmailProviderStub(new EmailDAOMemory());
 
 
     }
@@ -56,7 +62,7 @@ public class OrderPreparationEmployeeTest {
         String orderCode = "order1245";
         employee.selectOrder(orderCode);
 
-        Order selectedOrder = ordersRepository.getOrder(orderCode);
+        Order selectedOrder = orderDAOMemory.getOrder(orderCode);
 
         assertTrue(employee.getAssignedOrders().contains(selectedOrder));
     }
@@ -65,7 +71,7 @@ public class OrderPreparationEmployeeTest {
     @Test(expected = NoSuchElementException.class)
     public void prepareOrder_NonAssignedExistingOrderTest() {
         // Existing but not assigned order
-        Order nonAssignedOrder1 = OrdersRepository.getInstance().getOrder("order1245");
+        Order nonAssignedOrder1 = OrderDAOMemory.getInstance().getOrder("order1245");
         employee.prepareOrder(nonAssignedOrder1);
     }
 
@@ -84,7 +90,7 @@ public class OrderPreparationEmployeeTest {
 
     @Test(expected = IllegalStateException.class)
     public void selectRandomEmployeeNoAvailableEmployeeTest(){
-        EmployeeRepository.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
         employee.selectRandomEmployee(Employee.class);
     }
 
@@ -93,13 +99,13 @@ public class OrderPreparationEmployeeTest {
     public void prepareOrderTestSufficientStock() {
 
         ProductType dummyProductType1 = new ProductType("LAPTOP","500",new Money(500,"€"),"product1246");
-        ProductTypesRepository.getInstance().addProductType(dummyProductType1);
+        ProductTypeDAOMemory.getInstance().addProductType(dummyProductType1);
 
-        ProductsWareHouse.getInstance().increaseProductStock(dummyProductType1,10);
+        ProductsWareHouseDAOMemory.getInstance().increaseProductStock(dummyProductType1,10);
 
         Order order = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
-        order.getShoppingCart().addItem(new CartItem(ProductTypesRepository.getInstance().getProduct("product1246"), 2));
-        ordersRepository.addOrder(order);
+        order.getShoppingCart().addItem(new CartItem(ProductTypeDAOMemory.getInstance().getProduct("product1246"), 2));
+        orderDAOMemory.addOrder(order);
 
 
         employee.selectOrder("order1246");
@@ -107,11 +113,11 @@ public class OrderPreparationEmployeeTest {
 
 
         assertEquals(StatusType.SHIPPED, order.getOrderstatus());
-        assertEquals(8, (int)ProductsWareHouse.getInstance().getProductStock(dummyProductType1));
+        assertEquals(8, (int) ProductsWareHouseDAOMemory.getInstance().getProductStock(dummyProductType1));
         assertEquals(1, employee.getTotalOrdersPreparations());
 
 
-        Deliverer delivererSelected = (Deliverer) EmployeeRepository.getInstance().getEmployees().get("DEL_1");
+        Deliverer delivererSelected = (Deliverer) EmployeeDAOMemory.getInstance().getEmployees().get("DEL_1");
         assertTrue(delivererSelected.getOrders().contains(order));
     }
 
@@ -120,13 +126,13 @@ public class OrderPreparationEmployeeTest {
     @Test
     public void prepareOrderTestInsufficientStock(){
         ProductType dummyProductType1 = new ProductType("LAPTOP","500",new Money(500,"€"),"product1246");
-        ProductTypesRepository.getInstance().addProductType(dummyProductType1);
+        ProductTypeDAOMemory.getInstance().addProductType(dummyProductType1);
 
-        ProductsWareHouse.getInstance().increaseProductStock(dummyProductType1,10);
+        ProductsWareHouseDAOMemory.getInstance().increaseProductStock(dummyProductType1,10);
 
         Order order = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
-        order.getShoppingCart().addItem(new CartItem(ProductTypesRepository.getInstance().getProduct("product1246"), 11));
-        ordersRepository.addOrder(order);
+        order.getShoppingCart().addItem(new CartItem(ProductTypeDAOMemory.getInstance().getProduct("product1246"), 11));
+        orderDAOMemory.addOrder(order);
 
 
         employee.selectOrder("order1246");
@@ -134,24 +140,24 @@ public class OrderPreparationEmployeeTest {
 
 
         assertEquals(StatusType.DELAYED, order.getOrderstatus());
-        assertEquals(10, (int)ProductsWareHouse.getInstance().getProductStock(dummyProductType1)); // Το stock δεν πρέπει να αλλάξει
+        assertEquals(10, (int) ProductsWareHouseDAOMemory.getInstance().getProductStock(dummyProductType1)); // Το stock δεν πρέπει να αλλάξει
         assertEquals(1, employee.getTotalUpdateReserveRequests());
 
         // Admin mail reception
         assertEquals(1, Admin.getInstance().getEmailProviderStub().getInboxEmails().size());
 
         // Customer service employee mail reception
-        CustomerServiceEmployee customerServiceEmployeeSelected = (CustomerServiceEmployee) EmployeeRepository.getInstance().getEmployees().get("CSE_1");
+        CustomerServiceEmployee customerServiceEmployeeSelected = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployees().get("CSE_1");
         assertEquals(1, customerServiceEmployeeSelected.getEmailProviderStub().getInboxEmails().size());
 
     }
 
     @After
     public void tearDownTest(){
-        OrdersRepository.getInstance().clear();
-        ProductsWareHouse.getInstance().clear();
-        ProductTypesRepository.getInstance().clear();
-        EmployeeRepository.getInstance().clear();
+        OrderDAOMemory.getInstance().clear();
+        ProductsWareHouseDAOMemory.getInstance().clear();
+        ProductTypeDAOMemory.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
 
         Admin.getInstance().getEmailProviderStub().getInboxEmails().clear();
     }

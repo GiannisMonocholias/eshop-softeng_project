@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_deliverer_orderCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/txtItem_deliverer_orderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order #5021"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtItem_deliverer_orderDeliveryDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="29/12/2023"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtItem_deliverer_orderCurtomerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Πελάτης:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItem_deliverer_orderId" />
+
+        <TextView
+            android:id="@+id/txtItem_deliverer_orderCurtomerNameValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Γιάννης Παπαδόπουλος"
+            app:layout_constraintBottom_toBottomOf="@+id/txtItem_deliverer_orderCurtomerName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtItem_deliverer_orderCurtomerName"
+            app:layout_constraintTop_toTopOf="@+id/txtItem_deliverer_orderCurtomerName" />
+
+        <TextView
+            android:id="@+id/txtItem_deliverer_orderCurtomerAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Διεύθυνση:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItem_deliverer_orderCurtomerName" />
+
+        <TextView
+            android:id="@+id/txtItem_deliverer_orderCurtomerAddressValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Πανεπιστημίου 12, Αθήνα"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/txtItem_deliverer_orderCurtomerAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtItem_deliverer_orderCurtomerAddress"
+            app:layout_constraintTop_toTopOf="@+id/txtItem_deliverer_orderCurtomerAddress" />
+
+        <TextView
+            android:id="@+id/txtItem_deliverer_orderTotalAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Ποσό Πληρωμής:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItem_deliverer_orderCurtomerAddressValue" />
+
+        <TextView
+            android:id="@+id/txtItem_deliverer_orderTotalAmountValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="€ 45.50"
+            android:textColor="#D32F2F"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/txtItem_deliverer_orderTotalAmount"
+            app:layout_constraintStart_toEndOf="@+id/txtItem_deliverer_orderTotalAmount"
+            app:layout_constraintTop_toTopOf="@+id/txtItem_deliverer_orderTotalAmount" />
+
+        <View
+            android:id="@+id/dividerLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@+id/txtItem_deliverer_orderTotalAmount" />
+
+        <CheckBox
+            android:id="@+id/chkboxItem_deliverer_order_Paid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Εισπράχθηκε"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerLine" />
+
+        <CheckBox
+            android:id="@+id/chkboxItem_deliverer_order_Delivered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Παραδόθηκε"
+            app:layout_constraintBottom_toBottomOf="@+id/chkboxItem_deliverer_order_Paid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/chkboxItem_deliverer_order_Paid"
+            app:layout_constraintTop_toTopOf="@+id/chkboxItem_deliverer_order_Paid" />
+
+        <Button
+            android:id="@+id/btnItem_deliverer_orderConfirmDelivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.5"
+            android:backgroundTint="#4CAF50"
+            android:enabled="false"
+            android:text="ΟΛΟΚΛΗΡΩΣΗ ΠΑΡΑΔΟΣΗΣ"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chkboxItem_deliverer_order_Paid" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

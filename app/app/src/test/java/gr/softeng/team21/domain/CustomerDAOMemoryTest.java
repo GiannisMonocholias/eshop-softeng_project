@@ -8,16 +8,18 @@ import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
-public class CustomerRepositoryTest {
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
 
-    private CustomerRepository customerRepository;
+public class CustomerDAOMemoryTest {
+
+    private CustomerDAOMemory customerDAOMemory;
     private Customer customer;
     private EmailAddress email;
 
     @Before
     public void setUp ( ) throws Exception {
-        customerRepository = CustomerRepository.getInstance ( );
-        customerRepository.getCustomers ( ).clear ( );
+        customerDAOMemory = CustomerDAOMemory.getInstance ( );
+        customerDAOMemory.getCustomers ( ).clear ( );
         email = TestHelper.getEmail ( );
         customer = new Customer (
                 "user1", "John", "pass1", "Doe",
@@ -26,12 +28,12 @@ public class CustomerRepositoryTest {
 
     @After
     public void tearDown ( ) throws Exception {
-        customerRepository.getCustomers ( ).clear ( );
+        customerDAOMemory.getCustomers ( ).clear ( );
     }
 
     @Test
     public void getCustomers ( ) {
-        HashMap<String, Customer> customers = customerRepository.getCustomers ( );
+        HashMap<String, Customer> customers = customerDAOMemory.getCustomers ( );
         assertEquals ( 1, customers.size ( ) );
         assertTrue ( customers.containsKey ( "CUST-001" ) );
     }
@@ -43,40 +45,40 @@ public class CustomerRepositoryTest {
                 "user2", "Jane", "pass2", "Doe",
                 "0987654321", email2, "CUST-002", new Date ( ) );
 
-        assertEquals ( 2, customerRepository.getCustomers ( ).size ( ) );
+        assertEquals ( 2, customerDAOMemory.getCustomers ( ).size ( ) );
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addCustomerNull ( ) {
-        customerRepository.addCustomer ( null );
+        customerDAOMemory.addCustomer ( null );
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addCustomerDuplicateId ( ) {
-        customerRepository.addCustomer ( customer );
+        customerDAOMemory.addCustomer ( customer );
     }
 
     @Test
     public void removeCustomer ( ) {
-        customerRepository.removeCustomer ( customer );
-        assertEquals ( 0, customerRepository.getCustomers ( ).size ( ) );
+        customerDAOMemory.removeCustomer ( customer );
+        assertEquals ( 0, customerDAOMemory.getCustomers ( ).size ( ) );
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void removeCustomerNull ( ) {
-        customerRepository.removeCustomer ( null );
+        customerDAOMemory.removeCustomer ( null );
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void removeCustomerNotExists ( ) {
-        customerRepository.getCustomers ( ).clear ( );
-        customerRepository.removeCustomer ( customer );
+        customerDAOMemory.getCustomers ( ).clear ( );
+        customerDAOMemory.removeCustomer ( customer );
     }
     @AfterClass
     public static void tearDownAfterClass () {
-        CustomerRepository.getInstance ( ).getCustomers ( ).clear ( );
+        CustomerDAOMemory.getInstance ( ).getCustomers ( ).clear ( );
     }
 }
 

@@ -1,6 +1,7 @@
 package gr.softeng.team21.domain;
 
-import java.util.*;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
+
 public abstract class User {
     protected String username;
     protected   String firstname;
@@ -10,7 +11,7 @@ public abstract class User {
     protected EmailAddress emailaddress;
 
 
-    protected EmailProviderStub emailProviderStub;
+    protected EmailDAOMemory emailDAOMemory;
 
     protected Address address;
 
@@ -79,12 +80,12 @@ public abstract class User {
         this.emailaddress = emailaddress;
     }
 
-    public EmailProviderStub getEmailProviderStub() {
-        return emailProviderStub;
+    public EmailDAOMemory getEmailProviderStub() {
+        return emailDAOMemory;
     }
 
-    protected void setEmailProviderStub(EmailProviderStub emailProviderStub) {
-        this.emailProviderStub = emailProviderStub;
+    protected void setEmailProviderStub(EmailDAOMemory emailDAOMemory) {
+        this.emailDAOMemory = emailDAOMemory;
     }
 
     protected void replyToEmail(User sender, User recipient,EmailMessage original, String subject, String body){

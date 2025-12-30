@@ -7,14 +7,16 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 
-public class EmployeeRepositoryTest {
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
-    private EmployeeRepository repo;
+public class EmployeeDAOMemoryTest {
+
+    private EmployeeDAOMemory repo;
     private Employee employee;
 
     @Before
     public void setUp() {
-        repo = EmployeeRepository.getInstance();
+        repo = EmployeeDAOMemory.getInstance();
 
 
 
@@ -23,8 +25,8 @@ public class EmployeeRepositoryTest {
 
     @Test
     public void testGetInstanceReturnsSameObject() {
-        EmployeeRepository inst1 = EmployeeRepository.getInstance();
-        EmployeeRepository inst2 = EmployeeRepository.getInstance();
+        EmployeeDAOMemory inst1 = EmployeeDAOMemory.getInstance();
+        EmployeeDAOMemory inst2 = EmployeeDAOMemory.getInstance();
 
         assertSame(inst1, inst2);
     }

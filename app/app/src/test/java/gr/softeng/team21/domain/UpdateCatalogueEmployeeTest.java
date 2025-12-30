@@ -5,6 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
+import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+
 public class UpdateCatalogueEmployeeTest {
 
     private UpdateCatalogueEmployee employee;
@@ -16,10 +21,10 @@ public class UpdateCatalogueEmployeeTest {
 
     @Before
     public void setUp(){
-        ProductTypesRepository.getInstance().clear();
-        ProductsWareHouse.getInstance().clear();
-        UpdateRequestsRepository.getInstance().clear();
-        EmployeeRepository.getInstance().clear();
+        ProductTypeDAOMemory.getInstance().clear();
+        ProductsWareHouseDAOMemory.getInstance().clear();
+        UpdateRequestDAOMemory.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
 
         product1 = new ProductType ("Laptop Dell", "High End",  new Money ( 500, "€" ), "product1245");
         productUpdated = new ProductType("Laptop Dell Pro","High End",new Money(800,"€"),"product1245");
@@ -34,9 +39,9 @@ public class UpdateCatalogueEmployeeTest {
                 "Update laptop details", productUpdated, AllowedRequest.PROCESS_PRODUCT, 3);
 
 
-        UpdateRequestsRepository.getInstance().addUpdateRequest(insertRequest);
-        UpdateRequestsRepository.getInstance().addUpdateRequest(deleteRequest);
-        UpdateRequestsRepository.getInstance().addUpdateRequest(processRequest);
+        UpdateRequestDAOMemory.getInstance().addUpdateRequest(insertRequest);
+        UpdateRequestDAOMemory.getInstance().addUpdateRequest(deleteRequest);
+        UpdateRequestDAOMemory.getInstance().addUpdateRequest(processRequest);
 
         employee =new UpdateCatalogueEmployee("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"OPE_1",100,1000,8,
@@ -54,7 +59,7 @@ public class UpdateCatalogueEmployeeTest {
     public void assignRequestSuccessTest() {
         boolean result = employee.assignRequest(1);
         assertTrue(result);
-        assertEquals(UpdateRequestsRepository.getInstance().getUpdateRequest(1), employee.selectRequest(1));
+        assertEquals(UpdateRequestDAOMemory.getInstance().getUpdateRequest(1), employee.selectRequest(1));
     }
 
 
@@ -85,26 +90,26 @@ public class UpdateCatalogueEmployeeTest {
     @Test
     public void ExecuteUpdateInsertProductTest() {
         employee.executeUpdate(insertRequest);
-        assertTrue(ProductTypesRepository.getInstance().getProducts().containsKey(insertRequest.getProduct().getProductCode()));
+        assertTrue(ProductTypeDAOMemory.getInstance().getProducts().containsKey(insertRequest.getProduct().getProductCode()));
     }
 
     @Test
     public void ExecuteUpdateDeleteProductTest() {
 
-        ProductTypesRepository.getInstance().addProductType(product1);
-        assertTrue(ProductTypesRepository.getInstance().getProducts().containsKey(deleteRequest.getProduct().getProductCode()));
+        ProductTypeDAOMemory.getInstance().addProductType(product1);
+        assertTrue(ProductTypeDAOMemory.getInstance().getProducts().containsKey(deleteRequest.getProduct().getProductCode()));
 
         employee.executeUpdate(deleteRequest);
-        assertFalse(ProductTypesRepository.getInstance().getProducts().containsKey(deleteRequest.getProduct().getProductCode()));
+        assertFalse(ProductTypeDAOMemory.getInstance().getProducts().containsKey(deleteRequest.getProduct().getProductCode()));
     }
 
     @Test
     public void testExecuteUpdateProcessProduct() {
-        ProductTypesRepository.getInstance().addProductType(product1);
+        ProductTypeDAOMemory.getInstance().addProductType(product1);
         employee.executeUpdate(processRequest);
 
 
-        ProductType result = ProductTypesRepository.getInstance().getProduct("product1245");
+        ProductType result = ProductTypeDAOMemory.getInstance().getProduct("product1245");
 
         assertEquals("Laptop Dell Pro", result.getProductname());
         assertEquals(new Money(800, "€"), result.getPrice());
@@ -121,10 +126,10 @@ public class UpdateCatalogueEmployeeTest {
 
     @After
     public void tearDownTest(){
-        ProductTypesRepository.getInstance().clear();
-        ProductsWareHouse.getInstance().clear();
-        UpdateRequestsRepository.getInstance().clear();
-        EmployeeRepository.getInstance().clear();
+        ProductTypeDAOMemory.getInstance().clear();
+        ProductsWareHouseDAOMemory.getInstance().clear();
+        UpdateRequestDAOMemory.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
     }
 
 }

@@ -1,22 +1,27 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
-public class ProductTypesRepository {
-    private static ProductTypesRepository instance;
-    private HashMap<String,ProductType> products;
-    private ProductTypesRepository(){
+
+import gr.softeng.team21.dao.ProductTypeDAO;
+import gr.softeng.team21.domain.ProductType;
+
+public class ProductTypeDAOMemory implements ProductTypeDAO {
+    private static ProductTypeDAOMemory instance;
+    private static HashMap<String, ProductType> products;
+    private ProductTypeDAOMemory(){
         products = new HashMap<>();
     }
 
 
-    public static ProductTypesRepository getInstance(){
+    public static ProductTypeDAOMemory getInstance(){
         if (instance == null){
-            instance = new ProductTypesRepository();
+            instance = new ProductTypeDAOMemory();
         }
         return instance;
 
 
     }
+
     public ProductType getProduct(String productCode){
        if(productCode == null)
            throw  new IllegalArgumentException("Product code cannot be null");
@@ -32,7 +37,7 @@ public class ProductTypesRepository {
         if(product != null) {
             if(!products.containsKey(product.getProductCode())) {
                 products.put(product.getProductCode(), product);
-                ProductsWareHouse.getInstance().insertProduct(product);
+                ProductsWareHouseDAOMemory.getInstance().insertProduct(product);
             }
             else {
                 throw new IllegalArgumentException("The given product type is already in the repository");
@@ -47,7 +52,7 @@ public class ProductTypesRepository {
         if(product != null){
             if(products.containsKey(product.getProductCode())) {
                 products.remove(product.getProductCode());
-                ProductsWareHouse.getInstance().deleteProduct(product);
+                ProductsWareHouseDAOMemory.getInstance().deleteProduct(product);
             }
             else {
                 throw new IllegalArgumentException("The given product type is not registered in the repository");

@@ -1,20 +1,23 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.memorydao;
 
 
 import java.util.HashMap;
 
-public class CustomerRepository {
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.domain.Customer;
 
-    private HashMap<String, Customer> customers;
-    private static CustomerRepository instance;
+public class CustomerDAOMemory implements CustomerDAO {
 
-    private CustomerRepository() {
+    private static HashMap<String, Customer> customers;
+    private static CustomerDAOMemory instance;
+
+    private CustomerDAOMemory() {
         customers = new HashMap<>();
     }
 
-    public static  CustomerRepository getInstance() {
+    public static CustomerDAOMemory getInstance() {
         if (instance == null) {
-            instance = new CustomerRepository();
+            instance = new CustomerDAOMemory();
         }
         return instance;
     }

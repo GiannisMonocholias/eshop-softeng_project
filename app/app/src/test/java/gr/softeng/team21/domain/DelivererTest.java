@@ -7,6 +7,8 @@ import static org.junit.Assert.*; // Χρησιμοποιούμε μόνο JUnit
 
 import java.util.ArrayList;
 
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+
 public class DelivererTest {
 
     Deliverer delivery;
@@ -20,7 +22,7 @@ public class DelivererTest {
                 EmployeeState.ACTIVE, hireDate,100 , true , new ArrayList<>());
         order = new Order("001" , new Date() , StatusType.NEW , false ,PaymentType.CASH, new Date() , new ShoppingCart());
 
-        EmployeeRepository.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
 
     }
 
@@ -77,6 +79,6 @@ public class DelivererTest {
 
     @After
     public void tearDown(){
-        EmployeeRepository.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
     }
 }

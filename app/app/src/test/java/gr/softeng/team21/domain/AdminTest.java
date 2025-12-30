@@ -5,21 +5,24 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+
 public class AdminTest {
 
     private Admin admin;
-    private EmployeeRepository rep;
-    private UpdateRequestsRepository updateRequest;
+    private EmployeeDAOMemory rep;
+    private UpdateRequestDAOMemory updateRequest;
 
 
     @Before 
     public void setup() {
 
-        EmployeeRepository.getInstance().clear();
-        UpdateRequestsRepository.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
+        UpdateRequestDAOMemory.getInstance().clear();
 
-        rep = EmployeeRepository.getInstance();
-        updateRequest = UpdateRequestsRepository.getInstance();
+        rep = EmployeeDAOMemory.getInstance();
+        updateRequest = UpdateRequestDAOMemory.getInstance();
 
 
         admin = Admin.getInstance();
@@ -83,7 +86,7 @@ public class AdminTest {
 
     @After
     public void tearDownTest() {
-        EmployeeRepository.getInstance().clear();
-        UpdateRequestsRepository.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
+        UpdateRequestDAOMemory.getInstance().clear();
     }
 }

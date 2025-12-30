@@ -5,7 +5,9 @@ import static org.junit.Assert.*; // Χρησιμοποιούμε μόνο JUnit
 
 import java.util.ArrayList;
 
-public class EmailProviderStubTest {
+import gr.softeng.team21.memorydao.EmailDAOMemory;
+
+public class EmailDAOMemoryTest {
 
     private final EmailAddress from = new EmailAddress("sender@example.com");
     private final EmailAddress to = new EmailAddress("recipient@example.com");
@@ -14,7 +16,7 @@ public class EmailProviderStubTest {
     @Test
     public void testSaveInboxEmailsAndGetInbox() {
 
-        EmailProviderStub provider = new EmailProviderStub();
+        EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body");
 
         provider.saveInboxEmails(msg); // Save the msg into provider's inbox email list
@@ -30,7 +32,7 @@ public class EmailProviderStubTest {
 
     @Test
     public void testSaveSentEmailsAndGetSent() {
-        EmailProviderStub provider = new EmailProviderStub();
+        EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body");
 
         provider.saveSentEmails(msg); // Save the msg into provider's sent emails list
@@ -46,7 +48,7 @@ public class EmailProviderStubTest {
 
     @Test
     public void testGetUnreadEmails() {
-        EmailProviderStub provider = new EmailProviderStub();
+        EmailDAOMemory provider = new EmailDAOMemory();
 
         EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body");
         EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body");
@@ -62,7 +64,7 @@ public class EmailProviderStubTest {
 
     @Test
     public void testGetReadEmails() {
-        EmailProviderStub provider = new EmailProviderStub();
+        EmailDAOMemory provider = new EmailDAOMemory();
 
         EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body");
         readMsg.setRead(true);
@@ -79,7 +81,7 @@ public class EmailProviderStubTest {
 
     @Test
     public void testGetUnrepliedEmails() {
-        EmailProviderStub provider = new EmailProviderStub();
+        EmailDAOMemory provider = new EmailDAOMemory();
 
         EmailMessage unrepliedMsg = new EmailMessage(from, to, "Unreplied", "Body");
         EmailMessage repliedMsg = new EmailMessage(from, to, "Replied", "Body");
@@ -95,7 +97,7 @@ public class EmailProviderStubTest {
 
     @Test
     public void testGetRepliedEmails() {
-        EmailProviderStub provider = new EmailProviderStub();
+        EmailDAOMemory provider = new EmailDAOMemory();
 
         EmailMessage repliedMsg = new EmailMessage(from, to, "Replied", "Body");
         repliedMsg.setReplied(true);
@@ -113,7 +115,7 @@ public class EmailProviderStubTest {
 
     @Test
     public void testInInbox() {
-        EmailProviderStub provider = new EmailProviderStub();
+        EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body");
 
         provider.saveInboxEmails(msg);
@@ -125,7 +127,7 @@ public class EmailProviderStubTest {
 
     @Test
     public void testInSent() {
-        EmailProviderStub provider = new EmailProviderStub();
+        EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body");
 
         provider.saveSentEmails(msg);

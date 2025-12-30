@@ -1,19 +1,21 @@
 package gr.softeng.team21.domain;
 
-import java.util.HashMap;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
 public class Admin extends User {
 
     private static Admin instance;
     int salary;
-    EmployeeRepository rep = EmployeeRepository.getInstance();
+    EmployeeDAOMemory rep = EmployeeDAOMemory.getInstance();
 
 
 
     private Admin(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, int salary){
         super(username, firstname, password, lastname, phoneNumber, emailaddress);
         this.salary = salary;
-        this.emailProviderStub = new EmailProviderStub();
+        this.emailDAOMemory = new EmailDAOMemory();
     }
 
 
@@ -56,6 +58,6 @@ public class Admin extends User {
 
     public void createUpdateRequest(Date submissionDate, String updateDescription, ProductType product, AllowedRequest type, int requestId){
         CatalogueUpdateRequest request = new CatalogueUpdateRequest(submissionDate , updateDescription , product , type , requestId);
-        UpdateRequestsRepository.getInstance().addUpdateRequest(request);
+        UpdateRequestDAOMemory.getInstance().addUpdateRequest(request);
     }
 }

@@ -1,8 +1,11 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.memorydao;
 
 import java.util.ArrayList;
 
-public class EmailProviderStub implements EmailRepository{
+import gr.softeng.team21.domain.EmailMessage;
+import gr.softeng.team21.dao.EmailDAO;
+
+public class EmailDAOMemory implements EmailDAO {
     private ArrayList<EmailMessage> inboxEmails = new ArrayList<EmailMessage>();
 
     private ArrayList<EmailMessage> sentEmails = new ArrayList<EmailMessage>();

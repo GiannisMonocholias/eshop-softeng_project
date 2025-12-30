@@ -17,7 +17,7 @@ import java.util.HashMap;
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
-import gr.softeng.team21.domain.ProductTypesRepository;
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.view.user.User_EditData_activity;
 
 public class ProductDetailsActivity extends AppCompatActivity {
@@ -37,7 +37,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_details);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.delivererOrdersList), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -57,7 +57,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         String productCode = getIntent().getStringExtra("PRODUCT_CODE");
 
         if (productCode != null) {
-            HashMap<String, ProductType> allProducts = ProductTypesRepository.getInstance().getProducts();
+            HashMap<String, ProductType> allProducts = ProductTypeDAOMemory.getInstance().getProducts();
             foundProduct = cus.findProduct(allProducts, productCode);
 
             // 3. Εμφάνιση

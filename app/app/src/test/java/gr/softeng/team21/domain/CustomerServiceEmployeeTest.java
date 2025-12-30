@@ -3,7 +3,10 @@ package gr.softeng.team21.domain;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
 public class CustomerServiceEmployeeTest {
     private CustomerServiceEmployee employee;
@@ -13,22 +16,22 @@ public class CustomerServiceEmployeeTest {
 
     @Before
     public void setUp() {
-        EmployeeRepository.getInstance().clear();
-        CustomerRepository.getInstance().getCustomers().clear();
+        EmployeeDAOMemory.getInstance().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
 
         employee = new CustomerServiceEmployee("GP","Giorgos","abcd123",
                 "Papadopoulos","3029761482",new EmailAddress("GP@gmail.com"),
                 "CS_1",100,1000,8,EmployeeState.ACTIVE, new Date(3,5,2025));
-        employee.setEmailProviderStub(new EmailProviderStub());
+        employee.setEmailProviderStub(new EmailDAOMemory());
 
         customer = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
-        customer.setEmailProviderStub(new EmailProviderStub());
+        customer.setEmailProviderStub(new EmailDAOMemory());
 
         order = new Order("order1246", new Date(), StatusType.NEW,
                 false, PaymentType.CASH, new Date(), new ShoppingCart());
-        employee.setEmailProviderStub(new EmailProviderStub());
+        employee.setEmailProviderStub(new EmailDAOMemory());
 
         EmailMessage e1 = new EmailMessage(
                 new EmailAddress("customer1@example.com"),
@@ -50,9 +53,9 @@ public class CustomerServiceEmployeeTest {
                 "Ευχαριστήριο μήνυμα",
                 "Ευχαριστώ για την άμεση εξυπηρέτηση!"
         );
-        employee.emailProviderStub.saveInboxEmails(e1);
-        employee.emailProviderStub.saveInboxEmails(e2);
-        employee.emailProviderStub.saveInboxEmails(e3);
+        employee.emailDAOMemory.saveInboxEmails(e1);
+        employee.emailDAOMemory.saveInboxEmails(e2);
+        employee.emailDAOMemory.saveInboxEmails(e3);
 
         EmailMessage sent1 = new EmailMessage(
                 new EmailAddress("agent@example.com"),
@@ -72,9 +75,9 @@ public class CustomerServiceEmployeeTest {
                 "Ευχαριστούμε για το μήνυμά σας",
                 "Χαιρόμαστε που μείνατε ικανοποιημένος από την εξυπηρέτηση. Είμαστε πάντα στη διάθεσή σας."
         );
-        employee.emailProviderStub.saveSentEmails(sent1);
-        employee.emailProviderStub.saveSentEmails(sent2);
-        employee.emailProviderStub.saveSentEmails(sent3);
+        employee.emailDAOMemory.saveSentEmails(sent1);
+        employee.emailDAOMemory.saveSentEmails(sent2);
+        employee.emailDAOMemory.saveSentEmails(sent3);
     }
 
 
@@ -135,7 +138,7 @@ public class CustomerServiceEmployeeTest {
 
     @After
     public void tearDownTest(){
-        EmployeeRepository.getInstance().clear();
-        CustomerRepository.getInstance().getCustomers().clear();
+        EmployeeDAOMemory.getInstance().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
     }
 }

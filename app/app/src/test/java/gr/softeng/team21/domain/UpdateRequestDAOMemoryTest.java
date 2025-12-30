@@ -5,16 +5,16 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
+import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
-public class UpdateRequestsRepositoryTest {
+public class UpdateRequestDAOMemoryTest {
     ProductType product1;
     CatalogueUpdateRequest insertRequest;
-    UpdateRequestsRepository requestsRepository;
+    UpdateRequestDAOMemory requestsRepository;
 
     @Before
     public void setUp() throws Exception {
-        requestsRepository = UpdateRequestsRepository.getInstance();
+        requestsRepository = UpdateRequestDAOMemory.getInstance();
         requestsRepository.clear();
 
         product1 = new ProductType ("Laptop Dell", "High End",  new Money ( 500, "€" ), "product1245");
@@ -25,7 +25,7 @@ public class UpdateRequestsRepositoryTest {
 
     @Test
     public void getInstanceReturnsSameReferences() {
-        UpdateRequestsRepository requestsRepositoyry2 = UpdateRequestsRepository.getInstance();
+        UpdateRequestDAOMemory requestsRepositoyry2 = UpdateRequestDAOMemory.getInstance();
         assertSame(requestsRepository, requestsRepositoyry2);
     }
 

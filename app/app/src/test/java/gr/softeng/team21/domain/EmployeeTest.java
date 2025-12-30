@@ -5,13 +5,15 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+
 public class EmployeeTest {
     private Employee employee;
     private Date hireDate;
 
     @Before 
     public void SetUp(){
-        EmployeeRepository.getInstance().clear(); // Καθαρισμός για απομόνωση
+        EmployeeDAOMemory.getInstance().clear(); // Καθαρισμός για απομόνωση
 
         hireDate = new Date(3,5,2025);
         employee =new Employee("GP","Giorgos","abcd123","Papadopoulos","3029761482",
@@ -92,6 +94,6 @@ public class EmployeeTest {
 
     @After
     public void tearDownTest(){
-        EmployeeRepository.getInstance().clear();
+        EmployeeDAOMemory.getInstance().clear();
     }
 }

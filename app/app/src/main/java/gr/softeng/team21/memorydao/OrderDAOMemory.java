@@ -1,20 +1,21 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.memorydao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OrdersRepository {
-    private static OrdersRepository instance;
+import gr.softeng.team21.domain.Order;
 
-    private HashMap<String,Order> orders;
+public class OrderDAOMemory {
+    private static OrderDAOMemory instance;
 
-    private OrdersRepository(){
+    private static HashMap<String, Order> orders;
+
+    private OrderDAOMemory(){
         orders = new HashMap<>();
     }
 
-    public static OrdersRepository getInstance(){
+    public static OrderDAOMemory getInstance(){
         if (instance == null){
-            instance = new OrdersRepository();
+            instance = new OrderDAOMemory();
         }
         return instance;
     }

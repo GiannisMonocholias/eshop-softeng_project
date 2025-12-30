@@ -1,19 +1,20 @@
 package gr.softeng.team21.domain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
+
+import gr.softeng.team21.memorydao.EmailDAOMemory;
+import gr.softeng.team21.memorydao.OrderDAOMemory;
 
 public class SystemCalendar {
     private static SystemCalendar instance;
     private Date currentdate;
     protected EmailAddress emailAddress;
-    protected EmailProviderStub emailProviderStub;
+    protected EmailDAOMemory emailDAOMemory;
 
     private SystemCalendar (Date currentdate) {
         this.currentdate = currentdate;
         this.emailAddress = new EmailAddress("SystemCalendar");
-        emailProviderStub = new EmailProviderStub();
+        emailDAOMemory = new EmailDAOMemory();
     }
 
     public static SystemCalendar getInstance(){
@@ -32,12 +33,12 @@ public class SystemCalendar {
         this.currentdate = currentdate;
     }
 
-    public EmailProviderStub getEmailProviderStub() {
-        return emailProviderStub;
+    public EmailDAOMemory getEmailProviderStub() {
+        return emailDAOMemory;
     }
 
-    public void setEmailProviderStub(EmailProviderStub emailProviderStub) {
-        this.emailProviderStub = emailProviderStub;
+    public void setEmailProviderStub(EmailDAOMemory emailDAOMemory) {
+        this.emailDAOMemory = emailDAOMemory;
     }
 
     public EmailAddress getEmailAddress() {
@@ -50,7 +51,7 @@ public class SystemCalendar {
 
 
     public void monitorOrders() {
-        HashMap<String,Order> orders = OrdersRepository.getInstance().getOrders();
+        HashMap<String,Order> orders = OrderDAOMemory.getInstance().getOrders();
         for (String orderId : orders.keySet()) {
             Order curOrder = orders.get(orderId);
             if (curOrder.getOrderstatus().equals(StatusType.DELAYED)) {

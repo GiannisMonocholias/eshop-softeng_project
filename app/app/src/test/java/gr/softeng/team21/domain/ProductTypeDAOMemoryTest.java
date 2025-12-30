@@ -5,13 +5,15 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class ProductTypesRepositoryTest {
-    private ProductTypesRepository typesRepository;
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+
+public class ProductTypeDAOMemoryTest {
+    private ProductTypeDAOMemory typesRepository;
     private ProductType product1;
 
     @Before
     public void setUp() {
-        typesRepository = ProductTypesRepository.getInstance();
+        typesRepository = ProductTypeDAOMemory.getInstance();
 
         typesRepository.clear();
 
@@ -26,16 +28,16 @@ public class ProductTypesRepositoryTest {
 
     @Test
     public void getInstanceReturnsSameReferences() {
-        ProductTypesRepository typesRepository2 = ProductTypesRepository.getInstance();
+        ProductTypeDAOMemory typesRepository2 = ProductTypeDAOMemory.getInstance();
         assertSame(typesRepository, typesRepository2);
     }
 
     @Test
     public void getProductTestSuccess() {
         typesRepository.addProductType(product1);
-        ProductType returnedProduct = ProductTypesRepository.getInstance().getProduct("product1245");
-        assertTrue(ProductTypesRepository.getInstance().getProducts().containsKey("product1245"));
-        assertSame(returnedProduct,ProductTypesRepository.getInstance().getProduct("product1245"));
+        ProductType returnedProduct = ProductTypeDAOMemory.getInstance().getProduct("product1245");
+        assertTrue(ProductTypeDAOMemory.getInstance().getProducts().containsKey("product1245"));
+        assertSame(returnedProduct, ProductTypeDAOMemory.getInstance().getProduct("product1245"));
     }
 
 
@@ -43,7 +45,7 @@ public class ProductTypesRepositoryTest {
     public void getProductNonExistingProductTest(){
         typesRepository.addProductType(product1);
         //Non existing product type
-        ProductType returnedProduct1 = ProductTypesRepository.getInstance().getProduct("product1244");
+        ProductType returnedProduct1 = ProductTypeDAOMemory.getInstance().getProduct("product1244");
         assertNull(returnedProduct1);
     }
 
@@ -51,7 +53,7 @@ public class ProductTypesRepositoryTest {
     public void getProductNullArgumentTest(){
         typesRepository.addProductType(product1);
         //Null productCode argument
-        ProductType returnedProduct2 = ProductTypesRepository.getInstance().getProduct(null);
+        ProductType returnedProduct2 = ProductTypeDAOMemory.getInstance().getProduct(null);
     }
 
     @Test

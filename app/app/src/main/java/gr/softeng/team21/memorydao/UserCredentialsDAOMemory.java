@@ -1,19 +1,22 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
-public class UserCredentialsRepository {
-    private static UserCredentialsRepository instance;
-    private HashMap<String, User> credentialsMap;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.domain.User;
 
-    private UserCredentialsRepository() {
+public class UserCredentialsDAOMemory implements UserCredentialsDAO {
+    private static UserCredentialsDAOMemory instance;
+    private static HashMap<String, User> credentialsMap;
+
+    private UserCredentialsDAOMemory() {
         credentialsMap = new HashMap<>();
     }
 
-    public static UserCredentialsRepository getInstance() {
+    public static UserCredentialsDAOMemory getInstance() {
         if (instance == null) {
-            instance = new UserCredentialsRepository();
+            instance = new UserCredentialsDAOMemory();
         }
         return instance;
     }

@@ -16,9 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
-import gr.softeng.team21.domain.ProductRepositoryInitializer;
+import gr.softeng.team21.domain.Initializer;
 import gr.softeng.team21.domain.ProductType;
-import gr.softeng.team21.domain.ProductTypesRepository;
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.view.product.ProductDetailsActivity;
 
 
@@ -46,7 +46,7 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
         searchView = findViewById(R.id.searchProductActivityHeader);
         listView = findViewById(R.id.ViewlistProductActivity);
 
-        ProductRepositoryInitializer.InitializeProducts();
+        Initializer.InitializeProducts();
 
         // 2. Αρχική Εμφάνιση
         refreshList();
@@ -87,12 +87,12 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
 
     private void refreshList() {
         displayedProducts.clear();
-        displayedProducts.addAll(ProductTypesRepository.getInstance().getProducts().values());
+        displayedProducts.addAll(ProductTypeDAOMemory.getInstance().getProducts().values());
     }
 
     private void filter(String text) {
         displayedProducts.clear();
-        ArrayList<ProductType> allProducts = new ArrayList<>(ProductTypesRepository.getInstance().getProducts().values());
+        ArrayList<ProductType> allProducts = new ArrayList<>(ProductTypeDAOMemory.getInstance().getProducts().values());
 
         if (text.isEmpty()) {
             displayedProducts.addAll(allProducts);

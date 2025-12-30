@@ -2,9 +2,11 @@ package gr.softeng.team21.domain;
 
 import java.math.BigDecimal;
 
-public class ProductRepositoryInitializer {
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+
+public class Initializer {
     public static void InitializeProducts() {
-        ProductTypesRepository products = ProductTypesRepository.getInstance();
+        ProductTypeDAOMemory products = ProductTypeDAOMemory.getInstance();
         products.clear();
         if (!products.getProducts().isEmpty()) {
             return;

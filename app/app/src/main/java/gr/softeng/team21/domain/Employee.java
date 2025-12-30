@@ -1,5 +1,7 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+
 public class Employee extends User{
     private String employeeId;
     private Date hireDate;
@@ -18,7 +20,7 @@ public class Employee extends User{
         setWorkingHours(workingHours);
         setEmployeeState(employeeState);
         setHireDate(hireDate);
-        EmployeeRepository.getInstance().addEmployee(this);
+        EmployeeDAOMemory.getInstance().addEmployee(this);
     }
 
 

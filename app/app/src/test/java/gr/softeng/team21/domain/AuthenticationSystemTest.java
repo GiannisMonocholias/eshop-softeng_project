@@ -5,19 +5,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-import static org.junit.Assert.*;
-
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 public class AuthenticationSystemTest {
     private AuthenticationSystem authSystem;
-    private UserCredentialsRepository repo;
+    private UserCredentialsDAOMemory repo;
 
     @Before
     public void setUp() {
-        repo = UserCredentialsRepository.getInstance();
+        repo = UserCredentialsDAOMemory.getInstance();
         authSystem = AuthenticationSystem.getInstance();
     }
 
@@ -108,6 +107,6 @@ public class AuthenticationSystemTest {
     @After
     public void tearDown(){
         repo.clear();
-        CustomerRepository.getInstance().getCustomers().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
     }
 }

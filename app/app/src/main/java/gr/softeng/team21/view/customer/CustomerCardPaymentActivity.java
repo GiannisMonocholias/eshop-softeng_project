@@ -31,7 +31,7 @@ public class CustomerCardPaymentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer_card_payment);
 
         // Edge-to-Edge (Δουλεύει σωστά γιατί έβαλες id="main" στο XML)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.delivererOrdersList), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;

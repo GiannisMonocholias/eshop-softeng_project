@@ -1,14 +1,13 @@
 package gr.softeng.team21.domain;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 public class AuthenticationSystem {
     private static AuthenticationSystem instance;
-    private UserCredentialsRepository repo;
+    private UserCredentialsDAOMemory repo;
 
     private AuthenticationSystem() {
-        repo = UserCredentialsRepository.getInstance();
+        repo = UserCredentialsDAOMemory.getInstance();
     }
 
     public static AuthenticationSystem getInstance() {

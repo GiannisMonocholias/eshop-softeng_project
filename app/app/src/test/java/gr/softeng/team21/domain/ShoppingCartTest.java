@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+
 public class ShoppingCartTest {
     private ShoppingCart shoppingCart;
     private Customer customer;
@@ -42,6 +44,6 @@ public class ShoppingCartTest {
 
     @AfterClass
     public static void tearDownAfterClass() {
-        CustomerRepository.getInstance().getCustomers().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
     }
 }

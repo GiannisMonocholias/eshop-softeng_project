@@ -12,7 +12,7 @@ public  class CustomerServiceEmployee extends Employee{
     }
 
     public int getUnansweredRequests() {
-        return emailProviderStub.getUnrepliedEmails().size();
+        return emailDAOMemory.getUnrepliedEmails().size();
     }
 
 
@@ -23,7 +23,7 @@ public  class CustomerServiceEmployee extends Employee{
 
 
     ArrayList<EmailMessage> getEmails(){
-        return emailProviderStub.getInboxEmails();
+        return emailDAOMemory.getInboxEmails();
     }
 
 

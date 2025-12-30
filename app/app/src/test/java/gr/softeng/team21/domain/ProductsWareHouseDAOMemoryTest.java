@@ -9,13 +9,15 @@ import static org.junit.Assert.*;
 
 import java.util.NoSuchElementException;
 
-public class ProductsWareHouseTest {
+import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
+
+public class ProductsWareHouseDAOMemoryTest {
     ProductType product1;
-    private ProductsWareHouse wareHouse;
+    private ProductsWareHouseDAOMemory wareHouse;
 
     @Before
     public void setUp() {
-        wareHouse = ProductsWareHouse.getInstance();
+        wareHouse = ProductsWareHouseDAOMemory.getInstance();
         wareHouse.clear();
         product1 = new ProductType("p1", "Laptop", new Money(1000,"€"), "product1245");
     }
@@ -27,7 +29,7 @@ public class ProductsWareHouseTest {
 
     @Test
     public void getInstanceReturnsSameReferencesTest() {
-        ProductsWareHouse wareHouse2 = ProductsWareHouse.getInstance();
+        ProductsWareHouseDAOMemory wareHouse2 = ProductsWareHouseDAOMemory.getInstance();
         assertSame(wareHouse2,wareHouse);
     }
 

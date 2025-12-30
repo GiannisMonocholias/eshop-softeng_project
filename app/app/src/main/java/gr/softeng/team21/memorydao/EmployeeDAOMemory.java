@@ -1,20 +1,21 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.memorydao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EmployeeRepository {
+import gr.softeng.team21.domain.Employee;
 
-    private HashMap<String , Employee> employees;
-    private static  EmployeeRepository instance;
+public class EmployeeDAOMemory {
 
-    public EmployeeRepository(){
+    private static HashMap<String , Employee> employees;
+    private static EmployeeDAOMemory instance;
+
+    public EmployeeDAOMemory(){
         employees = new HashMap<>();
     }
 
-    public static EmployeeRepository getInstance(){
+    public static EmployeeDAOMemory getInstance(){
         if(instance == null){
-            instance = new EmployeeRepository();
+            instance = new EmployeeDAOMemory();
         }
         return  instance;
     }

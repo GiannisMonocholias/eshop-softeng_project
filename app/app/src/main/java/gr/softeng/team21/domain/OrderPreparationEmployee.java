@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Random;
+
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.OrderDAOMemory;
+import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
+
 public  class OrderPreparationEmployee extends Employee{
     private int totalOrdersPreparations;
     private int totalUpdateReserveRequests;
-    private ProductsWareHouse wareHouse;
+    private ProductsWareHouseDAOMemory wareHouse;
     private ArrayList<Order> assignedOrders;
 
 
@@ -17,7 +22,7 @@ public  class OrderPreparationEmployee extends Employee{
         this.totalOrdersPreparations = 0;
         this.totalUpdateReserveRequests = 0;
         this.assignedOrders = new ArrayList<Order>();
-        this.wareHouse = ProductsWareHouse.getInstance();
+        this.wareHouse = ProductsWareHouseDAOMemory.getInstance();
     }
 
     public int getTotalOrdersPreparations() {
@@ -33,7 +38,7 @@ public  class OrderPreparationEmployee extends Employee{
         return assignedOrders;
     }
 
-    public ProductsWareHouse getWareHouse() {
+    public ProductsWareHouseDAOMemory getWareHouse() {
         return wareHouse;
     }
 
@@ -43,7 +48,7 @@ public  class OrderPreparationEmployee extends Employee{
 
         ArrayList<Employee> candidateEmployees = new ArrayList<>();
 
-        HashMap<String,Employee> employees = EmployeeRepository.getInstance().getEmployees();
+        HashMap<String,Employee> employees = EmployeeDAOMemory.getInstance().getEmployees();
         for(String id : employees.keySet()){
             if(employeeClass.isInstance(employees.get(id)))
                 candidateEmployees.add(employees.get(id));
@@ -60,10 +65,10 @@ public  class OrderPreparationEmployee extends Employee{
 
 
     public void selectOrder(String orderId){
-        if(!OrdersRepository.getInstance().getOrders().containsKey(orderId))
+        if(!OrderDAOMemory.getInstance().getOrders().containsKey(orderId))
             throw new NoSuchElementException("The given orderId does not correspond to any submitted order");
 
-        Order selectedOrder = OrdersRepository.getInstance().getOrder(orderId);
+        Order selectedOrder = OrderDAOMemory.getInstance().getOrder(orderId);
         assignedOrders.add(selectedOrder);
     }
 

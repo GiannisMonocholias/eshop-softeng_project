@@ -1,21 +1,23 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.memorydao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UpdateRequestsRepository {
+import gr.softeng.team21.dao.UpdateRequestDAO;
+import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
-    private static UpdateRequestsRepository instance;
+public class UpdateRequestDAOMemory implements UpdateRequestDAO {
 
-    private HashMap<Integer,CatalogueUpdateRequest> requests;
+    private static UpdateRequestDAOMemory instance;
 
-    private UpdateRequestsRepository(){
+    private static HashMap<Integer, CatalogueUpdateRequest> requests;
+
+    private UpdateRequestDAOMemory(){
         requests = new HashMap<>();
     }
 
-    public static UpdateRequestsRepository getInstance(){
+    public static UpdateRequestDAOMemory getInstance(){
         if (instance == null){
-            instance = new UpdateRequestsRepository();
+            instance = new UpdateRequestDAOMemory();
         }
         return instance;
     }

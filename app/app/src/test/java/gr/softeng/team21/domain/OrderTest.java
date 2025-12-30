@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+
 public class OrderTest {
 
     private Order order;
@@ -133,6 +135,6 @@ public class OrderTest {
     }
     @AfterClass
     public static void tearDownAfterClass () {
-        CustomerRepository.getInstance ( ).getCustomers ( ).clear ( );
+        CustomerDAOMemory.getInstance ( ).getCustomers ( ).clear ( );
     }
 }

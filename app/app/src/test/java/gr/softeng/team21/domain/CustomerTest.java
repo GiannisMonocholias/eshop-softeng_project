@@ -7,6 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.OrderDAOMemory;
+
 public class CustomerTest {
   private Customer customer;
   private EmailAddress email;
@@ -18,7 +21,7 @@ public class CustomerTest {
   public void setUp ( ) throws Exception {
     email = TestHelper.getEmail ( );
     address = TestHelper.getAddress ( );
-    CustomerRepository.getInstance ( ).getCustomers ( ).clear ( );
+    CustomerDAOMemory.getInstance ( ).getCustomers ( ).clear ( );
     customer = new Customer (
             "giannispap", "Giannis", "pass1234", "Papadopoulos",
             "697123456", email, "CUST-001", new Date ( ) );
@@ -170,7 +173,7 @@ public class CustomerTest {
       customer.addItemToCart ( TestHelper.getMouse ( ), 5 );
       Order order1 = customer.Checkout ( );
       customer.Confirm ( "CONFIRM", order1 );
-      assertTrue ( OrdersRepository.getInstance ( ).getOrders ( ).containsKey ( order1.getOrdercode ( ) ) );
+      assertTrue ( OrderDAOMemory.getInstance ( ).getOrders ( ).containsKey ( order1.getOrdercode ( ) ) );
       assertNull ( customer.getShoppingCart ( ) );
     }
 
@@ -194,7 +197,7 @@ public class CustomerTest {
     public void remove () {
 
       customer.remove ( );
-      assertFalse ( CustomerRepository.getInstance ( ).getCustomers ( ).containsKey ( customer.getCustomer_id ( ) ) );
+      assertFalse ( CustomerDAOMemory.getInstance ( ).getCustomers ( ).containsKey ( customer.getCustomer_id ( ) ) );
     }
     @Test(expected = IllegalStateException.class)
     public void removeCustomerThatDoesNotExist () {
@@ -204,15 +207,15 @@ public class CustomerTest {
     @After
     public void tearDown () throws Exception {
       TestHelper.clear ( );
-      CustomerRepository.getInstance ( ).getCustomers ( ).clear ( );
-      OrdersRepository.getInstance ( ).getOrders ( ).clear ( );
+      CustomerDAOMemory.getInstance ( ).getCustomers ( ).clear ( );
+      OrderDAOMemory.getInstance ( ).getOrders ( ).clear ( );
     }
     @AfterClass
     public static void tearDownAfterClass () {
 
       TestHelper.clear ( );
-      CustomerRepository.getInstance ( ).getCustomers ( ).clear ( );
+      CustomerDAOMemory.getInstance ( ).getCustomers ( ).clear ( );
 
-      OrdersRepository.getInstance ( ).getOrders ( ).clear ( );
+      OrderDAOMemory.getInstance ( ).getOrders ( ).clear ( );
     }
   }

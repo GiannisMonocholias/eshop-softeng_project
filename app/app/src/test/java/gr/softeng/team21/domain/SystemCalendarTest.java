@@ -5,6 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
+import gr.softeng.team21.memorydao.OrderDAOMemory;
+
 public class SystemCalendarTest {
     private static SystemCalendar calendar;
 
@@ -12,10 +16,10 @@ public class SystemCalendarTest {
     public void setUp() {
 
         calendar = SystemCalendar.getInstance();
-        calendar.setEmailProviderStub(new EmailProviderStub()); // καθαρό stub για κάθε test
+        calendar.setEmailProviderStub(new EmailDAOMemory()); // καθαρό stub για κάθε test
 
-        OrdersRepository.getInstance().clear();
-        CustomerRepository.getInstance().getCustomers().clear();
+        OrderDAOMemory.getInstance().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
     }
 
     @Test
@@ -43,7 +47,7 @@ public class SystemCalendarTest {
         User recipient = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@mail.com"), "CUST-001", new Date());
-        recipient.setEmailProviderStub(new EmailProviderStub());
+        recipient.setEmailProviderStub(new EmailDAOMemory());
 
         calendar.sendEmail(calendar, recipient, "Subject", "Body");
 
@@ -60,7 +64,7 @@ public class SystemCalendarTest {
         User recipient = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@mail.com"), "Customer1", new Date());
-        recipient.setEmailProviderStub(new EmailProviderStub());
+        recipient.setEmailProviderStub(new EmailDAOMemory());
 
         EmailMessage original = new EmailMessage();
         original.setReplied(false);
@@ -72,12 +76,12 @@ public class SystemCalendarTest {
 
     @Test
     public void monitorOrdersTriggersNotifyCustomerDelayTest() {
-        OrdersRepository repo = OrdersRepository.getInstance();
+        OrderDAOMemory repo = OrderDAOMemory.getInstance();
 
         Customer customer = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@mail.com"), "CUST-001", new Date());
-        customer.setEmailProviderStub(new EmailProviderStub());
+        customer.setEmailProviderStub(new EmailDAOMemory());
 
         ShoppingCart shoppingCart = new ShoppingCart(customer);
         Order delayedOrder = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH,
@@ -97,12 +101,12 @@ public class SystemCalendarTest {
 
     @Test
     public void monitorOrdersTriggersNotifyCustomerReadyTest(){
-        OrdersRepository repo = OrdersRepository.getInstance();
+        OrderDAOMemory repo = OrderDAOMemory.getInstance();
 
         Customer customer = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@mail.com"), "CUST-001", new Date());
-        customer.setEmailProviderStub(new EmailProviderStub());
+        customer.setEmailProviderStub(new EmailDAOMemory());
 
         ShoppingCart shoppingCart = new ShoppingCart(customer);
         Order delayedOrder = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH,
@@ -126,8 +130,8 @@ public class SystemCalendarTest {
     public void tearDown() {
         calendar.getEmailProviderStub().getInboxEmails().clear();
         calendar.getEmailProviderStub().getSentEmails().clear();
-        OrdersRepository.getInstance().clear();
-        CustomerRepository.getInstance().getCustomers().clear();
+        OrderDAOMemory.getInstance().clear();
+        CustomerDAOMemory.getInstance().getCustomers().clear();
     }
 
 }

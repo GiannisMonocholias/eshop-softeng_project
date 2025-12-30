@@ -1,7 +1,9 @@
 package gr.softeng.team21.domain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
 public  class UpdateCatalogueEmployee extends Employee{
     private int totalCatalogueUpdates;
@@ -19,10 +21,10 @@ public  class UpdateCatalogueEmployee extends Employee{
 
 
     public boolean assignRequest(int requestId){
-        if(!UpdateRequestsRepository.getInstance().getUpdateRequests().containsKey(requestId))
+        if(!UpdateRequestDAOMemory.getInstance().getUpdateRequests().containsKey(requestId))
             return false;
 
-        CatalogueUpdateRequest selectedRequest = UpdateRequestsRepository.getInstance().getUpdateRequest(requestId);
+        CatalogueUpdateRequest selectedRequest = UpdateRequestDAOMemory.getInstance().getUpdateRequest(requestId);
         if(!assignedRequests.containsKey(requestId))
             assignedRequests.put(requestId, selectedRequest);
         else
@@ -44,13 +46,13 @@ public  class UpdateCatalogueEmployee extends Employee{
 
         switch(request.getType()){
             case INSERT_PRODUCT:
-                ProductTypesRepository.getInstance().addProductType(request.getProduct());
+                ProductTypeDAOMemory.getInstance().addProductType(request.getProduct());
                 break;
             case DELETE_PRODUCT:
-                ProductTypesRepository.getInstance().deleteProductType(request.getProduct());
+                ProductTypeDAOMemory.getInstance().deleteProductType(request.getProduct());
                 break;
             case PROCESS_PRODUCT:
-                ProductTypesRepository.getInstance().processProduct(request.getProduct());
+                ProductTypeDAOMemory.getInstance().processProduct(request.getProduct());
                 break;
         }
         totalCatalogueUpdates++;
