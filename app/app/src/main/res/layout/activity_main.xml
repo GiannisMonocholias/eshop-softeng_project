@@ -1,21 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activityCseDashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <ImageView
+        android:id="@+id/imgMainActivityLogo"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_laptop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#009688" />
+
     <TextView
-        android:id="@+id/textHello"
+        android:id="@+id/txtMainActivityShopTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, World!"
-        android:textSize="24sp"
-        android:textColor="#000000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-black"
+        android:letterSpacing="0.05"
+        android:text="TechPoint"
+        android:textColor="#009688"
+        android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgMainActivityLogo" />
+
+    <TextView
+        android:id="@+id/txtMainActivityWelcome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Καλώς ήρθατε στον απόλυτο προορισμό τεχνολογίας!"
+        android:textAlignment="center"
+        android:textColor="#020202"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMainActivityShopTitle" />
+
+    <TextView
+        android:id="@+id/txtMainActivityDescription"
+        android:layout_width="366dp"
+        android:layout_height="55dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="48dp"
+        android:alpha="0.8"
+        android:text="High-End Laptops • Κρυσταλλικός Ήχος • PC Parts\nΒρείτε τα πάντα για το Setup σας."
+        android:textAlignment="center"
+        android:textColor="#090909"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMainActivityWelcome" />
+
+    <Button
+        android:id="@+id/btnMainActivityEntrance"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="112dp"
+        android:backgroundTint="#009688"
+        android:text="Είσοδος στο Κατάστημα"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.359"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMainActivityDescription" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activityCseDashboard"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4B4545"
+    android:elevation="8dp"
     tools:context=".view.customer.CustomerHomePageActivity">
 
     <TextView
@@ -53,25 +54,27 @@
 
     <Button
         android:id="@+id/btnCustomerHomePageDisconnection"
-        android:layout_width="245dp"
+        android:layout_width="164dp"
         android:layout_height="46dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#009688"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#BF211D"
+        android:drawableLeft="@drawable/account_logout"
         android:text="Αποσύνδεση"
+        android:translationZ="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCustomerHomePageEditData" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnCustomerHomePageDeleteaccount"
-        android:layout_width="236dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="240dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="#009688"
         android:text="Διαγραφή Λογαριασμού"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCustomerHomePageDisconnection" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerHomePageEditData" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

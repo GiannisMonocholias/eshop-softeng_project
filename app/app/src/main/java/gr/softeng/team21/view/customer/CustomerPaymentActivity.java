@@ -81,8 +81,8 @@ public class CustomerPaymentActivity extends AppCompatActivity {
 
             // 3. Εμφάνιση Dialog
             new AlertDialog.Builder(this)
-                    .setTitle("Ολοκλήρωση")
-                    .setMessage("Η παραγγελία να καταχωρηθεί με αντικαταβολή;")
+                    .setTitle("Επιβεβαίωση ή Ακύρωση")
+                    .setMessage("Να καταχωρηθεί η παραγγελία σας;")
                     .setCancelable(false)
                     .setPositiveButton("Επιβεβαίωση Παραγγελίας", (dialog, which) -> Confirm(newOrder))
                     .setNegativeButton("Ακύρωση", (dialog, which) -> Cancel(newOrder))

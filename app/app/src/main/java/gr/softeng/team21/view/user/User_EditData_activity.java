@@ -3,6 +3,7 @@ package gr.softeng.team21.view.user;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -16,12 +17,14 @@ import gr.softeng.team21.R;
 
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Date;
+import gr.softeng.team21.domain.User;
 import gr.softeng.team21.domain.EmailAddress;
 import gr.softeng.team21.view.contact.editdata.AddressActivity;
 import gr.softeng.team21.view.contact.editdata.EmailActivity;
 import gr.softeng.team21.view.contact.editdata.PasswordActivity;
 import gr.softeng.team21.view.contact.editdata.PhoneActivity;
 import gr.softeng.team21.view.contact.editdata.UsernameActivity;
+import gr.softeng.team21.view.customer.CustomerHomePageActivity;
 
 public class User_EditData_activity extends AppCompatActivity {
 
@@ -44,16 +47,15 @@ public static Customer cus;
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_edit_data);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activityCseDashboard), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
         list = findViewById(R.id.ViewlistUserEditData);
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, options);
-            list.setAdapter(adapter);
-            list.setOnItemClickListener((parent, view, position, id) -> Selection(position));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, options);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener((parent, view, position, id) -> Selection(position));
 
     }
 

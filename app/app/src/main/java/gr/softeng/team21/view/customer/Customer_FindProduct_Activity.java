@@ -1,7 +1,5 @@
 package gr.softeng.team21.view.customer;
 
-import gr.softeng.team21.R;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -16,11 +14,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
+<<<<<<< Updated upstream
 import gr.softeng.team21.memorydao.MemoryInitializer;
+=======
+import gr.softeng.team21.R;
+import gr.softeng.team21.domain.Initializer;
+import gr.softeng.team21.domain.Initializer;
+>>>>>>> Stashed changes
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.view.product.ProductDetailsActivity;
-
 
 public class Customer_FindProduct_Activity extends AppCompatActivity {
 
@@ -37,7 +40,7 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_customer_find_product);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activityCseDashboard), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -46,7 +49,11 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
         searchView = findViewById(R.id.searchProductActivityHeader);
         listView = findViewById(R.id.ViewlistProductActivity);
 
+<<<<<<< Updated upstream
         MemoryInitializer.prepareData();
+=======
+        Initializer.InitializeProducts();
+>>>>>>> Stashed changes
 
         // 2. Αρχική Εμφάνιση
         refreshList();

@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
+
         <activity
             android:name=".view.user.LoginActivity"
             android:exported="true" />
@@ -84,20 +85,32 @@
             android:name=".view.user.User_EditData_activity"
             android:exported="true" />
         <activity
+            android:name=".view.customer.CustomerCardPaymentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.customer.CustomerPaymentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.customer.CustomerShoppingCartActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".view.customer.CustomerHomePageActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".view.customer.Customer_FindProduct_Activity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.customer.Customer_FindProduct_Activity"
-            android:exported="true" />
-        <activity
-            android:name=".view.MainActivity"
-            android:exported="true" />
+
     </application>
 
 </manifest>

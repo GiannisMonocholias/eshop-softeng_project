@@ -56,6 +56,6 @@ public class Money {
 
     @Override
     public String toString() {
-        return this.amount.toString()+this.currency.toString();
+        return String.format("%.2f %s", amount, currency);
     }
 }

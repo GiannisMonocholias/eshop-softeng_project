@@ -65,7 +65,7 @@ public class CustomerCardPaymentActivity extends AppCompatActivity {
             // 3. Εμφάνιση Dialog Επιβεβαίωσης
             new AlertDialog.Builder(this)
                     .setTitle("Επιβεβαίωση Πληρωμής")
-                    .setMessage("Θα χρεωθεί η κάρτα: " + cardNum + "\nΘέλετε να προχωρήσετε;")
+                    .setMessage("Θα χρεωθεί η κάρτα σας το ποσό: " +newOrder.getTotal_amount() + "\nΝα καταχωρηθεί η παραγγελία σας;")
                     .setCancelable(false)
                     .setPositiveButton("Επιβεβαίωση", (dialog, which) -> Confirm(newOrder))
                     .setNegativeButton("Ακύρωση", (dialog, which) -> Cancel(newOrder))

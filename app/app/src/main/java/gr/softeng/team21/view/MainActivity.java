@@ -1,6 +1,8 @@
 package gr.softeng.team21.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +11,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.view.customer.CustomerHomePageActivity;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Button btnEntrance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,5 +25,12 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        btnEntrance=findViewById(R.id.btnMainActivityEntrance);
+        btnEntrance.setOnClickListener(v->Entrance());
+    }
+
+    private void Entrance() {
+       Intent intent=new Intent(MainActivity.this, CustomerHomePageActivity.class);
+        startActivity(intent);
     }
 }

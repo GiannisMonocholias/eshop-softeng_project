@@ -15,7 +15,11 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
+<<<<<<< Updated upstream
 import gr.softeng.team21.memorydao.MemoryInitializer;
+=======
+import gr.softeng.team21.domain.Initializer;
+>>>>>>> Stashed changes
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.view.product.ProductDetailsActivity;
@@ -45,7 +49,11 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
         listView = findViewById(R.id.ViewlistProductActivity);
 
         // 1. Γέμισμα δεδομένων (αν είναι άδεια)
+<<<<<<< Updated upstream
         MemoryInitializer.initializeProducts();
+=======
+        Initializer.InitializeProducts();
+>>>>>>> Stashed changes
 
         // 2. Αρχική Εμφάνιση
         refreshList();

@@ -13,7 +13,23 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+<<<<<<< Updated upstream
       <SelectionState runConfigName="LoginActivity">
+=======
+      <SelectionState runConfigName="Customer_FindProduct_Activity">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="CustomerHomePageActivity (2)">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="Customer_FindProduct_Activity (1)">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="CustomerHomePageActivity (1)">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="MainActivity">
+>>>>>>> Stashed changes
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
