@@ -50,6 +50,7 @@ public class AdminTest {
                 new EmailAddress("dimitris@example.com"), "E002", 0, 1000, 40,
                 EmployeeState.ACTIVE, new Date()
         );
+        admin.createEmployee(e);
 
         int before = rep.getEmployees().size();
 

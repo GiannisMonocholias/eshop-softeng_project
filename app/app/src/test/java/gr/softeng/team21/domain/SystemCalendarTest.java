@@ -47,14 +47,14 @@ public class SystemCalendarTest {
         User recipient = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@mail.com"), "CUST-001", new Date());
-        recipient.setEmailProviderStub(new EmailDAOMemory());
+        recipient.setEmailProvider(new EmailDAOMemory());
 
         calendar.sendEmail(calendar, recipient, "Subject", "Body");
 
-        assertEquals(1, recipient.getEmailProviderStub().getInboxEmails().size());
+        assertEquals(1, recipient.getEmailProvider().getInboxEmails().size());
         assertEquals(1, calendar.getEmailProviderStub().getSentEmails().size());
 
-        EmailMessage inboxMsg = recipient.getEmailProviderStub().getInboxEmails().get(0);
+        EmailMessage inboxMsg = recipient.getEmailProvider().getInboxEmails().get(0);
         assertEquals("Subject", inboxMsg.getSubject());
         assertEquals("Body", inboxMsg.getBody());
     }
@@ -64,7 +64,7 @@ public class SystemCalendarTest {
         User recipient = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@mail.com"), "Customer1", new Date());
-        recipient.setEmailProviderStub(new EmailDAOMemory());
+        recipient.setEmailProvider(new EmailDAOMemory());
 
         EmailMessage original = new EmailMessage();
         original.setReplied(false);
@@ -81,7 +81,7 @@ public class SystemCalendarTest {
         Customer customer = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@mail.com"), "CUST-001", new Date());
-        customer.setEmailProviderStub(new EmailDAOMemory());
+        customer.setEmailProvider(new EmailDAOMemory());
 
         ShoppingCart shoppingCart = new ShoppingCart(customer);
         Order delayedOrder = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH,
@@ -93,8 +93,8 @@ public class SystemCalendarTest {
         calendar.monitorOrders();
 
         // The customer must receive the emails
-        assertEquals(1, customer.getEmailProviderStub().getInboxEmails().size());
-        EmailMessage msg = customer.getEmailProviderStub().getInboxEmails().get(0);
+        assertEquals(1, customer.getEmailProvider().getInboxEmails().size());
+        EmailMessage msg = customer.getEmailProvider().getInboxEmails().get(0);
         assertTrue(msg.getSubject().contains("ORDER DELAY"));
         assertTrue(msg.getBody().contains("Delay!"));
     }
@@ -106,7 +106,7 @@ public class SystemCalendarTest {
         Customer customer = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@mail.com"), "CUST-001", new Date());
-        customer.setEmailProviderStub(new EmailDAOMemory());
+        customer.setEmailProvider(new EmailDAOMemory());
 
         ShoppingCart shoppingCart = new ShoppingCart(customer);
         Order delayedOrder = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH,
@@ -120,8 +120,8 @@ public class SystemCalendarTest {
         calendar.monitorOrders();
 
         // The customer must receive the emails
-        assertEquals(1, customer.getEmailProviderStub().getInboxEmails().size());
-        EmailMessage msg = customer.getEmailProviderStub().getInboxEmails().get(0);
+        assertEquals(1, customer.getEmailProvider().getInboxEmails().size());
+        EmailMessage msg = customer.getEmailProvider().getInboxEmails().get(0);
         assertTrue(msg.getSubject().contains("ORDER READY"));
         assertTrue(msg.getBody().contains("is now ready"));
     }

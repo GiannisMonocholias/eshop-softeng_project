@@ -25,6 +25,7 @@ public class CustomerTest {
     customer = new Customer (
             "giannispap", "Giannis", "pass1234", "Papadopoulos",
             "697123456", email, "CUST-001", new Date ( ) );
+    CustomerDAOMemory.getInstance().addCustomer(customer);
     customer.setAddress ( address );
 
     order = new Order ( "order001", new Date ( ), StatusType.NEW, false,
@@ -196,7 +197,7 @@ public class CustomerTest {
     @Test
     public void remove () {
 
-      customer.remove ( );
+      CustomerDAOMemory.getInstance().removeCustomer(customer);
       assertFalse ( CustomerDAOMemory.getInstance ( ).getCustomers ( ).containsKey ( customer.getCustomer_id ( ) ) );
     }
     @Test(expected = IllegalStateException.class)

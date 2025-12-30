@@ -18,7 +18,6 @@ public class Customer extends User {
         super ( username, firstname, password, lastname, phoneNumber, emailaddress );
         this.customer_id = customer_id;
         this.registdate = registdate;
-        CustomerDAOMemory.getInstance ().addCustomer ( this );
     }
 
     public Date getRegistdateDate ( ) {

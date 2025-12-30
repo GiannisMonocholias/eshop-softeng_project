@@ -32,7 +32,8 @@ public class EmployeeDAOMemory {
         if(employee != null){
             if(!employees.containsKey(employee.getEmployeeId())){
                 employees.put(employee.getEmployeeId() , employee);
-            }else {
+            }
+            else {
                 throw new IllegalArgumentException("The given employee is already in the repository");
             }
         }else{
@@ -51,6 +52,7 @@ public class EmployeeDAOMemory {
             throw new IllegalArgumentException("The employee argument must not be null");
         }
     }
+
 
     public void clear(){
         employees.clear();

@@ -55,4 +55,8 @@ public class CustomerDAOMemory implements CustomerDAO {
         }
     }
 
+
+    public void clear(){
+        customers.clear();;
+    }
 }

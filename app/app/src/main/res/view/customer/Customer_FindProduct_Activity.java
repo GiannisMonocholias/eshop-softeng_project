@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.Initializer;
+import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.view.product.ProductDetailsActivity;
@@ -45,7 +45,7 @@ public class Customer_FindProduct_Activity extends AppCompatActivity {
         listView = findViewById(R.id.ViewlistProductActivity);
 
         // 1. Γέμισμα δεδομένων (αν είναι άδεια)
-        Initializer.InitializeProducts();
+        MemoryInitializer.initializeProducts();
 
         // 2. Αρχική Εμφάνιση
         refreshList();

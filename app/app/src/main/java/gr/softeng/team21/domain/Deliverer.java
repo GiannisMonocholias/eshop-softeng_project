@@ -9,13 +9,13 @@ public class Deliverer extends Employee{
     private ArrayList<Order> orders;
 
 
-    Deliverer(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress,
-              String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate,int quan ,
-              boolean available , ArrayList<Order> orders){
+    public Deliverer(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress,
+                     String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate, int quan,
+                     boolean available){
         super(username, firstname, password, lastname, phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
         this.max_quantity = quan;
         this.available = available;
-        this.orders = orders;
+        orders = new ArrayList<>();
     }
 
     public int getQuantity(){

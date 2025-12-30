@@ -15,4 +15,5 @@ public interface CustomerDAO {
 
      void removeCustomer(Customer customer);
 
+     public void clear();
 }

@@ -20,7 +20,6 @@ public class Employee extends User{
         setWorkingHours(workingHours);
         setEmployeeState(employeeState);
         setHireDate(hireDate);
-        EmployeeDAOMemory.getInstance().addEmployee(this);
     }
 
 

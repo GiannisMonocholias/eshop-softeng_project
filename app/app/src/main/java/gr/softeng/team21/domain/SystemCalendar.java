@@ -79,7 +79,7 @@ public class SystemCalendar {
         if(original != null)
             original.setReplied(true);
 
-        recipient.getEmailProviderStub().saveInboxEmails(email);
+        recipient.getEmailProvider().saveInboxEmails(email);
         sender.getEmailProviderStub().saveSentEmails(email);
     }
 

@@ -19,7 +19,7 @@ public class DelivererTest {
         Date hireDate = new Date(3,5,2025);
         delivery = new Deliverer("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"DEL_1",100,1000,8,
-                EmployeeState.ACTIVE, hireDate,100 , true , new ArrayList<>());
+                EmployeeState.ACTIVE, hireDate,100 , true );
         order = new Order("001" , new Date() , StatusType.NEW , false ,PaymentType.CASH, new Date() , new ShoppingCart());
 
         EmployeeDAOMemory.getInstance().clear();

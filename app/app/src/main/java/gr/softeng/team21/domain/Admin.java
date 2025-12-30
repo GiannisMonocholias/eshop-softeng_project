@@ -1,5 +1,6 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
@@ -49,7 +50,49 @@ public class Admin extends User {
 
 
     public void createEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate){
-        new Employee(username , firstname , password , lastname , phoneNumber , emailaddress , employeeId , bonus , salary , workingHours , employeeState , hireDate);
+        Employee employee = new Employee(username , firstname , password , lastname , phoneNumber , emailaddress , employeeId , bonus , salary , workingHours , employeeState , hireDate);
+        EmployeeDAOMemory.getInstance().addEmployee(employee);
+    }
+    public void createEmployee(Employee employee){
+        EmployeeDAOMemory.getInstance().addEmployee(employee);
+    }
+
+    public void createCustomerServiceEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate){
+        CustomerServiceEmployee cse = new CustomerServiceEmployee(username, firstname, password, lastname ,phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
+        EmployeeDAOMemory.getInstance().addEmployee(cse);
+    }
+
+    public void createCustomerServiceEmployee(CustomerServiceEmployee cse){
+        EmployeeDAOMemory.getInstance().addEmployee(cse);
+    }
+
+    public void createOrderPreparationEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate){
+        OrderPreparationEmployee orderPreparationEmployee = new OrderPreparationEmployee(username, firstname, password, lastname ,phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
+        EmployeeDAOMemory.getInstance().addEmployee(orderPreparationEmployee);
+    }
+
+    public void createOrderPreparationEmployee(OrderPreparationEmployee orderPreparationEmployee){
+        EmployeeDAOMemory.getInstance().addEmployee(orderPreparationEmployee);
+    }
+
+    public void createUpdateCatalogueEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate){
+        UpdateCatalogueEmployee updateCatalogueEmployee = new UpdateCatalogueEmployee(username, firstname, password, lastname ,phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
+        EmployeeDAOMemory.getInstance().addEmployee(updateCatalogueEmployee);
+    }
+
+    public void createUpdateCatalogueEmployee(UpdateCatalogueEmployee updateCatalogueEmployee){
+        EmployeeDAOMemory.getInstance().addEmployee(updateCatalogueEmployee);
+    }
+
+    public void createDeliverer(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress,
+                                String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate, int quan,
+                                boolean available){
+        Deliverer deliverer = new Deliverer(username, firstname, password, lastname ,phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate, quan, available);
+        EmployeeDAOMemory.getInstance().addEmployee(deliverer);
+    }
+
+    public void createDeliveret(Deliverer deliverer){
+        EmployeeDAOMemory.getInstance().addEmployee(deliverer);
     }
 
     public void deleteEmployee(Employee emp){

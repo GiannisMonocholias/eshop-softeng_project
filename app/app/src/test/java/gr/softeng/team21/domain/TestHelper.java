@@ -2,6 +2,7 @@ package gr.softeng.team21.domain;
 
 import java.util.HashMap;
 
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 
 public class TestHelper {
@@ -18,6 +19,7 @@ public class TestHelper {
     private static Customer customer = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                         "697123456", email, "CUST-001", new Date());
+    
 
 
     public static void addProductsManually() {

@@ -35,8 +35,8 @@ public class UserTest {
         recipientProvider = new EmailDAOMemory();
         customerProvider = new EmailDAOMemory();
 
-        sender.setEmailProviderStub(senderProvider);
-        recipient.setEmailProviderStub(recipientProvider);
+        sender.setEmailProvider(senderProvider);
+        recipient.setEmailProvider(recipientProvider);
 
         // Ο User customer1 δεν χρησιμοποιείται, τον αφαιρούμε.
         // User customer1 = new Customer("giannispap", "Giannis", "pass1234", "Papadopoulos", "697123456", new EmailAddress("giannis@mail.com"), "Customer1", new Date());
@@ -82,8 +82,8 @@ public class UserTest {
 
     @Test
     public void testEmailProviderStubGetterSetter() {
-        customer.setEmailProviderStub(customerProvider);
-        assertEquals(customerProvider, customer.getEmailProviderStub());
+        customer.setEmailProvider(customerProvider);
+        assertEquals(customerProvider, customer.getEmailProvider());
     }
 
     @Test
@@ -162,30 +162,30 @@ public class UserTest {
     @Test
     public void replyToEmail() {
         EmailMessage original = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(), "Original", "Original body");
-        recipient.getEmailProviderStub().saveInboxEmails(original);
+        recipient.getEmailProvider().saveInboxEmails(original);
 
         sender.replyToEmail(sender, recipient, original, "Reply", "Reply body");
 
         assertTrue(original.isReplied());
-        assertEquals(2, recipient.getEmailProviderStub().getInboxEmails().size());
-        EmailMessage replyMsg = recipient.getEmailProviderStub().getInboxEmails().get(1);
+        assertEquals(2, recipient.getEmailProvider().getInboxEmails().size());
+        EmailMessage replyMsg = recipient.getEmailProvider().getInboxEmails().get(1);
         assertEquals("Reply", replyMsg.getSubject());
         assertEquals("Reply body", replyMsg.getBody());
         assertTrue(replyMsg.isReplyMessage());
-        assertEquals(1, sender.getEmailProviderStub().getSentEmails().size());
+        assertEquals(1, sender.getEmailProvider().getSentEmails().size());
     }
 
     @Test
     public void sendEmail() {
         sender.sendEmail(sender, recipient, "Hello", "Body text");
 
-        assertEquals(1, recipient.getEmailProviderStub().getInboxEmails().size());
-        EmailMessage inboxMsg = recipient.getEmailProviderStub().getInboxEmails().get(0);
+        assertEquals(1, recipient.getEmailProvider().getInboxEmails().size());
+        EmailMessage inboxMsg = recipient.getEmailProvider().getInboxEmails().get(0);
         assertEquals("Hello", inboxMsg.getSubject());
         assertEquals("Body text", inboxMsg.getBody());
         assertFalse(inboxMsg.isReplyMessage());
 
-        assertEquals(1, sender.getEmailProviderStub().getSentEmails().size());
+        assertEquals(1, sender.getEmailProvider().getSentEmails().size());
     }
 
     @Test
@@ -196,12 +196,12 @@ public class UserTest {
         sender.deliverEmail(sender, recipient, original, "Delivered", "Delivered body", true);
 
         assertTrue(original.isReplied());
-        assertEquals(1, recipient.getEmailProviderStub().getInboxEmails().size());
-        EmailMessage deliveredMsg = recipient.getEmailProviderStub().getInboxEmails().get(0);
+        assertEquals(1, recipient.getEmailProvider().getInboxEmails().size());
+        EmailMessage deliveredMsg = recipient.getEmailProvider().getInboxEmails().get(0);
         assertEquals("Delivered", deliveredMsg.getSubject());
         assertEquals("Delivered body", deliveredMsg.getBody());
         assertTrue(deliveredMsg.isReplyMessage());
-        assertEquals(1, sender.getEmailProviderStub().getSentEmails().size());
+        assertEquals(1, sender.getEmailProvider().getSentEmails().size());
     }
 
     @Test

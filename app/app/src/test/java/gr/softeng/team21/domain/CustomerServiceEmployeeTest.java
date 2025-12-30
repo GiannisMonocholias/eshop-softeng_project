@@ -22,16 +22,16 @@ public class CustomerServiceEmployeeTest {
         employee = new CustomerServiceEmployee("GP","Giorgos","abcd123",
                 "Papadopoulos","3029761482",new EmailAddress("GP@gmail.com"),
                 "CS_1",100,1000,8,EmployeeState.ACTIVE, new Date(3,5,2025));
-        employee.setEmailProviderStub(new EmailDAOMemory());
+        employee.setEmailProvider(new EmailDAOMemory());
 
         customer = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
-        customer.setEmailProviderStub(new EmailDAOMemory());
+        customer.setEmailProvider(new EmailDAOMemory());
 
         order = new Order("order1246", new Date(), StatusType.NEW,
                 false, PaymentType.CASH, new Date(), new ShoppingCart());
-        employee.setEmailProviderStub(new EmailDAOMemory());
+        employee.setEmailProvider(new EmailDAOMemory());
 
         EmailMessage e1 = new EmailMessage(
                 new EmailAddress("customer1@example.com"),

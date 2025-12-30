@@ -24,6 +24,7 @@ public class CustomerDAOMemoryTest {
         customer = new Customer (
                 "user1", "John", "pass1", "Doe",
                 "1234567890", email, "CUST-001", new Date ( ) );
+        customerDAOMemory.addCustomer(customer);
     }
 
     @After
@@ -44,6 +45,7 @@ public class CustomerDAOMemoryTest {
         Customer customer2 = new Customer (
                 "user2", "Jane", "pass2", "Doe",
                 "0987654321", email2, "CUST-002", new Date ( ) );
+        customerDAOMemory.addCustomer(customer2);
 
         assertEquals ( 2, customerDAOMemory.getCustomers ( ).size ( ) );
 

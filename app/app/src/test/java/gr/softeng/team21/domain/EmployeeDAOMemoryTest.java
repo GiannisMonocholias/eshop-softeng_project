@@ -21,6 +21,7 @@ public class EmployeeDAOMemoryTest {
 
 
         employee = new Employee("Α001", "Alex","123" ,"Drakakis", "69696969", new EmailAddress("alexd@gmail.com") , "3232" , 1000 , 1500 , 40 , EmployeeState.ACTIVE , new Date() );
+        EmployeeDAOMemory.getInstance().addEmployee(employee);
     }
 
     @Test

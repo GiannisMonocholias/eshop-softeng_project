@@ -29,25 +29,28 @@ public class OrderPreparationEmployeeTest {
         ProductTypeDAOMemory.getInstance().clear();
 
         Admin.getInstance();
-        Admin.getInstance().setEmailProviderStub(new EmailDAOMemory());
+        Admin.getInstance().setEmailProvider(new EmailDAOMemory());
 
 
         employee = new OrderPreparationEmployee("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"OPE_1",100,1000,
                 8,EmployeeState.ACTIVE, new Date(3,5,2025));
-        employee.setEmailProviderStub(new EmailDAOMemory());
+        EmployeeDAOMemory.getInstance().addEmployee(employee);
+        employee.setEmailProvider(new EmailDAOMemory());
 
         orderDAOMemory = OrderDAOMemory.getInstance();
         orderDAOMemory.addOrder(new Order("order1245", new Date(20,5,2025),StatusType.NEW,false,PaymentType.CASH, new Date(),new ShoppingCart()));
 
         deliverer =new Deliverer("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"DEL_1",100,1000,8,
-                EmployeeState.ACTIVE, new Date(3,5,2025),100 , true , new ArrayList<>());
+                EmployeeState.ACTIVE, new Date(3,5,2025),100 , true);
+        EmployeeDAOMemory.getInstance().addEmployee(deliverer);
 
         customerServiceEmployee = new CustomerServiceEmployee("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"CSE_1",100,1000,
                 8,EmployeeState.ACTIVE, new Date(3,5,2025));
-        customerServiceEmployee.setEmailProviderStub(new EmailDAOMemory());
+        customerServiceEmployee.setEmailProvider(new EmailDAOMemory());
+        EmployeeDAOMemory.getInstance().addEmployee(customerServiceEmployee);
 
 
     }
@@ -144,11 +147,11 @@ public class OrderPreparationEmployeeTest {
         assertEquals(1, employee.getTotalUpdateReserveRequests());
 
         // Admin mail reception
-        assertEquals(1, Admin.getInstance().getEmailProviderStub().getInboxEmails().size());
+        assertEquals(1, Admin.getInstance().getEmailProvider().getInboxEmails().size());
 
         // Customer service employee mail reception
         CustomerServiceEmployee customerServiceEmployeeSelected = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployees().get("CSE_1");
-        assertEquals(1, customerServiceEmployeeSelected.getEmailProviderStub().getInboxEmails().size());
+        assertEquals(1, customerServiceEmployeeSelected.getEmailProvider().getInboxEmails().size());
 
     }
 
@@ -159,6 +162,6 @@ public class OrderPreparationEmployeeTest {
         ProductTypeDAOMemory.getInstance().clear();
         EmployeeDAOMemory.getInstance().clear();
 
-        Admin.getInstance().getEmailProviderStub().getInboxEmails().clear();
+        Admin.getInstance().getEmailProvider().getInboxEmails().clear();
     }
 }

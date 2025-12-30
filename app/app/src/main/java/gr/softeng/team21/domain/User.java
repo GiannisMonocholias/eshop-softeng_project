@@ -1,5 +1,6 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 
 public abstract class User {
@@ -11,7 +12,7 @@ public abstract class User {
     protected EmailAddress emailaddress;
 
 
-    protected EmailDAOMemory emailDAOMemory;
+    protected EmailDAO emailDAOMemory;
 
     protected Address address;
 
@@ -24,6 +25,7 @@ public abstract class User {
         this.lastname = lastname;
         this.phoneNumber = phoneNumber;
         this.emailaddress = emailaddress;
+        this.emailDAOMemory = new EmailDAOMemory();
     }
 
     public Address getAddress ( ) {
@@ -80,11 +82,9 @@ public abstract class User {
         this.emailaddress = emailaddress;
     }
 
-    public EmailDAOMemory getEmailProviderStub() {
-        return emailDAOMemory;
-    }
+    public EmailDAO getEmailProvider() {return emailDAOMemory;}
 
-    protected void setEmailProviderStub(EmailDAOMemory emailDAOMemory) {
+    protected void setEmailProvider(EmailDAOMemory emailDAOMemory) {
         this.emailDAOMemory = emailDAOMemory;
     }
 
@@ -107,8 +107,8 @@ public abstract class User {
         if(original != null)
             original.setReplied(true);
 
-        recipient.getEmailProviderStub().saveInboxEmails(email);
-        sender.getEmailProviderStub().saveSentEmails(email);
+        recipient.getEmailProvider().saveInboxEmails(email);
+        sender.getEmailProvider().saveSentEmails(email);
     }
 
     protected void setEmailRead(EmailMessage email) {
