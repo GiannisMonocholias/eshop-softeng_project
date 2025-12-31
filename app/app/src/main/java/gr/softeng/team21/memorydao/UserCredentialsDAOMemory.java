@@ -23,13 +23,8 @@ public class UserCredentialsDAOMemory implements UserCredentialsDAO {
 
     public HashMap<String, User> getUsersCredentials(){return  new HashMap<>(credentialsMap);}
 
-    public void checkNullArguments(String string1, String string2){
-        if(string1 == null || string2 == null)
-            throw new IllegalArgumentException("Username and password cannot be null");
-    }
 
     public void addUser(User user) {
-        checkNullArguments(user.getUsername(),user.getPassword());
 
         if (credentialsMap.containsKey(user.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
@@ -39,7 +34,6 @@ public class UserCredentialsDAOMemory implements UserCredentialsDAO {
     }
 
     public void removeUser(String username){
-        checkNullArguments(username,"");
 
         if (!credentialsMap.containsKey(username)) {
             throw new NoSuchElementException("Username does not exists");
@@ -49,13 +43,14 @@ public class UserCredentialsDAOMemory implements UserCredentialsDAO {
     }
 
     public User validateAndGetUser(String username, String password){
-        checkNullArguments(username,password);
 
         User user = credentialsMap.get(username);
 
+        //Δεν υπάρχει χρήστης με το δοθέν username
         if(user == null){
             throw new SecurityException("Invalid credentials");
         }
+        //Υπάρχει χρήστης με το δοθέν username, αλλά λάθος κωδικός
         if(!user.getPassword().equals(password)){
             throw new SecurityException("Invalid credentials");
         }

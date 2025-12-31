@@ -18,7 +18,6 @@ import gr.softeng.team21.R;
 <<<<<<< Updated upstream
 import gr.softeng.team21.memorydao.MemoryInitializer;
 =======
-import gr.softeng.team21.domain.Initializer;
 >>>>>>> Stashed changes
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;

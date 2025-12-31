@@ -1,10 +1,7 @@
 package gr.softeng.team21.view.product;
 
-<<<<<<< Updated upstream
-=======
-import android.annotation.SuppressLint;
+
 import android.content.Intent;
->>>>>>> Stashed changes
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,12 +22,10 @@ import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Date;
 import gr.softeng.team21.domain.EmailAddress;
 import gr.softeng.team21.domain.ProductType;
-<<<<<<< Updated upstream
+
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
-=======
-import gr.softeng.team21.domain.ProductTypesRepository;
+
 import gr.softeng.team21.view.customer.CustomerShoppingCartActivity;
->>>>>>> Stashed changes
 import gr.softeng.team21.view.user.User_EditData_activity;
 
 public class ProductDetailsActivity extends AppCompatActivity {

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="24dp"
-        tools:context=".view.user.LoginActivity">
+        tools:context=".view.user.login.LoginActivity">
 
         <ImageView
             android:id="@+id/loginImageViewLogo"

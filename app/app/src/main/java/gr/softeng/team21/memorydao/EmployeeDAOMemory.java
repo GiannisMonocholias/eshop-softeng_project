@@ -2,9 +2,10 @@ package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
 
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Employee;
 
-public class EmployeeDAOMemory {
+public class EmployeeDAOMemory implements EmployeeDAO {
 
     private static HashMap<String , Employee> employees;
     private static EmployeeDAOMemory instance;

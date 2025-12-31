@@ -9,7 +9,7 @@
     tools:context=".view.employee.customerServiceEmployee.CustomerServiceMenuActivity">
 
     <TextView
-        android:id="@+id/txtOrdPrepEmpMenuName"
+        android:id="@+id/txtCustomerServiceEmployeeMenuName"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#009688"
@@ -34,10 +34,10 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtOrdPrepEmpMenuName" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerServiceEmployeeMenuName" />
 
     <Button
-        android:id="@+id/btnOrdPrepEmpMenuAssignedOrders"
+        android:id="@+id/btnCustomerServiceEmployeeMenuAssignedOrders"
         android:layout_width="382dp"
         android:layout_height="115dp"
         android:layout_marginTop="36dp"
@@ -60,10 +60,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.352"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOrdPrepEmpMenuAssignedOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerServiceEmployeeMenuAssignedOrders" />
 
     <Button
-        android:id="@+id/btnOrdPrepEmpMenuLogout"
+        android:id="@+id/btnCustomerServiceEmployeeMenuLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"

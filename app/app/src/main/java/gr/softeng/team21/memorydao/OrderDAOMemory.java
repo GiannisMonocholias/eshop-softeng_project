@@ -2,9 +2,10 @@ package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
 
+import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Order;
 
-public class OrderDAOMemory {
+public class OrderDAOMemory implements OrderDAO {
     private static OrderDAOMemory instance;
 
     private static HashMap<String, Order> orders;

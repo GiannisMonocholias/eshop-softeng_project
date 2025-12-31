@@ -3,9 +3,11 @@ package gr.softeng.team21.memorydao;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+import gr.softeng.team21.dao.ProductTypeDAO;
+import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.domain.ProductType;
 
-public class ProductsWareHouseDAOMemory {
+public class ProductsWareHouseDAOMemory implements ProductsWareHouseDAO {
 
     private static ProductsWareHouseDAOMemory instance;
 

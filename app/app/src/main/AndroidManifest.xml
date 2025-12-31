@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Team21">
 
         <activity
-            android:name=".view.user.LoginActivity"
+            android:name=".view.user.login.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".view.employee.deliverer.DelivererOrdersListActivity"

@@ -2,6 +2,7 @@ package gr.softeng.team21.view.employee.customerServiceEmployee;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,8 +11,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
 public class CustomerServiceMenuActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +27,15 @@ public class CustomerServiceMenuActivity extends AppCompatActivity {
             return insets;
         });
 
+        String employeeId = getIntent().getStringExtra("CUSTOMER_SERVICE_EMPLOYEE_ID");
+        EmployeeDAOMemory.getInstance().getEmployee(employeeId);
+
+        TextView employeeName = findViewById(R.id.txtCustomerServiceEmployeeMenuName);
+        //employeeName.setText();
+
 
         //Incoming messages view button
-        findViewById(R.id.btnOrdPrepEmpMenuAssignedOrders).setOnClickListener(v -> {
+        findViewById(R.id.btnCustomerServiceEmployeeMenuAssignedOrders).setOnClickListener(v -> {
             Intent intent = new Intent(CustomerServiceMenuActivity.this,EmailListActivity.class);
 
             startActivity(intent);
@@ -41,7 +50,7 @@ public class CustomerServiceMenuActivity extends AppCompatActivity {
         });
 
         //Account Logout
-        findViewById(R.id.btnOrdPrepEmpMenuLogout).setOnClickListener(v -> {
+        findViewById(R.id.btnCustomerServiceEmployeeMenuLogout).setOnClickListener(v -> {
             finish();
         });
 

@@ -27,7 +27,7 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity {
 
 
         //Assigned orders to this order preparation employee
-        findViewById(R.id.btnOrdPrepEmpMenuAssignedOrders).setOnClickListener(v -> {
+        findViewById(R.id.btnCustomerServiceEmployeeMenuAssignedOrders).setOnClickListener(v -> {
             Intent intent = new Intent(OrderPreparationEmployeeMenuActivity.this, AssignedOrdersToPrepareActivity.class);
 
             startActivity(intent);
@@ -45,7 +45,7 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity {
 
 
         //Account Logout
-        findViewById(R.id.btnOrdPrepEmpMenuLogout).setOnClickListener(v -> {
+        findViewById(R.id.btnCustomerServiceEmployeeMenuLogout).setOnClickListener(v -> {
             finish();
         });
 

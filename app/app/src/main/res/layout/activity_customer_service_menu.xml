@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/txtWelcomeMessage2"
+        android:id="@+id/txtCustomerServiceEmployeeWelcomeMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -20,10 +20,10 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtOrdPrepEmpMenuName" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerServiceEmployeeMenuName" />
 
     <TextView
-        android:id="@+id/txtOrdPrepEmpMenuName"
+        android:id="@+id/txtCustomerServiceEmployeeMenuName"
         android:layout_width="fill_parent"
         android:layout_height="42dp"
         android:background="#009688"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnOrdPrepEmpMenuAssignedOrders"
+        android:id="@+id/btnCustomerServiceEmployeeMenuAssignedOrders"
         android:layout_width="382dp"
         android:layout_height="115dp"
         android:layout_marginTop="32dp"
@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.413"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtWelcomeMessage2" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerServiceEmployeeWelcomeMessage" />
 
     <Button
         android:id="@+id/btnOrdPrepEmpMenuAssignNewOrder"
@@ -57,10 +57,10 @@
         android:text="Ενημέρωση πορείας παραγγελιών"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOrdPrepEmpMenuAssignedOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerServiceEmployeeMenuAssignedOrders" />
 
     <Button
-        android:id="@+id/btnOrdPrepEmpMenuLogout"
+        android:id="@+id/btnCustomerServiceEmployeeMenuLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
