@@ -61,7 +61,7 @@
             android:name=".view.employee.customerServiceEmployee.EmailListActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.customerServiceEmployee.CustomerServiceMenuActivity"
+            android:name=".view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity"
             android:exported="true" />
         <activity
             android:name=".view.product.ProductDetailsActivity"

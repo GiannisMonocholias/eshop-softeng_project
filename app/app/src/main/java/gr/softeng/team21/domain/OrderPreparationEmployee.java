@@ -120,7 +120,7 @@ public  class OrderPreparationEmployee extends Employee{
             msg = "Please, inform customer about the expected delay of his order with id "+order.getOrdercode()+", due to products' stock shortage\n";
             sendEmail(this, selectedCustomerServiceEmployee, "Inadequate stock for products", msg);
             order.setOrderstatus(StatusType.DELAYED);
-
+            selectedCustomerServiceEmployee.addOrder(order);
         }
     }
 }

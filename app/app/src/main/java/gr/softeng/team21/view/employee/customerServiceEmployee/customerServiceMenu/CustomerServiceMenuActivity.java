@@ -1,4 +1,4 @@
-package gr.softeng.team21.view.employee.customerServiceEmployee;
+package gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +12,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.view.employee.customerServiceEmployee.EmailListActivity;
+import gr.softeng.team21.view.employee.customerServiceEmployee.OrderStatusActivity;
 
-public class CustomerServiceMenuActivity extends AppCompatActivity {
-
+public class CustomerServiceMenuActivity extends AppCompatActivity implements  CustomerServiceMenuView{
+    CustomerServiceMenuPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +29,20 @@ public class CustomerServiceMenuActivity extends AppCompatActivity {
             return insets;
         });
 
-        String employeeId = getIntent().getStringExtra("CUSTOMER_SERVICE_EMPLOYEE_ID");
-        EmployeeDAOMemory.getInstance().getEmployee(employeeId);
+        presenter = new CustomerServiceMenuPresenter(this, EmployeeDAOMemory.getInstance());
 
+        // fetch employee id from the previous activity
+        String employeeId = getIntent().getStringExtra("CUSTOMER_SERVICE_EMPLOYEE_ID");
+
+        // Set Employee full name textView to show the current employee's full name
         TextView employeeName = findViewById(R.id.txtCustomerServiceEmployeeMenuName);
-        //employeeName.setText();
+        employeeName.setText(presenter.getEmployeeFullname(employeeId));
+
 
 
         //Incoming messages view button
         findViewById(R.id.btnCustomerServiceEmployeeMenuAssignedOrders).setOnClickListener(v -> {
-            Intent intent = new Intent(CustomerServiceMenuActivity.this,EmailListActivity.class);
+            Intent intent = new Intent(CustomerServiceMenuActivity.this, EmailListActivity.class);
 
             startActivity(intent);
 
@@ -56,5 +62,7 @@ public class CustomerServiceMenuActivity extends AppCompatActivity {
 
 
     }
+
+
 }
 

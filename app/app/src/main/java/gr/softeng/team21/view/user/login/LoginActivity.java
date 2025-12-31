@@ -2,7 +2,6 @@ package gr.softeng.team21.view.user.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,9 +21,8 @@ import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.MemoryInitializer;
-import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.view.customer.CustomerHomePageActivity;
-import gr.softeng.team21.view.employee.customerServiceEmployee.CustomerServiceMenuActivity;
+import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity;
 import gr.softeng.team21.view.employee.deliverer.DelivererOrdersListActivity;
 import gr.softeng.team21.view.employee.orderPreparationEmployee.OrderPreparationEmployeeMenuActivity;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.UpdateCatalogueEmployeeMenuActivity;

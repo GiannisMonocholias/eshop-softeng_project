@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.1"><zoom_level>7</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>812</x><y>203</y><w>154</w><h>154</h></coordinates><panel_attributes>User
+<diagram program="umletino" version="15.1"><zoom_level>7</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>812</x><y>154</y><w>154</w><h>154</h></coordinates><panel_attributes>User
 --
 - username:String
 - firstname: String
@@ -16,7 +16,7 @@ void
 EmailAddress): void
 fontsize=11
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>819</x><y>77</y><w>91</w><h>63</h></coordinates><panel_attributes>EmailAddress
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>819</x><y>28</y><w>91</w><h>63</h></coordinates><panel_attributes>EmailAddress
 --
 - value: String
 --
@@ -24,8 +24,8 @@ fontsize=11
 + hashCode(): int
 + toString(): String 
 
-fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>854</x><y>133</y><w>28</w><h>84</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=1</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>938</x><y>49</y><w>91</w><h>84</h></coordinates><panel_attributes>Address
+fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>854</x><y>84</y><w>28</w><h>84</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>938</x><y>0</y><w>91</w><h>84</h></coordinates><panel_attributes>Address
 --
 - street: String
 - number: String
@@ -35,8 +35,8 @@ m1=1</panel_attributes><additional_attributes>10;100;10;10</additional_attribute
 --
 + equals(Object): boolean
 + hashCode(): int
-fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>896</x><y>126</y><w>91</w><h>91</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=1</panel_attributes><additional_attributes>10;110;10;50;110;50;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1162</x><y>504</y><w>140</w><h>77</h></coordinates><panel_attributes>Employee
+fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>896</x><y>77</y><w>91</w><h>91</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1</panel_attributes><additional_attributes>10;110;10;50;110;50;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1162</x><y>455</y><w>140</w><h>77</h></coordinates><panel_attributes>Employee
 --
 - employeeId: String
 - EmployeeState: EmployeeState
@@ -44,9 +44,9 @@ m1=1</panel_attributes><additional_attributes>10;110;10;50;110;50;110;10</additi
 - salary: int
 - bonus: int
 - hireDate: Date
-fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>882</x><y>350</y><w>350</w><h>168</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;130;480;130;480;220</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1645</x><y>455</y><w>77</w><h>35</h></coordinates><panel_attributes>Date
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>882</x><y>301</y><w>350</w><h>168</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;130;480;130;480;220</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1645</x><y>406</y><w>77</w><h>35</h></coordinates><panel_attributes>Date
 --
-- date: LocalDate</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>658</y><w>154</w><h>112</h></coordinates><panel_attributes>CustomerServiceEmployee
+- date: LocalDate</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>609</y><w>154</w><h>112</h></coordinates><panel_attributes>CustomerServiceEmployee
 --
 - totalResponsesz: int
 --
@@ -57,7 +57,7 @@ fontsize=11</panel_attributes><additional_attributes></additional_attributes></e
  Customer): void
 + replyToCustomerInquiry(Customer ,
 EmailMessage ,String): void
-fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1029</x><y>196</y><w>154</w><h>91</h></coordinates><panel_attributes>EmailMessage
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1029</x><y>147</y><w>154</w><h>91</h></coordinates><panel_attributes>EmailMessage
 --
 - from: EmailAddress
 - to: EmailAddress
@@ -67,10 +67,10 @@ fontsize=11</panel_attributes><additional_attributes></additional_attributes></e
 - isReplied: boolean
 - replyMessage: boolean
 
-fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>959</x><y>238</y><w>84</w><h>28</h></coordinates><panel_attributes>lt=&lt;.
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>959</x><y>189</y><w>84</w><h>28</h></coordinates><panel_attributes>lt=&lt;.
 &lt;&lt;create&gt;&gt;
 fontsize=10
-</panel_attributes><additional_attributes>100;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1008</x><y>574</y><w>182</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>240;10;240;40;10;40;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>1211</x><y>574</y><w>21</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1141</x><y>658</y><w>161</w><h>91</h></coordinates><panel_attributes>OrderPreparationEmployee
+</panel_attributes><additional_attributes>100;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1008</x><y>525</y><w>182</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>240;10;240;40;10;40;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>1211</x><y>525</y><w>21</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1141</x><y>609</y><w>161</w><h>91</h></coordinates><panel_attributes>OrderPreparationEmployee
 --
 - totalOrdersPreparations: int
 - totalUpdateReserveRequests: int 
@@ -81,13 +81,13 @@ fontsize=10
 + selectOrder(String): void
 + prepareOrder(Order): void
 
-fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>245</x><y>742</y><w>938</w><h>224</h></coordinates><panel_attributes>lt=-&gt;
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>217</x><y>693</y><w>966</w><h>224</h></coordinates><panel_attributes>lt=-&gt;
 m1=0..1
 m2=*
-r2= -assignedOrders</panel_attributes><additional_attributes>1300;10;1300;130;1200;130;1200;300;10;300;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>1204</x><y>742</y><w>70</w><h>133</h></coordinates><panel_attributes>lt=-&gt;
+r2= -assignedOrders</panel_attributes><additional_attributes>1340;10;1340;130;1240;130;1240;300;10;300;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>1204</x><y>693</y><w>70</w><h>133</h></coordinates><panel_attributes>lt=-&gt;
 m1=*
 m2=1
-r2= -wareHouse</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1141</x><y>861</y><w>154</w><h>140</h></coordinates><panel_attributes>ProductsWareHouse
+r2= -wareHouse</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1141</x><y>812</y><w>154</w><h>140</h></coordinates><panel_attributes>ProductsWareHouse
 --
 - instance: ProductsWareHouse
 - maxCapacity: int
@@ -102,10 +102,10 @@ boolean
 boolean
 + sufficientStock(ProductType,int): boolean
 + isValidAmount(int): boolean
-fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>644</x><y>581</y><w>567</w><h>490</h></coordinates><panel_attributes>lt=-&gt;
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>644</x><y>532</y><w>567</w><h>490</h></coordinates><panel_attributes>lt=-&gt;
 m1=1
 m2=*
-r2= -productStocks</panel_attributes><additional_attributes>780;600;780;680;270;680;270;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1358</x><y>665</y><w>175</w><h>70</h></coordinates><panel_attributes>UpdateCatalogueEmployee
+r2= -productStocks</panel_attributes><additional_attributes>780;600;780;680;270;680;270;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1358</x><y>616</y><w>175</w><h>70</h></coordinates><panel_attributes>UpdateCatalogueEmployee
 --
 - totalCatalogueUpdates: int
 --
@@ -113,10 +113,10 @@ r2= -productStocks</panel_attributes><additional_attributes>780;600;780;680;270;
 + selectRequest(int): CatalogueUpdateRequest
 + executeUpdate(CatalogueUpdateRequest): 
 void
-fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1428</x><y>728</y><w>28</w><h>126</h></coordinates><panel_attributes>lt=-&gt;
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1428</x><y>679</y><w>28</w><h>126</h></coordinates><panel_attributes>lt=-&gt;
 m1=1
 m2=*
-</panel_attributes><additional_attributes>10;10;10;160</additional_attributes></element><element><id>Relation</id><coordinates><x>1253</x><y>574</y><w>210</w><h>105</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80;280;80;280;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1351</x><y>840</y><w>161</w><h>91</h></coordinates><panel_attributes>CatalogueUpdateRequest
+</panel_attributes><additional_attributes>10;10;10;160</additional_attributes></element><element><id>Relation</id><coordinates><x>1253</x><y>525</y><w>210</w><h>105</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80;280;80;280;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1351</x><y>791</y><w>161</w><h>91</h></coordinates><panel_attributes>CatalogueUpdateRequest
 --
 - requestId: int
 - submissionDate: Date {readOnly}
@@ -126,20 +126,20 @@ m2=*
 - updateDescription: String
 - executed: boolean
 fontsize=11
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1421</x><y>350</y><w>686</w><h>714</h></coordinates><panel_attributes>lt=-&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1421</x><y>301</y><w>686</w><h>714</h></coordinates><panel_attributes>lt=-&gt;
 m1=1
 m2=*
-</panel_attributes><additional_attributes>950;10;960;1000;10;1000;10;830</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1561</x><y>665</y><w>161</w><h>63</h></coordinates><panel_attributes>Deliverer
+</panel_attributes><additional_attributes>950;10;960;1000;10;1000;10;830</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1561</x><y>616</y><w>161</w><h>63</h></coordinates><panel_attributes>Deliverer
 --
 - max_quantity: int
 - available: boolean
 --
 + addOrder(Order): void
 + checkfor(Order): boolean
-fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>175</x><y>721</y><w>1491</w><h>392</h></coordinates><panel_attributes>lt=-&gt;
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>175</x><y>672</y><w>1491</w><h>392</h></coordinates><panel_attributes>lt=-&gt;
 m1=0..1
 m2=*
-r2= -orders</panel_attributes><additional_attributes>2090;10;2090;540;10;530;10;180</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1519</x><y>259</y><w>182</w><h>126</h></coordinates><panel_attributes>SystemCalendar
+r2= -orders</panel_attributes><additional_attributes>2090;10;2090;540;10;530;10;180</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1519</x><y>210</y><w>182</w><h>126</h></coordinates><panel_attributes>SystemCalendar
 --
 - instance: SystemCalendar
 - currentdate: Date
@@ -153,40 +153,40 @@ fontsize=10
 + deliverEmail(SystemCalendar, User, EmailMessage, 
 String, String, boolean)
 + notifyCustomerDelay(Order): void
-+notifyCustomerReady(Order): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1281</x><y>574</y><w>371</w><h>105</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;50;510;50;510;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1736</x><y>525</y><w>105</w><h>63</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
++notifyCustomerReady(Order): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1281</x><y>525</y><w>371</w><h>105</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;50;510;50;510;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1736</x><y>476</y><w>105</w><h>63</h></coordinates><panel_attributes>&lt;&lt;enum&gt;&gt;
 AllowedRequest
 --
 INSERT_PRODUCT
 DELETE_PRODUCT
 PROCESS_PRODUCT
 
-fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>336</y><w>1113</w><h>189</h></coordinates><panel_attributes>lt=-&gt;
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>287</y><w>1113</w><h>189</h></coordinates><panel_attributes>lt=-&gt;
 m1=1
 m2=*
 &lt;στέλνει ενημερώσεις
-fontsize=11</panel_attributes><additional_attributes>1570;10;940;10;940;240;10;240</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1771</x><y>259</y><w>343</w><h>98</h></coordinates><panel_attributes>Admin
+fontsize=11</panel_attributes><additional_attributes>1570;10;940;10;940;240;10;240</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1771</x><y>210</y><w>343</w><h>98</h></coordinates><panel_attributes>Admin
 --
 -salary:int
 --
 +createEmployee(String, String, String, String, String, EmailAddress, String, int, int, int,
  EmployeeState, Date):void
 +deleteEmployee(Employee):void
-+createUpdateRequest(Date, String, ProductType, AllowedRequest, int):void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>931</x><y>161</y><w>1141</w><h>245</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;280;10;330;480;330;480;10;1610;10;1610;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>2534</x><y>259</y><w>105</w><h>49</h></coordinates><panel_attributes>OrderLine
++createUpdateRequest(Date, String, ProductType, AllowedRequest, int):void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>931</x><y>112</y><w>1141</w><h>245</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;280;10;330;480;330;480;10;1610;10;1610;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>2534</x><y>210</y><w>105</w><h>49</h></coordinates><panel_attributes>OrderLine
 --
 -quantity:int
 --
-+totalBill():BigDecimal</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2366</x><y>259</y><w>98</w><h>63</h></coordinates><panel_attributes>SupOrder
++totalBill():BigDecimal</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2366</x><y>210</y><w>98</w><h>63</h></coordinates><panel_attributes>SupOrder
 --
 -orderid:int
 -orderDate:Date
 --
-+fullAmount():Money</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2107</x><y>280</y><w>273</w><h>28</h></coordinates><panel_attributes>lt=-
++fullAmount():Money</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2107</x><y>231</y><w>273</w><h>28</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=*</panel_attributes><additional_attributes>10;10;370;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2457</x><y>280</y><w>91</w><h>28</h></coordinates><panel_attributes>lt=-
+m2=*</panel_attributes><additional_attributes>10;10;370;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2457</x><y>231</y><w>91</w><h>28</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=*</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1246</x><y>350</y><w>777</w><h>168</h></coordinates><panel_attributes>lt=-&gt;
+m2=*</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1246</x><y>301</y><w>777</w><h>168</h></coordinates><panel_attributes>lt=-&gt;
 m1=1
-m2=*</panel_attributes><additional_attributes>1080;10;1080;90;10;90;10;220</additional_attributes></element><element><id>UMLClass</id><coordinates><x>231</x><y>476</y><w>196</w><h>154</h></coordinates><panel_attributes>Customer
+m2=*</panel_attributes><additional_attributes>1080;10;1080;90;10;90;10;220</additional_attributes></element><element><id>UMLClass</id><coordinates><x>231</x><y>427</y><w>196</w><h>154</h></coordinates><panel_attributes>Customer
 --
 - customer_id:String 
 -registdate:Date 
@@ -203,10 +203,10 @@ String, Order):void
 +remove():void
 
 
-fontsize=12</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>14</x><y>462</y><w>70</w><h>42</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+fontsize=12</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>14</x><y>413</y><w>70</w><h>42</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
 --
 CARD
-CASH</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>28</x><y>308</y><w>70</w><h>84</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+CASH</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>28</x><y>259</y><w>70</w><h>84</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
 StatusType 
 --
 NEW
@@ -215,11 +215,11 @@ PENDING
 SHIPPED
 DELIVERED
 DELAYED
-fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>217</x><y>623</y><w>35</w><h>98</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;120;30;10</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>518</y><w>154</w><h>98</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>200;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>378</x><y>623</y><w>210</w><h>175</h></coordinates><panel_attributes>lt=&lt;-&gt;
+fontsize=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>217</x><y>574</y><w>35</w><h>98</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;120;30;10</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>469</y><w>154</w><h>98</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>200;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>378</x><y>574</y><w>210</w><h>175</h></coordinates><panel_attributes>lt=&lt;-&gt;
 m1=0..1
 m2=1   -customer  
   
-                                                          -shoppingCart</panel_attributes><additional_attributes>10;230;30;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>560</y><w>133</w><h>91</h></coordinates><panel_attributes>&lt;&lt;value&gt;&gt; 
+                                                          -shoppingCart</panel_attributes><additional_attributes>10;230;30;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>511</y><w>133</w><h>91</h></coordinates><panel_attributes>&lt;&lt;value&gt;&gt; 
 Money
 --
 -amount:BigDecimal
@@ -227,7 +227,7 @@ Money
 --
 +multiply(int):Money
 +add(Money):Money
-+equals(Object):boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>385</x><y>763</y><w>147</w><h>91</h></coordinates><panel_attributes>ShoppingCart
++equals(Object):boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>385</x><y>714</y><w>147</w><h>91</h></coordinates><panel_attributes>ShoppingCart
 --
 -totalcost:Money
 
@@ -235,7 +235,7 @@ Money
 getTotalCost():Money
 copy():ShoppingCart
 getItems():ArrayList&lt;CartItem&gt;
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>637</x><y>714</y><w>126</w><h>91</h></coordinates><panel_attributes>CartItem
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>637</x><y>665</y><w>126</w><h>91</h></coordinates><panel_attributes>CartItem
 --
 - quantity: int
 _- counter: int_
@@ -245,13 +245,13 @@ _- counter: int_
 calculateSubtotal():void
 getSubtotal_amount():Money
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>525</x><y>735</y><w>126</w><h>105</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>525</x><y>686</y><w>126</w><h>105</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=*
--items</panel_attributes><additional_attributes>10;130;160;10</additional_attributes></element><element><id>Relation</id><coordinates><x>588</x><y>630</y><w>105</w><h>98</h></coordinates><panel_attributes>lt=-&gt;
+-items</panel_attributes><additional_attributes>10;130;160;10</additional_attributes></element><element><id>Relation</id><coordinates><x>588</x><y>581</y><w>105</w><h>98</h></coordinates><panel_attributes>lt=-&gt;
 m1=1
 m2=1
-productType</panel_attributes><additional_attributes>110;120;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>560</y><w>91</w><h>77</h></coordinates><panel_attributes>ProductType
+productType</panel_attributes><additional_attributes>110;120;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>511</y><w>91</w><h>77</h></coordinates><panel_attributes>ProductType
 --
 - productname: String 
 - description: String 
@@ -259,12 +259,12 @@ productType</panel_attributes><additional_attributes>110;120;10;10</additional_a
 - productcode: String 
 
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>154</x><y>252</y><w>119</w><h>56</h></coordinates><panel_attributes>&lt;&lt;value&gt;&gt; 
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>154</x><y>203</y><w>119</w><h>56</h></coordinates><panel_attributes>&lt;&lt;value&gt;&gt; 
 Date
 --
 -date:LocalDate
 --
-+changeDays(int):void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>168</x><y>707</y><w>147</w><h>140</h></coordinates><panel_attributes>Order
++changeDays(int):void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>168</x><y>658</y><w>147</w><h>140</h></coordinates><panel_attributes>Order
 --
 - ordercode: String 
 - submissiondate: Date
@@ -279,4 +279,7 @@ Date
 +setTotal_amount (Money):void
 
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>322</x><y>350</y><w>532</w><h>133</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>740;10;740;60;10;60;10;170</additional_attributes></element></diagram>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>322</x><y>301</y><w>532</w><h>133</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>740;10;740;60;10;60;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>287</x><y>714</y><w>700</w><h>161</h></coordinates><panel_attributes>lt=-&gt;
+m1=0..1
+m2=*
+r2= -orders</panel_attributes><additional_attributes>960;10;960;210;10;210;10;120</additional_attributes></element></diagram>

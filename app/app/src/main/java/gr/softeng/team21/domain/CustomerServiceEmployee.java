@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 public  class CustomerServiceEmployee extends Employee{
     private int totalResponses;
+    private ArrayList<Order> orders;
 
 
     public CustomerServiceEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate) {
         super(username, firstname, password, lastname, phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
         totalResponses = 0;
+        orders = new ArrayList<>();
     }
 
     public int getUnansweredRequests() {
@@ -20,6 +22,11 @@ public  class CustomerServiceEmployee extends Employee{
         return totalResponses;
     }
 
+    public ArrayList<Order> getOrders(){return orders;}
+
+    public void addOrder(Order order){orders.add(order);}
+
+    public void setOrders(ArrayList<Order> orders){this.orders = orders;}
 
 
     ArrayList<EmailMessage> getEmails(){
