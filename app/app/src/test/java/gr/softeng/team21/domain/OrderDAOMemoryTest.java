@@ -16,7 +16,7 @@ public class OrderDAOMemoryTest {
         orderDAOMemory = OrderDAOMemory.getInstance();
         orderDAOMemory.clear(); // Καθαρισμός για απομόνωση των tests
 
-        order1 = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH,new Date () ,new ShoppingCart());
+        order1 = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH,new Date () ,new ShoppingCart());
         // Υποθέτουμε ότι η TestHelper.getLaptop() επιστρέφει ProductType/WholesaleProduct
         order1.getShoppingCart().addItem(new CartItem(TestHelper.getLaptop(), 2));
     }
@@ -90,7 +90,7 @@ public class OrderDAOMemoryTest {
         assertEquals(1, orderDAOMemory.getOrders().size());
 
 
-        Order order2 = new Order("order1245", new Date(), StatusType.NEW, false, PaymentType.CASH,new Date () ,new ShoppingCart());
+        Order order2 = new Order("order1245", new Date(), OrderStatusType.NEW, false, PaymentType.CASH,new Date () ,new ShoppingCart());
         order2.getShoppingCart().addItem(new CartItem(TestHelper.getLaptop (),2));
         orderDAOMemory.addOrder(order2);
         assertEquals(2, orderDAOMemory.getOrders().size());

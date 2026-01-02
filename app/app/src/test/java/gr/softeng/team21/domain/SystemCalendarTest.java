@@ -84,9 +84,9 @@ public class SystemCalendarTest {
         customer.setEmailProvider(new EmailDAOMemory());
 
         ShoppingCart shoppingCart = new ShoppingCart(customer);
-        Order delayedOrder = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH,
+        Order delayedOrder = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH,
                 new Date(), shoppingCart);
-        delayedOrder.setOrderstatus(StatusType.DELAYED);
+        delayedOrder.setOrderstatus(OrderStatusType.DELAYED);
 
         repo.addOrder(delayedOrder);
 
@@ -109,11 +109,11 @@ public class SystemCalendarTest {
         customer.setEmailProvider(new EmailDAOMemory());
 
         ShoppingCart shoppingCart = new ShoppingCart(customer);
-        Order delayedOrder = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH,
+        Order delayedOrder = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH,
                 new Date(), shoppingCart);
 
 
-        delayedOrder.setOrderstatus(StatusType.SHIPPED);
+        delayedOrder.setOrderstatus(OrderStatusType.SHIPPED);
 
         repo.addOrder(delayedOrder);
 

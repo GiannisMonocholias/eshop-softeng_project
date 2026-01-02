@@ -10,10 +10,14 @@ public class EmailMessage {
     private boolean replyMessage = false;
 
 
+
+    private Date dateSent;
+
+
     public EmailMessage(){}
 
 
-    public EmailMessage(EmailAddress from, EmailAddress to, String subject, String body) {
+    public EmailMessage(EmailAddress from, EmailAddress to, String subject, String body, Date dateSent) {
         if (from == null || to == null || subject == null || body == null) {
             throw new IllegalArgumentException("EmailMessage arguments cannot be null");
         }
@@ -21,6 +25,7 @@ public class EmailMessage {
         this.to = to;
         this.subject = subject;
         this.body = body;
+        this.dateSent = dateSent;
     }
 
     public boolean isReplied() {
@@ -98,6 +103,13 @@ public class EmailMessage {
             body += text;
     }
 
+    public Date getDateSent() {
+        return dateSent;
+    }
+
+    public void setDateSent(Date dateSent) {
+        this.dateSent = dateSent;
+    }
 
     @Override
     public String toString() {

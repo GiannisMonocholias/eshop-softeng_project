@@ -17,7 +17,7 @@ public class EmailDAOMemoryTest {
     public void testSaveInboxEmailsAndGetInbox() {
 
         EmailDAOMemory provider = new EmailDAOMemory();
-        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body");
+        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body",new Date());
 
         provider.saveInboxEmails(msg); // Save the msg into provider's inbox email list
 
@@ -33,7 +33,7 @@ public class EmailDAOMemoryTest {
     @Test
     public void testSaveSentEmailsAndGetSent() {
         EmailDAOMemory provider = new EmailDAOMemory();
-        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body");
+        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
         provider.saveSentEmails(msg); // Save the msg into provider's sent emails list
 
@@ -50,8 +50,8 @@ public class EmailDAOMemoryTest {
     public void testGetUnreadEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
 
-        EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body");
-        EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body");
+        EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body",new Date());
+        EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body",new Date());
         readMsg.setRead(true);
 
         provider.saveInboxEmails(unreadMsg);
@@ -66,10 +66,10 @@ public class EmailDAOMemoryTest {
     public void testGetReadEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
 
-        EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body");
+        EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body",new Date());
         readMsg.setRead(true);
 
-        EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body");
+        EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body",new Date());
 
         provider.saveInboxEmails(readMsg);
         provider.saveInboxEmails(unreadMsg);
@@ -83,8 +83,8 @@ public class EmailDAOMemoryTest {
     public void testGetUnrepliedEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
 
-        EmailMessage unrepliedMsg = new EmailMessage(from, to, "Unreplied", "Body");
-        EmailMessage repliedMsg = new EmailMessage(from, to, "Replied", "Body");
+        EmailMessage unrepliedMsg = new EmailMessage(from, to, "Unreplied", "Body", new Date());
+        EmailMessage repliedMsg = new EmailMessage(from, to, "Replied", "Body", new Date());
         repliedMsg.setReplied(true);
 
         provider.saveInboxEmails(unrepliedMsg);
@@ -99,10 +99,10 @@ public class EmailDAOMemoryTest {
     public void testGetRepliedEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
 
-        EmailMessage repliedMsg = new EmailMessage(from, to, "Replied", "Body");
+        EmailMessage repliedMsg = new EmailMessage(from, to, "Replied", "Body", new Date());
         repliedMsg.setReplied(true);
 
-        EmailMessage unrepliedMsg = new EmailMessage(from, to, "Unreplied", "Body");
+        EmailMessage unrepliedMsg = new EmailMessage(from, to, "Unreplied", "Body", new Date());
 
         provider.saveInboxEmails(repliedMsg);
         provider.saveInboxEmails(unrepliedMsg);
@@ -116,24 +116,24 @@ public class EmailDAOMemoryTest {
     @Test
     public void testInInbox() {
         EmailDAOMemory provider = new EmailDAOMemory();
-        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body");
+        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
         provider.saveInboxEmails(msg);
 
         assertTrue(provider.inInbox(msg));
-        assertFalse(provider.inInbox(new EmailMessage(from, to, "Other", "Body")));
+        assertFalse(provider.inInbox(new EmailMessage(from, to, "Other", "Body", new Date())));
     }
 
 
     @Test
     public void testInSent() {
         EmailDAOMemory provider = new EmailDAOMemory();
-        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body");
+        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
         provider.saveSentEmails(msg);
 
         assertTrue(provider.inSent(msg));
-        assertFalse(provider.inSent(new EmailMessage(from, to, "Other", "Body")));
+        assertFalse(provider.inSent(new EmailMessage(from, to, "Other", "Body", new Date())));
     }
 
 }

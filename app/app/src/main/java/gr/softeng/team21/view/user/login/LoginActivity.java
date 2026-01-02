@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,10 +23,10 @@ import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.view.customer.CustomerHomePageActivity;
-import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity;
+import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity;
 import gr.softeng.team21.view.employee.deliverer.DelivererOrdersListActivity;
-import gr.softeng.team21.view.employee.orderPreparationEmployee.OrderPreparationEmployeeMenuActivity;
-import gr.softeng.team21.view.employee.updateCatalogueEmployee.UpdateCatalogueEmployeeMenuActivity;
+import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu.OrderPreparationEmployeeMenuActivity;
+import gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity;
 import gr.softeng.team21.view.util.UserType;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
@@ -73,6 +74,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
+    public TextView getUserNameEdtText(){return usernameEditText;}
+
+    @Override
+    public TextView getPasswordEdtText(){return passwordEditText;}
+
+
+    @Override
     public void showErrorMessage(String title, String message) {
         new AlertDialog.Builder(this)
                 .setTitle(title)
@@ -117,7 +125,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         if(intent != null){
             startActivity(intent);
         }
+    }
 
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        presenter.loginReset();
     }
 }

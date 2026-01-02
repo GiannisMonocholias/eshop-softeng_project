@@ -54,10 +54,10 @@ public class SystemCalendar {
         HashMap<String,Order> orders = OrderDAOMemory.getInstance().getOrders();
         for (String orderId : orders.keySet()) {
             Order curOrder = orders.get(orderId);
-            if (curOrder.getOrderstatus().equals(StatusType.DELAYED)) {
+            if (curOrder.getOrderstatus().equals(OrderStatusType.DELAYED)) {
                 notifyCustomerDelay(curOrder);
             }
-            else if(curOrder.getOrderstatus().equals(StatusType.SHIPPED)){
+            else if(curOrder.getOrderstatus().equals(OrderStatusType.SHIPPED)){
                 notifyCustomerReady(curOrder);
             }
         }

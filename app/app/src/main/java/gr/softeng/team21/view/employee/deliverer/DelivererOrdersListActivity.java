@@ -25,7 +25,7 @@ import gr.softeng.team21.domain.Money;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.PaymentType;
 import gr.softeng.team21.domain.ShoppingCart;
-import gr.softeng.team21.domain.StatusType;
+import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.view.util.DelivererOrderAdapter;
 
 public class DelivererOrdersListActivity extends AppCompatActivity {
@@ -82,7 +82,7 @@ public class DelivererOrdersListActivity extends AppCompatActivity {
      */
     private void completeOrderProcess(Order order, int position) {
         // --- 1. Ενημέρωση Domain Model ---
-        order.setOrderstatus(StatusType.DELIVERED);
+        order.setOrderstatus(OrderStatusType.DELIVERED);
         order.setDeliverydate(new Date()); // Η σημερινή ημερομηνία ως ημερομηνία παράδοσης
 
         // Σημείωση: Το πεδίο "paid" είναι private στο Order.
@@ -116,7 +116,7 @@ public class DelivererOrdersListActivity extends AppCompatActivity {
         cart1.setCustomer(c1);
 
         // Constructor: code, submissionDate, status, paid, paymentMethod, deliveryDate, cart
-        Order o1 = new Order("5021", today, StatusType.SHIPPED, false,
+        Order o1 = new Order("5021", today, OrderStatusType.SHIPPED, false,
                 PaymentType.CASH, null, cart1);
         o1.setTotal_amount(new Money(new BigDecimal(45.50), "€"));
 
@@ -133,7 +133,7 @@ public class DelivererOrdersListActivity extends AppCompatActivity {
         cart2.setCustomer(c2);
 
         // Αυτή έχει πληρωθεί ήδη (π.χ. κάρτα), άρα paid=true
-        Order o2 = new Order("5022", yesterday, StatusType.SHIPPED, true,
+        Order o2 = new Order("5022", yesterday, OrderStatusType.SHIPPED, true,
                 PaymentType.CARD, null, cart2);
         o2.setTotal_amount(new Money(new BigDecimal(120.00), "€"));
 

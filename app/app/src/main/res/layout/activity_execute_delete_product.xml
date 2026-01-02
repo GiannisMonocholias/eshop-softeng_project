@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteDeleteProductActivity">
+    tools:context=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity">
 
     <TextView
         android:id="@+id/txtexecuteDeleteProductHeader"

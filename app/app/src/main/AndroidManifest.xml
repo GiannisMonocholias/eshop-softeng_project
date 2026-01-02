@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
-
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity"
+            android:exported="true" />
         <activity
             android:name=".view.user.login.LoginActivity"
             android:exported="true" />
@@ -19,49 +21,49 @@
             android:name=".view.employee.deliverer.DelivererOrdersListActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteDeleteProductActivity"
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity"
             android:exported="true" />
         <activity
             android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteProcessProductActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteInsertProductActivity"
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct.ExecuteInsertProductActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.AssignedRequestsToExecuteActivity"
+            android:name=".view.employee.updateCatalogueEmployee.assignedRequestsToExecute.AssignedRequestsToExecuteActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.AvailableRequestsToAssignActivity"
+            android:name=".view.employee.updateCatalogueEmployee.availableRequestsToAssign.AvailableRequestsToAssignActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.UpdateCatalogueEmployeeMenuActivity"
+            android:name=".view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity"
             android:exported="true" />
         <activity
             android:name=".view.order.orderDetails.OrderDetailsActivity"
             android:exported="true" />
         <activity
-            android:name=".view.contact.EmailDetailsActivity"
+            android:name=".view.contact.emailDetails.EmailDetailsActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.orderPreparationEmployee.OrderPreparationEmployeeMenuActivity"
+            android:name=".view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu.OrderPreparationEmployeeMenuActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.orderPreparationEmployee.AssignedOrdersToPrepareActivity"
+            android:name=".view.employee.orderPreparationEmployee.assignedOrdersToPrepare.AssignedOrdersToPrepareActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.orderPreparationEmployee.AvailableOrdersToAssignActivity"
+            android:name=".view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity"
             android:exported="true" />
         <activity
             android:name=".view.user.EmailCompositionActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.customerServiceEmployee.OrderStatusActivity"
+            android:name=".view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.customerServiceEmployee.EmailListActivity"
+            android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity"
+            android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity"
             android:exported="true" />
         <activity
             android:name=".view.product.ProductDetailsActivity"
@@ -93,24 +95,21 @@
         <activity
             android:name=".view.customer.CustomerShoppingCartActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.customer.CustomerHomePageActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.customer.Customer_FindProduct_Activity"
             android:exported="false" />
-
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

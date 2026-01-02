@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import gr.softeng.team21.memorydao.EmailDAOMemory;
@@ -39,7 +38,7 @@ public class OrderPreparationEmployeeTest {
         employee.setEmailProvider(new EmailDAOMemory());
 
         orderDAOMemory = OrderDAOMemory.getInstance();
-        orderDAOMemory.addOrder(new Order("order1245", new Date(20,5,2025),StatusType.NEW,false,PaymentType.CASH, new Date(),new ShoppingCart()));
+        orderDAOMemory.addOrder(new Order("order1245", new Date(20,5,2025), OrderStatusType.NEW,false,PaymentType.CASH, new Date(),new ShoppingCart()));
 
         deliverer =new Deliverer("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"DEL_1",100,1000,8,
@@ -81,7 +80,7 @@ public class OrderPreparationEmployeeTest {
     @Test(expected = NoSuchElementException.class)
     public void prepareOrder_NonExistingOrderTest() {
         // Non-existing order
-        Order nonAssignedOrder2 = new Order("order1246", new Date(20,5,2025),StatusType.NEW,false,PaymentType.CASH, new Date(), new ShoppingCart());
+        Order nonAssignedOrder2 = new Order("order1246", new Date(20,5,2025), OrderStatusType.NEW,false,PaymentType.CASH, new Date(), new ShoppingCart());
         employee.prepareOrder(nonAssignedOrder2);
     }
 
@@ -106,7 +105,7 @@ public class OrderPreparationEmployeeTest {
 
         ProductsWareHouseDAOMemory.getInstance().increaseProductStock(dummyProductType1,10);
 
-        Order order = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
+        Order order = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
         order.getShoppingCart().addItem(new CartItem(ProductTypeDAOMemory.getInstance().getProduct("product1246"), 2));
         orderDAOMemory.addOrder(order);
 
@@ -115,7 +114,7 @@ public class OrderPreparationEmployeeTest {
         employee.prepareOrder(employee.getAssignedOrders().get(0));
 
 
-        assertEquals(StatusType.SHIPPED, order.getOrderstatus());
+        assertEquals(OrderStatusType.SHIPPED, order.getOrderstatus());
         assertEquals(8, (int) ProductsWareHouseDAOMemory.getInstance().getProductStock(dummyProductType1));
         assertEquals(1, employee.getTotalOrdersPreparations());
 
@@ -133,7 +132,7 @@ public class OrderPreparationEmployeeTest {
 
         ProductsWareHouseDAOMemory.getInstance().increaseProductStock(dummyProductType1,10);
 
-        Order order = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
+        Order order = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
         order.getShoppingCart().addItem(new CartItem(ProductTypeDAOMemory.getInstance().getProduct("product1246"), 11));
         orderDAOMemory.addOrder(order);
 
@@ -142,7 +141,7 @@ public class OrderPreparationEmployeeTest {
         employee.prepareOrder(employee.getAssignedOrders().get(0));
 
 
-        assertEquals(StatusType.DELAYED, order.getOrderstatus());
+        assertEquals(OrderStatusType.DELAYED, order.getOrderstatus());
         assertEquals(10, (int) ProductsWareHouseDAOMemory.getInstance().getProductStock(dummyProductType1)); // Το stock δεν πρέπει να αλλάξει
         assertEquals(1, employee.getTotalUpdateReserveRequests());
 

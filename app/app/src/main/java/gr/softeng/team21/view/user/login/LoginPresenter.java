@@ -54,4 +54,9 @@ public class LoginPresenter {
             view.showErrorMessage("Αποτυχία Σύνδεσης", "Λάθος όνομα χρήστη ή κωδικός.");
         }
     }
+
+    public void loginReset(){
+        view.getUserNameEdtText().setText("");
+        view.getPasswordEdtText().setText("");
+    }
 }

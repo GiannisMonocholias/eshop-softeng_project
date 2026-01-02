@@ -161,10 +161,10 @@ public class UserTest {
 
     @Test
     public void replyToEmail() {
-        EmailMessage original = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(), "Original", "Original body");
+        EmailMessage original = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(), "Original", "Original body", new Date());
         recipient.getEmailProvider().saveInboxEmails(original);
 
-        sender.replyToEmail(sender, recipient, original, "Reply", "Reply body");
+        sender.replyToEmail(sender, recipient, original, "Reply", "Reply body", new Date());
 
         assertTrue(original.isReplied());
         assertEquals(2, recipient.getEmailProvider().getInboxEmails().size());
@@ -177,7 +177,7 @@ public class UserTest {
 
     @Test
     public void sendEmail() {
-        sender.sendEmail(sender, recipient, "Hello", "Body text");
+        sender.sendEmail(sender, recipient, "Hello", "Body text", new Date());
 
         assertEquals(1, recipient.getEmailProvider().getInboxEmails().size());
         EmailMessage inboxMsg = recipient.getEmailProvider().getInboxEmails().get(0);
@@ -191,9 +191,9 @@ public class UserTest {
     @Test
     public void deliverEmail() {
         EmailMessage original = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(),
-                "Original", "Original body");
+                "Original", "Original body", new Date());
 
-        sender.deliverEmail(sender, recipient, original, "Delivered", "Delivered body", true);
+        sender.deliverEmail(sender, recipient, original, "Delivered", "Delivered body", true, new Date());
 
         assertTrue(original.isReplied());
         assertEquals(1, recipient.getEmailProvider().getInboxEmails().size());
@@ -207,7 +207,7 @@ public class UserTest {
     @Test
     public void readEmail() {
         EmailMessage msg = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(),
-                "Subject", "Body");
+                "Subject", "Body", new Date());
         assertFalse(msg.isRead());
 
         sender.setEmailRead(msg);

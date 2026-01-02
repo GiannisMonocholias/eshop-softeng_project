@@ -19,6 +19,7 @@ public  class UpdateCatalogueEmployee extends Employee{
         return totalCatalogueUpdates;
     }
 
+    public HashMap<Integer, CatalogueUpdateRequest> getAssignedRequests(){return assignedRequests;}
 
     public boolean assignRequest(int requestId){
         if(!UpdateRequestDAOMemory.getInstance().getUpdateRequests().containsKey(requestId))

@@ -28,7 +28,7 @@ public class CustomerTest {
     CustomerDAOMemory.getInstance().addCustomer(customer);
     customer.setAddress ( address );
 
-    order = new Order ( "order001", new Date ( ), StatusType.NEW, false,
+    order = new Order ( "order001", new Date ( ), OrderStatusType.NEW, false,
             PaymentType.CASH, new Date ( ), new ShoppingCart ( ) );
   }
 
@@ -117,7 +117,7 @@ public class CustomerTest {
     public void checkout () {
       customer.addItemToCart ( TestHelper.getLaptop ( ), 1 );
       Order order1 = customer.Checkout ( );
-      assertEquals ( StatusType.NEW, order1.getOrderstatus ( ) );
+      assertEquals ( OrderStatusType.NEW, order1.getOrderstatus ( ) );
       assertEquals ( PaymentType.CASH, order1.getPaymentmethod ( ) );
       assertEquals ( false, order1.getPaid ( ) );
     }

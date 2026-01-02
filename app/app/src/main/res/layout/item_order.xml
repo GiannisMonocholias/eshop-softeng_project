@@ -1,150 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:padding="16dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="@android:color/white">
 
-    <TextView
-        android:id="@+id/txtItemOrderPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderSubmissionDate"
-        android:text="Τιμή:" />
-
-    <TextView
-        android:id="@+id/txtItemOrderSubmissionDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderCustomerName"
-        android:text="Ημερομηνία υποβολής:" />
-
-    <TextView
-        android:id="@+id/txtItemOrderId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Κωδικός παραγγελίας:" />
-
-    <TextView
-        android:id="@+id/txtItemOrderCustomerName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderId"
-        android:text="Όνομα πελάτη:" />
-
-    <TextView
-        android:id="@+id/txtItemOrderIdValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/txtItemOrderId"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Order #5501" />
-
-    <TextView
-        android:id="@+id/txtItemOrderStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:textColor="#FF9800"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderPriceValue"
-        android:text="ΣΕ ΑΝΑΜΟΝΗ" />
-
-    <TextView
-        android:id="@+id/txtItemOrderCustomerNameValue"
-        android:layout_width="166dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textColor="#424242"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/txtItemOrderCustomerName"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderIdValue"
-        android:text="Γιώργος Παπαδόπουλος" />
-
-    <TextView
-        android:id="@+id/txtItemOrderSubmissionDateValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="3dp"
-        android:textColor="#757575"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/txtItemOrderSubmissionDate"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderCustomerNameValue"
-        android:text="27 Δεκ 2023" />
-
-    <TextView
-        android:id="@+id/txtItemOrderPriceValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textColor="#757575"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/txtItemOrderPrice"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderSubmissionDateValue"
-        android:text="€ 1,250.00" />
-
-    <Button
-        android:id="@+id/btnItemOrderNotifyCustomer"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:drawableLeft="@drawable/send_email_icon"
-        android:text="Ενημέρωση πελάτη"
-        app:layout_constraintStart_toStartOf="@+id/txtItemOrderStatus"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderStatus" />
-
-    <Button
-        android:id="@+id/btnItemOrderAssignOrder"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Ανάληψη παραγγελίας"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderStatus" />
-
-    <View
-        android:id="@+id/divider2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="@+id/btnItemOrderNotifyCustomer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/txtItemOrderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Κωδικός παραγγελίας:" />
+
+        <TextView
+            android:id="@+id/txtItemOrderIdValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/txtItemOrderId"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Order #5501" />
+
+        <TextView
+            android:id="@+id/txtItemOrderCustomerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemOrderId"
+            android:text="Όνομα πελάτη:" />
+
+        <TextView
+            android:id="@+id/txtItemOrderCustomerNameValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="#424242"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtItemOrderCustomerName"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemOrderIdValue"
+            android:text="Γιώργος Παπαδόπουλος" />
+
+        <TextView
+            android:id="@+id/txtItemOrderSubmissionDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemOrderCustomerName"
+            android:text="Ημερομηνία υποβολής:" />
+
+        <TextView
+            android:id="@+id/txtItemOrderSubmissionDateValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/txtItemOrderSubmissionDate"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemOrderCustomerNameValue"
+            android:text="27 Δεκ 2023" />
+
+        <TextView
+            android:id="@+id/txtItemOrderPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemOrderSubmissionDate"
+            android:text="Τιμή:" />
+
+        <TextView
+            android:id="@+id/txtItemOrderPriceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/txtItemOrderPrice"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemOrderSubmissionDateValue"
+            android:text="€ 1,250.00" />
+
+        <TextView
+            android:id="@+id/txtItemOrderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="#FF9800"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemOrderPriceValue"
+            android:text="ΣΕ ΑΝΑΜΟΝΗ" />
+
+        <Button
+            android:id="@+id/btnItemOrder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/send_email_icon"
+            android:drawablePadding="8dp"
+            android:text="Ανάληψη παραγγελίας"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemOrderStatus" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

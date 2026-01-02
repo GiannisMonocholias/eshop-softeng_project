@@ -88,21 +88,39 @@ public abstract class User {
         this.emailDAOMemory = emailDAOMemory;
     }
 
-    protected void replyToEmail(User sender, User recipient,EmailMessage original, String subject, String body){
-        deliverEmail(sender, recipient, original,subject, body, true);
+    protected void replyToEmail(User sender, User recipient,EmailMessage original, String subject, String body, Date dateSent){
+
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n\n");
+        sb.append("---------------- Original Message ----------------");
+        sb.append("\nFrom: ").append(original.getFrom());
+        sb.append("\nSubject: ").append(original.getSubject());
+        sb.append("\n Body: ");
+        sb.append("\n" + original.getBody());
+        sb.append("\n");
+        sb.append("---------------- Answer ----------------");
+        sb.append(body);
+
+        String replySubject = "RE: " + original.getSubject();
+        String replyBody = sb.toString();
+
+        deliverEmail(sender, recipient, original,replySubject, replyBody, true, dateSent);
     }
 
-    protected void sendEmail(User sender, User recipient, String subject, String body) {
-        deliverEmail(sender,recipient,null,subject,body,false);
+    public void sendEmail(User sender, User recipient, String subject, String body, Date dateSent) {
+        deliverEmail(sender,recipient,null,subject,body,false, dateSent);
     }
 
-    protected void deliverEmail(User sender, User recipient,EmailMessage original, String subject, String body, boolean isReplyMessage) {
+    protected void deliverEmail(User sender, User recipient,EmailMessage original, String subject, String body, boolean isReplyMessage, Date dateSent) {
         EmailMessage email = new EmailMessage();
         email.setFrom(sender.getEmailAddress());
         email.setTo(recipient.getEmailAddress());
         email.setSubject(subject);
         email.setBody(body);
         email.setReplyMessage(isReplyMessage);
+        email.setDateSent(dateSent);
 
         if(original != null)
             original.setReplied(true);

@@ -9,6 +9,8 @@ public class CatalogueUpdateRequest{
     private String updateDescription;
     private boolean executed=false;
 
+    private RequestStatusType status = RequestStatusType.NEW;
+
     public CatalogueUpdateRequest(Date submissionDate, String updateDescription, ProductType product, AllowedRequest type, int requestId) {
         this.submissionDate = this.dateModified = submissionDate;
         this.updateDescription = updateDescription;
@@ -19,6 +21,14 @@ public class CatalogueUpdateRequest{
 
 
     public  int getId(){return requestId;}
+
+    public RequestStatusType getStatus() {
+        return status;
+    }
+
+    public void setStatus(RequestStatusType status) {
+        this.status = status;
+    }
 
     public Date getDateModified() {
         return dateModified;

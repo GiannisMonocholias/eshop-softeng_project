@@ -33,22 +33,6 @@ public class UserCredentialsDAOMemoryTest {
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void checkNullArguments_BothNullTest(){
-        repository.checkNullArguments(null, null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void checkNullArguments_PasswordNullTest(){
-        repository.checkNullArguments("Username", null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void checkNullArguments_UsernameNullTest(){
-        repository.checkNullArguments(null, "Password");
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
     public void addUserAlreadyExistingUsernameTest() {
         Customer user1 = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",

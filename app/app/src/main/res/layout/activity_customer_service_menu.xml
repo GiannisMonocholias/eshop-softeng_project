@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#766F6F"
-    tools:context=".view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity">
+    tools:context=".view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity">
 
 
     <TextView
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnCustomerServiceEmployeeMenuAssignedOrders"
+        android:id="@+id/btnCustomerServiceEmployeeMenuEmailInbox"
         android:layout_width="382dp"
         android:layout_height="115dp"
         android:layout_marginTop="32dp"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtCustomerServiceEmployeeWelcomeMessage" />
 
     <Button
-        android:id="@+id/btnOrdPrepEmpMenuAssignNewOrder"
+        android:id="@+id/btnCustomerServiceEmployeeMenuNotifyOrdersStatus"
         android:layout_width="377dp"
         android:layout_height="104dp"
         android:layout_marginTop="25dp"
@@ -57,7 +57,7 @@
         android:text="Ενημέρωση πορείας παραγγελιών"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCustomerServiceEmployeeMenuAssignedOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerServiceEmployeeMenuEmailInbox" />
 
     <Button
         android:id="@+id/btnCustomerServiceEmployeeMenuLogout"
