@@ -77,6 +77,7 @@ public class CustomerPaymentActivity extends AppCompatActivity implements Custom
     @Override
     public void goToCustomerHomePage() {
         Intent intent = new Intent(CustomerPaymentActivity.this, CustomerHomePageActivity.class);
+        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
