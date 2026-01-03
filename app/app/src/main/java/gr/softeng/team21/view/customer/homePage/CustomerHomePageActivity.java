@@ -26,7 +26,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
     private CustomerHomePagePresenter presenter;
     private  Customer customer;
 
-    private Button btnEditData, btnDeleteAccount, btnFindProduct, btnLogout;
+    private Button btnEditData, btnDeleteAccount, btnFindProduct, btnLogout,btnInbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,13 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         btnFindProduct.setOnClickListener(v -> FindProduct());
         btnLogout = findViewById(R.id.btnCustomerHomePageLogout);
         btnLogout.setOnClickListener(v -> Logout());
+        btnInbox=findViewById(R.id.btnCustomerHomePageMessages);
+        btnInbox.setOnClickListener(v->Inbox());
 
+    }
+
+    private void Inbox() {
+        presenter.InboxClicked();
     }
 
     private void Logout() {
@@ -71,7 +77,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
     }
 
     private void Delete() {
-        presenter.DeleteClicled();
+        presenter.DeleteClicked();
     }
 
     private void EditData() {
@@ -107,6 +113,13 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void goToInbox() {
+        Intent intent = new Intent(this, gr.softeng.team21.view.customer.EmailList.CustomerEmailListActivity.class);
+        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
+        startActivity(intent);
     }
 
     @Override

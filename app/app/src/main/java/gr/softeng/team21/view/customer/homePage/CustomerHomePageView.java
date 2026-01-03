@@ -5,6 +5,7 @@ public interface CustomerHomePageView {
     void goToEditData();
     void goToFindProduct();
     void goToMain();
+    void goToInbox();
 
     void showDeleteConfirmation();
     void showMessage(String msg);

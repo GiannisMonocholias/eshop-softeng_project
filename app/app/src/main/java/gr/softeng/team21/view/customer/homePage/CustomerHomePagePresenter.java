@@ -27,7 +27,7 @@ private Customer customer;
         view.goToFindProduct();
     }
 
-    public void DeleteClicled() {
+    public void DeleteClicked() {
         view.showDeleteConfirmation();
     }
 
@@ -37,5 +37,9 @@ private Customer customer;
             view.showMessage("Ο λογαριασμός σας διαγράφηκε.");
             view.goToMain();
         }
+    }
+
+    public void InboxClicked() {
+        view.goToInbox();
     }
 }

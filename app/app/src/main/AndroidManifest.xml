@@ -11,56 +11,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
-
+        <activity
+            android:name=".view.customer.EmailList.CustomerEmailListActivity"
+            android:exported="false" />
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.customer.homePage.CustomerHomePageActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.customer.FindProduct.CustomerFindProductActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.customer.ShoppingCart.CustomerShoppingCartActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.customer.Payment.CustomerPaymentActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.customer.Payment.CustomerCardPaymentActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.product.ProductDetailsActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.order.orderDetails.OrderDetailsActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.user.login.LoginActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.user.EditData.UserEditDataActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.user.EmailCompositionActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.employee.deliverer.DelivererOrdersListActivity"
             android:exported="true" />
@@ -100,7 +92,6 @@
         <activity
             android:name=".view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity"
             android:exported="true" />
-
         <activity
             android:name=".view.contact.EmailDetailsActivity"
             android:exported="true" />
@@ -119,7 +110,6 @@
         <activity
             android:name=".view.contact.editdata.Address.AddressActivity"
             android:exported="true" />
-
     </application>
 
 </manifest>
