@@ -2,6 +2,7 @@ package gr.softeng.team21.view.customer.EmailList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -37,8 +38,8 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_email_list);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        View mainView = findViewById(R.id.viewEmailListRoot);
+        Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
