@@ -1,6 +1,5 @@
 package gr.softeng.team21.view.product;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -15,29 +14,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.HashMap;
-
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.EmailAddress;
-import gr.softeng.team21.domain.ProductType;
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.view.customer.ShoppingCart.CustomerShoppingCartActivity;
+import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 
-import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+public class ProductDetailsActivity extends AppCompatActivity implements ProductDetailsView {
 
-import gr.softeng.team21.view.customer.CustomerShoppingCartActivity;
-import gr.softeng.team21.view.user.User_EditData_activity;
+    // UI Elements
+    private TextView tvName, tvCode, tvPrice, tvDescription, tvFeatures, tvQuantity;
+    private ImageView imgProduct;
+    private Button btnAddToCart, btnQuantityminus, btnQuantityplus;
 
-public class ProductDetailsActivity extends AppCompatActivity {
-    private int currentQuantity = 1;
-    TextView tvName, tvCode, tvPrice, tvDescription, tvFeatures, tvQuantity;
-    ImageView imgProduct;
-    Button btnAddToCart, btnQuantityminus, btnQuantityplus;
+    // Presenter Reference
+    private ProductDetailsPresenter presenter;
+    private Customer customer;
 
-
-    // Το προϊόν που βλέπουμε
-    ProductType foundProduct = null;
-    Customer cus = User_EditData_activity.cus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,85 +38,90 @@ public class ProductDetailsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_details);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.delivererOrdersList), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        String customerId=getIntent().getStringExtra("CUSTOMER_ID");
+        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);
+        presenter = new ProductDetailsPresenter(this,customer);
         imgProduct = findViewById(R.id.imgDetail);
         tvName = findViewById(R.id.txtProductDetailActivityName);
         tvCode = findViewById(R.id.txtProductDetailActivityCode);
         tvPrice = findViewById(R.id.txtProductDetailActivityPrice);
         tvDescription = findViewById(R.id.txtProductDetailActivityDetailDescription);
         tvFeatures = findViewById(R.id.txtProductDetailActivityDetailFeatures);
+        tvQuantity = findViewById(R.id.txtProductDetailActivityQuantity);
+
         btnAddToCart = findViewById(R.id.btnProductDetailActivityAddCart);
         btnQuantityminus = findViewById(R.id.btnProductDetailActivityQuantityMinus);
         btnQuantityplus = findViewById(R.id.btnProductDetailActivityQuantityPlus);
-        tvQuantity = findViewById(R.id.txtProductDetailActivityQuantity);
 
 
         String productCode = getIntent().getStringExtra("PRODUCT_CODE");
+        presenter.loadProduct(productCode);
 
-        if (productCode != null) {
-            HashMap<String, ProductType> allProducts = ProductTypeDAOMemory.getInstance().getProducts();
-            foundProduct = cus.findProduct(allProducts, productCode);
 
-            // 3. Εμφάνιση
-            if (foundProduct != null) {
-                tvName.setText(foundProduct.getProductname());
-                tvCode.setText("Κωδικός: " + foundProduct.getProductCode());
-                tvPrice.setText(foundProduct.getPrice().toString());
-                tvDescription.setText(foundProduct.getDescription());
-                tvFeatures.setText("Δείτε την περιγραφή για αναλυτικά στοιχεία.");
-                imgProduct.setImageResource(getImageResIdByCode(foundProduct.getProductCode()));
-            }
-        }
         btnAddToCart.setOnClickListener(v -> addToCart());
         btnQuantityplus.setOnClickListener(v -> plus());
         btnQuantityminus.setOnClickListener(v -> minus());
     }
 
+    private void addToCart() {
+        presenter.addToCartClicked();
+    }
+
     private void plus() {
-        currentQuantity++;
-        tvQuantity.setText("" + currentQuantity);
+presenter.plusClicked();
     }
 
     private void minus() {
-        if (currentQuantity > 1) {
-            currentQuantity--;
-            tvQuantity.setText("" + currentQuantity);
-        }
+presenter.minusClicked();
     }
 
-    private void addToCart() {
-        try {
-            cus.addItemToCart(foundProduct, currentQuantity);
-            showShoppingCart();
-            Toast.makeText(this, "Προστέθηκαν " + currentQuantity + " τεμάχια στο καλάθι!", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(this, "Σφάλμα: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void showProductDetails(String name, String code, String price, String description, String imgCode) {
+        tvName.setText(name);
+        tvCode.setText("Κωδικός: " + code);
+        tvPrice.setText(price);
+        tvDescription.setText(description);
+        tvFeatures.setText("Δείτε την περιγραφή για αναλυτικά στοιχεία.");
+        imgProduct.setImageResource(getImageResIdByCode(imgCode));
     }
 
-    private void showShoppingCart() {
+    @Override
+    public void showQuantity(int quantity) {
+        tvQuantity.setText(String.valueOf(quantity));
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showAddToCartSuccess() {
         new AlertDialog.Builder(this)
                 .setTitle("Επιτυχής Προσθήκη")
                 .setMessage("Το προϊόν προστέθηκε στο καλάθι σας.\nΠώς θέλετε να συνεχίσετε;")
-                .setPositiveButton("Προβολή Καλαθιού", (dialog, which) -> openShoppingCart())
+                .setPositiveButton("Προβολή Καλαθιού", (dialog, which) -> presenter.openShoppingCartClicked())
                 .setNegativeButton("Συνέχεια Αγορών", (dialog, which) -> finish())
                 .setCancelable(false)
                 .show();
     }
 
-    private void openShoppingCart() {
+    @Override
+    public void goToCart() {
         Intent intent = new Intent(ProductDetailsActivity.this, CustomerShoppingCartActivity.class);
+        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
         startActivity(intent);
-        Toast.makeText(this, "Μετάβαση στο Καλάθι...", Toast.LENGTH_SHORT).show();
+        showMessage("Μετάβαση στο Καλάθι...");
     }
+
 
     private int getImageResIdByCode(String code) {
         String codeimg = code.toLowerCase().replace("-", "_");
-        int resId = getResources().getIdentifier(codeimg, "drawable", getPackageName());
-        return resId;
+        return getResources().getIdentifier(codeimg, "drawable", getPackageName());
     }
 }

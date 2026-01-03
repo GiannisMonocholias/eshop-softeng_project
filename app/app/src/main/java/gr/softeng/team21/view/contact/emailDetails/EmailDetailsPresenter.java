@@ -33,9 +33,17 @@ public class EmailDetailsPresenter {
 
     }
 
-    public String findReceiverName(String employeeId){
-        Employee employee = employeeDAO.getEmployee(employeeId);
-        return employee.getFirstname() + " " +  employee.getLastname();
+    public String findReceiverName(String id) {
+        Employee employee = employeeDAO.getEmployee(id);
+        if (employee != null) {
+            return employee.getFirstname() + " " + employee.getLastname();
+        }
+        Customer customer = customerDAO.getCustomer(id);
+        if (customer != null) {
+            return customer.getFirstname() + " " + customer.getLastname();
+        }
+
+        return "xxxx";
     }
 
     public String findSenderName(String senderEmailAddress){

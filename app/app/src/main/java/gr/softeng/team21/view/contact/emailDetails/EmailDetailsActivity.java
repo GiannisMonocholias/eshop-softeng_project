@@ -24,7 +24,8 @@ public class EmailDetailsActivity extends AppCompatActivity implements EmailDeta
     private TextView txtReceiverEmailAddress;
     private TextView txtBody;
 
-    private static final String  EMP_ID_EXTRA = "CUSTOMER_SERVICE_EMPLOYEE_ID";
+    private static final String EMP_ID_EXTRA = "CUSTOMER_SERVICE_EMPLOYEE_ID";
+    private static final String CUSTOMER_ID_EXTRA = "CUSTOMER_ID";
 
 
     @Override
@@ -48,14 +49,17 @@ public class EmailDetailsActivity extends AppCompatActivity implements EmailDeta
         txtReceiverEmailAddress = findViewById(R.id.txtEmailDetailsReceiverEmail);
         txtBody = findViewById(R.id.txtEmailDetailsEmailBody);
 
+        String userId = getIntent().getStringExtra(EMP_ID_EXTRA);
         String subject = getIntent().getStringExtra("SUBJECT_EXTRA");
         String senderEmailAddress = getIntent().getStringExtra("SENDER_EXTRA");
         String receiverEmailAddress = getIntent().getStringExtra("RECEIVER_EXTRA");
         String body = getIntent().getStringExtra("BODY_EXTRA");
 
-        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
-        presenter.onViewCreated(subject, senderEmailAddress, receiverEmailAddress, body, employeeId);
-    }
+        if (userId == null)
+            userId = getIntent().getStringExtra(CUSTOMER_ID_EXTRA);
+        else if (userId != null)
+            presenter.onViewCreated(subject, senderEmailAddress, receiverEmailAddress, body, userId);
+}
 
 
     @Override

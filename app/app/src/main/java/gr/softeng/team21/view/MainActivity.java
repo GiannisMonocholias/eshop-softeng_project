@@ -11,7 +11,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.view.customer.CustomerHomePageActivity;
+import gr.softeng.team21.memorydao.MemoryInitializer;
+import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
+import gr.softeng.team21.view.user.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnEntrance;
@@ -20,17 +22,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activityCseDashboard), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
         btnEntrance=findViewById(R.id.btnMainActivityEntrance);
         btnEntrance.setOnClickListener(v->Entrance());
+        MemoryInitializer.prepareData();
+
     }
 
     private void Entrance() {
-       Intent intent=new Intent(MainActivity.this, CustomerHomePageActivity.class);
+       Intent intent=new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 }
