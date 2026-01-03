@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -10,33 +10,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-<<<<<<< Updated upstream
         android:theme="@style/Theme.Team21">
-        <activity
-            android:name=".view.customer.EmailList.CustomerEmailListActivity"
-            android:exported="false" />
+
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-=======
-        android:theme="@style/Theme.Team21" >
+
         <activity
-            android:name=".view.employee.deliverer.delivererMenu.DelivererMenuActivity"
-            android:exported="false" />
->>>>>>> Stashed changes
+            android:name=".view.user.login.LoginActivity"
+            android:exported="true" />
         <activity
             android:name=".view.customer.register.RegisterActivity"
             android:exported="false" />
+
         <activity
-            android:name=".view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity"
+            android:name=".view.customer.homePage.CustomerHomePageActivity"
             android:exported="true" />
-<<<<<<< Updated upstream
         <activity
             android:name=".view.customer.FindProduct.CustomerFindProductActivity"
             android:exported="true" />
@@ -50,65 +44,25 @@
             android:name=".view.customer.Payment.CustomerCardPaymentActivity"
             android:exported="true" />
         <activity
+            android:name=".view.customer.EmailList.CustomerEmailListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.user.EditData.UserEditDataActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.user.emailComposition.EmailCompositionActivity"
+            android:exported="true" />
+        <activity
             android:name=".view.product.ProductDetailsActivity"
             android:exported="true" />
         <activity
             android:name=".view.order.orderDetails.OrderDetailsActivity"
             android:exported="true" />
-=======
->>>>>>> Stashed changes
         <activity
-            android:name=".view.user.login.LoginActivity"
+            android:name=".view.contact.emailDetails.EmailDetailsActivity"
             android:exported="true" />
-        <activity
-<<<<<<< Updated upstream
-            android:name=".view.user.EditData.UserEditDataActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.user.EmailCompositionActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.deliverer.DelivererOrdersListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteDeleteProductActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteProcessProductActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteInsertProductActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.AssignedRequestsToExecuteActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.AvailableRequestsToAssignActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.UpdateCatalogueEmployeeMenuActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.orderPreparationEmployee.OrderPreparationEmployeeMenuActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.orderPreparationEmployee.AssignedOrdersToPrepareActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.orderPreparationEmployee.AvailableOrdersToAssignActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.customerServiceEmployee.OrderStatusActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.customerServiceEmployee.EmailListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.EmailDetailsActivity"
-            android:exported="true" />
+
         <activity
             android:name=".view.contact.editdata.Phone.PhoneActivity"
             android:exported="true" />
@@ -124,9 +78,14 @@
         <activity
             android:name=".view.contact.editdata.Address.AddressActivity"
             android:exported="true" />
-=======
+
+        <activity
+            android:name=".view.employee.deliverer.delivererMenu.DelivererMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.employee.deliverer.delivererOrdersList.DelivererOrdersListActivity"
             android:exported="true" />
+
         <activity
             android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity"
             android:exported="true" />
@@ -145,11 +104,9 @@
         <activity
             android:name=".view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity"
             android:exported="true" />
+
         <activity
-            android:name=".view.order.orderDetails.OrderDetailsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.emailDetails.EmailDetailsActivity"
+            android:name=".view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity"
             android:exported="true" />
         <activity
             android:name=".view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu.OrderPreparationEmployeeMenuActivity"
@@ -160,9 +117,7 @@
         <activity
             android:name=".view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity"
             android:exported="true" />
-        <activity
-            android:name=".view.user.emailComposition.EmailCompositionActivity"
-            android:exported="true" />
+
         <activity
             android:name=".view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity"
             android:exported="true" />
@@ -172,52 +127,7 @@
         <activity
             android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity"
             android:exported="true" />
-        <activity
-            android:name=".view.product.ProductDetailsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.PhoneActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.EmailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.PasswordActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.UsernameActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.AddressActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.user.User_EditData_activity"
-            android:exported="true" />
-        <activity
-            android:name=".view.customer.CustomerCardPaymentActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.customer.CustomerPaymentActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.customer.CustomerShoppingCartActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.customer.CustomerHomePageActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.customer.Customer_FindProduct_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".view.MainActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
->>>>>>> Stashed changes
     </application>
 
 </manifest>
