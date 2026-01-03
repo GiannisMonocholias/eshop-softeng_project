@@ -5,7 +5,7 @@
     android:id="@+id/OrdPrepEmpAvailableOrdersToAssign"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity">
+    tools:context=".view.employee.orderPreparationEmployee.AvailableOrdersToAssignActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/OrdPrepEmprecyclerViewNonAssignedOrders"

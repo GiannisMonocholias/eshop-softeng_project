@@ -5,30 +5,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-
 import gr.softeng.team21.R;
+import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.domain.OrderStatusType;
+import gr.softeng.team21.domain.StatusType;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
-    private List<Order> orders;
-    private OnOrderClickListener listener;
-    private OrderAdapterType type;
+    private List<Order> orderList;
+    private OrderActionListener listener;
+    private OrderAdapterTypes adapterType;
 
-    public interface OnOrderClickListener {
-        void onAssignClick(Order order);
+    // 1. Interface: Αυτό θα υλοποιήσουμε στο Activity
+    public interface OrderActionListener {
+        void onActionClick(Order order);
     }
 
-    public OrderAdapter(List<Order> orders, OrderAdapterType type, OnOrderClickListener listener) {
-        this.orders = (orders != null) ? orders : new java.util.ArrayList<>();
+    // Constructor
+    public OrderAdapter(List<Order> orderList, OrderAdapterTypes adapterType, OrderActionListener listener) {
+        this.orderList = orderList;
+        this.adapterType = adapterType;
         this.listener = listener;
-        this.type = type;
     }
 
     @NonNull
@@ -40,62 +40,116 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        Order order = orders.get(position);
+        Order order = orderList.get(position);
+        Customer customer = order.getShoppingCart().getCustomer();
 
-        holder.txtOrderIdValue.setText("#" + order.getOrdercode());
-        holder.txtCustomerNameValue.setText(order.getShoppingCart().getCustomer().getLastname() + " " +
-                order.getShoppingCart().getCustomer().getFirstname());
-        holder.txtPriceValue.setText(order.getTotal_amount().toString());
+        // Ενημέρωση των πεδίων με τα νέα IDs
+        holder.txtOrderIdValue.setText("Order #" + order.getOrdercode());
         holder.txtDateValue.setText(order.getSubmissiondate().toString());
+        if(order.getTotal_amount()!=null)
+            holder.txtPriceValue.setText(order.getTotal_amount().toString() + " €");
+        else
+            holder.txtPriceValue.setText("0 €");
+
         holder.txtStatus.setText(order.getOrderstatus().toString());
 
-        switch(type){
-            case ASSIGN_ORDER_ADAPTER:
-                holder.btnItemOrder.setText("Ανάληψη παραγγελίας");
-                break;
-            case NOTIFY_ORDER_ADAPTER:
-                if(order.getOrderstatus() == OrderStatusType.DELAYED)
-                    holder.btnItemOrder.setText("Ενημέρωση καθυστέρησης");
-                else if (order.getOrderstatus() == OrderStatusType.SHIPPED)
-                    holder.btnItemOrder.setText("Ενημέρωση ετοιμότητας");
-                break;
-            case ASSIGNED_ORDERS_ADAPTER:
-                holder.btnItemOrder.setText("Ετοιμασία παραγγελίας");
-                break;
+        if (customer != null) {
+            holder.txtCustomerNameValue.setText(customer.getFirstname() + " " + customer.getLastname());
+        } else {
+            holder.txtCustomerNameValue.setText("Άγνωστος Πελάτης");
         }
 
-        holder.btnItemOrder.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onAssignClick(order);
+        // 1. Αρχικά το κρύβουμε και τα δύο κουμπιά
+        holder.btnEmailNotification.setVisibility(View.GONE);
+        holder.btnAssignOrder.setVisibility(View.GONE);
+        if(adapterType == OrderAdapterTypes.NOTIFY_ORDER_ADAPTER) {
+            holder.btnEmailNotification.setVisibility(View.VISIBLE);
+        }
+        else if(adapterType == OrderAdapterTypes.ASSIGN_ORDER_ADAPTER
+        && order.getOrderstatus() == StatusType.NEW){
+            holder.btnAssignOrder.setVisibility(View.VISIBLE);
+        }
+
+
+
+        // 2. Εμφάνιση ανάλογα με το status
+        if (adapterType == OrderAdapterTypes.NOTIFY_ORDER_ADAPTER) {
+            if (order.getOrderstatus() == StatusType.DELAYED) {
+                holder.btnEmailNotification.setText("Ενημέρωση Καθυστέρησης");
             }
-        });
+            else if (order.getOrderstatus() == StatusType.SHIPPED){
+                holder.btnEmailNotification.setText("Ενημέρωση Ετοιμότητας");
+            }
+            else{
+                holder.btnEmailNotification.setVisibility(View.GONE);
+            }
+        }
+
+
+        if (adapterType == OrderAdapterTypes.NOTIFY_ORDER_ADAPTER) {
+            // Εμφάνιση μόνο του Email Button
+            holder.btnEmailNotification.setVisibility(View.VISIBLE);
+            holder.btnAssignOrder.setVisibility(View.GONE);
+
+            holder.btnEmailNotification.setOnClickListener(v -> {
+                if (listener != null) listener.onActionClick(order);
+            });
+
+        } else if (adapterType == OrderAdapterTypes.ASSIGN_ORDER_ADAPTER) {
+            // Εμφάνιση μόνο του Assign Button
+            holder.btnAssignOrder.setVisibility(View.VISIBLE);
+            holder.btnEmailNotification.setVisibility(View.GONE);
+
+            holder.btnAssignOrder.setOnClickListener(v -> {
+                // Εδώ υποθέτω ότι περνάς το order για να ξέρεις ποια να αναθέσεις
+                if (listener != null) listener.onActionClick(order);
+            });
+
+        } else if (adapterType == OrderAdapterTypes.ASSIGNED_ORDERS_ADAPTER) {
+            // --- Η ΠΕΡΙΠΤΩΣΗ ΠΟΥ ΜΑΣ ΕΝΔΙΑΦΕΡΕΙ ΤΩΡΑ ---
+
+            // Απόκρυψη όλων των κουμπιών (θέλουμε κλικ σε όλο το πλαίσιο)
+            holder.btnAssignOrder.setVisibility(View.GONE);
+            holder.btnEmailNotification.setVisibility(View.GONE);
+
+            // Κλικ σε ολόκληρη τη γραμμή (itemView) για πλοήγηση στις λεπτομέρειες
+            holder.itemView.setOnClickListener(v -> {
+                if (listener != null) listener.onActionClick(order);
+            });
+        }
+
+
+        // --- BONUS: Χρώμα Status ---
+        if(order.getOrderstatus() == StatusType.DELAYED) {
+            holder.txtStatus.setTextColor(android.graphics.Color.parseColor("#FF9800")); // Πορτοκαλί
+        } else if (order.getOrderstatus() == StatusType.SHIPPED) {
+            holder.txtStatus.setTextColor(android.graphics.Color.parseColor("#4CAF50")); // Πράσινο
+        } else {
+            holder.txtStatus.setTextColor(android.graphics.Color.RED);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return orders.size();
-    }
-
-    public void removeOrder(Order order) {
-        int position = orders.indexOf(order);
-        if (position != -1) {
-            orders.remove(position);
-            notifyItemRemoved(position);
-        }
+        return orderList.size();
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView txtOrderIdValue, txtCustomerNameValue, txtDateValue, txtPriceValue, txtStatus;
-        Button btnItemOrder;
+        TextView txtOrderIdValue, txtDateValue, txtCustomerNameValue, txtStatus, txtPriceValue;
+        Button btnEmailNotification,btnAssignOrder; // Το κουμπί σου
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
+            // Προσοχή: Εδώ συνδέουμε τα IDs που έβαλες στο XML σου
             txtOrderIdValue = itemView.findViewById(R.id.txtItemOrderIdValue);
-            txtCustomerNameValue = itemView.findViewById(R.id.txtItemOrderCustomerNameValue);
             txtDateValue = itemView.findViewById(R.id.txtItemOrderSubmissionDateValue);
-            txtPriceValue = itemView.findViewById(R.id.txtItemOrderPriceValue);
+            txtCustomerNameValue = itemView.findViewById(R.id.txtItemOrderCustomerNameValue);
             txtStatus = itemView.findViewById(R.id.txtItemOrderStatus);
-            btnItemOrder = itemView.findViewById(R.id.btnItemOrder);
+            txtPriceValue = itemView.findViewById(R.id.txtItemOrderPriceValue);
+
+            // ΤΟ ΝΕΟ ID ΤΟΥ ΚΟΥΜΠΙΟΥ ΣΟΥ:
+            btnEmailNotification = itemView.findViewById(R.id.btnItemOrderNotifyCustomer);
+            btnAssignOrder = itemView.findViewById(R.id.btnItemOrderAssignOrder);
         }
     }
 }

@@ -8,5 +8,4 @@ public interface CustomerHomePageView {
 
     void showDeleteConfirmation();
     void showMessage(String msg);
-    void goToInbox();
 }

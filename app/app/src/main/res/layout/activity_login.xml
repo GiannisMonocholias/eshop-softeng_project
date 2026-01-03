@@ -178,7 +178,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="Δημιουργία Λογαριασμού"
-            android:textColor="#009688"
+            android:textColor="#1565C0"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/logintxtViewNewUser"

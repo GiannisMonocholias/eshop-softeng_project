@@ -14,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.Date;
+import gr.softeng.team21.domain.EmailAddress;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.view.MainActivity;
 import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;
@@ -24,7 +26,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
     private CustomerHomePagePresenter presenter;
     private  Customer customer;
 
-    private Button btnEditData, btnDeleteAccount, btnFindProduct, btnLogout,btnInbox;
+    private Button btnEditData, btnDeleteAccount, btnFindProduct, btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +59,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         btnFindProduct.setOnClickListener(v -> FindProduct());
         btnLogout = findViewById(R.id.btnCustomerHomePageLogout);
         btnLogout.setOnClickListener(v -> Logout());
-        btnInbox=findViewById(R.id.btnCustomerHomePageInbox);
-        btnInbox.setOnClickListener(v->Inbox());
 
-    }
-
-    private void Inbox() {
-        presenter.InboxClicked();
     }
 
     private void Logout() {
@@ -126,13 +122,6 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
     @Override
     public void showMessage(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void goToInbox() {
-        Intent intent = new Intent(this, gr.softeng.team21.view.customer.EmailList.CustomerEmailListActivity.class);
-        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
-        startActivity(intent);
     }
 
 }

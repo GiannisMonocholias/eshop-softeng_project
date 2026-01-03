@@ -25,7 +25,7 @@ public class CustomerPaymentPresenter {
                     return;
                 }
                 customer.selectPaymentType(PaymentType.CASH, "", order);
-                view.showConfirmation();
+                view.showConfirmation(order.getTotal_amount());
             } catch (Exception e) {
                 view.showMessage("Σφάλμα: " + e.getMessage());
             }

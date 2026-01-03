@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.Money;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.PaymentType;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
@@ -89,10 +90,10 @@ public class CustomerPaymentActivity extends AppCompatActivity implements Custom
     }
 
     @Override
-    public void showConfirmation() {
+    public void showConfirmation(Money amount) {
         new AlertDialog.Builder(this)
                 .setTitle("Επιβεβαίωση ή Ακύρωση")
-                .setMessage("Να καταχωρηθεί η παραγγελία σας;")
+                .setMessage("Να καταχωρηθεί η παραγγελία σας αξίας: "+amount+";")
                 .setCancelable(false)
                 .setPositiveButton("Επιβεβαίωση Παραγγελίας", (dialog, which) -> presenter.ConfirmClicked())
                 .setNegativeButton("Ακύρωση", (dialog, which) -> presenter.CancelClicked())

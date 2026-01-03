@@ -29,7 +29,7 @@ public class CustomerServiceEmployeeTest {
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
         customer.setEmailProvider(new EmailDAOMemory());
 
-        order = new Order("order1246", new Date(), OrderStatusType.NEW,
+        order = new Order("order1246", new Date(), StatusType.NEW,
                 false, PaymentType.CASH, new Date(), new ShoppingCart());
         employee.setEmailProvider(new EmailDAOMemory());
 
@@ -37,24 +37,21 @@ public class CustomerServiceEmployeeTest {
                 new EmailAddress("customer1@example.com"),
                 new EmailAddress("agent@example.com"),
                 "Παραγγελία #1234",
-                "Καλησπέρα, θα ήθελα ενημέρωση για την παραγγελία μου.",
-                new Date(10,12,2025)
+                "Καλησπέρα, θα ήθελα ενημέρωση για την παραγγελία μου."
         );
 
         EmailMessage e2 = new EmailMessage(
                 new EmailAddress("customer2@example.com"),
                 new EmailAddress("agent@example.com"),
                 "Πρόβλημα με το προϊόν",
-                "Το προϊόν που παρέλαβα έχει ελάττωμα. Τι μπορώ να κάνω;",
-                new Date()
+                "Το προϊόν που παρέλαβα έχει ελάττωμα. Τι μπορώ να κάνω;"
         );
 
         EmailMessage e3 = new EmailMessage(
                 new EmailAddress("customer3@example.com"),
                 new EmailAddress("agent@example.com"),
                 "Ευχαριστήριο μήνυμα",
-                "Ευχαριστώ για την άμεση εξυπηρέτηση!",
-                new Date(8,12,2025)
+                "Ευχαριστώ για την άμεση εξυπηρέτηση!"
         );
         employee.emailDAOMemory.saveInboxEmails(e1);
         employee.emailDAOMemory.saveInboxEmails(e2);
@@ -64,22 +61,19 @@ public class CustomerServiceEmployeeTest {
                 new EmailAddress("agent@example.com"),
                 new EmailAddress("customer1@example.com"),
                 "Απάντηση στην παραγγελία #1234",
-                "Καλησπέρα σας, η παραγγελία σας είναι σε διαδικασία αποστολής.",
-                new Date(20,12,2025)
+                "Καλησπέρα σας, η παραγγελία σας είναι σε διαδικασία αποστολής."
         );
         EmailMessage sent2 = new EmailMessage(
                 new EmailAddress("agent@example.com"),
                 new EmailAddress("customer2@example.com"),
                 "Οδηγίες για επιστροφή προϊόντος",
-                "Μπορείτε να επιστρέψετε το προϊόν εντός 14 ημερών με δωρεάν μεταφορικά.",
-                new Date(21,12,2025)
+                "Μπορείτε να επιστρέψετε το προϊόν εντός 14 ημερών με δωρεάν μεταφορικά."
         );
         EmailMessage sent3 = new EmailMessage(
                 new EmailAddress("agent@example.com"),
                 new EmailAddress("customer3@example.com"),
                 "Ευχαριστούμε για το μήνυμά σας",
-                "Χαιρόμαστε που μείνατε ικανοποιημένος από την εξυπηρέτηση. Είμαστε πάντα στη διάθεσή σας.",
-                new Date(18,12,2025)
+                "Χαιρόμαστε που μείνατε ικανοποιημένος από την εξυπηρέτηση. Είμαστε πάντα στη διάθεσή σας."
         );
         employee.emailDAOMemory.saveSentEmails(sent1);
         employee.emailDAOMemory.saveSentEmails(sent2);
@@ -94,7 +88,7 @@ public class CustomerServiceEmployeeTest {
 
     @Test(expected = NullPointerException.class)
     public void notifyCustomerDelay_NullCustomerTest(){
-        Order tempOrder = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
+        Order tempOrder = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
         employee.notifyCustomerDelay(tempOrder, null);
     }
 
@@ -111,7 +105,7 @@ public class CustomerServiceEmployeeTest {
 
     @Test(expected = NullPointerException.class)
     public void notifyCustomerReady_NullCustomerTest(){
-        Order tempOrder = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
+        Order tempOrder = new Order("order1246", new Date(), StatusType.NEW, false, PaymentType.CASH, new Date(), new ShoppingCart());
         employee.notifyCustomerReady(tempOrder, null);
     }
 

@@ -25,11 +25,6 @@ public  class OrderPreparationEmployee extends Employee{
         this.wareHouse = ProductsWareHouseDAOMemory.getInstance();
     }
 
-
-    public void addOrder(Order order){assignedOrders.add(order);}
-
-    public void removeOrder(Order order){assignedOrders.remove(order);}
-
     public int getTotalOrdersPreparations() {
         return totalOrdersPreparations;
     }
@@ -98,7 +93,7 @@ public  class OrderPreparationEmployee extends Employee{
             for(CartItem item: order.getShoppingCart().getItems()){
                 wareHouse.decreaseProductStock(item.getProductType(), item.getQuantity());
             }
-            order.setOrderstatus(OrderStatusType.SHIPPED);
+            order.setOrderstatus(StatusType.SHIPPED);
 
 
             Deliverer selectedDeliverer = (Deliverer) selectRandomEmployee(Deliverer.class);
@@ -117,14 +112,14 @@ public  class OrderPreparationEmployee extends Employee{
             totalUpdateReserveRequests++;
 
 
-            sendEmail(this, Admin.getInstance(), "Inadequate stock for products", msg, new Date());
+            sendEmail(this, Admin.getInstance(), "Inadequate stock for products", msg);
 
             CustomerServiceEmployee selectedCustomerServiceEmployee = (CustomerServiceEmployee)selectRandomEmployee(CustomerServiceEmployee.class);
 
 
             msg = "Please, inform customer about the expected delay of his order with id "+order.getOrdercode()+", due to products' stock shortage\n";
-            sendEmail(this, selectedCustomerServiceEmployee, "Inadequate stock for products", msg, new Date());
-            order.setOrderstatus(OrderStatusType.DELAYED);
+            sendEmail(this, selectedCustomerServiceEmployee, "Inadequate stock for products", msg);
+            order.setOrderstatus(StatusType.DELAYED);
             selectedCustomerServiceEmployee.addOrder(order);
         }
     }

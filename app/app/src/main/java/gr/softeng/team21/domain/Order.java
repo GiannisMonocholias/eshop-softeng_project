@@ -4,15 +4,16 @@ public class Order {
     private String ordercode;
     private Date submissiondate;
     private Date deliverydate;
-    private OrderStatusType orderstatus;
+    private StatusType orderstatus;
     private boolean paid;
     private PaymentType paymentmethod;
     private ShoppingCart shoppingCart;
     private Money total_amount;
 
 
-    public Order (String ordercode, Date submissiondate , OrderStatusType orderstatus,
-                  boolean paid, PaymentType paymentmethod, Date deliverydate, ShoppingCart shoppingCart) {
+//ENUM ORDERSTATUS
+    public Order (String ordercode, Date submissiondate ,StatusType orderstatus,
+                  boolean paid, PaymentType paymentmethod,Date deliverydate,ShoppingCart shoppingCart) {
         this.ordercode = ordercode;
         this.submissiondate = submissiondate;
        this.deliverydate = deliverydate;
@@ -54,11 +55,11 @@ public class Order {
         this.deliverydate = deliverydate;
     }
 
-    public OrderStatusType getOrderstatus ( ) {
+    public StatusType getOrderstatus ( ) {
         return orderstatus;
     }
 
-    public void setOrderstatus (OrderStatusType orderstatus) {
+    public void setOrderstatus (StatusType orderstatus) {
         this.orderstatus = orderstatus;
     }
 

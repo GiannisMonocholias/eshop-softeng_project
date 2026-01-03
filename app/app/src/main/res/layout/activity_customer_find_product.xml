@@ -3,28 +3,60 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/delivererOrdersList"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:padding="16dp"
-    tools:context=".view.customer.Customer_FindProduct_Activity">
+    tools:context=".view.customer.FindProduct.CustomerFindProductActivity">
+
+    <TextView
+        android:id="@+id/txtCustomerFindProductActivityHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Αναζήτηση Προϊόντων"
+        android:textColor="#009688"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <SearchView
         android:id="@+id/searchProductActivityHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/abc_popup_background_mtrl_mult"
+        android:backgroundTint="#F0F0F0"
         android:iconifiedByDefault="false"
-        android:queryHint="Αναζήτηση προϊόντος (Όνομα)..."
-        app:layout_constraintTop_toTopOf="parent"
+        android:queryHint="Πληκτρολογήστε όνομα..."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/txtCustomerFindProductActivityHeader" />
 
     <ListView
         android:id="@+id/ViewlistProductActivity"
-        android:layout_width="408dp"
-        android:layout_height="678dp"
+        android:layout_width="381dp"
+        android:layout_height="520dp"
+        android:divider="#DDDDDD"
+        android:dividerHeight="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerFindProductActivityText" />
+
+    <TextView
+        android:id="@+id/txtCustomerFindProductActivityText"
+        android:layout_width="230dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Πατήστε πάνω σε κάποιοπροϊόν "
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchProductActivityHeader" />
 

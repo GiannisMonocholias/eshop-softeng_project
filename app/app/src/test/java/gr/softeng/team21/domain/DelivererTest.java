@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*; // Χρησιμοποιούμε μόνο JUnit 4 Assertions
 
+import java.util.ArrayList;
+
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
 public class DelivererTest {
@@ -18,7 +20,7 @@ public class DelivererTest {
         delivery = new Deliverer("GP","Giorgos","abcd123","Papadopoulos","3029761482",
                 new EmailAddress("GP@gmail.com"),"DEL_1",100,1000,8,
                 EmployeeState.ACTIVE, hireDate,100 , true );
-        order = new Order("001" , new Date() , OrderStatusType.NEW , false ,PaymentType.CASH, new Date() , new ShoppingCart());
+        order = new Order("001" , new Date() , StatusType.NEW , false ,PaymentType.CASH, new Date() , new ShoppingCart());
 
         EmployeeDAOMemory.getInstance().clear();
 
@@ -46,7 +48,7 @@ public class DelivererTest {
 
         assertTrue(found);
 
-        Order order1 = new Order("008" , new Date() , OrderStatusType.NEW , false ,PaymentType.CASH, new Date() , new ShoppingCart());
+        Order order1 = new Order("008" , new Date() , StatusType.NEW , false ,PaymentType.CASH, new Date() , new ShoppingCart());
 
         assertFalse(delivery.checkfor(order1));
     }

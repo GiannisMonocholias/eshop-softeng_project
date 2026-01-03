@@ -23,7 +23,7 @@ import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 public class ProductDetailsActivity extends AppCompatActivity implements ProductDetailsView {
 
     // UI Elements
-    private TextView tvName, tvCode, tvPrice, tvDescription, tvFeatures, tvQuantity;
+    private TextView tvName, tvCode, tvPrice, tvDescription, tvQuantity;
     private ImageView imgProduct;
     private Button btnAddToCart, btnQuantityminus, btnQuantityplus;
 
@@ -51,7 +51,6 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         tvCode = findViewById(R.id.txtProductDetailActivityCode);
         tvPrice = findViewById(R.id.txtProductDetailActivityPrice);
         tvDescription = findViewById(R.id.txtProductDetailActivityDetailDescription);
-        tvFeatures = findViewById(R.id.txtProductDetailActivityDetailFeatures);
         tvQuantity = findViewById(R.id.txtProductDetailActivityQuantity);
 
         btnAddToCart = findViewById(R.id.btnProductDetailActivityAddCart);
@@ -86,7 +85,6 @@ presenter.minusClicked();
         tvCode.setText("Κωδικός: " + code);
         tvPrice.setText(price);
         tvDescription.setText(description);
-        tvFeatures.setText("Δείτε την περιγραφή για αναλυτικά στοιχεία.");
         imgProduct.setImageResource(getImageResIdByCode(imgCode));
     }
 

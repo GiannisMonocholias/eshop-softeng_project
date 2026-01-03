@@ -38,8 +38,4 @@ private Customer customer;
             view.goToMain();
         }
     }
-
-    public void InboxClicked() {
-        view.goToInbox();
-    }
 }

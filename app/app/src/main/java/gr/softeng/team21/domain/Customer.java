@@ -102,7 +102,7 @@ public class Customer extends User {
         Date deliverydate = new Date ( );
         deliverydate.changeDays ( 30 );
         String orderCode = "ORD-" + UUID.randomUUID ( ).toString ( );
-        Order neworder = new Order ( orderCode, new Date ( ), OrderStatusType.NEW, false, PaymentType.CASH, deliverydate, shoppingCart );
+        Order neworder = new Order ( orderCode, new Date ( ), StatusType.NEW, false, PaymentType.CASH, deliverydate, shoppingCart );
        neworder.setTotal_amount ( shoppingCart.getTotalCost () );
         return neworder;
     }
