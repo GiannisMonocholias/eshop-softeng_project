@@ -110,9 +110,5 @@ public class Address {
         result = country == null ? result : 13 * result + country.hashCode();
         return result;
     }
-    @Override
-    public String toString() {
-        return street + " " + number + ", " + city + " " + zipcode;
-    }
 }
 

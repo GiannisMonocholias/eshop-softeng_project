@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -21,11 +22,11 @@ import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.MemoryInitializer;
-import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
-import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity;
-import gr.softeng.team21.view.employee.deliverer.DelivererOrdersListActivity;
-import gr.softeng.team21.view.employee.orderPreparationEmployee.OrderPreparationEmployeeMenuActivity;
-import gr.softeng.team21.view.employee.updateCatalogueEmployee.UpdateCatalogueEmployeeMenuActivity;
+import gr.softeng.team21.view.customer.register.RegisterActivity;
+import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity;
+import gr.softeng.team21.view.employee.deliverer.delivererMenu.DelivererMenuActivity;
+import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu.OrderPreparationEmployeeMenuActivity;
+import gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity;
 import gr.softeng.team21.view.util.UserType;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private Button loginButton;
-
+    private TextView registerTextView;
     private LoginPresenter presenter;
 
     @Override
@@ -53,13 +54,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         usernameEditText = findViewById(R.id.edtloginUsername);
         passwordEditText = findViewById(R.id.edtloginPassword);
         loginButton = findViewById(R.id.loginButton);
+        registerTextView = findViewById(R.id.loginregisterTxtView);
 
 
         presenter = new LoginPresenter(this);
 
         loginButton.setOnClickListener(v -> presenter.onLogin());
 
-
+        registerTextView.setOnClickListener(v -> presenter.onRegister());
     }
 
     @Override
@@ -71,6 +73,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public String getPassword() {
         return passwordEditText.getText().toString();
     }
+
+    @Override
+    public TextView getUserNameEdtText(){return usernameEditText;}
+
+    @Override
+    public TextView getPasswordEdtText(){return passwordEditText;}
+
 
     @Override
     public void showErrorMessage(String title, String message) {
@@ -96,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 intent.putExtra("CUSTOMER_SERVICE_EMPLOYEE_ID", ((CustomerServiceEmployee)user).getEmployeeId());
                 break;
             case DELIVERER:
-                intent = new Intent(LoginActivity.this, DelivererOrdersListActivity.class);
+                intent = new Intent(LoginActivity.this, DelivererMenuActivity.class);
                 intent.putExtra("DELIVERER_ID", ((Deliverer)user).getEmployeeId());
                 break;
             case ORDER_PREPARATION_EMPLOYEE:
@@ -117,7 +126,17 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         if(intent != null){
             startActivity(intent);
         }
+    }
 
+    @Override
+    public void navigateToRegister() {
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        presenter.loginReset();
     }
 }

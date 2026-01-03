@@ -12,6 +12,7 @@ public interface EmployeeDAO {
 
      void addEmployee(Employee employee);
 
+     void removeEmployee(Employee employee);
 
      void clear();
 }

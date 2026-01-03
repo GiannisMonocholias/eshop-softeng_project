@@ -2,75 +2,73 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/delivererOrdersList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".view.customer.ShoppingCart.CustomerShoppingCartActivity">
+    android:background="#4B4545"
+    tools:context=".view.customer.CustomerShoppingCartActivity">
+
 
     <TextView
         android:id="@+id/txtCustomerShoppingCartActivityHeader"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:fontFamily="sans-serif-black"
+        android:layout_width="411dp"
+        android:layout_height="59dp"
+
+        android:layout_marginTop="4dp"
+
+        android:background="#009688"
+        android:backgroundTint="#009688"
+        android:fontFamily="sans-serif-medium"
         android:text="Καλάθι Αγοράς"
         android:textAlignment="center"
-        android:textColor="#009688"
-        android:textSize="32sp"
+        android:textColor="#F8F7F7"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewCustomerShoppingCartActivity"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/dividerBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCustomerShoppingCartActivityHeader" />
-
-    <View
-        android:id="@+id/dividerBottom"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="16dp"
-        android:background="#EEEEEE"
-        app:layout_constraintBottom_toTopOf="@+id/txtCustomerShoppingCartActivityTotalPrice"/>
 
     <TextView
         android:id="@+id/txtCustomerShoppingCartActivityTotalPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="36dp"
         android:text="Σύνολο: 0.00 €"
-        android:textColor="#000000"
-        android:textSize="22sp"
+        android:textColor="#009688"
+        android:textSize="20sp"
         android:textStyle="bold"
-
-        app:layout_constraintBottom_toTopOf="@+id/btnCustomerShoppingCartActivityPayment"
-
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.031"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerShoppingCartActivityHeader" />
 
     <Button
         android:id="@+id/btnCustomerShoppingCartActivityPayment"
-        android:layout_width="337dp"
-        android:layout_height="46dp"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="40dp"
-        android:backgroundTint="#009688"
         android:text="Συνέχεια στην Πληρωμή"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewCustomerShoppingCartActivity"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnCustomerShoppingCartActivityPayment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerShoppingCartActivityTotalPrice"
+        app:layout_constraintVertical_bias="0.72" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

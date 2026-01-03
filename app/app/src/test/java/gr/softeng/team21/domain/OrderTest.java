@@ -29,7 +29,7 @@ public class OrderTest {
         order = new Order(
                 "ORD-1001",
                 subDate,
-                StatusType.NEW,
+                OrderStatusType.NEW,
                 false,
                 PaymentType.CASH,
                 delDate,
@@ -75,14 +75,14 @@ public class OrderTest {
 
     @Test
     public void getOrderstatus() {
-        assertEquals(StatusType.NEW, order.getOrderstatus());
+        assertEquals(OrderStatusType.NEW, order.getOrderstatus());
     }
 
     @Test
     public void setOrderstatus() {
 
-        order.setOrderstatus(StatusType.DELIVERED);
-        assertEquals(StatusType.DELIVERED, order.getOrderstatus());
+        order.setOrderstatus(OrderStatusType.DELIVERED);
+        assertEquals(OrderStatusType.DELIVERED, order.getOrderstatus());
     }
 
     @Test

@@ -25,6 +25,7 @@ public  class CustomerServiceEmployee extends Employee{
     public ArrayList<Order> getOrders(){return orders;}
 
     public void addOrder(Order order){orders.add(order);}
+    public void removeOrder(Order order){orders.remove(order);};
 
     public void setOrders(ArrayList<Order> orders){this.orders = orders;}
 
@@ -46,7 +47,9 @@ public  class CustomerServiceEmployee extends Employee{
         msg.append(" is delayed due to insufficient stock:\n");
         msg.append("\nWe apologize for the inconvenience.\nCustomer Service Team");
 
-        sendEmail(this, customer, "Order Delay Notification", msg.toString());
+        Date dateSent = new Date();
+
+        sendEmail(this, customer, "Order Delay Notification", msg.toString(),dateSent);
     }
 
     public void notifyCustomerReady(Order order, Customer customer) {
@@ -61,7 +64,9 @@ public  class CustomerServiceEmployee extends Employee{
         msg.append("You will be contacted by our courier shortly.\n\n");
         msg.append("Best regards,\nCustomer Service Team");
 
-        sendEmail(this, customer, "Order Ready for Delivery", msg.toString());
+        Date dateSent = new Date();
+
+        sendEmail(this, customer, "Order Ready for Delivery", msg.toString(), dateSent);
     }
 
 
@@ -81,7 +86,9 @@ public  class CustomerServiceEmployee extends Employee{
         String subject = "Reply to inquiry: '" + inquiry.getSubject() + "'";
         totalResponses++;
 
-        replyToEmail(this,customer, inquiry, subject, msg);
+        Date dateSent = new Date();
+
+        replyToEmail(this,customer, inquiry, subject, msg, dateSent);
     }
 
 

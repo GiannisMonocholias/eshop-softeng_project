@@ -5,8 +5,8 @@
     android:id="@+id/UpdateCatalogueEmployeeMenu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#766F6F"
-    tools:context=".view.employee.updateCatalogueEmployee.UpdateCatalogueEmployeeMenuActivity">
+    android:background="#FFFFFF"
+    tools:context=".view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity">
 
     <TextView
         android:id="@+id/txtUptCatEmpMenuName"
@@ -38,26 +38,54 @@
 
     <Button
         android:id="@+id/btnUptCatEmpMenuAssignedRequests"
-        android:layout_width="382dp"
-        android:layout_height="115dp"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
         android:layout_marginTop="36dp"
-        android:backgroundTint="#673AB7"
+        android:backgroundTint="#009688"
         android:text="Τα αιτήματά μου"
         android:textStyle="bold"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.413"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtUptCatEmpMenuWelcomeMessage" />
 
     <Button
-        android:id="@+id/btnUptCatEmpMenuAssignNewRequest"
-        android:layout_width="377dp"
-        android:layout_height="104dp"
+        android:id="@+id/btnUptCatEmpMenuProcessAccount"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
         android:layout_marginTop="25dp"
-        android:backgroundTint="#673AB7"
-        android:text="Ανάληψη νέων Αιτημάτων\nανανέωσης καταλόγου"
+        android:backgroundTint="#009688"
+        android:text="Επεξεργασία λογαριασμού"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUptCatEmpMenuAssignNewRequest" />
+
+    <Button
+        android:id="@+id/btnUptCatEmpMenuDeleteAccount"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#BF211D"
+        android:text="Διαγραφή λογαριασμού"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUptCatEmpMenuProcessAccount" />
+
+    <Button
+        android:id="@+id/btnUptCatEmpMenuAssignNewRequest"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#009688"
+        android:text="Ανάληψη νέων Αιτημάτων\nανανέωσης καταλόγου"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnUptCatEmpMenuAssignedRequests" />
 

@@ -5,8 +5,8 @@
     android:id="@+id/activityCseDashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#766F6F"
-    tools:context=".view.employee.customerServiceEmployee.customerServiceMenu.CustomerServiceMenuActivity">
+    android:background="#FFFFFF"
+    tools:context=".view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity">
 
 
     <TextView
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="ΚΑΛΩΣΗΡΘΑΤΕ!"
-        android:textColor="#FFFFFF"
+        android:textColor="#009688"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,27 +37,56 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnCustomerServiceEmployeeMenuAssignedOrders"
-        android:layout_width="382dp"
-        android:layout_height="115dp"
+        android:id="@+id/btnCustomerServiceEmployeeMenuEmailInbox"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
         android:layout_marginTop="32dp"
-        android:backgroundTint="#673AB7"
+        android:backgroundTint="#009688"
         android:text="Διαχείριση Εισερχομένων μηνυμάτων και σύνταξη"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.413"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCustomerServiceEmployeeWelcomeMessage" />
 
     <Button
-        android:id="@+id/btnOrdPrepEmpMenuAssignNewOrder"
-        android:layout_width="377dp"
-        android:layout_height="104dp"
+        android:id="@+id/btnCustomerServiceEmployeeMenuNotifyOrdersStatus"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
         android:layout_marginTop="25dp"
-        android:backgroundTint="#673AB7"
+        android:backgroundTint="#009688"
         android:text="Ενημέρωση πορείας παραγγελιών"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCustomerServiceEmployeeMenuAssignedOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerServiceEmployeeMenuEmailInbox" />
+
+    <Button
+        android:id="@+id/btnCustomerServiceEmployeeMenuProcessAccount"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#009688"
+        android:text="Επεξεργασία λογαριασμού"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerServiceEmployeeMenuNotifyOrdersStatus" />
+
+    <Button
+        android:id="@+id/btnCustomerServiceEmployeeMenuDeleteAccount"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#BF211D"
+        android:text="Διαγραφή λογαριασμού"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerServiceEmployeeMenuProcessAccount" />
 
     <Button
         android:id="@+id/btnCustomerServiceEmployeeMenuLogout"
@@ -69,6 +98,7 @@
         android:elevation="8dp"
         android:text="Αποσύνδεση"
         android:translationZ="10dp"
+        app:cornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

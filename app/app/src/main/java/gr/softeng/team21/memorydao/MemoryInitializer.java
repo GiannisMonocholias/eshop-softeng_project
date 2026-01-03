@@ -3,14 +3,12 @@ package gr.softeng.team21.memorydao;
 import java.math.BigDecimal;
 
 import gr.softeng.team21.dao.CustomerDAO;
-import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
-import gr.softeng.team21.domain.Address;
 import gr.softeng.team21.domain.AllowedRequest;
 import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.domain.CartItem;
@@ -27,19 +25,20 @@ import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.PaymentType;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.ShoppingCart;
-import gr.softeng.team21.domain.StatusType;
+import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
 public class MemoryInitializer {
-    private static boolean initialized = false;
 
     public static void eraseData() {
+        // WareHouseDAO erase data
         try {
             getProductsWareHouseDAO().clear();
             if (!getProductsWareHouseDAO().getProductStocks().isEmpty()) {
                 throw new IllegalStateException("Products warehouse was not cleared");
             }
-        } catch (IllegalStateException e) {
+        }
+        catch (IllegalStateException e){
             e.printStackTrace();
         }
 
@@ -49,8 +48,9 @@ public class MemoryInitializer {
             if (!getCustomerDAO().getCustomers().isEmpty()) {
                 throw new IllegalStateException("Customers repository was not cleared");
             }
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
+        }
+        catch (IllegalStateException e){
+                e.printStackTrace();
         }
 
         // EmployeeDAO erase data
@@ -59,7 +59,8 @@ public class MemoryInitializer {
             if (!getEmployeeDAO().getEmployees().isEmpty()) {
                 throw new IllegalStateException("Employee repository was not cleared");
             }
-        } catch (IllegalStateException e) {
+        }
+        catch (IllegalStateException e){
             e.printStackTrace();
         }
 
@@ -69,7 +70,8 @@ public class MemoryInitializer {
             if (!getProductTypeDAO().getProducts().isEmpty()) {
                 throw new IllegalStateException("Product types repository was not cleared");
             }
-        } catch (IllegalStateException e) {
+        }
+        catch (IllegalStateException e){
             e.printStackTrace();
         }
 
@@ -79,7 +81,8 @@ public class MemoryInitializer {
             if (!getOrderDAO().getOrders().isEmpty()) {
                 throw new IllegalStateException("Orders repository was not cleared");
             }
-        } catch (IllegalStateException e) {
+        }
+        catch (IllegalStateException e){
             e.printStackTrace();
         }
 
@@ -89,52 +92,44 @@ public class MemoryInitializer {
             if (!getUpdateRequestDAO().getUpdateRequests().isEmpty()) {
                 throw new IllegalStateException("Update requests repository was not cleared");
             }
-        } catch (IllegalStateException e) {
+        }
+        catch (IllegalStateException e){
             e.printStackTrace();
         }
 
         // UserCredentialsDAO erase data
-        try {
+        try{
             getUserCredentialsDAO().clear();
-            if (!getUserCredentialsDAO().getUsersCredentials().isEmpty()) {
+            if(!getUserCredentialsDAO().getUsersCredentials().isEmpty()){
                 throw new IllegalStateException("Users credentials repository was not cleared");
             }
-        } catch (IllegalStateException e) {
+        }
+        catch (IllegalStateException e){
             e.printStackTrace();
         }
     }
 
     public static void prepareData() {
-        if (initialized) {
-            return;
-        }
+
         eraseData();
-        initialized = true;
+
         //=====================================================
         //START: INITIALIZE CUSTOMERS
         //=====================================================
         CustomerDAO customers = CustomerDAOMemory.getInstance();
 
-        Address addr1 = new Address("Ερμού", "15", "Αθήνα", "Ελλάδα", "10563");
-        Address addr2 = new Address("Τσιμισκή", "42", "Θεσσαλονίκη", "Ελλάδα", "54623");
-        Address addr3 = new Address("Μαιζώνος", "120", "Πάτρα", "Ελλάδα", "26221");
-
-
         Customer cust1 = new Customer("nickgeorg", "Νίκος", "pass1234", "Γεωργίου",
                 "6987654321", new EmailAddress("nickgeorg@team21.gr"), "CUST-500", new Date(10, 5, 2022));
-        cust1.setAddress(addr1);
         customers.addCustomer(cust1);
         getUserCredentialsDAO().addUser(cust1);
 
         Customer cust2 = new Customer("georgepap", "Γιώργος", "pass1235", "Παπαδόπουλος",
                 "6987659483", new EmailAddress("georgepap@team21.gr"), "CUST-501", new Date(19, 3, 2021));
-        cust2.setAddress(addr2);
         customers.addCustomer(cust2);
         getUserCredentialsDAO().addUser(cust2);
 
         Customer cust3 = new Customer("giannismonoh", "Γιάννης", "pass1236", "Μονοχολιάς",
                 "6987651456", new EmailAddress("giannismonoh@team21.gr"), "CUST-502", new Date(22, 6, 2021));
-        cust3.setAddress(addr3);
         customers.addCustomer(cust3);
         getUserCredentialsDAO().addUser(cust3);
 
@@ -152,19 +147,19 @@ public class MemoryInitializer {
         //=====================================================
         //CUSTOMER SERVICE EMPLOYEES INITIALIZATION
         //=====================================================
-        EmailAddress emailCs1 = new EmailAddress("m.alexandrou@team21.gr");
+        EmailAddress emailCs1 = new EmailAddress("p.dimitriou@team21.gr");
         CustomerServiceEmployee csr1 = new CustomerServiceEmployee(
-                "m_alexandrou", "Μαρία", "pass1237", "Αλεξάνδρου",
-                "6971234567", emailCs1, "CSR-101", 200, 1100, 40, EmployeeState.ACTIVE, new Date(19, 1, 2018)
+                "p_dimitriou", "Πέτρος", "pass1237", "Δημητρίου",
+                "6972345678", emailCs1, "CSR-102", 180, 1050, 40, EmployeeState.ACTIVE, new Date(15, 2, 2024)
         );
         employees.addEmployee(csr1);
         getUserCredentialsDAO().addUser(csr1);
 
 
-        EmailAddress emailCs2 = new EmailAddress("p.dimitriou@team21.gr");
+        EmailAddress emailCs2 = new EmailAddress("m.alexandrou@team21.gr");
         CustomerServiceEmployee csr2 = new CustomerServiceEmployee(
-                "p_dimitriou", "Πέτρος", "pass1238", "Δημητρίου",
-                "6972345678", emailCs2, "CSR-102", 180, 1050, 40, EmployeeState.ACTIVE, new Date(15, 2, 2024)
+                "m_alexandrou", "Μαρία", "pass1238", "Αλεξάνδρου",
+                "6971234567", emailCs2, "CSR-101", 200, 1100, 40, EmployeeState.ACTIVE, new Date(19, 1, 2018)
         );
         employees.addEmployee(csr2);
         getUserCredentialsDAO().addUser(csr2);
@@ -177,6 +172,7 @@ public class MemoryInitializer {
         );
         employees.addEmployee(csr3);
         getUserCredentialsDAO().addUser(csr3);
+
 
 
         //=====================================================
@@ -209,6 +205,7 @@ public class MemoryInitializer {
         getUserCredentialsDAO().addUser(prep3);
 
 
+
         //=====================================================
         //CATALOGUE UPDATE EMPLOYEES INITIALIZATION
         //=====================================================
@@ -239,6 +236,7 @@ public class MemoryInitializer {
         getUserCredentialsDAO().addUser(cat3);
 
 
+
         //=====================================================
         //DELIVERERS INITIALIZATION
         //=====================================================
@@ -250,6 +248,7 @@ public class MemoryInitializer {
         );
         getEmployeeDAO().addEmployee(del1);
         getUserCredentialsDAO().addUser(del1);
+
 
 
         EmailAddress emailDel2 = new EmailAddress("x.panou@team21.gr");
@@ -420,7 +419,7 @@ public class MemoryInitializer {
         cart1.addItem(new CartItem(products.getProduct("TECH-001"), 1));
         cart1.addItem(new CartItem(products.getProduct("TECH-003"), 1));
 
-        Order order1 = new Order("ORD-2023-001", new Date(10, 11, 2023), StatusType.SHIPPED,
+        Order order1 = new Order("ORD-2023-001", new Date(10, 11, 2023), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, new Date(14, 11, 2023), cart1
         );
 
@@ -435,7 +434,7 @@ public class MemoryInitializer {
         cart2.addItem(new CartItem(products.getProduct("TECH-013"), 1));
         cart2.addItem(new CartItem(products.getProduct("TECH-011"), 2));
 
-        Order order2 = new Order("ORD-2024-002", new Date(5, 1, 2024), StatusType.NEW,
+        Order order2 = new Order("ORD-2024-002", new Date(5, 1, 2024), OrderStatusType.NEW,
                 false, PaymentType.CASH, null, cart2
         );
         order2.setTotal_amount(cart2.getTotalCost());
@@ -448,7 +447,7 @@ public class MemoryInitializer {
         cart3.addItem(new CartItem(products.getProduct("TECH-017"), 1));
         cart3.addItem(new CartItem(products.getProduct("TECH-019"), 1));
 
-        Order order3 = new Order("ORD-2024-003", new Date(12, 1, 2024), StatusType.SHIPPED,
+        Order order3 = new Order("ORD-2024-003", new Date(12, 1, 2024), OrderStatusType.SHIPPED,
                 false, PaymentType.CASH, null, cart3
         );
         order3.setTotal_amount(cart3.getTotalCost());
@@ -459,7 +458,7 @@ public class MemoryInitializer {
         ShoppingCart cart4 = new ShoppingCart(cust1);
         cart4.addItem(new CartItem(products.getProduct("TECH-007"), 2));
 
-        Order order4 = new Order("ORD-2024-004", new Date(15, 1, 2024), StatusType.DELAYED,
+        Order order4 = new Order("ORD-2024-004", new Date(15, 1, 2024), OrderStatusType.DELAYED,
                 false, PaymentType.CASH, null, cart4
         );
 
@@ -471,15 +470,39 @@ public class MemoryInitializer {
         ShoppingCart cart5 = new ShoppingCart(cust2);
         cart5.addItem(new CartItem(products.getProduct("TECH-020"), 1));
 
-        Order order5 = new Order("ORD-2024-005", new Date(20, 1, 2024), StatusType.SHIPPED,
+        Order order5 = new Order("ORD-2024-005", new Date(20, 1, 2024), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, null, cart5
         );
-
         order5.setTotal_amount(cart5.getTotalCost());
         orders.addOrder(order5);
+
+        //ORDER 6
+        ShoppingCart cart6 = new ShoppingCart(cust2);
+        cart6.addItem(new CartItem(products.getProduct("TECH-001"), 1));
+        cart6.addItem(new CartItem(products.getProduct("TECH-004"), 100));
+
+
+        Order order6 = new Order("ORD-2024-006", new Date(10, 1, 2024), OrderStatusType.NEW,
+                true, PaymentType.CARD, null, cart6
+        );
+        order6.setTotal_amount(cart6.getTotalCost());
+        orders.addOrder(order6);
+
+        //ORDER 7
+        ShoppingCart cart7 = new ShoppingCart(cust3);
+        cart7.addItem(new CartItem(products.getProduct("TECH-007"), 2));
+        cart7.addItem(new CartItem(products.getProduct("TECH-015"), 1));
+
+        Order order7 = new Order("ORD-2024-007", new Date(15, 1, 2024), OrderStatusType.NEW,
+                false, PaymentType.CASH, null, cart7
+        );
+        order7.setTotal_amount(cart7.getTotalCost());
+        orders.addOrder(order7);
+
         //=====================================================
         //END: INITIALIZE ORDERS
         //=====================================================
+
 
 
         //=====================================================
@@ -505,7 +528,7 @@ public class MemoryInitializer {
 
         // Request 3
         CatalogueUpdateRequest req3 = new CatalogueUpdateRequest(new Date(18, 1, 2024), "Εφαρμογή έκπτωσης 10% για προωθητική ενέργεια.",
-                products.getProduct("TECH-017"), AllowedRequest.PROCESS_PRODUCT, 3
+                products.getProduct("TECH-017"),AllowedRequest.PROCESS_PRODUCT,3
         );
         requests.addUpdateRequest(req3);
 
@@ -533,6 +556,173 @@ public class MemoryInitializer {
 
         //Initialize Authentication System
         AuthenticationSystem.getInstance();
+
+
+        //=====================================================
+        //START: EMAIL MESSAGES EXCHANGE
+        //=====================================================
+
+
+        cust1.sendEmail(cust1, csr1,
+                "Πρόβλημα με Monitor LG - DOA",
+                 "Καλημέρα σας. Παρέλαβα χθες την οθόνη LG 27'' και δυστυχώς έχει ένα " +
+                         "καμένο pixel στο κέντρο. Ποια είναι η διαδικασία αντικατάστασης;",
+                    new Date(11,12,2025)
+        );
+
+        cust2.sendEmail(cust2, csr2,
+                "Αλλαγή διεύθυνσης αποστολής - Παραγγελία #5501",
+                "Γειά σας, επειδή θα λείπω από το σπίτι, μπορείτε να στείλετε την παραγγελία " +
+                        "μου στο γραφείο; Η διεύθυνση είναι Λεωφόρος Κηφισίας 44.",
+                    new Date(13,12,2025)
+        );
+
+        cust3.sendEmail(cust3, csr3,
+                "Διόρθωση παραστατικού σε Τιμολόγιο",
+                "Καλησπέρα, εκ παραδρομής ξέχασα να επιλέξω έκδοση τιμολογίου στην " +
+                        "παραγγελία #5580. Σας στέλνω τα στοιχεία της εταιρείας μου για να γίνει η αλλαγή.",
+                new Date(15,12,2025)
+        );
+
+        cust1.sendEmail(cust1, csr2,
+                "Ερώτηση για μηχανικό πληκτρολόγιο",
+                "Ψάχνω ένα αθόρυβο μηχανικό πληκτρολόγιο για το γραφείο. Προτείνετε τους διακόπτες Cherry MX Brown ή Silent Red;",
+                new Date(8,12,2025)
+        );
+
+        cust2.sendEmail(cust2, csr3,
+                "Αποδεικτικό Κατάθεσης Τράπεζα Πειραιώς",
+                "Σας επισυνάπτω το καταθετήριο για την εξόφληση της παραγγελίας #5602. " +
+                        "Παρακαλώ επιβεβαιώστε ότι το λάβατε για να προχωρήσει η αποστολή.",
+            new Date(22,11,2025)
+        );
+
+        cust3.sendEmail(cust3, csr1,
+                "Προπαραγγελία νέου iPhone",
+                "Γνωρίζετε πότε θα ανοίξουν οι προπαραγγελίες για το νέο μοντέλο iPhone; Θα τηρηθεί σειρά προτεραιότητας;",
+                new Date(29,11,2025)
+        );
+
+        cust1.sendEmail(cust1, csr3,
+                "Ακύρωση Παραγγελίας #5610",
+                "Παρακαλώ ακυρώστε την παραγγελία #5610 καθώς έκανα λάθος στην επιλογή του τροφοδοτικού. " +
+                        "Θα καταχωρήσω νέα παραγγελία άμεσα.",
+                new Date(15,12,2025)
+        );
+
+        cust2.sendEmail(cust2, csr1,
+                "Παραλαβή από το κατάστημα Σάββατο",
+                "Θα ήθελα να περάσω να παραλάβω τον σκληρό δίσκο από το κατάστημα. " +
+                        "Το Σάββατο είστε ανοιχτά μέχρι τις 15:00 ή μέχρι τις 17:00;",
+                new Date(10,11,2025)
+        );
+
+
+        cust1.sendEmail(cust1, csr1,
+                "Ερώτηση για διαθεσιμότητα Dell XPS",
+                "Καλησπέρα σας, θα ήθελα να ρωτήσω αν το Dell XPS 15 είναι άμεσα διαθέσιμο στο κατάστημα για παραλαβή.",
+                new Date(22,10,2025)
+        );
+
+        csr1.sendEmail(csr1, cust1,
+                "RE: Ερώτηση για διαθεσιμότητα Dell XPS",
+                "Καλησπέρα κ. Γεωργίου. Μόλις έλεγξα την αποθήκη και υπάρχει ένα τελευταίο κομμάτι." +
+                        " Μπορώ να σας το κρατήσω μέχρι αύριο.",
+                new Date(15,10,2025)
+        );
+
+        cust2.sendEmail(cust2, csr2,
+                "Καθυστέρηση Παραγγελίας #5051",
+                "Γειά σας, η παραγγελία μου με τα περιφερειακά έχει καθυστερήσει 3 μέρες. Γνωρίζουμε πότε θα φύγει;",
+                new Date(13,12,2025)
+        );
+
+        csr2.sendEmail(csr2, prep1,
+                "Επείγον: Έλεγχος παραγγελίας #5051",
+                "Γιώργο, ο πελάτης Παπαδόπουλος ρωτάει για την παραγγελία του. " +
+                        "Βλέπω ότι κολλάει στην κάρτα γραφικών. Έχουμε ενημέρωση;",
+                new Date(10,10,2025)
+        );
+
+        prep1.sendEmail(prep1, csr2,
+                "RE: Επείγον: Έλεγχος παραγγελίας #5051",
+                "Πέτρο, η RTX 4060 ήρθε μόλις τώρα με το φορτηγό. Την πακετάρω και φεύγει σήμερα το απόγευμα.",
+                 new Date(13,11,2025)
+        );
+
+        csr2.sendEmail(csr2, cust2,
+                "Ενημέρωση για την Παραγγελία #5051",
+                "Αγαπητέ κ. Παπαδόπουλε, ζητούμε συγγνώμη για την καθυστέρηση." +
+                        " Το προϊόν παρελήφθη μόλις και η παραγγελία σας θα φύγει σήμερα.",
+                new Date(19,12,2025)
+        );
+
+        cust3.sendEmail(cust3, csr3,
+                "Συμβατότητα RAM με Motherboard",
+                "Καλησπέρα, η μνήμη Corsair Vengeance DDR4 είναι συμβατή " +
+                        "με τη μητρική MSI B450 Tomahawk που έχετε σε προσφορά;",
+                new Date(2,12,2025)
+        );
+
+        csr3.sendEmail(csr3, cat1,
+                "Τεχνική ερώτηση για MSI B450",
+                "Δήμητρα, στο site δεν αναφέρουμε τη λίστα συμβατότητας QVL για την MSI B450. Μπορείς να το τσεκάρεις;",
+                new Date(24,11,2025)
+        );
+
+        cat1.sendEmail(cat1, csr3,
+                "RE: Τεχνική ερώτηση για MSI B450",
+                "Έχεις δίκιο Σοφία. Το έλεγξα στο manual του κατασκευαστή," +
+                        " είναι πλήρως συμβατή. Θα ενημερώσω και την περιγραφή στο site.",
+                new Date(28,11,2025)
+        );
+
+        csr3.sendEmail(csr3, cust3,
+                "RE: Συμβατότητα RAM με Motherboard",
+                "Αγαπητέ κ. Μονοχολιά, επιβεβαιώσαμε ότι οι μνήμες είναι πλήρως συμβατές με τη συγκεκριμένη μητρική.",
+                new Date(14,12,2025)
+        );
+
+        prep2.sendEmail(prep2, cat2,
+                "Stock Alert: SSD Samsung 980 Pro",
+                "Θάνο, τελείωσαν οι 1TB δίσκοι Samsung 980 Pro. Παρακαλώ βγάλε την ένδειξη" +
+                        " 'Διαθέσιμο' από το site για να μην έχουμε ακυρώσεις.",
+                new Date(20,11,2025)
+        );
+
+        cat2.sendEmail(cat2, prep2,
+                "RE: Stock Alert: SSD Samsung 980 Pro",
+                "Έγινε Άννα. Το γύρισα σε 'Κατόπιν Παραγγελίας' και αφαίρεσα την άμεση διαθεσιμότητα.",
+                new Date(1,12,2025)
+        );
+
+        cat3.sendEmail(cat3, csr1,
+                "Νέος τιμοκατάλογος Black Friday",
+                "Παιδιά προσοχή, από αύριο ενεργοποιούνται οι εκπτώσεις στα Gaming Monitor. Ενημερώστε τους πελάτες που καλούν.",
+                new Date(30,11,2025)
+        );
+
+        prep3.sendEmail(prep3, cust1,
+                "Αποστολή Παραγγελίας - Αριθμός Voucher",
+                "Κύριε Γεωργίου, το Laptop σας παραδόθηκε στην courier. Ο αριθμός αποστολής είναι GR123456789.",
+                new Date(15,12,2025)
+        );
+        //=====================================================
+        //END: EMAIL MESSAGES EXCHANGE
+        //=====================================================
+
+
+        //========================================================
+        //START: ORDERS DELEGATION TO CUSTOMER SERVICE EMPLOYEES
+        //========================================================
+        csr1.addOrder(order1);
+        csr1.addOrder(order5);
+        csr2.addOrder(order3);
+        csr3.addOrder(order4);
+        //========================================================
+        //END: ORDERS DELEGATION TO CUSTOMER SERVICE EMPLOYEES
+        //========================================================
+
 
     }
 
@@ -563,6 +753,4 @@ public class MemoryInitializer {
     public static UserCredentialsDAO getUserCredentialsDAO() {
         return UserCredentialsDAOMemory.getInstance();
     }
-
-
 }
