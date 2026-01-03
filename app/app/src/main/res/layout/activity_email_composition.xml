@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".view.user.EmailCompositionActivity">
+    tools:context=".view.user.emailComposition.EmailCompositionActivity">
 
     <TextView
         android:id="@+id/txtEmailDetailsFrom"
@@ -94,33 +94,6 @@
         app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsEmailSubject"
         app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver" />
 
-    <View
-        android:id="@+id/viewEmailDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="3dp"
-        android:layout_marginTop="14dp"
-        android:background="#E0E0E0"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <View
-        android:id="@+id/view2EmailDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="3dp"
-        android:layout_marginTop="14dp"
-        android:background="#E0E0E0"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <View
-        android:id="@+id/view3EmailDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="3dp"
-        android:layout_marginTop="14dp"
-        android:background="#E0E0E0"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailSubject"
-        tools:layout_editor_absoluteX="0dp" />
-
     <Button
         android:id="@+id/btnEmailSend"
         android:layout_width="wrap_content"
@@ -134,18 +107,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="449dp" />
-
     <EditText
         android:id="@+id/edtEmailBody"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="11dp"
         android:background="@null"
         android:ems="10"
         android:gravity="start|top"
@@ -154,7 +122,53 @@
         android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/view3EmailDetails" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="364dp" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="409dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="409dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmailSubject" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="409dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

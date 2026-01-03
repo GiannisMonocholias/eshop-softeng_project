@@ -23,6 +23,7 @@ import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.view.customer.CustomerHomePageActivity;
+import gr.softeng.team21.view.customer.register.RegisterActivity;
 import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity;
 import gr.softeng.team21.view.employee.deliverer.DelivererOrdersListActivity;
 import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu.OrderPreparationEmployeeMenuActivity;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private Button loginButton;
-
+    private TextView registerTextView;
     private LoginPresenter presenter;
 
     @Override
@@ -54,13 +55,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         usernameEditText = findViewById(R.id.edtloginUsername);
         passwordEditText = findViewById(R.id.edtloginPassword);
         loginButton = findViewById(R.id.loginButton);
+        registerTextView = findViewById(R.id.loginregisterTxtView);
 
 
         presenter = new LoginPresenter(this);
 
         loginButton.setOnClickListener(v -> presenter.onLogin());
 
-
+        registerTextView.setOnClickListener(v -> presenter.onRegister());
     }
 
     @Override
@@ -125,6 +127,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         if(intent != null){
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void navigateToRegister() {
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.EmailMessage;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
-import gr.softeng.team21.view.user.EmailCompositionActivity;
+import gr.softeng.team21.view.user.emailComposition.EmailCompositionActivity;
 import gr.softeng.team21.view.contact.emailDetails.EmailDetailsActivity;
 import gr.softeng.team21.view.util.EmailAdapter;
 

@@ -5,7 +5,7 @@
     android:id="@+id/OrdPrepEmpMenu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#766F6F"
+    android:background="#FFFFFF"
     tools:context=".view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity">
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="ΚΑΛΩΣΗΡΘΑΤΕ!"
-        android:textColor="#FFFFFF"
+        android:textColor="#009688"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,29 +38,56 @@
 
     <Button
         android:id="@+id/btnOrdPrepEmpAssignedOrders"
-        android:layout_width="382dp"
-        android:layout_height="115dp"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
         android:layout_marginTop="36dp"
-        android:backgroundTint="#673AB7"
+        android:backgroundTint="#009688"
         android:text="Οι παραγγελίες μου"
         android:textStyle="bold"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.413"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtOrdPrepEmpMenuWelcomeMessage"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/txtOrdPrepEmpMenuWelcomeMessage" />
 
     <Button
         android:id="@+id/btnOrdPrepEmpAvailableOrdersToAssign"
-        android:layout_width="377dp"
-        android:layout_height="104dp"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
         android:layout_marginTop="25dp"
-        android:backgroundTint="#673AB7"
+        android:backgroundTint="#009688"
         android:text="Ανάληψη νέων παραγγελιών"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintHorizontal_bias="0.42"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnOrdPrepEmpAssignedOrders" />
+
+    <Button
+        android:id="@+id/btnOrdPrepEmpProcessAccount"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#009688"
+        android:text="Επεξεργασία λογαριασμού"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnOrdPrepEmpAvailableOrdersToAssign" />
+
+    <Button
+        android:id="@+id/btnOrdPrepEmpDeleteAccount"
+        android:layout_width="342dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#BF211D"
+        android:text="Διαγραφή λογαριασμού"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnOrdPrepEmpProcessAccount" />
 
     <Button
         android:id="@+id/btnCustomerServiceEmployeeMenuLogout"

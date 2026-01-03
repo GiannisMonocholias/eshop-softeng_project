@@ -11,7 +11,6 @@ public class Order {
     private Money total_amount;
 
 
-//ENUM ORDERSTATUS
     public Order (String ordercode, Date submissiondate , OrderStatusType orderstatus,
                   boolean paid, PaymentType paymentmethod, Date deliverydate, ShoppingCart shoppingCart) {
         this.ordercode = ordercode;

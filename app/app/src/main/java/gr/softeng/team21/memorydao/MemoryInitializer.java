@@ -250,6 +250,7 @@ public class MemoryInitializer {
         getUserCredentialsDAO().addUser(del1);
 
 
+
         EmailAddress emailDel2 = new EmailAddress("x.panou@team21.gr");
         Deliverer del2 = new Deliverer(
                 "x_panou", "Χρήστος", "pass1247", "Πάνου",

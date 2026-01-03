@@ -42,7 +42,6 @@ public class ExecuteInsertProductPresenter {
             return;
         }
 
-        // Εμφανίζουμε στο UI τι ζήτησε ο Manager (π.χ. "Προσθέστε το νέο Laptop Dell...")
         view.setRequestDescription(currentRequest.getUpdateDescription());
     }
 
@@ -64,13 +63,11 @@ public class ExecuteInsertProductPresenter {
 
             productTypeDAO.addProductType(newProduct);
 
-            if (currentRequest != null) {
-                currentRequest.setStatus(RequestStatusType.SERVED);
-                currentRequest.setProduct(newProduct);
-            }
+            currentRequest.setStatus(RequestStatusType.SERVED);
+
 
             view.showSuccessMessage("Το προϊόν καταχωρήθηκε επιτυχώς!");
-
+            loggedInEmployee.getAssignedRequests().remove(currentRequest.getId());
         } catch (NumberFormatException e) {
             view.showInputError("price", "Παρακαλώ εισάγετε έγκυρη τιμή (π.χ. 12.50)");
         } catch (IllegalArgumentException e) {

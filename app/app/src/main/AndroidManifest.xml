@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
         <activity
+            android:name=".view.customer.register.RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity"
             android:exported="true" />
         <activity
@@ -24,7 +27,7 @@
             android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteProcessProductActivity"
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct.ExecuteProcessProductActivity"
             android:exported="true" />
         <activity
             android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct.ExecuteInsertProductActivity"
@@ -54,7 +57,7 @@
             android:name=".view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity"
             android:exported="true" />
         <activity
-            android:name=".view.user.EmailCompositionActivity"
+            android:name=".view.user.emailComposition.EmailCompositionActivity"
             android:exported="true" />
         <activity
             android:name=".view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity"

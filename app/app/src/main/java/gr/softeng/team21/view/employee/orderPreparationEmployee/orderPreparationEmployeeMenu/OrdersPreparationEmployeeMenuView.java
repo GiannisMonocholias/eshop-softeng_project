@@ -7,4 +7,7 @@ public interface OrdersPreparationEmployeeMenuView {
 
     void navigateToAvailableOrdersToAssign(String employeeId);
 
+    void showDeleteAccountConfirmation();
+    void navigateToLogin();
+    void showMessage(String message);
 }

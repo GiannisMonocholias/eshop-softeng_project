@@ -55,6 +55,10 @@ public class LoginPresenter {
         }
     }
 
+    public void onRegister() {
+        view.navigateToRegister();
+    }
+
     public void loginReset(){
         view.getUserNameEdtText().setText("");
         view.getPasswordEdtText().setText("");

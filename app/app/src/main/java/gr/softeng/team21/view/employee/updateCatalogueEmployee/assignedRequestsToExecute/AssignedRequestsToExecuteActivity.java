@@ -19,7 +19,7 @@ import gr.softeng.team21.domain.CatalogueUpdateRequest;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct.ExecuteInsertProductActivity;
-import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteProcessProductActivity;
+import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct.ExecuteProcessProductActivity;
 import gr.softeng.team21.view.util.UpdateRequestAdapterTypes;
 import gr.softeng.team21.view.util.UpdateRequestsAdapter;
 

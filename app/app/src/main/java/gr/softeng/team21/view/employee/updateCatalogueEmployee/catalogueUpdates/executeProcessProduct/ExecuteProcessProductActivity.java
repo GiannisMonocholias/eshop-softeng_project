@@ -1,4 +1,4 @@
-package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct;
+package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -19,13 +19,14 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
-public class ExecuteInsertProductActivity extends AppCompatActivity implements ExecuteInsertProductView {
+public class ExecuteProcessProductActivity extends AppCompatActivity implements ExecuteProcessProductView {
 
-    private ExecuteInsertProductPresenter presenter;
+    private ExecuteProcessProductPresenter presenter;
 
+    // UI Components
     private TextInputEditText edtCode, edtName, edtPrice, edtDesc;
-    private TextView txtRequestDescription;
-    private Button btnConfirm;
+    private TextView txtDescription;
+    private Button btnSaveChanges;
 
     private static final String EMP_ID_EXTRA = "UPDATE_CATALOGUE_EMPLOYEE_ID";
     private static final String REQ_ID_EXTRA = "REQUEST_ID";
@@ -34,9 +35,9 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_execute_insert_product);
+        setContentView(R.layout.activity_execute_process_product);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.executeInsertProduct), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.executeProcessProduct), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -44,29 +45,25 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
 
         initializeViews();
 
-        presenter = new ExecuteInsertProductPresenter(
-                this,
-                EmployeeDAOMemory.getInstance(),
-                UpdateRequestDAOMemory.getInstance(),
-                ProductTypeDAOMemory.getInstance()
-        );
+        presenter = new ExecuteProcessProductPresenter(this, EmployeeDAOMemory.getInstance(), UpdateRequestDAOMemory.getInstance(), ProductTypeDAOMemory.getInstance());
 
         String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
         int requestId = getIntent().getIntExtra(REQ_ID_EXTRA, -1);
+
         presenter.loadRequestDetails(employeeId, requestId);
 
-        btnConfirm.setOnClickListener(v -> presenter.onConfirmInsert());
+        btnSaveChanges.setOnClickListener(v -> presenter.onSaveClicked());
     }
 
     private void initializeViews() {
-        txtRequestDescription = findViewById(R.id.txtexecuteInsertProductRequestDescription);
+        txtDescription = findViewById(R.id.txtexecuteProcessProductRequestDescription);
 
-        edtCode = findViewById(R.id.edtexecuteInsertProductDataCodeContainer);
-        edtName = findViewById(R.id.edtexecuteInsertProductDataNameContainer);
-        edtPrice = findViewById(R.id.edtexecuteInsertProductDataPriceContainer);
-        edtDesc = findViewById(R.id.edtexecuteInsertProductDataDescriptionContainer);
+        edtCode = findViewById(R.id.edtexecuteProcessProductDataCodeInput);
+        edtName = findViewById(R.id.edtexecuteProcessProductDataNameInput);
+        edtPrice = findViewById(R.id.edtexecuteProcessProductDataPriceInput);
+        edtDesc = findViewById(R.id.edtexecuteProcessProductDataDescriptionInput);
 
-        btnConfirm = findViewById(R.id.btnexecuteInsertProductInsertConfirm);
+        btnSaveChanges = findViewById(R.id.btnexecuteProcessProductSave);
     }
 
 
@@ -91,25 +88,24 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
     }
 
     @Override
+    public void setProductData(String code, String name, String price, String description) {
+        edtCode.setText(code);
+        edtName.setText(name);
+        edtPrice.setText(price);
+        edtDesc.setText(description);
+    }
+
+    @Override
     public void setRequestDescription(String description) {
-        txtRequestDescription.setText(description);
+        txtDescription.setText(description);
     }
 
     @Override
     public void showInputError(String field, String message) {
         switch (field) {
-            case "code":
-                edtCode.setError(message);
-                edtCode.requestFocus();
-                break;
-            case "name":
-                edtName.setError(message);
-                edtName.requestFocus();
-                break;
-            case "price":
-                edtPrice.setError(message);
-                edtPrice.requestFocus();
-                break;
+            case "code": edtCode.setError(message); edtCode.requestFocus(); break;
+            case "name": edtName.setError(message); edtName.requestFocus(); break;
+            case "price": edtPrice.setError(message); edtPrice.requestFocus(); break;
         }
     }
 
@@ -130,6 +126,22 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
     }
 
     @Override
+    public void showConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Επιβεβαίωση Αποθήκευσης")
+                .setMessage("Είστε σίγουροι ότι θέλετε να αποθηκεύσετε τις αλλαγές;")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.onSaveConfirmed();
+                    }
+                })
+                .setNegativeButton("ΟΧΙ", null) // Αν πατήσει ΟΧΙ, δεν κάνει τίποτα (κλείνει το dialog)
+                .show();
+    }
+
+    @Override
     public void showError(String message) {
         new AlertDialog.Builder(this)
                 .setTitle("Σφάλμα")
@@ -138,4 +150,5 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
                 .setPositiveButton("OK", null)
                 .show();
     }
+
 }
