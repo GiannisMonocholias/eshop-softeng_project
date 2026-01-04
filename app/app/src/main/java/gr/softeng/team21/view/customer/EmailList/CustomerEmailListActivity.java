@@ -39,11 +39,11 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
         setContentView(R.layout.activity_email_list);
 
         View mainView = findViewById(R.id.viewEmailListRoot);
-        Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
+        ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                    return insets;
+                });
         presenter = new CustomerEmailListPresenter(this, CustomerDAOMemory.getInstance());
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewEmails);

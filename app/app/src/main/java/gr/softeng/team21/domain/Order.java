@@ -11,8 +11,9 @@ public class Order {
     private Money total_amount;
 
 
-    public Order (String ordercode, Date submissiondate , OrderStatusType orderstatus,
-                  boolean paid, PaymentType paymentmethod, Date deliverydate, ShoppingCart shoppingCart) {
+//ENUM ORDERSTATUS
+    public Order (String ordercode, Date submissiondate ,OrderStatusType orderstatus,
+                  boolean paid, PaymentType paymentmethod,Date deliverydate,ShoppingCart shoppingCart) {
         this.ordercode = ordercode;
         this.submissiondate = submissiondate;
        this.deliverydate = deliverydate;

@@ -12,6 +12,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
+import gr.softeng.team21.memorydao.MemoryInitializer;
+import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
+import gr.softeng.team21.view.user.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnEntrance;
@@ -27,10 +30,11 @@ public class MainActivity extends AppCompatActivity {
         });
         btnEntrance=findViewById(R.id.btnMainActivityEntrance);
         btnEntrance.setOnClickListener(v->Entrance());
+        MemoryInitializer.prepareData();
     }
 
     private void Entrance() {
-       Intent intent=new Intent(MainActivity.this, CustomerHomePageActivity.class);
+       Intent intent=new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 }

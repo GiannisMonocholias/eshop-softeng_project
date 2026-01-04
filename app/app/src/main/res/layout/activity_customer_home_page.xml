@@ -5,57 +5,105 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4B4545"
-    android:elevation="8dp"
-    tools:context=".view.customer.CustomerHomePageActivity">
+    android:background="#FFFFFF"
+    tools:context=".view.customer.homePage.CustomerHomePageActivity">
 
     <TextView
         android:id="@+id/txtCustomerHomePageHeader"
-        android:layout_width="411dp"
-        android:layout_height="59dp"
-
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
-
-        android:background="#009688"
-        android:backgroundTint="#009688"
-        android:fontFamily="sans-serif-medium"
-        android:text="Επιλέξτε την λειτουργία που θέλετε"
+        android:fontFamily="sans-serif-black"
+        android:text="Κεντρικό Μενού"
         android:textAlignment="center"
-        android:textColor="#F8F7F7"
-        android:textSize="22sp"
+        android:textColor="#009688"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UnknownId" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Επιλέξτε μια λειτουργία"
+        android:textColor="#333333"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtCustomerHomePageHeader" />
 
     <Button
         android:id="@+id/btnCustomerHomePageFindProduct"
-        android:layout_width="245dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="88dp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="56dp"
         android:backgroundTint="#009688"
+        android:drawableLeft="@drawable/outline_category_search_24"
         android:text="Αναζήτηση Προϊόντων"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCustomerHomePageHeader" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
         android:id="@+id/btnCustomerHomePageEditData"
-        android:layout_width="250dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/outline_box_edit_24"
         android:backgroundTint="#009688"
-        android:text="Επεξεργασία Στοιχείων Προφίλ"
+        android:text="Επεξεργασία Προφίλ"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCustomerHomePageFindProduct" />
 
     <Button
-        android:id="@+id/btnCustomerHomePageDisconnection"
-        android:layout_width="164dp"
-        android:layout_height="46dp"
+        android:id="@+id/btnCustomerHomePageDeleteaccount"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#BF211D"
+        android:drawableLeft="@drawable/baseline_delete_24"
+        android:text="Διαγραφή Λογαριασμού"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerHomePageMessages" />
+
+    <Button
+        android:id="@+id/btnCustomerHomePageMessages"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#009688"
+        android:drawableLeft="@drawable/outline_attach_email_24"
+        android:text="Μηνύματα(Inbox)"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerHomePageEditData" />
+
+    <Button
+        android:id="@+id/btnCustomerHomePageLogout"
+        android:layout_width="172dp"
+        android:layout_height="49dp"
         android:layout_marginBottom="32dp"
         android:backgroundTint="#BF211D"
         android:drawableLeft="@drawable/account_logout"
@@ -63,18 +111,8 @@
         android:translationZ="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnCustomerHomePageDeleteaccount"
-        android:layout_width="240dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#009688"
-        android:text="Διαγραφή Λογαριασμού"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCustomerHomePageEditData" />
-
+        app:layout_constraintTop_toBottomOf="@+id/btnCustomerHomePageDeleteaccount"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

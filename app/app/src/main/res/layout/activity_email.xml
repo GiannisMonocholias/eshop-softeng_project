@@ -3,18 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    android:background="#FFFFFF"
+    android:padding="24dp">
 
     <TextView
         android:id="@+id/txtEmailActivityHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:text="Αλλαγή Email"
-        android:textSize="24sp"
+        android:textColor="#009688"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,26 +24,32 @@
 
     <EditText
         android:id="@+id/edittxtEmailActivity"
-        android:layout_width="377dp"
-        android:layout_height="47dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_marginTop="60dp"
+        android:background="#FAFAFA"
         android:hint="Νέο Email"
+        android:padding="16dp"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtEmailActivityHeader" />
 
     <Button
         android:id="@+id/btnEmailActivitySave"
-        android:layout_width="157dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="#4CAF50"
         android:text="Αποθήκευση"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittxtEmailActivity" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

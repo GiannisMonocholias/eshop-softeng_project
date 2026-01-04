@@ -5,7 +5,7 @@
     android:id="@+id/executeProcessProduct"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.employee.updateCatalogueEmployee.assignedRequestsToExecute.AssignedRequestsToExecuteActivity">
+    tools:context=".view.employee.updateCatalogueEmployee.AssignedRequestsToExecuteActivity">
 
     <TextView
         android:id="@+id/txtRequestsToExecuteListHeader"

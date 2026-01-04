@@ -46,6 +46,7 @@
         android:gravity="center"
         android:minWidth="20dp"
         android:text="1"
+        android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -69,11 +70,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txtCustomerCartItemActivityPrice"
+        android:id="@+id/txtCustomerCartItemActivitySubTotalPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="145.00 €"
+        android:text="0.00 €"
         android:textColor="#009688"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -86,14 +87,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="Corsair Vengeance 32GB"
+        android:text="χχχχχχχχχχ"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
         android:maxLines="2"
         android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/txtCustomerCartItemActivityPrice"
+
+        app:layout_constraintEnd_toStartOf="@+id/txtCustomerCartItemActivitySubTotalPrice"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

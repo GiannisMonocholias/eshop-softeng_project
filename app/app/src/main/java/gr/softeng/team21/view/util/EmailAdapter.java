@@ -68,6 +68,7 @@ public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.EmailViewHol
         holder.txtPreview.setText(email.getBody());
 
         Date dateSent = email.getDateSent();
+
         holder.txtDate.setText(dateSent != null? dateSent.toString():"");
 
         holder.itemView.setOnClickListener(v -> listener.onEmailClick(email));
