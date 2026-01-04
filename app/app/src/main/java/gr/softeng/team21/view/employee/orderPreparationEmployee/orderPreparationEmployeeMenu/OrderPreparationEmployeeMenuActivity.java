@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.user.login.LoginActivity; // Βεβαιώσου για το σωστό import
 import gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare.AssignedOrdersToPrepareActivity;
 import gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity;
@@ -52,7 +53,10 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
                 presenter.onClickAvailableOrdersToAssign(employeeId)
         );
 
-        // Listener Διαγραφής
+        findViewById(R.id.btnOrdPrepEmpProcessAccount).setOnClickListener(v ->
+            presenter.onProcessAccountSelected(employeeId)
+        );
+
         findViewById(R.id.btnOrdPrepEmpDeleteAccount).setOnClickListener(v ->
                 presenter.onDeleteAccountSelected()
         );
@@ -82,7 +86,6 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         startActivity(intent);
     }
 
-    // --- Υλοποίηση μεθόδων Διαγραφής ---
 
     @Override
     public void showDeleteAccountConfirmation() {
@@ -108,6 +111,16 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void navigateToProcessAccount(String employeeId){
+        Intent intent = new Intent(this, UserEditDataActivity.class);
+
+        intent.putExtra("user_id",employeeId);
+
+        startActivity(intent);
+    }
+
 
     @Override
     public void showMessage(String message) {

@@ -110,7 +110,7 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
         intent.putExtra("BODY_EXTRA", body);
         intent.putExtra("SENDER_EXTRA", sender);
         intent.putExtra("RECEIVER_EXTRA", receiver);
-        intent.putExtra(CUSTOMER_ID_EXTRA, customerId);
+        intent.putExtra("user_id", customerId);
 
         startActivity(intent);
     }

@@ -9,8 +9,6 @@
     android:background="#FFFFFF"
     android:padding="16dp"
     tools:context=".view.customer.FindProduct.CustomerFindProductActivity">
-<<<<<<< HEAD
-=======
 
     <TextView
         android:id="@+id/txtCustomerFindProductActivityHeader"
@@ -23,7 +21,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
->>>>>>> 8a87f51c7868b58e92234e8130357ee578090491
 
     <SearchView
         android:id="@+id/searchProductActivityHeader"
@@ -33,13 +30,8 @@
         android:background="@drawable/abc_popup_background_mtrl_mult"
         android:backgroundTint="#F0F0F0"
         android:iconifiedByDefault="false"
-<<<<<<< HEAD
-        android:queryHint="Αναζήτηση προϊόντος (Όνομα)..."
-        app:layout_constraintTop_toTopOf="parent"
-=======
         android:queryHint="Πληκτρολογήστε όνομα..."
         app:layout_constraintEnd_toEndOf="parent"
->>>>>>> 8a87f51c7868b58e92234e8130357ee578090491
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtCustomerFindProductActivityHeader" />
 

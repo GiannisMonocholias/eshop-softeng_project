@@ -42,15 +42,14 @@ public class UserCredentialsDAOMemory implements UserCredentialsDAO {
         credentialsMap.remove(username);
     }
 
+
     public User validateAndGetUser(String username, String password){
 
         User user = credentialsMap.get(username);
 
-        //Δεν υπάρχει χρήστης με το δοθέν username
         if(user == null){
             throw new SecurityException("Invalid credentials");
         }
-        //Υπάρχει χρήστης με το δοθέν username, αλλά λάθος κωδικός
         if(!user.getPassword().equals(password)){
             throw new SecurityException("Invalid credentials");
         }

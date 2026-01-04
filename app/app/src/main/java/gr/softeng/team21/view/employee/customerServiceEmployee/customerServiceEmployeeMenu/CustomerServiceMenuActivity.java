@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.user.login.LoginActivity;
 import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListActivity;
 import gr.softeng.team21.view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity;
@@ -48,6 +49,10 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
 
         findViewById(R.id.btnCustomerServiceEmployeeMenuNotifyOrdersStatus).setOnClickListener(v ->
                 presenter.onOrderStatusSelected(employeeId)
+        );
+
+        findViewById(R.id.btnCustomerServiceEmployeeMenuProcessAccount).setOnClickListener( v ->
+                presenter.onProcessAccountSelected(employeeId)
         );
 
         findViewById(R.id.btnCustomerServiceEmployeeMenuDeleteAccount).setOnClickListener(v ->
@@ -105,6 +110,16 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void navigateToProcessAccount(String employeeId){
+        Intent intent = new Intent(this, UserEditDataActivity.class);
+
+        intent.putExtra("user_id",employeeId);
+
+        startActivity(intent);
+    }
+
 
     @Override
     public void showMessage(String message) {

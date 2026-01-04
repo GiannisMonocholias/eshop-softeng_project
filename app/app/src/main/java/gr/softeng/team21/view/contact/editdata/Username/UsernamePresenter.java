@@ -1,23 +1,72 @@
 package gr.softeng.team21.view.contact.editdata.Username;
 
-import gr.softeng.team21.domain.Customer;
+import android.util.Log;
+
+import gr.softeng.team21.domain.User;
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 public class UsernamePresenter {
     private UsernameView view;
-    private Customer customer;
-    public UsernamePresenter(UsernameView view, Customer customer) {
+    private User user;
+    private UserCredentialsDAOMemory credentialsDAO;
+
+    public UsernamePresenter(UsernameView view, String userId) {
         this.view = view;
-        this.customer = customer;
+        this.credentialsDAO = UserCredentialsDAOMemory.getInstance();
+        findUser(userId);
     }
 
-    public void SaveUsernameClicked(String name) {
-        if (name.isEmpty()) {
-            view.showError("Παρακαλώ συμπληρώστε τo πεδίo");
+    private void findUser(String userId) {
+        user = CustomerDAOMemory.getInstance().getCustomer(userId);
+
+        if (user == null) {
+            user = EmployeeDAOMemory.getInstance().getEmployee(userId);
+        }
+
+        if (userId != null) {
+            Log.d("UsernamePresenter", "User ID: " + userId);
+        }
+
+        if (user == null) {
+            view.showError("Ο χρήστης δεν βρέθηκε.");
+            view.finishView();
             return;
         }
+
+        if (user.getUsername() != null && !user.getUsername().isEmpty()) {
+            view.setUsername(user.getUsername());
+        }
+    }
+
+    public void saveUsernameClicked(String newName) {
+        if (user == null) return;
+
+        if (newName.isEmpty()) {
+            view.showError("Παρακαλώ εισάγετε Username");
+            return;
+        }
+
+        if (user.getUsername().equals(newName)) {
+            view.SaveSuccess("Δεν έγιναν αλλαγές.");
+            return;
+        }
+
+        if (credentialsDAO.getUsersCredentials().containsKey(newName)) {
+            view.showError("Το username χρησιμοποιείται ήδη.");
+            return;
+        }
+
         try {
-            customer.editData("1", name, null, null);
-            view.SaveSuccess("To username ενημερώθηκε!");
+            String oldUsername = user.getUsername();
+            credentialsDAO.removeUser(oldUsername);
+
+            user.editData("1", newName, null, null);
+
+            credentialsDAO.addUser(user);
+
+            view.SaveSuccess("Το username ενημερώθηκε επιτυχώς!");
 
         } catch (Exception e) {
             view.showError("Σφάλμα: " + e.getMessage());

@@ -96,7 +96,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
     @Override
     public void goToEditData() {
         Intent intent = new Intent(this, UserEditDataActivity.class);
-        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
+        intent.putExtra("user_id", customer.getCustomer_id());
         startActivity(intent);
     }
 

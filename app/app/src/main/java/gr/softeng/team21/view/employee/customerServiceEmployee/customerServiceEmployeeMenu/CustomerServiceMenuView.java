@@ -8,6 +8,10 @@ public interface CustomerServiceMenuView {
     void navigateToEmailInbox(String employeeId);
 
     void showDeleteAccountConfirmation();
+
     void navigateToLogin();
+
+    void navigateToProcessAccount(String employeeId);
+
     void showMessage(String message);
 }

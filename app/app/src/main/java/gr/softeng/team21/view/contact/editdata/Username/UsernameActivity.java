@@ -12,48 +12,58 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 
 public class UsernameActivity extends AppCompatActivity implements UsernameView {
-   private EditText etUsername;
-   private Button btnsave;
+
+    private EditText etUsername;
+    private Button btnSave;
     private UsernamePresenter presenter;
-    private Customer customer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_username);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        String customerId=getIntent().getStringExtra("CUSTOMER_ID");
-        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);
-        presenter=new UsernamePresenter(this,customer);
+
+        String userId = getIntent().getStringExtra("user_id");
+
         etUsername = findViewById(R.id.edittxtUsernameActivity);
-        btnsave = findViewById(R.id.btnUsernameActivitySave);
-        btnsave.setOnClickListener(v -> saveUsername());
+        btnSave = findViewById(R.id.btnUsernameActivitySave);
+
+        presenter = new UsernamePresenter(this, userId);
+
+        btnSave.setOnClickListener(v -> saveUsername());
     }
 
     private void saveUsername() {
         String name = etUsername.getText().toString().trim();
-        presenter.SaveUsernameClicked(name);
+        presenter.saveUsernameClicked(name);
+    }
 
+    @Override
+    public void setUsername(String username) {
+        etUsername.setText(username);
     }
 
     @Override
     public void SaveSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         finish();
-
     }
 
     @Override
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void finishView() {
+        finish();
     }
 }

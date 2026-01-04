@@ -106,7 +106,7 @@ public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity 
         intent.putExtra("BODY_EXTRA", body);
         intent.putExtra("SENDER_EXTRA", sender);
         intent.putExtra("RECEIVER_EXTRA", receiver);
-        intent.putExtra(EMP_ID_EXTRA, employeeId);
+        intent.putExtra("user_id", employeeId);
 
         startActivity(intent);
     }

@@ -25,6 +25,10 @@ public class OrdersPreparationEmployeeMenuPresenter {
         view.navigateToAssignedOrders(employeeId);
     }
 
+    public void onProcessAccountSelected(String employeeId) {
+        view.navigateToProcessAccount(employeeId);
+    }
+
     public void onClickAvailableOrdersToAssign(String employeeId){
         view.navigateToAvailableOrdersToAssign(employeeId);
     }

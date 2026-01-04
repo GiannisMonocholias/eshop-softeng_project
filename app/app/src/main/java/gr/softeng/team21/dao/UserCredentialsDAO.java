@@ -7,9 +7,9 @@ import gr.softeng.team21.domain.User;
 
 public interface UserCredentialsDAO {
 
-     HashMap<String, User> getUsersCredentials();
      void addUser(User user);
      void removeUser(String username);
+     HashMap<String, User> getUsersCredentials();
      User validateAndGetUser(String username, String password);
      void clear();
 }

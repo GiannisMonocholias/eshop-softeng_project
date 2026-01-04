@@ -24,6 +24,11 @@ public class UpdateCatalogueEmployeeMenuPresenter {
         view.navigateToAssignedRequests(employeeId);
     }
 
+    public void onProcessAccountSelected(String employeeId) {
+        view.navigateToProcessAccount(employeeId);
+    }
+
+
     public void onClickAvailableRequestsToAssign(String employeeId) {
         view.navigateToAvailableRequestsToAssign(employeeId);
     }

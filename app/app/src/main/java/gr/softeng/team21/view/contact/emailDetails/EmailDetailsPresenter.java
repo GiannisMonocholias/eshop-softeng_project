@@ -1,5 +1,7 @@
 package gr.softeng.team21.view.contact.emailDetails;
 
+import android.util.Log;
+
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Admin;
@@ -33,9 +35,17 @@ public class EmailDetailsPresenter {
 
     }
 
-    public String findReceiverName(String employeeId){
-        Employee employee = employeeDAO.getEmployee(employeeId);
-        return employee.getFirstname() + " " +  employee.getLastname();
+    public String findReceiverName(String userId){
+        Employee employee = employeeDAO.getEmployee(userId);
+        if(employee != null){
+            return employee.getFirstname() + " " +  employee.getLastname();
+        }
+
+        Customer customer = customerDAO.getCustomer(userId);
+        if(customer != null){
+            return customer.getFirstname() + " " + customer.getLastname();
+        }
+        return "";
     }
 
     public String findSenderName(String senderEmailAddress){

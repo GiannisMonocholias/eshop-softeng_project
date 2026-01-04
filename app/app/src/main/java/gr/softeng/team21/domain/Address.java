@@ -110,5 +110,10 @@ public class Address {
         result = country == null ? result : 13 * result + country.hashCode();
         return result;
     }
+
+    @Override
+    public String toString(){
+        return this.getStreet() + " " + this.getNumber() + " " + this.getCity();
+    }
 }
 

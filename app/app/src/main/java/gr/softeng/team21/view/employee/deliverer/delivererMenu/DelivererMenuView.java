@@ -5,12 +5,12 @@ public interface DelivererMenuView {
 
     void navigateToOrdersList(String employeeId);
 
-
-//    void navigateToProcessAccount(String employeeId);
-
     void showDeleteAccountConfirmation();
 
     void navigateToLogin();
 
+    void navigateToProcessAccount(String employeeId);
+
     void showMessage(String message);
+
 }

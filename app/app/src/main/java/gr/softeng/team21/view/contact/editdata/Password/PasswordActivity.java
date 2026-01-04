@@ -12,16 +12,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.view.contact.editdata.Email.EmailPresenter;
-import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 
 public class PasswordActivity extends AppCompatActivity implements PasswordView {
+
     private EditText etPass;
-   private Button btnSave;
-   private PasswordPresenter presenter;
-    private Customer customer;
+    private Button btnSave;
+    private PasswordPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +30,17 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        String customerId=getIntent().getStringExtra("CUSTOMER_ID");
-        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);
-        presenter=new PasswordPresenter(this,customer);
+
+        // Λήψη του user_id
+        String userId = getIntent().getStringExtra("user_id");
+
         etPass = findViewById(R.id.edittxtPasswordActivity);
         btnSave = findViewById(R.id.btnPasswordActivitySave);
+
+        // Δημιουργία του Presenter με userId
+        // ΠΡΟΣΟΧΗ: Το presenter πρέπει να αρχικοποιηθεί ΜΕΤΑ το findViewById
+        // ώστε να μπορεί να καλέσει την setPassword στο etPass
+        presenter = new PasswordPresenter(this, userId);
 
         btnSave.setOnClickListener(v -> savePassword());
     }
@@ -46,18 +48,26 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     private void savePassword() {
         String password = etPass.getText().toString().trim();
         presenter.savePasswordClicked(password);
+    }
 
+    @Override
+    public void setPassword(String password) {
+        etPass.setText(password);
     }
 
     @Override
     public void SaveSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         finish();
-
     }
 
     @Override
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void finishView() {
+        finish();
     }
 }

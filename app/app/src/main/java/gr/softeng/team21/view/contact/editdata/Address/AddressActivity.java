@@ -12,35 +12,36 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 
 public class AddressActivity extends AppCompatActivity implements AddressView {
-   private EditText etStreet,etNumber,etZip,etCity,etCountry;
-   private Button btnSave;
-   private AddressPresenter presenter;
-    private Customer customer;
+
+    private EditText etStreet, etNumber, etZip, etCity, etCountry;
+    private Button btnSave;
+    private AddressPresenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_address);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        String customerId=getIntent().getStringExtra("CUSTOMER_ID");
-        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);
-        presenter=new AddressPresenter(this,customer);
-        etStreet=findViewById(R.id.edittxtAddressActivityStreet);
-        etNumber=findViewById(R.id.edittxtAddressActivityNumber);
-        etZip=findViewById(R.id.edittxtAddressActivityZip);
-        etCity=findViewById(R.id.edittxtAddressActivityCity);
-        etCountry=findViewById(R.id.edittxtAddressActivityCountry);
-        btnSave=findViewById(R.id.btnAddressActivitySave);
-        btnSave.setOnClickListener(v->saveAddress());
+
+        String userId = getIntent().getStringExtra("user_id");
+
+        etStreet = findViewById(R.id.edittxtAddressActivityStreet);
+        etNumber = findViewById(R.id.edittxtAddressActivityNumber);
+        etZip = findViewById(R.id.edittxtAddressActivityZip);
+        etCity = findViewById(R.id.edittxtAddressActivityCity);
+        etCountry = findViewById(R.id.edittxtAddressActivityCountry);
+        btnSave = findViewById(R.id.btnAddressActivitySave);
+        presenter = new AddressPresenter(this, userId);
+
+        btnSave.setOnClickListener(v -> saveAddress());
     }
 
     private void saveAddress() {
@@ -48,24 +49,33 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
         String number = etNumber.getText().toString().trim();
         String zip = etZip.getText().toString().trim();
         String city = etCity.getText().toString().trim();
-        String country=etCountry.getText().toString().trim();
-        presenter.saveAddressClicked(street,number,zip,city,country);
+        String country = etCountry.getText().toString().trim();
 
-
+        presenter.saveAddressClicked(street, number, zip, city, country);
     }
 
     @Override
     public void SaveSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         finish();
-
     }
 
     @Override
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void setAddressDetails(String street, String number, String zip, String city, String country) {
+        etStreet.setText(street);
+        etNumber.setText(number);
+        etZip.setText(zip);
+        etCity.setText(city);
+        etCountry.setText(country);
+    }
+
+    @Override
+    public void finishView() {
+        finish();
+    }
 }
-
-
-

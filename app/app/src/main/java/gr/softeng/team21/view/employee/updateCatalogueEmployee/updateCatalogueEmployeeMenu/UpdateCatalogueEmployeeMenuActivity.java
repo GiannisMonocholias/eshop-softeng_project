@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.user.login.LoginActivity;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute.AssignedRequestsToExecuteActivity;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign.AvailableRequestsToAssignActivity;
@@ -50,6 +51,10 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         // Available Requests Button
         findViewById(R.id.btnUptCatEmpMenuAssignNewRequest).setOnClickListener(v ->
                 presenter.onClickAvailableRequestsToAssign(employeeId)
+        );
+
+        findViewById(R.id.btnUptCatEmpMenuProcessAccount).setOnClickListener(v ->
+                presenter.onProcessAccountSelected(employeeId)
         );
 
         // Delete Account Button
@@ -107,6 +112,15 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void navigateToProcessAccount(String employeeId){
+        Intent intent = new Intent(this, UserEditDataActivity.class);
+
+        intent.putExtra("user_id",employeeId);
+
+        startActivity(intent);
     }
 
     @Override

@@ -33,6 +33,10 @@ public class CustomerServiceMenuPresenter {
         view.showDeleteAccountConfirmation();
     }
 
+    public void onProcessAccountSelected(String employeeId) {
+        view.navigateToProcessAccount(employeeId);
+    }
+
     public void onDeleteAccountConfirmed(String employeeId) {
         Employee employee = employeeDAO.getEmployee(employeeId);
 

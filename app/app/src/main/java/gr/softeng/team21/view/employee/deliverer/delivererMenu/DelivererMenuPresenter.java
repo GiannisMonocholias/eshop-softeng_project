@@ -24,13 +24,10 @@ public class DelivererMenuPresenter {
         view.navigateToOrdersList(employeeId);
     }
 
-//    public void onHistorySelected(String employeeId) {
-//        view.navigateToHistory(employeeId);
-//    }
 
-//    public void onProcessAccountSelected(String employeeId) {
-//        view.navigateToProcessAccount(employeeId);
-//    }
+    public void onProcessAccountSelected(String employeeId) {
+        view.navigateToProcessAccount(employeeId);
+    }
 
     public void onDeleteAccountSelected() {
         view.showDeleteAccountConfirmation();

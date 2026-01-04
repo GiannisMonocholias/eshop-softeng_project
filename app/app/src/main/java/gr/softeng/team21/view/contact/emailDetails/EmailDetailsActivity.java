@@ -24,7 +24,7 @@ public class EmailDetailsActivity extends AppCompatActivity implements EmailDeta
     private TextView txtReceiverEmailAddress;
     private TextView txtBody;
 
-    private static final String  EMP_ID_EXTRA = "CUSTOMER_SERVICE_EMPLOYEE_ID";
+    private static final String  EMP_ID_EXTRA = "user_id";
 
 
     @Override
