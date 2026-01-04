@@ -22,6 +22,7 @@ import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.MemoryInitializer;
+import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
 import gr.softeng.team21.view.customer.register.RegisterActivity;
 import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity;
 import gr.softeng.team21.view.employee.deliverer.delivererMenu.DelivererMenuActivity;

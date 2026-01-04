@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/delivererOrdersList"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -97,38 +97,15 @@
             app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityLabelDescription" />
 
         <TextView
-            android:id="@+id/txtProductDetailActivityLabelFeatures"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Xαρακτηριστικά:"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityDetailDescription" />
-
-        <TextView
-            android:id="@+id/txtProductDetailActivityDetailFeatures"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:lineSpacingExtra="4dp"
-            android:text="Αναλυτικά..."
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityLabelFeatures" />
-
-        <TextView
             android:id="@+id/txtProductDetailActivityLabelQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="80dp"
             android:text="Ποσότητα:"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityDetailFeatures" />
+            app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityDetailDescription" />
 
         <Button
             android:id="@+id/btnProductDetailActivityQuantityMinus"
@@ -181,6 +158,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="30dp"
+            android:backgroundTint="#009688"
             android:text="Προσθήκη στο Καλάθι"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -188,6 +166,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -45,7 +45,7 @@
             android:exported="true" />
         <activity
             android:name=".view.customer.EmailList.CustomerEmailListActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".view.user.EditData.UserEditDataActivity"
