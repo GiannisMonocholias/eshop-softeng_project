@@ -32,9 +32,6 @@
             android:name=".view.customer.homePage.CustomerHomePageActivity"
             android:exported="true" />
         <activity
-            android:name=".view.customer.FindProduct.CustomerFindProductActivity"
-            android:exported="true" />
-        <activity
             android:name=".view.customer.ShoppingCart.CustomerShoppingCartActivity"
             android:exported="true" />
         <activity
@@ -44,40 +41,8 @@
             android:name=".view.customer.Payment.CustomerCardPaymentActivity"
             android:exported="true" />
         <activity
-            android:name=".view.customer.EmailList.CustomerEmailListActivity"
+            android:name=".view.customer.FindProduct.CustomerFindProductActivity"
             android:exported="false" />
-
-        <activity
-            android:name=".view.user.EditData.UserEditDataActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.user.emailComposition.EmailCompositionActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.product.ProductDetailsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.order.orderDetails.OrderDetailsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.emailDetails.EmailDetailsActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".view.contact.editdata.Phone.PhoneActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.Email.EmailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.Password.PasswordActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.Username.UsernameActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.contact.editdata.Address.AddressActivity"
-            android:exported="true" />
 
         <activity
             android:name=".view.employee.deliverer.delivererMenu.DelivererMenuActivity"
@@ -87,27 +52,16 @@
             android:exported="true" />
 
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity"
+            android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct.ExecuteProcessProductActivity"
+            android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct.ExecuteInsertProductActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.assignedRequestsToExecute.AssignedRequestsToExecuteActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.availableRequestsToAssign.AvailableRequestsToAssignActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity"
+            android:name=".view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity"
             android:exported="true" />
 
-        <activity
-            android:name=".view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity"
-            android:exported="true" />
+
         <activity
             android:name=".view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu.OrderPreparationEmployeeMenuActivity"
             android:exported="true" />
@@ -117,17 +71,60 @@
         <activity
             android:name=".view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity"
             android:exported="true" />
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity"
+            android:exported="true" />
 
         <activity
-            android:name=".view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity"
+            android:name=".view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListActivity"
+            android:name=".view.employee.updateCatalogueEmployee.assignedRequestsToExecute.AssignedRequestsToExecuteActivity"
             android:exported="true" />
         <activity
-            android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity"
+            android:name=".view.employee.updateCatalogueEmployee.availableRequestsToAssign.AvailableRequestsToAssignActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct.ExecuteProcessProductActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct.ExecuteInsertProductActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".view.user.emailComposition.EmailCompositionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.user.User_EditData_activity"
+            android:exported="true" />
+        <activity
+            android:name=".view.order.orderDetails.OrderDetailsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.product.ProductDetailsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.emailDetails.EmailDetailsActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".view.contact.editdata.PhoneActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.EmailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.PasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.UsernameActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.contact.editdata.AddressActivity"
             android:exported="true" />
 
     </application>
-
 </manifest>

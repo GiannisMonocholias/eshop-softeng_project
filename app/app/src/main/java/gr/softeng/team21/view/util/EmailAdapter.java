@@ -68,11 +68,7 @@ public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.EmailViewHol
         holder.txtPreview.setText(email.getBody());
 
         Date dateSent = email.getDateSent();
-<<<<<<< Updated upstream
         holder.txtDate.setText(dateSent != null? dateSent.toString():"");
-=======
-            holder.txtDate.setText(dateSent != null? dateSent.toString():"");
->>>>>>> Stashed changes
 
         holder.itemView.setOnClickListener(v -> listener.onEmailClick(email));
     }

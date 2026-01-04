@@ -7,20 +7,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".view.customer.Customer_FindProduct_Activity">
+    tools:context=".view.customer.FindProduct.CustomerFindProductActivity">
 
     <SearchView
         android:id="@+id/searchProductActivityHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
-<<<<<<< Updated upstream
-        android:queryHint="Πληκτρολογήστε όνομα..."
-        app:layout_constraintEnd_toEndOf="parent"
-=======
         android:queryHint="Αναζήτηση προϊόντος (Όνομα)..."
         app:layout_constraintTop_toTopOf="parent"
->>>>>>> Stashed changes
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -36,7 +31,6 @@
 
     <ListView
         android:id="@+id/ViewlistProductActivity"
-<<<<<<< Updated upstream
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="4dp"
@@ -46,13 +40,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCustomerFindProductActivityText" />
-=======
-        android:layout_width="408dp"
-        android:layout_height="678dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchProductActivityHeader" />
->>>>>>> Stashed changes
 
 </androidx.constraintlayout.widget.ConstraintLayout>
