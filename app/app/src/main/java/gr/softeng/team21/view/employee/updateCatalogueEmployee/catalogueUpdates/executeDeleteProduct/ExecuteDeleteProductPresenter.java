@@ -40,11 +40,8 @@ public class ExecuteDeleteProductPresenter {
                 ? currentRequest.getProduct().getPrice().toString()
                 : "-";
 
-        view.setProductDetails(
-                currentRequest.getProduct().getProductname(),
-                currentRequest.getProduct().getProductCode(),
-                currentRequest.getProduct().getDescription(),
-                priceStr
+        view.setProductDetails(currentRequest.getProduct().getProductname(), currentRequest.getProduct().getProductCode(),
+                currentRequest.getProduct().getDescription(), priceStr
         );
     }
 

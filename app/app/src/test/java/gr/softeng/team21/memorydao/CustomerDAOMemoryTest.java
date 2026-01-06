@@ -9,8 +9,8 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.EmailAddress;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.TestHelper;
 
 public class CustomerDAOMemoryTest {

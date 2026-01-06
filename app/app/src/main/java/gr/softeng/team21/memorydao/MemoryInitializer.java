@@ -9,18 +9,18 @@ import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
-import gr.softeng.team21.domain.Address;
+import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.domain.AllowedRequest;
 import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
-import gr.softeng.team21.domain.Date;
+import gr.softeng.team21.util.Date;
 import gr.softeng.team21.domain.Deliverer;
-import gr.softeng.team21.domain.EmailAddress;
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.EmployeeState;
-import gr.softeng.team21.domain.Money;
+import gr.softeng.team21.util.Money;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.PaymentType;
@@ -30,7 +30,6 @@ import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
 public class MemoryInitializer {
-    private static boolean initialized = false;
 
     public static void eraseData() {
         try {
@@ -104,11 +103,7 @@ public class MemoryInitializer {
     }
 
     public static void prepareData() {
-        if (initialized) {
-            return;
-        }
         eraseData();
-        initialized = true;
         //=====================================================
         //START: INITIALIZE CUSTOMERS
         //=====================================================

@@ -2,6 +2,9 @@ package gr.softeng.team21.domain;
 
 import java.util.ArrayList;
 
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.util.Date;
+
 public class Deliverer extends Employee{
 
     private int max_quantity;
@@ -35,7 +38,7 @@ public class Deliverer extends Employee{
     }
 
     public ArrayList<Order> getOrders(){
-        return new ArrayList<>(orders);
+        return orders;
     }
 
     public void addOrder(Order order){

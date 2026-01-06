@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
-import gr.softeng.team21.domain.EmailMessage;
-import gr.softeng.team21.domain.Employee;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.contact.EmailMessage;
 
 public class CustomerServiceEmployeeEmailListPresenter {
     private EmployeeDAO employeeDAO;

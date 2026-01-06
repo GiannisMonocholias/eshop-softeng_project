@@ -1,6 +1,6 @@
 package gr.softeng.team21.view.customer.Payment;
 
-import gr.softeng.team21.domain.Money;
+import gr.softeng.team21.util.Money;
 
 public interface CustomerPaymentView {
     void showMessage(String message);

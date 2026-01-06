@@ -7,11 +7,14 @@ import static org.junit.Assert.*;
 
 import java.util.NoSuchElementException;
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
 
 public class OrderPreparationEmployeeTest {
     private String orderId;

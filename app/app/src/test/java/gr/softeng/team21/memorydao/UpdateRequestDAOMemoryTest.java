@@ -7,8 +7,8 @@ import static org.junit.Assert.*;
 
 import gr.softeng.team21.domain.AllowedRequest;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.Money;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
 import gr.softeng.team21.domain.ProductType;
 
 public class UpdateRequestDAOMemoryTest {

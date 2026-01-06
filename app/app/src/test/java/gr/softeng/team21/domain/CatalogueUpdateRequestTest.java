@@ -4,6 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
+
 public class CatalogueUpdateRequestTest {
     private CatalogueUpdateRequest request;
     private  ProductType product1;
@@ -11,7 +14,7 @@ public class CatalogueUpdateRequestTest {
 
     @Before
     public void setUp(){
-        product1 = new ProductType ( "Mouse Logitech", "Wireless", new Money ( 50, "€" ), "product1245" );
+        product1 = new ProductType ( "Mouse Logitech", "Wireless", new Money( 50, "€" ), "product1245" );
         previousDate = new Date(1, 12, 2025);
         request = new CatalogueUpdateRequest(previousDate, "Add new laptop to catalogue", product1, AllowedRequest.INSERT_PRODUCT, 101);
     }

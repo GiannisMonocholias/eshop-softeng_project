@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*; // Χρησιμοποιούμε μόνο JUnit 4 Assertions
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class DelivererTest {
 

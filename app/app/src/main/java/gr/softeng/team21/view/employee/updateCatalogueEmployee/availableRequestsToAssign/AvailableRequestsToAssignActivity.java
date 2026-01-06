@@ -3,7 +3,6 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequest
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,17 +12,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.AllowedRequest;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.Money;
-import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 import gr.softeng.team21.view.util.UpdateRequestAdapterTypes;

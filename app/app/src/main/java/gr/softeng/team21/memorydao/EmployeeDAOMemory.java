@@ -3,7 +3,6 @@ package gr.softeng.team21.memorydao;
 import java.util.HashMap;
 
 import gr.softeng.team21.dao.EmployeeDAO;
-import gr.softeng.team21.domain.Address;
 import gr.softeng.team21.domain.Employee;
 
 public class EmployeeDAOMemory implements EmployeeDAO {

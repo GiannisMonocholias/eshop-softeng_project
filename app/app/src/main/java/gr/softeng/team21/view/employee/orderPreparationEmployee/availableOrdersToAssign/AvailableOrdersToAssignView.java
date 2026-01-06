@@ -9,7 +9,7 @@ public interface AvailableOrdersToAssignView {
 
     void onOrderAssignedSuccess(Order order);
 
-    public void showConfirmationDialog(Order order, String message);
+    void showConfirmationDialog(Order order, String message);
 
     void updateList();
 }

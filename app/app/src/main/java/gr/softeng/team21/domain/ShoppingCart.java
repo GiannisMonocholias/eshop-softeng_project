@@ -1,6 +1,9 @@
 package gr.softeng.team21.domain;
 
 import java.util.ArrayList;
+
+import gr.softeng.team21.util.Money;
+
 public class ShoppingCart {
     private Customer customer;
     private Money totalcost;

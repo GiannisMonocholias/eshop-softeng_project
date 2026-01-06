@@ -4,9 +4,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class CustomerServiceEmployeeTest {
     private CustomerServiceEmployee employee;

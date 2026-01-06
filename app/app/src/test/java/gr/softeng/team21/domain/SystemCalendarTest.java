@@ -5,9 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class SystemCalendarTest {
     private static SystemCalendar calendar;

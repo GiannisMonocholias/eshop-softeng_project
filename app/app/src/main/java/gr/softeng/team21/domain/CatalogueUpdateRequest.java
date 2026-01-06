@@ -1,5 +1,7 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.util.Date;
+
 public class CatalogueUpdateRequest{
     private  int requestId;
     private final Date submissionDate;

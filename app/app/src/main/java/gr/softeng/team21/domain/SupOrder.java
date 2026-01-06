@@ -2,14 +2,17 @@ package gr.softeng.team21.domain;
 
 import java.util.*;
 
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
+
 public class SupOrder {
 
-    Date orderDate;
+    gr.softeng.team21.util.Date orderDate;
     int orderid;
     Admin admin;
     ArrayList<OrderLine> orderProducts;
 
-    public SupOrder(Date date , int id , Admin admin , ArrayList<OrderLine> orproducts){
+    public SupOrder(gr.softeng.team21.util.Date date , int id , Admin admin , ArrayList<OrderLine> orproducts){
         this.orderDate = date;
         this.orderid = id;
         this.admin = admin;
@@ -32,7 +35,7 @@ public class SupOrder {
         this.orderid = id;
     }
 
-    public Date getDate(){
+    public gr.softeng.team21.util.Date getDate(){
         return orderDate;
     }
 

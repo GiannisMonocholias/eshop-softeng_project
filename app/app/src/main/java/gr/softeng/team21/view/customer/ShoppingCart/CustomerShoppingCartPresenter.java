@@ -1,14 +1,10 @@
 package gr.softeng.team21.view.customer.ShoppingCart;
 
-import android.content.Intent;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.domain.Money;
-import gr.softeng.team21.view.customer.Payment.CustomerPaymentActivity;
+import gr.softeng.team21.util.Money;
 
 public class CustomerShoppingCartPresenter {
     private CustomerShoppingCartView view;

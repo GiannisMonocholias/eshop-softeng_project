@@ -3,6 +3,10 @@ package gr.softeng.team21.domain;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.contact.EmailMessage;
+import gr.softeng.team21.util.Date;
+
 public class EmailMessageTest {
     private final EmailAddress from = new EmailAddress("sender@example.com");
     private final EmailAddress to = new EmailAddress("recipient@example.com");

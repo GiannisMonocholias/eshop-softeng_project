@@ -15,17 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.domain.Money;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.view.customer.Payment.CustomerPaymentActivity;
-import gr.softeng.team21.view.customer.Payment.CustomerPaymentPresenter;
-import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
-import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 
 public class CustomerShoppingCartActivity extends AppCompatActivity implements ShoppingCartAdapter.CartListener, CustomerShoppingCartView {
 

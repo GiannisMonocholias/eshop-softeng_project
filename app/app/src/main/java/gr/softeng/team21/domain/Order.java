@@ -1,5 +1,8 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
+
 public class Order {
     private String ordercode;
     private Date submissiondate;

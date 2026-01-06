@@ -7,8 +7,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
+import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class CustomerTest {
   private Customer customer;
@@ -24,7 +27,7 @@ public class CustomerTest {
     CustomerDAOMemory.getInstance ( ).getCustomers ( ).clear ( );
     customer = new Customer (
             "giannispap", "Giannis", "pass1234", "Papadopoulos",
-            "697123456", email, "CUST-001", new Date ( ) );
+            "697123456", email, "CUST-001", new Date( ) );
     CustomerDAOMemory.getInstance().addCustomer(customer);
     customer.setAddress ( address );
 

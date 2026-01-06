@@ -1,7 +1,11 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public abstract class User {
     protected String username;
@@ -88,7 +92,7 @@ public abstract class User {
         this.emailDAOMemory = emailDAOMemory;
     }
 
-    protected void replyToEmail(User sender, User recipient,EmailMessage original, String subject, String body, Date dateSent){
+    protected void replyToEmail(User sender, User recipient, EmailMessage original, String subject, String body, Date dateSent){
         
         deliverEmail(sender, recipient, original,subject, body, true, dateSent);
     }

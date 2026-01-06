@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Assertions;
 
 import java.util.NoSuchElementException;
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class AuthenticationSystemTest {
     private AuthenticationSystem authSystem;

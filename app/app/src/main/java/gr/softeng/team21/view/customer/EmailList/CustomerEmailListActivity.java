@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.EmailMessage;
+import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.view.contact.emailDetails.EmailDetailsActivity;
 import gr.softeng.team21.view.user.emailComposition.EmailCompositionActivity;

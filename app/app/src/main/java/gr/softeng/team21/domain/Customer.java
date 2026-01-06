@@ -2,25 +2,27 @@ package gr.softeng.team21.domain;
 
 import java.util.*;
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class Customer extends User {
     private String customer_id;
-    private Date registdate;
+    private gr.softeng.team21.util.Date registdate;
     private ShoppingCart shoppingCart;
     private SystemCalendar systemCalendar;
 
 
 
     public Customer (String username, String firstname, String password, String lastname, String phoneNumber,
-                     EmailAddress emailaddress, String customer_id, Date registdate) {
+                     EmailAddress emailaddress, String customer_id, gr.softeng.team21.util.Date registdate) {
         super ( username, firstname, password, lastname, phoneNumber, emailaddress );
         this.customer_id = customer_id;
         this.registdate = registdate;
     }
 
-    public Date getRegistdateDate ( ) {
+    public gr.softeng.team21.util.Date getRegistdateDate ( ) {
         return registdate;
     }
 
@@ -99,10 +101,10 @@ public class Customer extends User {
 
     public Order Checkout ( ) {
         if ( shoppingCart == null ) return null;
-        Date deliverydate = new Date ( );
+        gr.softeng.team21.util.Date deliverydate = new gr.softeng.team21.util.Date( );
         deliverydate.changeDays ( 30 );
         String orderCode = "ORD-" + UUID.randomUUID ( ).toString ( );
-        Order neworder = new Order ( orderCode, new Date ( ), OrderStatusType.NEW, false, PaymentType.CASH, deliverydate, shoppingCart );
+        Order neworder = new Order ( orderCode, new Date( ), OrderStatusType.NEW, false, PaymentType.CASH, deliverydate, shoppingCart );
        neworder.setTotal_amount ( shoppingCart.getTotalCost () );
         return neworder;
     }

@@ -25,8 +25,8 @@ import gr.softeng.team21.view.util.OrderAdapterType;
 
 public class AvailableOrdersToAssignActivity extends AppCompatActivity implements AvailableOrdersToAssignView {
 
-    AvailableOrdersToAssignPresenter presenter;
-    OrderAdapter adapter;
+    private AvailableOrdersToAssignPresenter presenter;
+    private OrderAdapter adapter;
 
     private static final String EMP_ID_EXTRA = "ORDER_PREPARATION_EMPLOYEE_ID";
 
@@ -80,6 +80,7 @@ public class AvailableOrdersToAssignActivity extends AppCompatActivity implement
                 .setPositiveButton("OK", null)
                 .show();
     }
+
     @Override
     public void updateList() {
         if (adapter != null) {

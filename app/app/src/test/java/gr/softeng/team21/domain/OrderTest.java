@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class OrderTest {
 

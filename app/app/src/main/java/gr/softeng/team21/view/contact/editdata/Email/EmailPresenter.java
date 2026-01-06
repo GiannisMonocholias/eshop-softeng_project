@@ -3,7 +3,7 @@ package gr.softeng.team21.view.contact.editdata.Email;
 import android.util.Log;
 import android.util.Patterns;
 
-import gr.softeng.team21.domain.EmailAddress;
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;

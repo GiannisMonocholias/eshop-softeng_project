@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import gr.softeng.team21.domain.CartItem;
-import gr.softeng.team21.domain.Date;
+import gr.softeng.team21.util.Date;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.domain.PaymentType;

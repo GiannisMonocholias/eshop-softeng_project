@@ -2,7 +2,7 @@ package gr.softeng.team21.view.contact.editdata.Address;
 
 import android.util.Log;
 
-import gr.softeng.team21.domain.Address;
+import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;

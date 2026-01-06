@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.EmailMessage;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.contact.EmailMessage;
 
 public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.EmailViewHolder> {
 

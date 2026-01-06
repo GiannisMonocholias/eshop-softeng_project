@@ -2,8 +2,11 @@ package gr.softeng.team21.domain;
 
 import java.util.HashMap;
 
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class SystemCalendar {
     private static SystemCalendar instance;
@@ -68,7 +71,7 @@ public class SystemCalendar {
         deliverEmail(sender,recipient,null,subject,body,false);
     }
 
-    public void deliverEmail(SystemCalendar sender, User recipient,EmailMessage original, String subject, String body, boolean isReplyMessage) {
+    public void deliverEmail(SystemCalendar sender, User recipient, EmailMessage original, String subject, String body, boolean isReplyMessage) {
         EmailMessage email = new EmailMessage();
         email.setFrom(sender.getEmailAddress());
         email.setTo(recipient.getEmailAddress());

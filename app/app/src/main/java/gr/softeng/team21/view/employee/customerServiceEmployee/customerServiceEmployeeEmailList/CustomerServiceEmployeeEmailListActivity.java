@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.EmailMessage;
+import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.view.user.emailComposition.EmailCompositionActivity;
 import gr.softeng.team21.view.contact.emailDetails.EmailDetailsActivity;

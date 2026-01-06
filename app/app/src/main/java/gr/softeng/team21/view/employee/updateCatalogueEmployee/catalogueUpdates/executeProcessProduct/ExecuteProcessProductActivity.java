@@ -137,7 +137,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
                         presenter.onSaveConfirmed();
                     }
                 })
-                .setNegativeButton("ΟΧΙ", null) // Αν πατήσει ΟΧΙ, δεν κάνει τίποτα (κλείνει το dialog)
+                .setNegativeButton("ΟΧΙ", null)
                 .show();
     }
 

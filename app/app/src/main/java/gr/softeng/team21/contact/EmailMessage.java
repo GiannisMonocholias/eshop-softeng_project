@@ -1,4 +1,6 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.contact;
+
+import gr.softeng.team21.util.Date;
 
 public class EmailMessage {
     private EmailAddress from;

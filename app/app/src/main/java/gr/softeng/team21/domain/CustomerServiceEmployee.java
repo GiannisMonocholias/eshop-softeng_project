@@ -2,6 +2,10 @@ package gr.softeng.team21.domain;
 
 import java.util.ArrayList;
 
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.contact.EmailMessage;
+import gr.softeng.team21.util.Date;
+
 public  class CustomerServiceEmployee extends Employee{
     private int totalResponses;
     private ArrayList<Order> orders;

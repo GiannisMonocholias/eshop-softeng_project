@@ -1,6 +1,7 @@
 package gr.softeng.team21.view.customer.homePage;
 
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 public class CustomerHomePagePresenter {
 private CustomerHomePageView view;
@@ -33,6 +34,7 @@ private Customer customer;
 
     public void DeleteConfirm() {
         if(customer!=null){
+            UserCredentialsDAOMemory.getInstance().removeUser(customer.getUsername());
             customer.remove();
             view.showMessage("Ο λογαριασμός σας διαγράφηκε.");
             view.goToMain();

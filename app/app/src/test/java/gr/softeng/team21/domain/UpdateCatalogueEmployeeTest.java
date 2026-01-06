@@ -5,10 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
 
 public class UpdateCatalogueEmployeeTest {
 
@@ -26,7 +29,7 @@ public class UpdateCatalogueEmployeeTest {
         UpdateRequestDAOMemory.getInstance().clear();
         EmployeeDAOMemory.getInstance().clear();
 
-        product1 = new ProductType ("Laptop Dell", "High End",  new Money ( 500, "€" ), "product1245");
+        product1 = new ProductType ("Laptop Dell", "High End",  new Money( 500, "€" ), "product1245");
         productUpdated = new ProductType("Laptop Dell Pro","High End",new Money(800,"€"),"product1245");
 
         insertRequest = new CatalogueUpdateRequest(new Date(1,12,2025),

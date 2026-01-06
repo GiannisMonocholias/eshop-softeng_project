@@ -1,6 +1,7 @@
 package gr.softeng.team21.domain;
 
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.util.Date;
 
 public class Employee extends User{
     private String employeeId;

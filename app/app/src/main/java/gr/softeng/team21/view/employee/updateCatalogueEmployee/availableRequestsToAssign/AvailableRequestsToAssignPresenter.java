@@ -49,7 +49,6 @@ public class AvailableRequestsToAssignPresenter {
     }
 
     public void onRequestConfirmed(CatalogueUpdateRequest request) {
-        Log.d("Message1:",loggedInEmployee.getAssignedRequests().size()+"");
         boolean result = loggedInEmployee.assignRequest(request.getId());
 
         if(!result){
@@ -61,7 +60,6 @@ public class AvailableRequestsToAssignPresenter {
 
         view.showMessage("Το αίτημα ανατέθηκε επιτυχώς!");
         view.onRequestAssignedSuccess(request);
-        Log.d("Message2:",loggedInEmployee.getAssignedRequests().size()+"");
 
         view.updateList();
     }

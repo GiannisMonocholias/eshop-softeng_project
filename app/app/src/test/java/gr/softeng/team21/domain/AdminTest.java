@@ -5,8 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
 
 public class AdminTest {
 

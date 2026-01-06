@@ -14,8 +14,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.EmailAddress;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.view.MainActivity;
 import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;

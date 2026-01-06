@@ -1,13 +1,12 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
-import gr.softeng.team21.domain.Money;
+import gr.softeng.team21.util.Money;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.RequestStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
@@ -45,6 +44,8 @@ public class ExecuteInsertProductPresenter {
         view.setRequestDescription(currentRequest.getUpdateDescription());
     }
 
+
+
     public void onConfirmInsert() {
         String code = view.getProductCode();
         String name = view.getProductName();
@@ -72,8 +73,6 @@ public class ExecuteInsertProductPresenter {
             view.showInputError("price", "Παρακαλώ εισάγετε έγκυρη τιμή (π.χ. 12.50)");
         } catch (IllegalArgumentException e) {
             view.showError("Σφάλμα: " + e.getMessage());
-        } catch (Exception e) {
-            view.showError("Απροσδόκητο σφάλμα: " + e.getMessage());
         }
     }
 }

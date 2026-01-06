@@ -3,7 +3,7 @@ package gr.softeng.team21.view.user.emailComposition;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.domain.Date;
+import gr.softeng.team21.util.Date;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.domain.User;
 

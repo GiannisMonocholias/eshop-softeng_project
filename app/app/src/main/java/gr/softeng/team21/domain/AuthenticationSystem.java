@@ -1,6 +1,8 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class AuthenticationSystem {
     private static AuthenticationSystem instance;

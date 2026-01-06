@@ -7,8 +7,8 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.EmailAddress;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.domain.EmployeeState;
 

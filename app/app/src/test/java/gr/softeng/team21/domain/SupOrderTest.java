@@ -1,12 +1,15 @@
 package gr.softeng.team21.domain;
 
 import static org.junit.Assert.*;
-import java.util.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
 
 
 public class SupOrderTest {

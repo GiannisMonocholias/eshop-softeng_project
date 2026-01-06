@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
+import gr.softeng.team21.util.Money;
 
 public class ProductsWareHouseDAOMemoryTest {
     ProductType product1;

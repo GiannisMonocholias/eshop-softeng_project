@@ -16,12 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.domain.Money;
-import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.domain.PaymentType;
+import gr.softeng.team21.util.Money;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
-import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 
 public class CustomerPaymentActivity extends AppCompatActivity implements CustomerPaymentView {
 

@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.contact.Address;
+
 public class AddressTest {
     private Address address;
 

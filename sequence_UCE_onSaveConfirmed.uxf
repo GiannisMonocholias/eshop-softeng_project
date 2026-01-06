@@ -1,0 +1,59 @@
+<diagram program="umletino" version="15.1"><zoom_level>7</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>184</x><y>98</y><w>147</w><h>21</h></coordinates><panel_attributes>ExecuteProcessProductPresenter</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>247</x><y>112</y><w>21</w><h>574</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;800;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>247</x><y>133</y><w>14</w><h>518</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>345</x><y>98</y><w>182</w><h>21</h></coordinates><panel_attributes>this.view: ExecuteProcessProductView</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>422</x><y>112</y><w>21</w><h>574</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;800;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>114</x><y>133</y><w>147</w><h>28</h></coordinates><panel_attributes>lt=-&gt;
+onSaveConfirmed()
+fontsize=10
+</panel_attributes><additional_attributes>10;20;190;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>147</y><w>182</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+getProductCode()
+fontsize=10
+</panel_attributes><additional_attributes>240;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>161</y><w>182</w><h>28</h></coordinates><panel_attributes>lt=&lt;.
+newCode
+fontsize=10
+</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>189</y><w>182</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+getProductName()
+fontsize=10
+</panel_attributes><additional_attributes>240;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>203</y><w>182</w><h>28</h></coordinates><panel_attributes>lt=&lt;.
+newName
+fontsize=10
+</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>422</x><y>147</y><w>14</w><h>161</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>231</y><w>182</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+getProductPrice()
+fontsize=10
+</panel_attributes><additional_attributes>240;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>245</y><w>182</w><h>28</h></coordinates><panel_attributes>lt=&lt;.
+newPriceStr
+fontsize=10
+</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>280</y><w>182</w><h>28</h></coordinates><panel_attributes>lt=&lt;.
+newDesc
+fontsize=10
+</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>266</y><w>182</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+getProductDescription()
+fontsize=10
+</panel_attributes><additional_attributes>240;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>485</x><y>315</y><w>119</w><h>21</h></coordinates><panel_attributes>newMoney : Money</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>261</x><y>308</y><w>238</w><h>28</h></coordinates><panel_attributes>lt=.&gt;
+new</panel_attributes><additional_attributes>10;20;320;20</additional_attributes></element><element><id>Relation</id><coordinates><x>534</x><y>329</y><w>21</w><h>357</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;490;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>555</x><y>98</y><w>147</w><h>21</h></coordinates><panel_attributes>this.productToEdit: ProductType</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>618</x><y>112</y><w>21</w><h>574</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;800;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>350</y><w>378</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+setProductcode(newCode)
+fontsize=10
+</panel_attributes><additional_attributes>520;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>371</y><w>378</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+setProductname(newName)
+fontsize=10
+</panel_attributes><additional_attributes>520;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>392</y><w>378</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+setDescription(newDesc)
+fontsize=10
+</panel_attributes><additional_attributes>520;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>413</y><w>378</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+setPrice(newMoney)
+fontsize=10
+</panel_attributes><additional_attributes>520;20;10;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>618</x><y>357</y><w>14</w><h>84</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>723</x><y>98</y><w>196</w><h>21</h></coordinates><panel_attributes>this.currentRequest: CatalogueUpdateRequest</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>112</y><w>21</w><h>574</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;800;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>455</y><w>560</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+setStatus(RequestStatusType.SERVED)
+fontsize=10
+</panel_attributes><additional_attributes>780;20;10;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>800</x><y>462</y><w>14</w><h>21</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLFrame</id><coordinates><x>233</x><y>539</y><w>812</w><h>70</h></coordinates><panel_attributes>opt
+--
+[assignedRequests != null]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>933</x><y>98</y><w>196</w><h>21</h></coordinates><panel_attributes>this.loggedInEmployee: UpdateCatalogueEmployee</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1017</x><y>112</y><w>21</w><h>574</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;800;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>490</y><w>777</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+getAssignedRequests()
+fontsize=10
+</panel_attributes><additional_attributes>1090;20;10;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1017</x><y>497</y><w>14</w><h>28</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>504</y><w>777</w><h>28</h></coordinates><panel_attributes>lt=.&gt;
+assignedRequests
+fontsize=10
+</panel_attributes><additional_attributes>1090;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>567</y><w>791</w><h>28</h></coordinates><panel_attributes>lt=&lt;-
+getAssignedRequests().remove(currentRequest.getId())
+fontsize=10
+</panel_attributes><additional_attributes>1110;20;10;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1017</x><y>574</y><w>14</w><h>28</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>254</x><y>609</y><w>182</w><h>42</h></coordinates><panel_attributes>lt=&lt;-
+showSuccessMessage("Οι αλλαγές
+ αποθηκεύτηκαν επιτυχώς!")
+fontsize=10
+</panel_attributes><additional_attributes>240;20;10;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>422</x><y>616</y><w>14</w><h>28</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element></diagram>

@@ -2,8 +2,11 @@ package gr.softeng.team21.domain;
 
 import java.util.HashMap;
 
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
 
 public class TestHelper {
     private static Money priceMonitor = new Money(150, "€");

@@ -5,9 +5,9 @@ import static org.junit.Assert.*; // Χρησιμοποιούμε μόνο JUnit
 
 import java.util.ArrayList;
 
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.EmailAddress;
-import gr.softeng.team21.domain.EmailMessage;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.contact.EmailMessage;
 
 public class EmailDAOMemoryTest {
 
@@ -28,8 +28,6 @@ public class EmailDAOMemoryTest {
         assertEquals(1, inbox.size());
         assertEquals(msg, inbox.get(0));
 
-        // Check that the getInboxEmails method returns a copy of the inbox email list
-        assertNotSame(inbox, provider.getInboxEmails());
     }
 
     @Test
@@ -44,8 +42,6 @@ public class EmailDAOMemoryTest {
         assertEquals(1, sent.size());
         assertEquals(msg, sent.get(0));
 
-        // Check that the getSentEmails method returns a copy of the sent email list
-        assertNotSame(sent, provider.getSentEmails());
     }
 
     @Test

@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*; // Χρησιμοποιούμε μόνο JUnit 4 Assertions
 
+import gr.softeng.team21.contact.EmailAddress;
+
 public class EmailAddressTest {
 
     private EmailAddress emailAddress;

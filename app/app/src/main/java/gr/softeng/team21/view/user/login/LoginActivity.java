@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             return insets;
         });
 
-        MemoryInitializer.prepareData();
 
         usernameEditText = findViewById(R.id.edtloginUsername);
         passwordEditText = findViewById(R.id.edtloginPassword);

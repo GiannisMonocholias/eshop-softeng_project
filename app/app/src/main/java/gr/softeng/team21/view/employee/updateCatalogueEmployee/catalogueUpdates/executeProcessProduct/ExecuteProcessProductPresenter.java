@@ -1,13 +1,11 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct;
 
-import android.util.Log;
-
 import java.math.BigDecimal;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
-import gr.softeng.team21.domain.Money;
+import gr.softeng.team21.util.Money;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.RequestStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
@@ -33,10 +31,12 @@ public class ExecuteProcessProductPresenter {
         if (updateRequestDAO.getUpdateRequests() != null) {
             this.currentRequest = updateRequestDAO.getUpdateRequests().get(requestId);
         }
+
         if (currentRequest == null || loggedInEmployee == null || currentRequest.getProduct() == null) {
             view.showError("Σφάλμα: Τα στοιχεία δεν βρέθηκαν.");
             return;
         }
+
         this.productToEdit = currentRequest.getProduct();
         view.setRequestDescription(currentRequest.getUpdateDescription());
         String priceStr = (productToEdit.getPrice() != null) ?

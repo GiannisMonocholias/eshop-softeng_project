@@ -2,7 +2,7 @@ package gr.softeng.team21.memorydao;
 
 import java.util.ArrayList;
 
-import gr.softeng.team21.domain.EmailMessage;
+import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.dao.EmailDAO;
 
 public class EmailDAOMemory implements EmailDAO {
@@ -10,11 +10,9 @@ public class EmailDAOMemory implements EmailDAO {
 
     private ArrayList<EmailMessage> sentEmails = new ArrayList<EmailMessage>();
 
-    public ArrayList<EmailMessage> getInboxEmails(){
-        return new ArrayList<>(inboxEmails);
-    }
+    public ArrayList<EmailMessage> getInboxEmails(){return inboxEmails;}
 
-    public ArrayList<EmailMessage> getSentEmails() {return new ArrayList<>(sentEmails);}
+    public ArrayList<EmailMessage> getSentEmails() {return sentEmails;}
 
 
     public  ArrayList<EmailMessage> getUnreadEmails(){

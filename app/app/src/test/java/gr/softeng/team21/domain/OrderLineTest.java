@@ -8,6 +8,9 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.util.Money;
+
 public class OrderLineTest {
 
     OrderLine orderLine;

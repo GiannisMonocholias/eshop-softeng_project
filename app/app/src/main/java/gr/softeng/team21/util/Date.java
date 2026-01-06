@@ -1,8 +1,7 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.util;
 
 import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+
 public class Date implements Comparable<Date>{
     private LocalDate date;
 

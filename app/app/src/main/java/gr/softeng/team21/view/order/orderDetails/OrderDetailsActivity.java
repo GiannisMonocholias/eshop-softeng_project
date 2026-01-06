@@ -17,7 +17,7 @@ import java.util.List;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.CartItem;
-import gr.softeng.team21.domain.Money;
+import gr.softeng.team21.util.Money;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.view.util.StockProductAdapter;
 

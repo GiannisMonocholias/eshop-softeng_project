@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.CartItem;
+import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.OrderStatusType;
@@ -47,13 +48,16 @@ public class OrderPreparationDetailsPresenter {
             }
         }
 
-        catch(IllegalStateException e){
+        catch(IllegalArgumentException e){
             view.showErrorMessage("Σφάλμα: Δεν δόθηκε παραγγελία (null Order pointer)");
         }
         catch(NoSuchElementException e){
             view.showErrorMessage("Σφάλμα: Δεν ασας έχει ανατεθεί η συγκεκριμένη παραγγελία");
         }
-
-
     }
+
+    public void setOrderToPrepare(Order order){
+        this.orderToPrepare = order;
+    }
+
 }

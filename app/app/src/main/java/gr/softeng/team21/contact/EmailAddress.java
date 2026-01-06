@@ -1,4 +1,4 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.contact;
 
 public class EmailAddress {
     private String value;

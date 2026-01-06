@@ -2,8 +2,10 @@ package gr.softeng.team21.domain;
 
 import java.util.HashMap;
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public  class UpdateCatalogueEmployee extends Employee{
     private int totalCatalogueUpdates;

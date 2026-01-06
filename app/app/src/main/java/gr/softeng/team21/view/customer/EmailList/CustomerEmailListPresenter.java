@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.domain.EmailMessage;
+import gr.softeng.team21.contact.EmailMessage;
 
 public class CustomerEmailListPresenter {
     private CustomerDAO customerDAO;

@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import gr.softeng.team21.domain.Money;
+import gr.softeng.team21.util.Money;
 import gr.softeng.team21.domain.ProductType;
 
 public class ProductTypeDAOMemoryTest {

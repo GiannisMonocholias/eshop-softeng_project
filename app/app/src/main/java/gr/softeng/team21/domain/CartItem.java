@@ -1,5 +1,7 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.util.Money;
+
 public class CartItem {
     private int quantity;
     private static  int counter;

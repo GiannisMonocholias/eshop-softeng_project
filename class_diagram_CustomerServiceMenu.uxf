@@ -1,0 +1,50 @@
+<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>198</x><y>486</y><w>261</w><h>171</h></coordinates><panel_attributes>CustomerServiceMenuActivity
+--
+_-EMP_ID_EXTRA : String {readOnly}_
+- employeeId : String
+--
+# onCreate(Bundle savedInstanceState): void
++ showEmployeeName(String fullname) : void 
++ navigateToOrderStatus(String employeeId): void
++ navigateToEmailInbox(String employeeId): void
++ showDeleteAccountConfirmation() : void
++ navigateToLogin() : void
++ navigateToProcessAccount(String employeeId) : void
++ showMessage(String message) : void
+fontsize=11
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>594</x><y>504</y><w>288</w><h>117</h></coordinates><panel_attributes>CustomerServiceMenuPresenter
+--
++ onViewCreated(String employeeId) : void 
++ onInboxSelected(String employeeId) : void
++ onOrderStatusSelected(String employeeId) : void
++ onDeleteAccountSelected() : void
++ onProcessAccountSelected(String employeeId) : void
++ onDeleteAccountConfirmed(String employeeId) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>216</x><y>207</y><w>252</w><h>135</h></coordinates><panel_attributes>&lt;&lt; Interface &gt;&gt;
+CustomerServiceMenuView
+--
++showEmployeeName(String fullName) : void
++navigateToOrderStatus(String employeeId): void
++navigateToEmailInbox(String employeeId) : void
++showDeleteAccountConfirmation(): void
++navigateToLogin() : void
++navigateToProcessAccount(String employeeId):void 
++showMessage(String message): void
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>315</x><y>333</y><w>27</w><h>171</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>495</y><w>162</w><h>45</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - presenter</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>216</y><w>144</w><h>45</h></coordinates><panel_attributes>AppCompatActivity
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>72</x><y>252</y><w>180</w><h>252</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;170;180;170;180;260</additional_attributes></element><element><id>Relation</id><coordinates><x>459</x><y>270</y><w>234</w><h>252</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - view</panel_attributes><additional_attributes>230;260;230;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>846</x><y>288</y><w>252</w><h>108</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
+EmployeeDAO
+--
++ getEmployees() : HashMap&lt;String, Employee&gt;
++ getEmployee(String id) : Employee
++ addEmployee(Employee employee) : void
++ removeEmployee(Employee employee) : void
++ clear() :  void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>873</x><y>387</y><w>216</w><h>189</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= employeeDAO</panel_attributes><additional_attributes>10;180;140;180;140;10</additional_attributes></element></diagram>

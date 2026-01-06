@@ -1,4 +1,4 @@
-package gr.softeng.team21.domain;
+package gr.softeng.team21.util;
 
 import java.math.BigDecimal;
 public class Money {

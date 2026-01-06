@@ -20,17 +20,13 @@ public class OrderStatusPresenter {
         this.employeeDAO = employeeDAO;
     }
 
-    /**
-     * Φορτώνει τις παραγγελίες για τον συγκεκριμένο υπάλληλο.
-     * @param employeeId Το ID του υπαλλήλου
-     */
+
     public ArrayList<Order> loadOrders(String employeeId) {
-        if (employeeId == null) {
+        Employee employee = employeeDAO.getEmployee(employeeId);
+        if (employee == null) {
             view.showError("Σφάλμα: Δεν βρέθηκε ID υπαλλήλου.");
             return new ArrayList<Order>();
         }
-
-        Employee employee = employeeDAO.getEmployee(employeeId);
 
         ArrayList<Order> orders;
         if (employee instanceof CustomerServiceEmployee) {

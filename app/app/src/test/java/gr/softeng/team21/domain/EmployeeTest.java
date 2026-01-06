@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.util.Date;
 
 public class EmployeeTest {
     private Employee employee;

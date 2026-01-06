@@ -2,7 +2,7 @@ package gr.softeng.team21.dao;
 
 import java.util.ArrayList;
 
-import gr.softeng.team21.domain.EmailMessage;
+import gr.softeng.team21.contact.EmailMessage;
 
 public interface EmailDAO {
 
