@@ -2,6 +2,7 @@ package gr.softeng.team21.view.customer.Payment;
 
 import android.widget.Toast;
 
+import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.PaymentType;
@@ -18,7 +19,6 @@ public class CustomerPaymentPresenter {
 
     public void paymentClicked(boolean cashCheck) {
         if (cashCheck) {
-            try {
                 order = customer.Checkout();
                 if (order == null) {
                     view.showMessage("Το καλάθι είναι άδειο!");
@@ -26,9 +26,6 @@ public class CustomerPaymentPresenter {
                 }
                 customer.selectPaymentType(PaymentType.CASH, "", order);
                 view.showConfirmation(order.getTotal_amount());
-            } catch (Exception e) {
-                view.showMessage("Σφάλμα: " + e.getMessage());
-            }
         } else
             view.goToToCardPayment();
     }
@@ -54,15 +51,12 @@ public class CustomerPaymentPresenter {
     }
 
     public void setpaymentClicked(String amount) {
-        String address;
-        String fullName = customer.getFirstname() + " " + customer.getLastname();
-        if (customer.getAddress() != null) {
-            address = customer.getAddress().toString();
-        } else {
-            address = "Δεν έχει δηλωθεί διεύθυνση";
-        }
-        String phone = customer.getPhonenumber();
         view.showTotalAmount(amount);
+    }
+    public void loadShippingDetails() {
+        String fullName = customer.getFirstname() + " " + customer.getLastname();
+        String address = customer.getAddress().toString();
+        String phone = customer.getPhonenumber();
         view.showShippingDetails(fullName, address, phone);
     }
 }

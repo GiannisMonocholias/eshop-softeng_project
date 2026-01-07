@@ -33,7 +33,6 @@ public class ProductDetailsPresenter {
     }
 
     public void addToCartClicked() {
-        if (foundProduct == null) return;
         try {
             customer.addItemToCart(foundProduct, currentQuantity);
             view.showAddToCartSuccess();

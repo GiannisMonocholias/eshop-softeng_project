@@ -3,8 +3,6 @@ package gr.softeng.team21.domain;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-
-
 import static org.junit.Assert.*;
 
 import gr.softeng.team21.memorydao.CustomerDAOMemory;

@@ -1,7 +1,6 @@
 package gr.softeng.team21.view.contact.editdata.Email;
 
-import android.util.Log;
-import android.util.Patterns;
+import java.util.regex.Pattern;
 
 import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.User;
@@ -11,6 +10,17 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 public class EmailPresenter {
     private EmailView view;
     private User user;
+
+    // Ορίζουμε ένα Pattern για email χρησιμοποιώντας καθαρή Java
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                    "\\@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                    "(" +
+                    "\\." +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                    ")+"
+    );
 
     public EmailPresenter(EmailView view, String userId) {
         this.view = view;
@@ -22,10 +32,6 @@ public class EmailPresenter {
 
         if (user == null) {
             user = EmployeeDAOMemory.getInstance().getEmployee(userId);
-        }
-
-        if (userId != null) {
-            Log.d("EmailPresenter", "User ID: " + userId);
         }
 
         if (user == null) {
@@ -41,23 +47,17 @@ public class EmailPresenter {
 
     public void saveEmailClicked(String mailtxt) {
         if (user == null) return;
-
         if (mailtxt.isEmpty()) {
             view.showError("Παρακαλώ εισάγετε Email");
             return;
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(mailtxt).matches()) {
-            view.showError("Μη έγκυρη μορφή Email");
+        if (!EMAIL_PATTERN.matcher(mailtxt).matches()) {
+            view.showError("Μη έγκυρη μορφή email");
             return;
         }
-
-        try {
             user.editData("4", mailtxt, null, new EmailAddress(mailtxt));
-            view.SaveSuccess("Το Email ενημερώθηκε επιτυχώς!");
-
-        } catch (Exception e) {
-            view.showError("Σφάλμα: " + e.getMessage());
+            view.SaveSuccess("Το email ενημερώθηκε επιτυχώς!");
         }
-    }
+
 }

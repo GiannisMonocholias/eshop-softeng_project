@@ -18,8 +18,6 @@ public class AddressPresenter {
 
     private void findUser(String userId) {
         user = CustomerDAOMemory.getInstance().getCustomer(userId);
-        Log.d("Message1: ",userId);
-
         if (user == null) {
             user = EmployeeDAOMemory.getInstance().getEmployee(userId);
         }
@@ -42,7 +40,8 @@ public class AddressPresenter {
         }
     }
 
-    public void saveAddressClicked(String street, String number, String zip, String city, String country) {
+
+    public void saveAddressClicked(String street, String number, String city, String country, String zip) {
         if (user == null) return;
 
         if (street.isEmpty() || number.isEmpty() || zip.isEmpty() || city.isEmpty() || country.isEmpty()) {
@@ -55,13 +54,8 @@ public class AddressPresenter {
             return;
         }
 
-        try {
-            Address newAddress = new Address(street, number, city, zip, country);
-            user.editData("3", null, newAddress, null);
-            view.SaveSuccess("Η διεύθυνση ενημερώθηκε επιτυχώς!");
-
-        } catch (Exception e) {
-            view.showError("Σφάλμα: " + e.getMessage());
-        }
+        Address newAddress = new Address(street, number, city, country, zip);
+        user.editData("3", null, newAddress, null);
+        view.SaveSuccess("Η διεύθυνση ενημερώθηκε επιτυχώς!");
     }
 }

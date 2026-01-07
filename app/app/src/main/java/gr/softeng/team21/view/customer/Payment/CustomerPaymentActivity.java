@@ -50,8 +50,17 @@ public class CustomerPaymentActivity extends AppCompatActivity implements Custom
         rbCash = findViewById(R.id.rbCustomerPaymentActivityCash);
         rbCard = findViewById(R.id.rbCustomerPaymentActivityCard);
         btnPay.setOnClickListener(v -> payment(rbCash.isChecked()));
-        setpayamount();
+        setdata();
+    }
 
+    private void setdata() {
+        setpayamount();
+        setShippingDetails();
+
+    }
+
+    private void setShippingDetails() {
+        presenter.loadShippingDetails();
     }
 
     private void setpayamount() {

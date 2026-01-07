@@ -113,7 +113,7 @@ public class Address {
 
     @Override
     public String toString(){
-        return this.getStreet() + " " + this.getNumber() + " " + this.getCity();
+        return this.getStreet() + " " + this.getNumber() + "," + this.getCity()+" "+this.country+" "+this.zipcode;
     }
 }
 

@@ -66,7 +66,7 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
     }
 
     @Override
-    public void setAddressDetails(String street, String number, String zip, String city, String country) {
+    public void setAddressDetails(String street, String number, String city, String country,String zip) {
         etStreet.setText(street);
         etNumber.setText(number);
         etZip.setText(zip);

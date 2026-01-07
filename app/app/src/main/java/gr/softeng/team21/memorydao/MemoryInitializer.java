@@ -9,18 +9,18 @@ import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
-import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.util.Money;
+import gr.softeng.team21.util.Date;
 import gr.softeng.team21.domain.AllowedRequest;
 import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
-import gr.softeng.team21.util.Date;
 import gr.softeng.team21.domain.Deliverer;
 import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.domain.EmployeeState;
-import gr.softeng.team21.util.Money;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.PaymentType;
@@ -103,6 +103,7 @@ public class MemoryInitializer {
     }
 
     public static void prepareData() {
+
         eraseData();
         //=====================================================
         //START: INITIALIZE CUSTOMERS
@@ -112,6 +113,7 @@ public class MemoryInitializer {
         Address addr1 = new Address("Ερμού", "15", "Αθήνα", "Ελλάδα", "10563");
         Address addr2 = new Address("Τσιμισκή", "42", "Θεσσαλονίκη", "Ελλάδα", "54623");
         Address addr3 = new Address("Μαιζώνος", "120", "Πάτρα", "Ελλάδα", "26221");
+        Address addr4 = new Address("Κύπρου", "8", "Λάρισα", "Ελλάδα", "41221");
 
 
         Customer cust1 = new Customer("nickgeorg", "Νίκος", "pass1234", "Γεωργίου",
@@ -131,8 +133,13 @@ public class MemoryInitializer {
         cust3.setAddress(addr3);
         customers.addCustomer(cust3);
         getUserCredentialsDAO().addUser(cust3);
-
-
+        Customer cust4 = new Customer(
+                "giannis_oik", "Γιάννης", "pass3210", "Οικονόμου", "6944556677",
+                new EmailAddress("giannis.oik@team21.gr"), "CUST-503",new Date(22, 3, 2024)          // Date
+        );
+        cust4.setAddress(addr4);
+        customers.addCustomer(cust4);
+        getUserCredentialsDAO().addUser(cust4);
         //=====================================================
         //END: INITIALIZE CUSTOMERS
         //=====================================================
@@ -300,7 +307,7 @@ public class MemoryInitializer {
         ProductType monitor1 = new ProductType("LG UltraGear 27\"", "Gaming οθόνη 27 ιντσών με ρυθμό ανανέωσης 144Hz.", new Money(BigDecimal.valueOf(349.00), "€"), "TECH-007");
         products.addProductType(monitor1);
 
-        ProductType monitor2 = new ProductType("Dell UltraSharp 32\"", "Επαγγελματική οθόνη 4K με εξαιρετική πιστότητα χρωμάτων.", new Money(BigDecimal.valueOf(750.50), "€"), "TECH-008");
+        ProductType monitor2 = new ProductType("Dell UltraSharp 32\"", "Επαγγελματική οθόνη 4K με εξαιρετική πιστότητα χρωμάτων.", new Money(BigDecimal.valueOf(750.00), "€"), "TECH-008");
         products.addProductType(monitor2);
 
         // --- 5. CPUs ---
@@ -419,8 +426,7 @@ public class MemoryInitializer {
         );
 
         order1.setTotal_amount(cart1.getTotalCost());
-        orders.addOrder(order1);
-
+        cust1.Confirm("CONFIRM",order1);
 
         //ORDER 2
         ShoppingCart cart2 = new ShoppingCart(cust2);
@@ -433,8 +439,7 @@ public class MemoryInitializer {
                 false, PaymentType.CASH, null, cart2
         );
         order2.setTotal_amount(cart2.getTotalCost());
-        orders.addOrder(order2);
-
+        cust2.Confirm("CONFIRM",order2);
 
         //ORDER 3
         ShoppingCart cart3 = new ShoppingCart(cust3);
@@ -446,7 +451,7 @@ public class MemoryInitializer {
                 false, PaymentType.CASH, null, cart3
         );
         order3.setTotal_amount(cart3.getTotalCost());
-        orders.addOrder(order3);
+        cust3.Confirm("CONFIRM",order3);
 
 
         //ORDER 4
@@ -458,7 +463,7 @@ public class MemoryInitializer {
         );
 
         order4.setTotal_amount(cart4.getTotalCost());
-        orders.addOrder(order4);
+        cust1.Confirm("CONFIRM",order4);
 
 
         //ORDER 5
@@ -470,7 +475,7 @@ public class MemoryInitializer {
         );
 
         order5.setTotal_amount(cart5.getTotalCost());
-        orders.addOrder(order5);
+        cust2.Confirm("CONFIRM",order5);
         //=====================================================
         //END: INITIALIZE ORDERS
         //=====================================================

@@ -18,20 +18,16 @@ public class CustomerCardPaymentPresenter {
 
     public void CardPaymentClicked(String cardNumber) {
         if (cardNumber.isEmpty()) {
-           view.showMessage("Παρακαλώ εισάγετε τον αριθμό κάρτας!");
+            view.showMessage("Παρακαλώ εισάγετε τον αριθμό κάρτας!");
             return;
         }
-        try {
-             order = customer.Checkout();
-            if (order == null) {
-                view.showMessage("Το καλάθι είναι άδειο!");
-                return;
-            }
-            customer.selectPaymentType(PaymentType.CARD, cardNumber, order);
-            view.showConfirmation(order.getTotal_amount().toString());
-        } catch (Exception e) {
-            view.showMessage("Σφάλμα: " + e.getMessage());
+        order = customer.Checkout();
+        if (order == null) {
+            view.showMessage("Το καλάθι είναι άδειο!");
+            return;
         }
+        customer.selectPaymentType(PaymentType.CARD, cardNumber, order);
+        view.showConfirmation(order.getTotal_amount());
     }
 
     public void ConfirmClicked() {

@@ -1,4 +1,4 @@
-package gr.softeng.team21.view.customer.ShoppingCart;
+package gr.softeng.team21.view.util;
 
 import android.view.LayoutInflater;
 import android.view.View;

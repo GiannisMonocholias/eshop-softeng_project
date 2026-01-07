@@ -40,7 +40,7 @@ public class CustomerFindProductActivity extends AppCompatActivity implements Cu
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-         customerId = getIntent().getStringExtra("CUSTOMER_ID");
+        customerId = getIntent().getStringExtra("CUSTOMER_ID");
         presenter = new CustomerFindProductPresenter(this);
         searchView = findViewById(R.id.searchProductActivityHeader);
         listView = findViewById(R.id.ViewlistProductActivity);
@@ -62,8 +62,6 @@ public class CustomerFindProductActivity extends AppCompatActivity implements Cu
             presenter.ProductClicked(selectedProduct);
         });
     }
-
-
 
     private void loadList() {
         presenter.loadList();

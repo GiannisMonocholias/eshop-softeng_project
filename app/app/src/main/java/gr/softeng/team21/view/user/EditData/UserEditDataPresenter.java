@@ -7,10 +7,6 @@ public class UserEditDataPresenter {
         this.view = view;
     }
 
-    public void setView(UserEditDataView view) {
-        this.view = view;
-    }
-
     public void Selection(int position) {
         switch (position) {
             case 0:

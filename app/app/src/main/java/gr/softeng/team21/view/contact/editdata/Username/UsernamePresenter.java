@@ -1,7 +1,4 @@
 package gr.softeng.team21.view.contact.editdata.Username;
-
-import android.util.Log;
-
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
@@ -25,10 +22,6 @@ public class UsernamePresenter {
             user = EmployeeDAOMemory.getInstance().getEmployee(userId);
         }
 
-        if (userId != null) {
-            Log.d("UsernamePresenter", "User ID: " + userId);
-        }
-
         if (user == null) {
             view.showError("Ο χρήστης δεν βρέθηκε.");
             view.finishView();
@@ -42,7 +35,6 @@ public class UsernamePresenter {
 
     public void saveUsernameClicked(String newName) {
         if (user == null) return;
-
         if (newName.isEmpty()) {
             view.showError("Παρακαλώ εισάγετε Username");
             return;
@@ -58,7 +50,6 @@ public class UsernamePresenter {
             return;
         }
 
-        try {
             String oldUsername = user.getUsername();
             credentialsDAO.removeUser(oldUsername);
 
@@ -68,8 +59,6 @@ public class UsernamePresenter {
 
             view.SaveSuccess("Το username ενημερώθηκε επιτυχώς!");
 
-        } catch (Exception e) {
-            view.showError("Σφάλμα: " + e.getMessage());
-        }
+
     }
 }

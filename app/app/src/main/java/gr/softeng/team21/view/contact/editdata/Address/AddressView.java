@@ -4,7 +4,6 @@ public interface AddressView {
     void SaveSuccess(String message);
     void showError(String message);
 
-    void setAddressDetails(String street, String number, String zip, String city, String country);
-
+    void setAddressDetails(String street, String number, String city, String country, String zip);
     void finishView();
 }

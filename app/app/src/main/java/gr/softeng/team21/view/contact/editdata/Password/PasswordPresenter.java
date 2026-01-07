@@ -23,11 +23,6 @@ public class PasswordPresenter {
             user = EmployeeDAOMemory.getInstance().getEmployee(userId);
         }
 
-        // Debug log
-        if (userId != null) {
-            Log.d("PasswordPresenter", "User ID: " + userId);
-        }
-
         if (user == null) {
             view.showError("Ο χρήστης δεν βρέθηκε.");
             view.finishView();
@@ -58,12 +53,8 @@ public class PasswordPresenter {
             return;
         }
 
-        try {
-            user.editData("2", password, null, null);
-            view.SaveSuccess("Ο κωδικός ενημερώθηκε επιτυχώς!");
+        user.editData("2", password, null, null);
+        view.SaveSuccess("Ο κωδικός ενημερώθηκε επιτυχώς!");
 
-        } catch (Exception e) {
-            view.showError("Σφάλμα: " + e.getMessage());
-        }
     }
 }

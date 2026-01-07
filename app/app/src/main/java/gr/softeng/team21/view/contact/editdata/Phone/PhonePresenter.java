@@ -22,10 +22,6 @@ public class PhonePresenter {
             user = EmployeeDAOMemory.getInstance().getEmployee(userId);
         }
 
-        if (userId != null) {
-            Log.d("PhonePresenter", "User ID: " + userId);
-        }
-
         if (user == null) {
             view.showError("Ο χρήστης δεν βρέθηκε.");
             view.finishView();
@@ -49,13 +45,7 @@ public class PhonePresenter {
             view.showError("Το τηλέφωνο πρέπει να έχει 10 ψηφία");
             return;
         }
-
-        try {
-            user.editData("5", phone, null, null);
-            view.SaveSuccess("Το τηλέφωνο ενημερώθηκε επιτυχώς!");
-
-        } catch (Exception e) {
-            view.showError("Σφάλμα: " + e.getMessage());
-        }
+        user.editData("5", phone, null, null);
+        view.SaveSuccess("Το τηλέφωνο ενημερώθηκε επιτυχώς!");
     }
 }
