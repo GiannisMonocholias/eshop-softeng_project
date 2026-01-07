@@ -106,14 +106,6 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
     }
 
     @Override
-    public void goToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
     public void goToInbox() {
         Intent intent = new Intent(this, gr.softeng.team21.view.customer.EmailList.CustomerEmailListActivity.class);
         intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());

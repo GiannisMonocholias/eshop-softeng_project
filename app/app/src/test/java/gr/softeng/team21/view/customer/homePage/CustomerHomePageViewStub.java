@@ -2,10 +2,9 @@ package gr.softeng.team21.view.customer.homePage;
 
 public class CustomerHomePageViewStub implements CustomerHomePageView{
 
-   private int LogoutCount = 0;
+   private int LoginCount = 0;
     private int editDataCount = 0;
     private int findProductCount = 0;
-    private int mainCount = 0;
     private int inboxCount = 0;
     private int deleteCount = 0;
     private String message = "";
@@ -14,8 +13,8 @@ public class CustomerHomePageViewStub implements CustomerHomePageView{
         this.message = message;
     }
 
-    public int getLogoutCount() {
-        return LogoutCount;
+    public int getLoginCount() {
+        return LoginCount;
     }
 
     public int getEditDataCount() {
@@ -26,9 +25,6 @@ public class CustomerHomePageViewStub implements CustomerHomePageView{
         return findProductCount;
     }
 
-    public int getMainCount() {
-        return mainCount;
-    }
 
     public String getMessage() {
         return message;
@@ -44,7 +40,7 @@ public class CustomerHomePageViewStub implements CustomerHomePageView{
 
     @Override
     public void goToLogin() {
-        LogoutCount++;
+        LoginCount++;
     }
 
     @Override
@@ -56,12 +52,6 @@ public class CustomerHomePageViewStub implements CustomerHomePageView{
     public void goToFindProduct() {
         findProductCount++;
     }
-
-    @Override
-    public void goToMain() {
-        mainCount++;
-    }
-
     @Override
     public void goToInbox() {
         inboxCount++;

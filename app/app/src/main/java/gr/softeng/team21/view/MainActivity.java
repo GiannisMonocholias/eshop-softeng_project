@@ -18,7 +18,6 @@ import gr.softeng.team21.view.user.login.LoginActivity;
 public class MainActivity extends AppCompatActivity {
     private Button btnEntrance;
 
-    // Σωστή χρήση static για να τρέξει μόνο μια φορά
     private static boolean isDataPrepared = false;
 
     @Override

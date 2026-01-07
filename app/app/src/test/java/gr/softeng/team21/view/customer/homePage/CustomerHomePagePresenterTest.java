@@ -28,7 +28,7 @@ public class CustomerHomePagePresenterTest {
     @Test
     public void logoutClicked() {
         presenter.LogoutClicked();
-        Assert.assertEquals(1,view.getLogoutCount());
+        Assert.assertEquals(1,view.getLoginCount());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class CustomerHomePagePresenterTest {
         Assert.assertNotNull(CustomerDAOMemory.getInstance().getCustomer("CUST-500"));
         presenter.DeleteConfirm();
         Assert.assertEquals("Ο λογαριασμός σας διαγράφηκε.", view.getMessage());
-        Assert.assertEquals(1, view.getMainCount());
+        Assert.assertEquals(1, view.getLoginCount());
         Assert.assertNull(CustomerDAOMemory.getInstance().getCustomer("CUST-500"));
     }
 
@@ -62,7 +62,7 @@ public class CustomerHomePagePresenterTest {
     public void deleteConfirmWithNullCustomer(){
         CustomerHomePagePresenter nullpresenter = new CustomerHomePagePresenter(view, null);
         nullpresenter.DeleteConfirm();
-        Assert.assertEquals(0, view.getMainCount());
+        Assert.assertEquals(0, view.getLoginCount());
 
     }
 }

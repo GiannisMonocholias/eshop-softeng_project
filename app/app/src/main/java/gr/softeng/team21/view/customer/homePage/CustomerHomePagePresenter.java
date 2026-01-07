@@ -35,7 +35,7 @@ private Customer customer;
         if(customer!=null){
             customer.remove();
             view.showMessage("Ο λογαριασμός σας διαγράφηκε.");
-            view.goToMain();
+            view.goToLogin();
         }
     }
 
