@@ -69,11 +69,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         return passwordEditText.getText().toString();
     }
 
-    @Override
-    public TextView getUserNameEdtText(){return usernameEditText;}
-
-    @Override
-    public TextView getPasswordEdtText(){return passwordEditText;}
 
 
     @Override
@@ -133,5 +128,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void onResume(){
         super.onResume();
         presenter.loginReset();
+    }
+
+    @Override
+    public void resetFields() {
+        usernameEditText.setText("");
+        passwordEditText.setText("");
     }
 }

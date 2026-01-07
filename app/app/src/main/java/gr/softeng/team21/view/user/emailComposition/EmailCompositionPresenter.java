@@ -77,14 +77,9 @@ public class EmailCompositionPresenter {
         }
 
         if (sender != null) {
-            try {
                 sender.sendEmail(sender, recipient, subject, body, new Date());
                 view.showSuccessMessage("Το μήνυμα εστάλη!");
                 view.finishActivity();
-            } catch (Exception e) {
-                view.showErrorMessage("Αποτυχία αποστολής.");
-                e.printStackTrace();
-            }
         }
     }
 }

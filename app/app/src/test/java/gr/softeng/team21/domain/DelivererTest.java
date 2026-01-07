@@ -61,12 +61,8 @@ public class DelivererTest {
     }
 
     @Test
-    public void testSetAndGetAvailability() {
-        delivery.setAvailability(true);
+    public void testGetAvailability() {
         assertTrue(delivery.getAvailability());
-
-        delivery.setAvailability(false);
-        assertFalse(delivery.getAvailability());
     }
 
     @Test

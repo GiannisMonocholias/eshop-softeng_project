@@ -60,7 +60,6 @@ public class LoginPresenter {
     }
 
     public void loginReset(){
-        view.getUserNameEdtText().setText("");
-        view.getPasswordEdtText().setText("");
+        view.resetFields();
     }
 }

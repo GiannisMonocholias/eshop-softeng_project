@@ -7,22 +7,37 @@ import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.util.Date;
 
+/**
+ * An abstract base class representing a generic user in the system.
+ * It provides common profile attributes (credentials, contact details) and
+ * includes a built-in messaging mechanism for communication between users.
+ * @author Γιάννης Μονοχολιάς
+ */
 public abstract class User {
     protected String username;
-    protected   String firstname;
-    protected  String password;
-    protected  String lastname;
-    protected  String phoneNumber;
+    protected String firstname;
+    protected String password;
+    protected String lastname;
+    protected String phoneNumber;
     protected EmailAddress emailaddress;
-
-
     protected EmailDAO emailDAOMemory;
-
     protected Address address;
 
+    /**
+     * Default constructor for the User class.
+     */
     public User(){}
 
-    public User (String username,String firstname,String password,String lastname, String phoneNumber,EmailAddress emailaddress) {
+    /**
+     * Constructs a new User with essential profile information and initializes their email provider.
+     * @param username     The unique account username.
+     * @param firstname    The user's first name.
+     * @param password     The account password.
+     * @param lastname     The user's last name.
+     * @param phoneNumber  The contact phone number.
+     * @param emailaddress The user's email address.
+     */
+    public User (String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress) {
         this.username = username;
         this.firstname = firstname;
         this.password = password;
@@ -32,76 +47,145 @@ public abstract class User {
         this.emailDAOMemory = new EmailDAOMemory();
     }
 
-    public Address getAddress ( ) {
+    /**
+     * @return the user's residential address.
+     */
+    public Address getAddress() {
         return address;
     }
 
+    /**
+     * @param address the address to set.
+     */
     public void setAddress(Address address) {this.address = address;}
 
-    public String getUsername ( ) {
+    /**
+     * @return the unique username.
+     */
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername (String username) {
+    /**
+     * @param username the username to set.
+     */
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword ( ) {
+    /** @return the account password. */
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword (String password) {
+    /** @param password the password to set. */
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getFirstname ( ) {
+    /** @return the user's first name. */
+    public String getFirstname() {
         return firstname;
     }
 
-    public void setFirstname (String firstname) {
+    /**
+     * @param firstname the first name to set.
+     */
+    public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    public String getLastname ( ) {
+    /**
+     * @return the user's last name.
+     */
+    public String getLastname() {
         return lastname;
     }
 
-    public void setLastname (String lastname) {
+    /**
+     * @param lastname the last name to set.
+     */
+    public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    public String getPhonenumber ( ) {
+    /**
+     * @return the contact phone number.
+     */
+    public String getPhonenumber() {
         return phoneNumber;
     }
 
-    public void setPhonenumber (String phonenumber) {
+    /**
+     * @param phonenumber the phone number to set.
+     */
+    public void setPhonenumber(String phonenumber) {
         this.phoneNumber = phonenumber;
     }
 
-    public EmailAddress getEmailAddress ( ) {
+    /**
+     * @return the EmailAddress object.
+     */
+    public EmailAddress getEmailAddress() {
         return emailaddress;
     }
 
-    public void setEmailaddress (EmailAddress emailaddress) {
+    /**
+     * @param emailaddress the email address object to set.
+     */
+    public void setEmailaddress(EmailAddress emailaddress) {
         this.emailaddress = emailaddress;
     }
 
+    /**
+     * @return the email DAO provider for this user.
+     */
     public EmailDAO getEmailProvider() {return emailDAOMemory;}
 
+    /**
+     * @param emailDAOMemory the email provider to set.
+     */
     protected void setEmailProvider(EmailDAOMemory emailDAOMemory) {
         this.emailDAOMemory = emailDAOMemory;
     }
 
+    /**
+     * Sends a reply to an existing email message.
+     * @param sender    The user sending the reply.
+     * @param recipient The user receiving the reply.
+     * @param original  The original email being replied to.
+     * @param subject   The subject of the reply.
+     * @param body      The main content of the reply.
+     * @param dateSent  The date the reply is sent.
+     */
     protected void replyToEmail(User sender, User recipient, EmailMessage original, String subject, String body, Date dateSent){
-        
-        deliverEmail(sender, recipient, original,subject, body, true, dateSent);
+        deliverEmail(sender, recipient, original, subject, body, true, dateSent);
     }
 
+    /**
+     * Initiates a new email communication.
+     * @param sender    The user sending the email.
+     * @param recipient The user receiving the email.
+     * @param subject   The subject of the message.
+     * @param body      The content of the message.
+     * @param dateSent  The date the email is sent.
+     */
     public void sendEmail(User sender, User recipient, String subject, String body, Date dateSent) {
-        deliverEmail(sender,recipient,null,subject,body,false, dateSent);
+        deliverEmail(sender, recipient, null, subject, body, false, dateSent);
     }
 
-    protected void deliverEmail(User sender, User recipient,EmailMessage original, String subject, String body, boolean isReplyMessage, Date dateSent) {
+    /**
+     * Core logic for creating and delivering an email message between two users.
+     * It updates both the sender's 'Sent' box and the recipient's 'Inbox'.
+     * @param sender          The message sender.
+     * @param recipient       The message recipient.
+     * @param original        The original message (if this is a reply).
+     * @param subject         The message subject.
+     * @param body            The message body.
+     * @param isReplyMessage  Flag indicating if this is a reply.
+     * @param dateSent        The dispatch date.
+     */
+    protected void deliverEmail(User sender, User recipient, EmailMessage original, String subject, String body, boolean isReplyMessage, Date dateSent) {
         EmailMessage email = new EmailMessage();
         email.setFrom(sender.getEmailAddress());
         email.setTo(recipient.getEmailAddress());
@@ -117,11 +201,22 @@ public abstract class User {
         sender.getEmailProvider().saveSentEmails(email);
     }
 
+    /**
+     * Marks a specific email message as read.
+     * @param email The message to be updated.
+     */
     protected void setEmailRead(EmailMessage email) {
         email.setRead(true);
     }
 
-
+    /**
+     * Updates specific fields of the user's profile based on a numeric choice.
+     * @param choice     The menu option indicating which field to update (1-6).
+     * @param change     The new value for String fields (username, password, phone).
+     * @param newaddress The new address object (used if choice is "3").
+     * @param email      The new email address object (used if choice is "4").
+     * @throws IllegalArgumentException if choice is null or out of the 1-6 range.
+     */
     public void editData (String choice, String change, Address newaddress, EmailAddress email) {
         if ( choice == null )
             throw new IllegalArgumentException ( "Choice cannot be null!!!" );
@@ -148,6 +243,4 @@ public abstract class User {
                 throw new IllegalArgumentException ( "Choice must be 1-6" );
         }
     }
-
-
 }

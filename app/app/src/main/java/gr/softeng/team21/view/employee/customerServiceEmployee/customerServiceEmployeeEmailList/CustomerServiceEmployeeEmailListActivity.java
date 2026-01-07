@@ -28,6 +28,11 @@ public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity 
 
     private EmailAdapter adapter;
 
+    /**
+     * Initializes the UI components, sets up the RecyclerView with an EmailAdapter,
+     * and configures the search and creation actions.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +81,9 @@ public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity 
         emailMsgComposition.setOnClickListener(v -> presenter.onCreateNewMsgSelected(employeeId));
     }
 
+    /**
+     * Refreshes the email list from the presenter whenever the activity comes to the foreground.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,6 +98,10 @@ public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity 
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the EmailCompositionActivity via an Intent, passing the employee's id as Intent extra.
+     */
     @Override
     public void navigateToCreateNewMsg(String employeeId){
         Toast.makeText(this, "Δημιουργία Νέου Μηνύματος...", Toast.LENGTH_SHORT).show();
@@ -98,6 +110,10 @@ public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity 
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the EmailDetailsActivity, passing all necessary email data via Intent extras.
+     */
     @Override
     public void navigateToEmailDetails(String subject, String body, String sender, String receiver, String employeeId){
         Intent intent = new Intent(this, EmailDetailsActivity.class);
