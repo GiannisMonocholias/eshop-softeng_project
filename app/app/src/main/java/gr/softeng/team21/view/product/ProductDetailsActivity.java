@@ -22,7 +22,6 @@ import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 
 public class ProductDetailsActivity extends AppCompatActivity implements ProductDetailsView {
 
-    // UI Elements
     private TextView tvName, tvCode, tvPrice, tvDescription, tvQuantity;
     private ImageView imgProduct;
     private Button btnAddToCart, btnQuantityminus, btnQuantityplus;
@@ -94,8 +93,8 @@ presenter.minusClicked();
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

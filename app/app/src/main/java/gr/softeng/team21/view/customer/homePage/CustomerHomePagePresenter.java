@@ -1,14 +1,13 @@
 package gr.softeng.team21.view.customer.homePage;
 
+import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 public class CustomerHomePagePresenter {
 private CustomerHomePageView view;
 private Customer customer;
-    public void setView(CustomerHomePageView view) {
-        this.view = view;
-    }
+
 
     public CustomerHomePagePresenter(CustomerHomePageView view, Customer customer) {
         this.view = view;

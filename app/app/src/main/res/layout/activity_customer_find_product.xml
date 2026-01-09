@@ -12,18 +12,37 @@
 
     <TextView
         android:id="@+id/txtCustomerFindProductActivityHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="286dp"
+        android:layout_height="36dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text="Αναζήτηση Προϊόντων"
         android:textColor="#009688"
-        android:textSize="28sp"
+        android:textSize="26sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCustomerFindProductActivityShoppingCart"
+        app:layout_constraintEnd_toStartOf="@+id/btnCustomerFindProductActivityShoppingCart"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/btnCustomerFindProductActivityShoppingCart"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Καλάθι Αγορών"
+        android:scaleType="fitCenter"
+        android:src="@drawable/outline_add_shopping_cart_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#009688" />
 
     <SearchView
-        android:id="@+id/searchProductActivityHeader"
+        android:id="@+id/searchCustomerFindProductActivity"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
@@ -33,7 +52,9 @@
         android:queryHint="Πληκτρολογήστε όνομα..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtCustomerFindProductActivityHeader" />
+        app:layout_constraintTop_toBottomOf="@id/txtCustomerFindProductActivityHeader" >
+
+    </SearchView>
 
     <TextView
         android:id="@+id/txtCustomerFindProductActivityText"
@@ -43,10 +64,10 @@
         android:text="Πατήστε πάνω σε κάποιο προϊόν"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchProductActivityHeader" />
+        app:layout_constraintTop_toBottomOf="@+id/searchCustomerFindProductActivity" />
 
     <ListView
-        android:id="@+id/ViewlistProductActivity"
+        android:id="@+id/ViewlistCustomerFindProductActivity"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="4dp"
@@ -54,7 +75,23 @@
         android:dividerHeight="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCustomerFindProductActivityText" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCustomerFindProductActivityText"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/txtCustomerFindProductActivityShoppingCartQuantity"
+        android:layout_width="33dp"
+        android:layout_height="24dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#009688"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCustomerFindProductActivityShoppingCart"
+        app:layout_constraintEnd_toStartOf="@+id/btnCustomerFindProductActivityShoppingCart"
+        app:layout_constraintStart_toEndOf="@+id/txtCustomerFindProductActivityHeader"
+        app:layout_constraintTop_toTopOf="@+id/btnCustomerFindProductActivityShoppingCart" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

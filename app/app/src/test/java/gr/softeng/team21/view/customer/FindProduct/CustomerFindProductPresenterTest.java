@@ -7,17 +7,23 @@ import org.junit.Test;
 import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 
+import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
+import gr.softeng.team21.domain.ShoppingCart;
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 
 public class CustomerFindProductPresenterTest {
     private CustomerFindProductPresenter presenter;
     private CustomerFindProductViewStub view;
+    private Customer customer;
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         view=new CustomerFindProductViewStub();
-        presenter=new CustomerFindProductPresenter(view);
+        customer= CustomerDAOMemory.getInstance().getCustomer("CUST-500");
+        presenter=new CustomerFindProductPresenter(view,customer);
     }
 
     @Test
@@ -29,7 +35,6 @@ public class CustomerFindProductPresenterTest {
 
     @Test
     public void filter() {
-        // 1. Δοκιμή φίλτρου που επιστρέφει αποτελέσματα
         presenter.filter("Dell");
         ArrayList<ProductType> results = view.getShowedProducts();
 
@@ -61,5 +66,30 @@ public class CustomerFindProductPresenterTest {
     public void productClickedWithNullProduct() {
         presenter.ProductClicked(null);
         Assert.assertNull(view.getProductCode());
+    }
+    @Test
+    public void openShoppingCartClicked(){
+        customer.addItemToCart(ProductTypeDAOMemory.getInstance().getProduct("TECH-010"),1 );
+        presenter.openShoppingCartClicked();
+        Assert.assertEquals(1, view.getShoppingCartCount());
+    }
+    @Test
+    public void openShoppingCartClickedWithNullShoppingCart(){
+        presenter.openShoppingCartClicked();
+        Assert.assertEquals(0, view.getShoppingCartCount());
+        Assert.assertEquals("To καλάθι είναι άδειο!!",view.getEmptyShoppingCartMessage());
+    }
+
+    @Test
+    public void updateShoppingCartStatus(){
+        customer.addItemToCart(ProductTypeDAOMemory.getInstance().getProduct("TECH-010"),1 );
+        customer.addItemToCart(ProductTypeDAOMemory.getInstance().getProduct("TECH-011"),1 );
+        presenter.updateShoppingCartStatus();
+        Assert.assertEquals(2,view.getUpdateShoppingCartCount());
+
+    }
+    @Test public void updateShoppingCartStatusWithNullShoppingCart(){
+        presenter.updateShoppingCartStatus();
+        Assert.assertEquals(0,view.getUpdateShoppingCartCount());
     }
 }

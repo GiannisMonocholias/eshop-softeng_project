@@ -3,13 +3,15 @@ package gr.softeng.team21.domain;
 import java.util.*;
 
 import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.util.Date;
 
 public class Customer extends User {
     private String customer_id;
-    private gr.softeng.team21.util.Date registdate;
+    private Date registdate;
     private ShoppingCart shoppingCart;
 
 

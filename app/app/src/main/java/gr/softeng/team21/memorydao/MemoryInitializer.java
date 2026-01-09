@@ -1,7 +1,6 @@
 package gr.softeng.team21.memorydao;
 
 import java.math.BigDecimal;
-
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
@@ -30,7 +29,6 @@ import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
 public class MemoryInitializer {
-
     public static void eraseData() {
         try {
             getProductsWareHouseDAO().clear();

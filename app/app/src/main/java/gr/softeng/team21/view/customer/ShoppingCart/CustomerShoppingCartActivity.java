@@ -20,12 +20,8 @@ import java.util.List;
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.util.Money;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.view.customer.Payment.CustomerPaymentActivity;
-import gr.softeng.team21.view.customer.Payment.CustomerPaymentPresenter;
-import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
-import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.util.ShoppingCartAdapter;
 
 public class CustomerShoppingCartActivity extends AppCompatActivity implements ShoppingCartAdapter.CartListener, CustomerShoppingCartView {
@@ -87,8 +83,8 @@ public class CustomerShoppingCartActivity extends AppCompatActivity implements S
 
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void showMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 
     }
 

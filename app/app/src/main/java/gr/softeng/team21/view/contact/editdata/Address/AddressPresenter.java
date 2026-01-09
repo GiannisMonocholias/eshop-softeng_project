@@ -53,7 +53,6 @@ public class AddressPresenter {
             view.showError("Ο ΤΚ πρέπει να είναι 5 ψηφία");
             return;
         }
-
         Address newAddress = new Address(street, number, city, country, zip);
         user.editData("3", null, newAddress, null);
         view.SaveSuccess("Η διεύθυνση ενημερώθηκε επιτυχώς!");

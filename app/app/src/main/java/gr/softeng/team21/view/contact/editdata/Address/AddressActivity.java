@@ -55,14 +55,14 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
     }
 
     @Override
-    public void SaveSuccess(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void SaveSuccess(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
-    public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showError(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
