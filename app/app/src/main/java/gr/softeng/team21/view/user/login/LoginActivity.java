@@ -28,6 +28,12 @@ import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparation
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity;
 import gr.softeng.team21.view.util.UserType;
 
+/**
+ * Activity providing the primary Login UI.
+ * Implements {@link LoginView} and routes users to role-specific activities
+ * based on their authentication status.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private EditText usernameEditText;
@@ -35,6 +41,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private Button loginButton;
     private TextView registerTextView;
     private LoginPresenter presenter;
+
+    /**
+     * Initializes the layout, binds UI components, and connects the presenter.
+     * Configures click listeners for login and registration actions.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,18 +70,25 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         registerTextView.setOnClickListener(v -> presenter.onRegister());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUsername() {
         return usernameEditText.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getPassword() {
         return passwordEditText.getText().toString();
     }
 
-
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showErrorMessage(String title, String message) {
         new AlertDialog.Builder(this)
@@ -80,11 +98,19 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Factory-style navigation logic that launches the appropriate dashboard
+     * and passes the correct unique ID extra (Customer ID or Employee ID).
+     */
     @Override
     public void navigateUserToHomePage(UserType userType, User user) {
         Intent intent = null;
@@ -118,18 +144,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void navigateToRegister() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Standard Android lifecycle method. Resets the login fields
+     * every time the user navigates back to the login screen.
+     */
     @Override
     public void onResume(){
         super.onResume();
         presenter.loginReset();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resetFields() {
         usernameEditText.setText("");

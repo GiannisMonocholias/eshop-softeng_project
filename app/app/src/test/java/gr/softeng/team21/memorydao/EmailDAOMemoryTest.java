@@ -9,12 +9,21 @@ import gr.softeng.team21.util.Date;
 import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.contact.EmailMessage;
 
+/**
+ * Unit tests for the {@link EmailDAOMemory} class.
+ * This suite verifies the functionality of the in-memory email repository,
+ * including storing inbox and sent messages, filtering by read/replied status,
+ * and searching for specific messages.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class EmailDAOMemoryTest {
 
     private final EmailAddress from = new EmailAddress("sender@example.com");
     private final EmailAddress to = new EmailAddress("recipient@example.com");
 
-
+    /**
+     * Verifies that messages saved to the inbox are correctly stored and retrieved.
+     */
     @Test
     public void testSaveInboxEmailsAndGetInbox() {
 
@@ -30,6 +39,9 @@ public class EmailDAOMemoryTest {
 
     }
 
+    /**
+     * Verifies that messages saved to the sent folder are correctly stored and retrieved.
+     */
     @Test
     public void testSaveSentEmailsAndGetSent() {
         EmailDAOMemory provider = new EmailDAOMemory();
@@ -44,6 +56,9 @@ public class EmailDAOMemoryTest {
 
     }
 
+    /**
+     * Tests the filtering logic for retrieving only unread messages from the inbox.
+     */
     @Test
     public void testGetUnreadEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
@@ -60,6 +75,9 @@ public class EmailDAOMemoryTest {
         assertEquals(unreadMsg, unread.get(0));
     }
 
+    /**
+     * Tests the filtering logic for retrieving only read messages from the inbox.
+     */
     @Test
     public void testGetReadEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
@@ -77,6 +95,9 @@ public class EmailDAOMemoryTest {
         assertEquals(readMsg, readEmails.get(0));
     }
 
+    /**
+     * Tests the filtering logic for retrieving messages that have not yet been replied to.
+     */
     @Test
     public void testGetUnrepliedEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
@@ -93,6 +114,9 @@ public class EmailDAOMemoryTest {
         assertEquals(unrepliedMsg, unreplied.get(0));
     }
 
+    /**
+     * Tests the filtering logic for retrieving only the messages that have been replied to.
+     */
     @Test
     public void testGetRepliedEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
@@ -110,7 +134,9 @@ public class EmailDAOMemoryTest {
         assertEquals(repliedMsg, repliedEmails.get(0));
     }
 
-
+    /**
+     * Verifies the search functionality to check if a specific message exists in the inbox.
+     */
     @Test
     public void testInInbox() {
         EmailDAOMemory provider = new EmailDAOMemory();
@@ -122,7 +148,9 @@ public class EmailDAOMemoryTest {
         assertFalse(provider.inInbox(new EmailMessage(from, to, "Other", "Body", new Date())));
     }
 
-
+    /**
+     * Verifies the search functionality to check if a specific message exists in the sent folder.
+     */
     @Test
     public void testInSent() {
         EmailDAOMemory provider = new EmailDAOMemory();

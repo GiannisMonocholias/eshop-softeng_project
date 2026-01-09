@@ -33,7 +33,13 @@ public class AdminTest {
         admin.setSalary(1000);
     }
 
-
+    @Test
+    public void getInstanceReturnsTheSameReference(){
+        Admin admin1 = Admin.getInstance("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), 5000);
+        Admin admin2 = Admin.getInstance();
+        assertSame(admin, admin1);
+        assertSame(admin, admin2);
+    }
 
     @Test
     public void createEmployee() {
@@ -44,6 +50,95 @@ public class AdminTest {
         int after = rep.getEmployees().size();
 
         assertEquals(before + 1 , after);
+
+
+        before = rep.getEmployees().size();
+
+        admin.createEmployee(new Employee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "3s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date()));
+
+        after = rep.getEmployees().size();
+
+        assertEquals(before + 1, after);
+    }
+
+    @Test
+    public void createCustomerServiceEmployee(){
+        int before = rep.getEmployees().size();
+
+        admin.createCustomerServiceEmployee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "2s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date());
+
+        int after = rep.getEmployees().size();
+
+        assertEquals(before + 1 , after);
+
+
+        before = rep.getEmployees().size();
+
+        admin.createCustomerServiceEmployee(new CustomerServiceEmployee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "3s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date()));
+
+        after = rep.getEmployees().size();
+
+        assertEquals(before + 1, after);
+    }
+
+    @Test
+    public void createOrderPreparationEmployee(){
+        int before = rep.getEmployees().size();
+
+        admin.createOrderPreparationEmployee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "2s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date());
+
+        int after = rep.getEmployees().size();
+
+        assertEquals(before + 1 , after);
+
+
+        before = rep.getEmployees().size();
+
+        admin.createOrderPreparationEmployee(new OrderPreparationEmployee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "3s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date()));
+
+        after = rep.getEmployees().size();
+
+        assertEquals(before + 1, after);
+    }
+
+    @Test
+    public void createCatalogueUpdateEmployee(){
+        int before = rep.getEmployees().size();
+
+        admin.createUpdateCatalogueEmployee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "2s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date());
+
+        int after = rep.getEmployees().size();
+
+        assertEquals(before + 1 , after);
+
+
+        before = rep.getEmployees().size();
+
+        admin.createUpdateCatalogueEmployee(new UpdateCatalogueEmployee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "3s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date()));
+
+        after = rep.getEmployees().size();
+
+        assertEquals(before + 1, after);
+    }
+
+    @Test
+    public void createDeliverer(){
+        int before = rep.getEmployees().size();
+
+        admin.createDeliverer("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "2s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date(),50,true);
+
+        int after = rep.getEmployees().size();
+
+        assertEquals(before + 1 , after);
+
+
+        before = rep.getEmployees().size();
+
+        admin.createDeliverer(new Deliverer("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "3s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date(), 50, true));
+
+        after = rep.getEmployees().size();
+
+        assertEquals(before + 1, after);
     }
 
     @Test

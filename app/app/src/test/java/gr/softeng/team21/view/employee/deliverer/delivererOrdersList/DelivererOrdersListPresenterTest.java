@@ -14,6 +14,12 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
 
+/**
+ * Unit tests for {@link DelivererOrdersListPresenter}.
+ * This suite verifies the core workflow of a deliverer: viewing assigned shipped orders
+ * and confirming successful delivery, which involves state changes and task list updates.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class DelivererOrdersListPresenterTest {
 
     private DelivererOrdersListPresenter presenter;
@@ -24,6 +30,10 @@ public class DelivererOrdersListPresenterTest {
     private static final String DELIVERER_ID = "DEL-401";
     private static final String ORDER_CODE = "ORD-2023-001";
 
+    /**
+     * Sets up the testing environment before each test.
+     * Populates memory repositories and adds a sample shipped order to the deliverer's list.
+     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
@@ -41,7 +51,10 @@ public class DelivererOrdersListPresenterTest {
         deliverer.addOrder(shippedOrder);
     }
 
-
+    /**
+     * Verifies that the presenter correctly retrieves the list of assigned orders
+     * when a valid deliverer ID is provided.
+     */
     @Test
     public void loadShippedOrdersValidDelivererReturnsOrders() {
         ArrayList<Order> orders = presenter.loadShippedOrders(DELIVERER_ID);
@@ -51,6 +64,10 @@ public class DelivererOrdersListPresenterTest {
         Assert.assertEquals(ORDER_CODE, orders.get(0).getOrdercode());
     }
 
+    /**
+     * Verifies that attempting to load orders for an invalid deliverer ID
+     * results in a null return and an appropriate UI error message.
+     */
     @Test
     public void loadShippedOrdersInvalidDeliverer_ShowsError() {
         ArrayList<Order> orders = presenter.loadShippedOrders("INVALID_ID");
@@ -59,6 +76,12 @@ public class DelivererOrdersListPresenterTest {
         Assert.assertEquals("Σφάλμα: Ο διανομέας δεν βρέθηκε.", viewStub.getErrorShown());
     }
 
+    /**
+     * Verifies the delivery confirmation workflow:
+     * 1. The order status transitions from SHIPPED to DELIVERED.
+     * 2. The order is removed from the deliverer's internal assigned list.
+     * 3. The UI is requested to remove the order and display a success message.
+     */
     @Test
     public void onOrderConfirmedSetsStatusDeliveredAndRemovesFromList() {
         presenter.loadShippedOrders(DELIVERER_ID);
@@ -67,15 +90,14 @@ public class DelivererOrdersListPresenterTest {
 
         presenter.onOrderConfirmed(shippedOrder);
 
-
+        // State update verification
         Assert.assertEquals(OrderStatusType.DELIVERED, shippedOrder.getOrderstatus());
 
-
+        // Domain list update verification
         Assert.assertFalse(deliverer.getOrders().contains(shippedOrder));
 
-
+        // UI update verification via stub
         Assert.assertTrue(viewStub.getMessageShown().contains("ολοκληρώθηκε"));
-
         Assert.assertEquals(shippedOrder, viewStub.getRemovedOrder());
     }
 }

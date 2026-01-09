@@ -20,6 +20,13 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
 import gr.softeng.team21.view.util.DelivererOrderAdapter;
 
+/**
+ * Activity that displays a list of orders assigned to a Deliverer.
+ * Uses a {@link RecyclerView} with a {@link DelivererOrderAdapter} to handle
+ * user interaction for order's delivery confirmation.
+ * implements the {@link DelivererOrdersListView} inteface
+ * @author Γιάννης Μονοχολιάς
+ */
 public class DelivererOrdersListActivity extends AppCompatActivity implements DelivererOrdersListView {
 
     private RecyclerView recyclerView;
@@ -28,6 +35,10 @@ public class DelivererOrdersListActivity extends AppCompatActivity implements De
 
     private static final String EMP_ID_EXTRA = "DELIVERER_ID";
 
+    /**
+     * Sets up the UI, initializes the presenter, and populates the
+     * RecyclerView with orders assigned to the current Deliverer.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +66,10 @@ public class DelivererOrdersListActivity extends AppCompatActivity implements De
         recyclerView.setAdapter(adapter);
     }
 
-
-
+    /**
+     * {@inheritDoc}
+     * Instructs the adapter to remove the specific order item from the display.
+     */
     @Override
     public void removeOrderFromList(Order order) {
         if (adapter != null) {
@@ -64,11 +77,18 @@ public class DelivererOrdersListActivity extends AppCompatActivity implements De
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Displays a native Android {@link AlertDialog} for error communication.
+     */
     @Override
     public void showError(String message) {
         new AlertDialog.Builder(this)

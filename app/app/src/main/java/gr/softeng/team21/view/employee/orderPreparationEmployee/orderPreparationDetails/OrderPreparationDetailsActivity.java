@@ -23,13 +23,22 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
 import gr.softeng.team21.view.util.StockProductAdapter;
 
+/**
+ * Android Activity providing the UI for reviewing order contents and
+ * executing stock check.
+ * Implements {@link OrderPreparationDetailsView} to receive updates from the presenter.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class OrderPreparationDetailsActivity extends AppCompatActivity implements OrderPreparationDetailsView{
     private OrderPreparationDetailsPresenter presenter;
     private static final String EMP_ID_EXTRA = "ORDER_PREPARATION_EMPLOYEE_ID";
     private static final String ORD_CODE_EXTRA = "ORDER_CODE";
 
 
-
+    /**
+     * Configures the layout, binds UI components, and sets up the RecyclerView
+     * to display the list of products in the order.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +75,9 @@ public class OrderPreparationDetailsActivity extends AppCompatActivity implement
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setOrderDetails(String ordercode, String customerName, String submissionDate, String price, OrderStatusType status) {
         ((TextView) findViewById(R.id.txtOrderDetailsOrderIdValue)).setText(ordercode);
@@ -75,6 +87,10 @@ public class OrderPreparationDetailsActivity extends AppCompatActivity implement
         ((TextView) findViewById(R.id.txtOrderDetailsOrderStatus)).setText(status.toString());
     }
 
+    /**
+     * {@inheritDoc}
+     * Shows an Android error alert dialog with an alert icon.
+     */
     @Override
     public void showErrorMessage(String message) {
         new AlertDialog.Builder(this)
@@ -85,6 +101,10 @@ public class OrderPreparationDetailsActivity extends AppCompatActivity implement
                 .show();
     };
 
+    /**
+     * {@inheritDoc}
+     * Shows a success Android alert dialog. Upon confirmation, the activity finishes.
+     */
     @Override
     public void showSuccessMessage(String message) {
         new AlertDialog.Builder(this)
@@ -101,6 +121,9 @@ public class OrderPreparationDetailsActivity extends AppCompatActivity implement
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void finishActivity() {
         finish();

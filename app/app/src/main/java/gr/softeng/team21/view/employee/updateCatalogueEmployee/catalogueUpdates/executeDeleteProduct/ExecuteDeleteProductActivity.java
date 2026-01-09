@@ -17,6 +17,13 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
+/**
+ * Activity providing the UI for executing a product deletion request.
+ * Displays target product information and requires explicit user confirmation
+ * before performing the destructive operation.
+ * Implements {@link ExecuteDeleteProductView}
+ * @author Γιάννης Μονοχολιάς
+ */
 public class ExecuteDeleteProductActivity extends AppCompatActivity implements ExecuteDeleteProductView{
 
     private ExecuteDeleteProductPresenter presenter;
@@ -25,7 +32,10 @@ public class ExecuteDeleteProductActivity extends AppCompatActivity implements E
     private static final String REQ_ID_EXTRA = "REQUEST_ID";
 
 
-
+    /**
+     * Initializes the Activity, binds UI components, and triggers the loading
+     * of request data via the presenter.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +62,9 @@ public class ExecuteDeleteProductActivity extends AppCompatActivity implements E
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setProductDetails(String name, String code, String description, String price) {
 
@@ -61,6 +74,10 @@ public class ExecuteDeleteProductActivity extends AppCompatActivity implements E
         ((TextView) findViewById(R.id.txtexecuteDeleteProductPriceValue)).setText(price);
     }
 
+    /**
+     * {@inheritDoc}
+     * Shows a destructive confirmation Android {@link AlertDialog} to ensure user intent.
+     */
     @Override
     public void showConfirmationDialog() {
         new AlertDialog.Builder(this)
@@ -77,7 +94,10 @@ public class ExecuteDeleteProductActivity extends AppCompatActivity implements E
                 .show();
     }
 
-
+    /**
+     * {@inheritDoc}
+     * Displays a success dialog. Upon dismissal, terminates the activity.
+     */
     @Override
     public void showSuccessMessage(String message) {
         new AlertDialog.Builder(this)
@@ -94,6 +114,9 @@ public class ExecuteDeleteProductActivity extends AppCompatActivity implements E
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         new AlertDialog.Builder(this)

@@ -13,6 +13,12 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
+/**
+ * Activity for viewing the content of a specific email.
+ * Implements {@link EmailDetailsView} to render resolved sender/receiver data
+ * passed from the presenter.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class EmailDetailsActivity extends AppCompatActivity implements EmailDetailsView {
 
     private EmailDetailsPresenter presenter;
@@ -26,7 +32,10 @@ public class EmailDetailsActivity extends AppCompatActivity implements EmailDeta
 
     private static final String  EMP_ID_EXTRA = "user_id";
 
-
+    /**
+     * Initializes the UI, connects to memory DAOs, and extracts
+     * email data from the calling intent.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,32 +66,55 @@ public class EmailDetailsActivity extends AppCompatActivity implements EmailDeta
         presenter.onViewCreated(subject, senderEmailAddress, receiverEmailAddress, body, employeeId);
     }
 
-
+    /**
+     * {@inheritDoc}
+     * Sets the text for the email subject field.
+     */
     @Override
     public void displaySubject(String subject) {
         txtSubject.setText(subject);
     }
 
+    /**
+     * {@inheritDoc}
+     * Sets the text for the sender's display name.
+     */
     @Override
     public void displaySenderName(String sender) {
         txtSenderName.setText(sender);
     }
 
+    /**
+     * {@inheritDoc}
+     * Sets the text for the receiver's full name.
+     */
     @Override
     public void displayReceiverName(String receiver) {
         txtReceiverName.setText(receiver);
     }
 
+    /**
+     * {@inheritDoc}
+     * Sets the text for the message content.
+     */
     @Override
     public void displayBody(String body) {
         txtBody.setText(body);
     }
 
+    /**
+     * {@inheritDoc}
+     * Displays the technical email address of the sender.
+     */
     @Override
     public void displaySenderEmail(String email) {
         txtSenderEmailAddress.setText(email);
     }
 
+    /**
+     * {@inheritDoc}
+     * Displays the technical email address of the receiver.
+     */
     @Override
     public void displayReceiverEmail(String email) {
         txtReceiverEmailAddress.setText(email);

@@ -20,15 +20,24 @@ import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparation
 import gr.softeng.team21.view.util.OrderAdapter;
 import gr.softeng.team21.view.util.OrderAdapterType;
 
+/**
+ * Activity that displays a list of orders currently assigned to an Order Preparation Employee.
+ * It uses a {@link RecyclerView} to display the assigned orders of the employee and refreshes the data
+ * during the onResume lifecycle event.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class AssignedOrdersToPrepareActivity extends AppCompatActivity implements AssignedOrdersToPrepareView {
 
     private AssignedOrdersToPreparePresenter presenter;
     private static final String EMP_ID_EXTRA = "ORDER_PREPARATION_EMPLOYEE_ID";
     private static final String ORD_CODE_EXTRA = "ORDER_CODE";
-
-
     private RecyclerView recyclerView;
 
+
+    /**
+     * Sets up the UI layout and initializes the presenter.
+     * Configuration of the RecyclerView's LayoutManager is performed here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +57,10 @@ public class AssignedOrdersToPrepareActivity extends AppCompatActivity implement
 
     }
 
+    /**
+     * Refreshes the assigned orders list every time the Activity becomes visible.
+     * This ensures that any processed or newly assigned orders are updated in the UI.
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -64,6 +77,12 @@ public class AssignedOrdersToPrepareActivity extends AppCompatActivity implement
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the {@link OrderPreparationDetailsActivity} using Intent extras
+     * for employee and order identification.
+     *
+     */
     @Override
     public void navigateToOrderPreparationDetails(String employeeId, String orderId) {
         Intent intent = new Intent(AssignedOrdersToPrepareActivity.this, OrderPreparationDetailsActivity.class);

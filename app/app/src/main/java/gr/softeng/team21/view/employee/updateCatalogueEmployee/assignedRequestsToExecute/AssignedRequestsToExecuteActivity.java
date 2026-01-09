@@ -23,9 +23,18 @@ import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.
 import gr.softeng.team21.view.util.UpdateRequestAdapterTypes;
 import gr.softeng.team21.view.util.UpdateRequestsAdapter;
 
+/**
+ * Activity that displays the list of catalogue update tasks assigned to the employee.
+ * It functions as a router, directing the user to ExecuteInsert, ExecuteDelete,
+ * or ExecuteProcess activities depending on the {@link gr.softeng.team21.domain.AllowedRequest} type.
+ * Implements {@link AssignedRequestsToExecuteView}
+ * @author Γιάννης Μονοχολιάς
+ */
 public class AssignedRequestsToExecuteActivity extends AppCompatActivity implements AssignedRequestsToExecuteView{
 
     private  AssignedRequestsToExecutePresenter presenter;
+
+    // Intent Extras Constants
     private static final String EMP_ID_EXTRA = "UPDATE_CATALOGUE_EMPLOYEE_ID";
     private static final String REQ_ID_EXTRA = "REQUEST_ID";
     private static final String REQ_DESC = "REQUEST_DESC";
@@ -35,11 +44,12 @@ public class AssignedRequestsToExecuteActivity extends AppCompatActivity impleme
     private static final String PROD_PRICE = "PROD_PRICE";
     private static final String PROD_CURRENCY = "PROD_CURRENCY";
 
-
-
     private RecyclerView recyclerView;
 
-
+    /**
+     *
+     * Configures layout and initializes the presenter
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +69,9 @@ public class AssignedRequestsToExecuteActivity extends AppCompatActivity impleme
 
     }
 
+    /**
+     * Refreshes the assigned requests list whenever the user returns to this screen.
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -73,6 +86,11 @@ public class AssignedRequestsToExecuteActivity extends AppCompatActivity impleme
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * {@inheritDoc}
+     * Evaluates the request type and prepares the corresponding Intent with
+     * product metadata passed as extras.
+     */
     @Override
     public void navigateToRequestDetails(String employeeId, CatalogueUpdateRequest request) {
         Toast.makeText(AssignedRequestsToExecuteActivity.this,

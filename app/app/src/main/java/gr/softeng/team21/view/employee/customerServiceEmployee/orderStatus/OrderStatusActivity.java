@@ -21,12 +21,23 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.view.util.OrderAdapter;
 import gr.softeng.team21.view.util.OrderAdapterType;
 
+/**
+ * Android Activity for notifying customers about their orders status.
+ * Uses a RecyclerView to display orders assigned to the employee and provides
+ * interaction via dialogs for sending automated updates.
+ * Implements {@link OrderStatusView} to update the interface based on Presenter logic.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class OrderStatusActivity extends AppCompatActivity implements OrderStatusView {
 
     private OrderStatusPresenter presenter;
     private RecyclerView recyclerView;
     private OrderAdapter adapter;
 
+    /**
+     * Configures the layout, initializes the presenter, and populates the
+     * order list using a specialized RecyclerView adapter.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,20 +65,34 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onOrderSelected(Order order) {
         Toast.makeText(this, "Επιλέχθηκε η παραγγελία: " + order.getOrdercode(), Toast.LENGTH_SHORT).show();
     }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Refreshes the RecyclerView data set to reflect the removal of processed orders.
+     */
     @Override
     public void updateList() {
         if (adapter != null) {
@@ -75,6 +100,10 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
         }
     }
 
+    /**
+     * Displays an Android AlertDialog to confirm the intent to send
+     * a customer notification.
+     */
     @Override
     public void showConfirmationDialog(Order order, String message) {
         new AlertDialog.Builder(this)

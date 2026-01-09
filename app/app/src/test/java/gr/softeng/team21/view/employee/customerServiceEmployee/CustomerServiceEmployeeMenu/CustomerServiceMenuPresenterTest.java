@@ -12,6 +12,12 @@ import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuPresenter;
 
+/**
+ * Unit tests for {@link CustomerServiceMenuPresenter}.
+ * This suite ensures the main menu logic for customer service employees functions correctly,
+ * including data display, navigation triggers, and sensitive operations like account deletion.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class CustomerServiceMenuPresenterTest {
 
     private CustomerServiceMenuPresenter presenter;
@@ -19,6 +25,9 @@ public class CustomerServiceMenuPresenterTest {
     private EmployeeDAO employeeDAO;
     private static final String EMPLOYEE_ID = "CSR-101";
 
+    /**
+     * Prepares data and initializes the presenter with its dependencies before each test.
+     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
@@ -28,7 +37,9 @@ public class CustomerServiceMenuPresenterTest {
         presenter = new CustomerServiceMenuPresenter(viewStub, employeeDAO);
     }
 
-
+    /**
+     * Verifies that the correct employee name is displayed when the view is initialized.
+     */
     @Test
     public void onViewCreatedShowsCorrectName() {
         presenter.onViewCreated(EMPLOYEE_ID);
@@ -36,6 +47,10 @@ public class CustomerServiceMenuPresenterTest {
         Assert.assertEquals("Μαρία Αλεξάνδρου", viewStub.getShownEmployeeName());
     }
 
+    /**
+     * Verifies that if an invalid ID is provided during initialization,
+     * no name is shown (graceful failure).
+     */
     @Test
     public void onViewCreatedInvalidIdDoesNothing() {
         presenter.onViewCreated("NON_EXISTENT_ID");
@@ -43,30 +58,50 @@ public class CustomerServiceMenuPresenterTest {
         Assert.assertEquals("", viewStub.getShownEmployeeName());
     }
 
+    /**
+     * Tests if selecting the Inbox option triggers the correct navigation.
+     */
     @Test
     public void onInboxSelectedNavigatesToInbox() {
         presenter.onInboxSelected(EMPLOYEE_ID);
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigateToInboxId());
     }
 
+    /**
+     * Tests if selecting the Order Status option triggers the correct navigation.
+     */
     @Test
     public void onOrderStatusSelectedNavigatesToOrderStatus() {
         presenter.onOrderStatusSelected(EMPLOYEE_ID);
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigateToOrderStatusId());
     }
 
+    /**
+     * Tests if selecting the Process Account option triggers the correct navigation.
+     */
     @Test
     public void onProcessAccountSelectedNavigatesToProcessAccount() {
         presenter.onProcessAccountSelected(EMPLOYEE_ID);
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigateToProcessAccountId());
     }
 
+    /**
+     * Verifies that clicking delete account triggers a confirmation dialog on the UI.
+     */
     @Test
     public void onDeleteAccountSelectedShowsConfirmation() {
         presenter.onDeleteAccountSelected();
         Assert.assertTrue(viewStub.isDeleteConfirmationShown());
     }
 
+    /**
+     * Verifies the full account deletion workflow:
+     * 1. Confirms the employee exists initially.
+     * 2. Executes deletion via presenter.
+     * 3. Checks for success message and redirection.
+     * 4. Ensures employee is removed from both EmployeeDAO and CredentialsDAO.
+     * @throws SecurityException when credentials validation fails after deletion (expected).
+     */
     @Test(expected = SecurityException.class)
     public void onDeleteAccountConfirmedDeletesEmployeeAndCredentialsSuccess() {
         Employee empBefore = employeeDAO.getEmployee(EMPLOYEE_ID);
@@ -83,10 +118,14 @@ public class CustomerServiceMenuPresenterTest {
 
         Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID));
 
-
+        // This call should throw SecurityException because credentials were deleted
         UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(),empBefore.getPassword());
     }
 
+    /**
+     * Verifies that attempting to confirm deletion for a non-existing ID
+     * results in an error message.
+     */
     @Test
     public void onDeleteAccountConfirmedDeletesEmployeeAndCredentialsFailure() {
         // Non existing employeeId
@@ -95,5 +134,3 @@ public class CustomerServiceMenuPresenterTest {
 
     }
 }
-
-

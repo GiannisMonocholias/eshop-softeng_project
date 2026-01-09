@@ -19,6 +19,12 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
+/**
+ * Activity for processing a product modification request.
+ * Provides a form-based UI for updating product attributes and implements
+ * {@link ExecuteProcessProductView} for communication with the presenter.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class ExecuteProcessProductActivity extends AppCompatActivity implements ExecuteProcessProductView {
 
     private ExecuteProcessProductPresenter presenter;
@@ -31,6 +37,10 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
     private static final String EMP_ID_EXTRA = "UPDATE_CATALOGUE_EMPLOYEE_ID";
     private static final String REQ_ID_EXTRA = "REQUEST_ID";
 
+    /**
+     * Initializes UI components, sets up window insets, and triggers
+     * the loading of request details via the presenter.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +65,9 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
         btnSaveChanges.setOnClickListener(v -> presenter.onSaveClicked());
     }
 
+    /**
+     * Binds class variables to XML layout IDs.
+     */
     private void initializeViews() {
         txtDescription = findViewById(R.id.txtexecuteProcessProductRequestDescription);
 
@@ -66,27 +79,43 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
         btnSaveChanges = findViewById(R.id.btnexecuteProcessProductSave);
     }
 
+    // Input retrieval methods
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductCode() {
         return edtCode.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductName() {
         return edtName.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductPrice() {
         return edtPrice.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductDescription() {
         return edtDesc.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setProductData(String code, String name, String price, String description) {
         edtCode.setText(code);
@@ -95,11 +124,17 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
         edtDesc.setText(description);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setRequestDescription(String description) {
         txtDescription.setText(description);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showInputError(String field, String message) {
         switch (field) {
@@ -109,6 +144,10 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * Shows a success Android dialog and returns the user to the previous screen.
+     */
     @Override
     public void showSuccessMessage(String message) {
         new AlertDialog.Builder(this)
@@ -125,6 +164,11 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Displays a confirmation Android {@link AlertDialog} to ensure the user
+     * wants to overwrite catalogue data.
+     */
     @Override
     public void showConfirmationDialog() {
         new AlertDialog.Builder(this)
@@ -141,6 +185,9 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         new AlertDialog.Builder(this)

@@ -11,6 +11,12 @@ import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 
+/**
+ * Unit tests for {@link EmailCompositionPresenter}.
+ * This suite verifies the logic for preparing the email composition screen and
+ * the process of sending emails between different types of users (Employees and Customers).
+ * @author Γιάννης Μονοχολιάς
+ */
 public class EmailCompositionPresenterTest {
 
     private EmailCompositionPresenter presenter;
@@ -21,6 +27,9 @@ public class EmailCompositionPresenterTest {
     private Employee employee;
     private Customer customer;
 
+    /**
+     * Prepares data and initializes the presenter and dependencies before each test.
+     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
@@ -36,7 +45,10 @@ public class EmailCompositionPresenterTest {
         customer = CustomerDAOMemory.getInstance().getCustomer(CUSTOMER_ID);
     }
 
-
+    /**
+     * Verifies that when an employee opens the composition screen, their details
+     * (name and email) are loaded correctly into the view.
+     */
     @Test
     public void onViewCreatedEmployeeSenderLoadsCorrectDetails() {
         presenter.onViewCreated(EMPLOYEE_ID);
@@ -45,6 +57,10 @@ public class EmailCompositionPresenterTest {
         Assert.assertEquals(employee.getEmailAddress().toString(), viewStub.getDisplayedSenderEmail());
     }
 
+    /**
+     * Verifies that when a customer opens the composition screen, their details
+     * are loaded correctly into the view.
+     */
     @Test
     public void onViewCreatedCustomerSenderLoadsCorrectDetails() {
         presenter.onViewCreated(CUSTOMER_ID);
@@ -53,6 +69,10 @@ public class EmailCompositionPresenterTest {
         Assert.assertEquals(customer.getEmailAddress().toString(), viewStub.getDisplayedSenderEmail());
     }
 
+    /**
+     * Verifies that providing an invalid user ID triggers an error message
+     * and closes the activity.
+     */
     @Test
     public void onViewCreatedInvalidUserShowsErrorAndFinishes() {
         presenter.onViewCreated("INVALID_ID");
@@ -61,6 +81,10 @@ public class EmailCompositionPresenterTest {
         Assert.assertTrue(viewStub.isFinishActivityCalled());
     }
 
+    /**
+     * Verifies that attempting to send an email with empty required fields
+     * triggers a validation error message.
+     */
     @Test
     public void onSendClickedEmptyFieldsShowsError() {
         presenter.onViewCreated(EMPLOYEE_ID);
@@ -74,6 +98,10 @@ public class EmailCompositionPresenterTest {
         Assert.assertEquals("Παρακαλώ συμπληρώστε όλα τα πεδία.", viewStub.getErrorMessage());
     }
 
+    /**
+     * Verifies that an error is shown if the recipient's email address
+     * does not exist in the system.
+     */
     @Test
     public void onSendClickedRecipientNotFoundShowsError() {
         presenter.onViewCreated(EMPLOYEE_ID);
@@ -87,6 +115,10 @@ public class EmailCompositionPresenterTest {
         Assert.assertEquals("Δεν βρέθηκε χρήστης με αυτό το email.", viewStub.getErrorMessage());
     }
 
+    /**
+     * Verifies successful email delivery from an Employee to a Customer.
+     * Checks for the success message, activity termination, and inbox update.
+     */
     @Test
     public void onSendClickedEmployeeToCustomerSuccess() {
         presenter.onViewCreated(EMPLOYEE_ID);
@@ -106,6 +138,9 @@ public class EmailCompositionPresenterTest {
         Assert.assertEquals("Order Update", customer.getEmailProvider().getInboxEmails().get(initialCustomerInboxSize).getSubject());
     }
 
+    /**
+     * Verifies successful email delivery from a Customer to an Employee.
+     */
     @Test
     public void onSendClickedCustomerToEmployeeSuccess() {
         presenter.onViewCreated(CUSTOMER_ID);

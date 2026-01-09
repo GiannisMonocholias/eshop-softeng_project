@@ -20,12 +20,22 @@ import gr.softeng.team21.view.user.login.LoginActivity; // Βεβαιώσου γ
 import gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare.AssignedOrdersToPrepareActivity;
 import gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity;
 
+/**
+ * Android Activity serving as the dashboard for Order Preparation Employee.
+ * Manages UI components and implements the {@link OrdersPreparationEmployeeMenuView} interface
+ * to handle navigation and user feedback as directed by the Presenter.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity implements OrdersPreparationEmployeeMenuView {
 
     OrdersPreparationEmployeeMenuPresenter presenter;
     private static final String EMP_ID = "ORDER_PREPARATION_EMPLOYEE_ID";
-    private String employeeId; // Το αποθηκεύουμε σε πεδίο για να το βλέπουν όλες οι μέθοδοι
+    private String employeeId;
 
+    /**
+     * Sets up the activity layout, initializes the presenter, and
+     * attaches click listeners to all menu buttons.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,11 +77,17 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showEmployeeName(String fullName){
         ((TextView)findViewById(R.id.txtCustomerServiceEmployeeMenuName)).setText(fullName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void navigateToAssignedOrders(String employeeId) {
         Intent intent = new Intent(OrderPreparationEmployeeMenuActivity.this, AssignedOrdersToPrepareActivity.class);
@@ -79,6 +95,10 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * The navigation is executed via Intent object, passing the employee id as extra
+     */
     @Override
     public void navigateToAvailableOrdersToAssign(String employeeId) {
         Intent intent = new Intent(OrderPreparationEmployeeMenuActivity.this, AvailableOrdersToAssignActivity.class);
@@ -86,7 +106,10 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         startActivity(intent);
     }
 
-
+    /**
+     * Displays a native Android {@link AlertDialog} to confirm the
+     * action of deleting an account.
+     */
     @Override
     public void showDeleteAccountConfirmation() {
         new AlertDialog.Builder(this)
@@ -103,6 +126,11 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Clears the activity stack using Intent flags to ensure the user cannot
+     * navigate back to the menu after a logout or account deletion.
+     */
     @Override
     public void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -112,6 +140,10 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         finish();
     }
 
+    /**
+     * {@inheritDoc}
+     * The navigation is executed via Intent object, passing the employee id (user id) as extra
+     */
     @Override
     public void navigateToProcessAccount(String employeeId){
         Intent intent = new Intent(this, UserEditDataActivity.class);
@@ -121,7 +153,9 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         startActivity(intent);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

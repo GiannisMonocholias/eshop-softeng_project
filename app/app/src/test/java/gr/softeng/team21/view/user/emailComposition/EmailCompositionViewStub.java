@@ -1,5 +1,11 @@
 package gr.softeng.team21.view.user.emailComposition;
 
+/**
+ * A stub implementation of the {@link EmailCompositionView} interface for unit testing.
+ * It simulates the user interface for composing an email, allowing tests to set
+ * input values and verify output messages or view state changes.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class EmailCompositionViewStub implements EmailCompositionView {
 
     private String recipientEmailInput = "";
@@ -12,14 +18,26 @@ public class EmailCompositionViewStub implements EmailCompositionView {
     private String successMessage = "";
     private boolean finishActivityCalled = false;
 
+    /**
+     * Simulates user input for the recipient's email address.
+     * @param recipientEmailInput The email address entered by the user.
+     */
     public void setRecipientEmailInput(String recipientEmailInput) {
         this.recipientEmailInput = recipientEmailInput;
     }
 
+    /**
+     * Simulates user input for the email subject.
+     * @param subjectInput The subject entered by the user.
+     */
     public void setSubjectInput(String subjectInput) {
         this.subjectInput = subjectInput;
     }
 
+    /**
+     * Simulates user input for the email body content.
+     * @param bodyInput The message body entered by the user.
+     */
     public void setBodyInput(String bodyInput) {
         this.bodyInput = bodyInput;
     }
@@ -39,6 +57,9 @@ public class EmailCompositionViewStub implements EmailCompositionView {
         return bodyInput;
     }
 
+    /**
+     * Captures the sender's details displayed on the UI.
+     */
     @Override
     public void setSenderDetails(String name, String email) {
         this.displayedSenderName = name;
@@ -55,11 +76,15 @@ public class EmailCompositionViewStub implements EmailCompositionView {
         this.successMessage = message;
     }
 
+    /**
+     * Captures whether the view was requested to close/finish.
+     */
     @Override
     public void finishActivity() {
         this.finishActivityCalled = true;
     }
 
+    // --- Accessor methods for verification during assertions ---
 
     public String getDisplayedSenderName() { return displayedSenderName; }
     public String getDisplayedSenderEmail() { return displayedSenderEmail; }

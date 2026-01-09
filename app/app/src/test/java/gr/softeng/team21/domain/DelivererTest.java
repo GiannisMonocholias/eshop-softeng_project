@@ -9,11 +9,23 @@ import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.util.Date;
 
+/**
+ * Unit tests for the {@link Deliverer} domain class.
+ * This class verifies the management of orders assigned to a deliverer,
+ * as well as the correct functioning of availability and quantity properties.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class DelivererTest {
 
     Deliverer delivery;
     Order order;
 
+    /**
+     * Initializes the testing environment before each test case.
+     * Sets up a Deliverer instance and a sample Order, while clearing the
+     * Employee memory DAO to ensure test isolation.
+     * @throws Exception if initialization fails.
+     */
     @Before
     public void setUp() throws Exception {
         Date hireDate = new Date(3,5,2025);
@@ -26,6 +38,9 @@ public class DelivererTest {
 
     }
 
+    /**
+     * Verifies that an order is successfully added to the deliverer's task list.
+     */
     @Test
     public void addOrder() {
 
@@ -39,6 +54,10 @@ public class DelivererTest {
         assertEquals(before + 1 , after);
     }
 
+    /**
+     * Tests the ability to search for a specific order within the deliverer's current assignments.
+     * Validates both positive (order exists) and negative (order does not exist) scenarios.
+     */
     @Test
     public void checkfor() {
 
@@ -53,6 +72,10 @@ public class DelivererTest {
         assertFalse(delivery.checkfor(order1));
     }
 
+    /**
+     * Verifies the getter and setter for the quantity property, representing
+     * the deliverer's capacity or current load.
+     */
     @Test
     public void testSetAndGetQuantity() {
         int expectedQuantity = 100;
@@ -60,11 +83,18 @@ public class DelivererTest {
         assertEquals(expectedQuantity, delivery.getQuantity());
     }
 
+    /**
+     * Validates the deliverer's initial availability status.
+     */
     @Test
     public void testGetAvailability() {
         assertTrue(delivery.getAvailability());
     }
 
+    /**
+     * Verifies that the order list is properly initialized and accurately
+     * reflects the orders assigned to the deliverer.
+     */
     @Test
     public void testGetOrders() {
         assertNotNull(delivery.getOrders());
@@ -73,6 +103,9 @@ public class DelivererTest {
         assertEquals(order, delivery.getOrders().get(0));
     }
 
+    /**
+     * Cleans up the memory DAO after each test execution to maintain a clean state.
+     */
     @After
     public void tearDown(){
         EmployeeDAOMemory.getInstance().clear();

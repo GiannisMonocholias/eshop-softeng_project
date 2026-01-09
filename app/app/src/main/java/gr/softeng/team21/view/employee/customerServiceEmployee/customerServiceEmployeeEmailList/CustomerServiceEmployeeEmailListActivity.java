@@ -21,6 +21,12 @@ import gr.softeng.team21.view.user.emailComposition.EmailCompositionActivity;
 import gr.softeng.team21.view.contact.emailDetails.EmailDetailsActivity;
 import gr.softeng.team21.view.util.EmailAdapter;
 
+/**
+ * Activity responsible for displaying the list of emails for a Customer Service Employee.
+ * Implements the {@link CustomerServiceEmployeeEmailListView} and manages UI components
+ * like RecyclerView, SearchView, and FloatingActionButton.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity implements CustomerServiceEmployeeEmailListView {
 
     private CustomerServiceEmployeeEmailListPresenter presenter;

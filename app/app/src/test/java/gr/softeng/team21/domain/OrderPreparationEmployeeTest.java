@@ -16,6 +16,13 @@ import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.util.Money;
 
+/**
+ * Unit tests for the {@link OrderPreparationEmployee} class.
+ * This suite validates the order fulfillment workflow, including order selection,
+ * stock verification, communication with other roles (Deliverers, Admins, Customer Service),
+ * and handling of insufficient stock scenarios.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class OrderPreparationEmployeeTest {
     private String orderId;
     private OrderPreparationEmployee employee;
@@ -23,6 +30,12 @@ public class OrderPreparationEmployeeTest {
     private Deliverer deliverer;
     private OrderDAOMemory orderDAOMemory;
 
+    /**
+     * Initializes the testing environment before each test case.
+     * Clears all repositories (Orders, Employees, Warehouse) and sets up
+     * the necessary personnel (Preparation Employee, Deliverer, Customer Service)
+     * and sample orders.
+     */
     @Before
     public void setUp(){
         OrderDAOMemory.getInstance().clear();
@@ -57,11 +70,19 @@ public class OrderPreparationEmployeeTest {
 
     }
 
+    /**
+     * Verifies that selecting an order that does not exist in the repository
+     * results in a {@link NoSuchElementException}.
+     */
     @Test(expected = NoSuchElementException.class)
     public void selectNonExistingOrder() {
         employee.selectOrder("order1246");
     }
 
+    /**
+     * Tests the successful selection of an existing order and its assignment
+     * to the employee's pending task list.
+     */
     @Test
     public void selectOrderTest(){
         String orderCode = "order1245";
@@ -73,6 +94,10 @@ public class OrderPreparationEmployeeTest {
     }
 
 
+    /**
+     * Verifies that attempting to prepare an order that exists but has not been
+     * assigned to the specific employee throws a {@link NoSuchElementException}.
+     */
     @Test(expected = NoSuchElementException.class)
     public void prepareOrder_NonAssignedExistingOrderTest() {
         // Existing but not assigned order
@@ -80,6 +105,10 @@ public class OrderPreparationEmployeeTest {
         employee.prepareOrder(nonAssignedOrder1);
     }
 
+    /**
+     * Verifies that attempting to prepare an order that does not exist
+     * in the system throws a {@link NoSuchElementException}.
+     */
     @Test(expected = NoSuchElementException.class)
     public void prepareOrder_NonExistingOrderTest() {
         // Non-existing order
@@ -87,12 +116,20 @@ public class OrderPreparationEmployeeTest {
         employee.prepareOrder(nonAssignedOrder2);
     }
 
+    /**
+     * Verifies that the prepareOrder method throws {@link IllegalArgumentException}
+     * when passed a null parameter.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void prepareOrder_NullArgumentTest() {
         // Null argument
         employee.prepareOrder(null);
     }
 
+    /**
+     * Verifies that if no employees of a specific type are available in the system,
+     * an {@link IllegalStateException} is thrown during the random selection process.
+     */
     @Test(expected = IllegalStateException.class)
     public void selectRandomEmployeeNoAvailableEmployeeTest(){
         EmployeeDAOMemory.getInstance().clear();
@@ -100,6 +137,14 @@ public class OrderPreparationEmployeeTest {
     }
 
 
+    /**
+     * Verifies the successful preparation of an order when stock is sufficient.
+     * Checks if:
+     * 1. The order status changes to SHIPPED.
+     * 2. Warehouse stock is correctly deducted.
+     * 3. The order is assigned to a Deliverer.
+     * 4. Employee's preparation count increases.
+     */
     @Test
     public void prepareOrderTestSufficientStock() {
 
@@ -127,7 +172,14 @@ public class OrderPreparationEmployeeTest {
     }
 
 
-
+    /**
+     * Verifies the system behavior when an order requires more items than available in stock.
+     * Checks if:
+     * 1. The order status changes to DELAYED.
+     * 2. Stock remains unchanged.
+     * 3. A reserve update request is logged.
+     * 4. Automatic emails are sent to the Admin and Customer Service.
+     */
     @Test
     public void prepareOrderTestInsufficientStock(){
         ProductType dummyProductType1 = new ProductType("LAPTOP","500",new Money(500,"€"),"product1246");
@@ -157,6 +209,9 @@ public class OrderPreparationEmployeeTest {
 
     }
 
+    /**
+     * Cleans up all memory repositories after each test to ensure test isolation.
+     */
     @After
     public void tearDownTest(){
         OrderDAOMemory.getInstance().clear();

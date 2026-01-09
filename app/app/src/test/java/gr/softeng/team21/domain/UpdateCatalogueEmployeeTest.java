@@ -13,6 +13,13 @@ import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.util.Money;
 
+/**
+ * Unit tests for the {@link UpdateCatalogueEmployee} class.
+ * This suite verifies the lifecycle of catalogue update requests, including
+ * request assignment to employees and the execution of product insertions,
+ * deletions, and modifications in the system's repository.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class UpdateCatalogueEmployeeTest {
 
     private UpdateCatalogueEmployee employee;
@@ -22,6 +29,11 @@ public class UpdateCatalogueEmployeeTest {
     private ProductType product1;
     private ProductType productUpdated;
 
+    /**
+     * Initializes the testing environment before each test case.
+     * Clears repositories and sets up sample products and update requests
+     * (Insert, Delete, Process) to be used in the tests.
+     */
     @Before
     public void setUp(){
         ProductTypeDAOMemory.getInstance().clear();
@@ -51,13 +63,17 @@ public class UpdateCatalogueEmployeeTest {
                 EmployeeState.ACTIVE, new Date(3,5,2025));
     }
 
-
+    /**
+     * Verifies that a new employee starts with zero recorded catalogue updates.
+     */
     @Test
     public void getTotalCatalogueUpdatesInitiallyZeroTest() {
         assertEquals(0, employee.getTotalCatalogueUpdates());
     }
 
-
+    /**
+     * Tests the successful assignment of a pending request to the employee.
+     */
     @Test
     public void assignRequestSuccessTest() {
         boolean result = employee.assignRequest(1);
@@ -65,8 +81,9 @@ public class UpdateCatalogueEmployeeTest {
         assertEquals(UpdateRequestDAOMemory.getInstance().getUpdateRequest(1), employee.selectRequest(1));
     }
 
-
-
+    /**
+     * Verifies that attempting to assign a non-existing request ID returns false.
+     */
     @Test
     public void assignRequest_NonExistingRequestTest() {
         // The request does not exist in UpdateRequestsRepository
@@ -74,6 +91,9 @@ public class UpdateCatalogueEmployeeTest {
         assertFalse(result);
     }
 
+    /**
+     * Verifies that a request cannot be assigned to the same employee more than once.
+     */
     @Test
     public void assignRequest_ReassignFailsTest() {
         // The request is already assigned to the employee
@@ -83,19 +103,29 @@ public class UpdateCatalogueEmployeeTest {
         assertFalse(employee.assignRequest(1));
     }
 
-
+    /**
+     * Verifies that the employee cannot select a request if it has not
+     * been previously assigned to them.
+     */
     @Test
     public void SelectRequestReturnsNullIfNotAssignedTest() {
         assertNull(employee.selectRequest(2)); // δεν έχει γίνει assign
     }
 
-
+    /**
+     * Tests the execution of an "INSERT_PRODUCT" request.
+     * Checks if the product is correctly added to the ProductType repository.
+     */
     @Test
     public void ExecuteUpdateInsertProductTest() {
         employee.executeUpdate(insertRequest);
         assertTrue(ProductTypeDAOMemory.getInstance().getProducts().containsKey(insertRequest.getProduct().getProductCode()));
     }
 
+    /**
+     * Tests the execution of a "DELETE_PRODUCT" request.
+     * Checks if the product is correctly removed from the repository.
+     */
     @Test
     public void ExecuteUpdateDeleteProductTest() {
 
@@ -106,6 +136,11 @@ public class UpdateCatalogueEmployeeTest {
         assertFalse(ProductTypeDAOMemory.getInstance().getProducts().containsKey(deleteRequest.getProduct().getProductCode()));
     }
 
+    /**
+     * Tests the execution of a "PROCESS_PRODUCT" (Update) request.
+     * Verifies that the product's attributes (name, price, description) are updated
+     * while maintaining the same product code.
+     */
     @Test
     public void testExecuteUpdateProcessProduct() {
         ProductTypeDAOMemory.getInstance().addProductType(product1);
@@ -121,12 +156,18 @@ public class UpdateCatalogueEmployeeTest {
 
     }
 
-
+    /**
+     * Verifies that executing an update with a null request results in
+     * an {@link IllegalArgumentException}.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void ExecuteWithIllegalArgumentTest() {
         employee.executeUpdate(null);
     }
 
+    /**
+     * Cleans up all memory repositories after each test to maintain state isolation.
+     */
     @After
     public void tearDownTest(){
         ProductTypeDAOMemory.getInstance().clear();
@@ -134,5 +175,4 @@ public class UpdateCatalogueEmployeeTest {
         UpdateRequestDAOMemory.getInstance().clear();
         EmployeeDAOMemory.getInstance().clear();
     }
-
 }

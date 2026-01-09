@@ -20,12 +20,22 @@ import gr.softeng.team21.view.user.login.LoginActivity;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute.AssignedRequestsToExecuteActivity;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign.AvailableRequestsToAssignActivity;
 
+/**
+ * Main dashboard Activity for Update Catalogue Employees.
+ * Provides the interface for navigating to assigned or available requests
+ * and managing account settings.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity implements UpdateCatalogueEmployeeMenuView {
 
     private UpdateCatalogueEmployeeMenuPresenter presenter;
     private static final String EMP_ID_EXTRA = "UPDATE_CATALOGUE_EMPLOYEE_ID";
     private String employeeId;
 
+    /**
+     * Configures the layout, attaches listeners to menu buttons,
+     * and initializes the presenter.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +78,18 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showEmployeeName(String fullName){
         ((TextView)findViewById(R.id.txtUptCatEmpMenuName)).setText(fullName);
     }
 
+    /**
+     * {@inheritDoc}
+     * The navigation is executed via Intent object, passing employee id  as extra
+     */
     @Override
     public void navigateToAssignedRequests(String employeeId) {
         Intent intent = new Intent(UpdateCatalogueEmployeeMenuActivity.this, AssignedRequestsToExecuteActivity.class);
@@ -80,6 +97,10 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * The navigation is executed via Intent object, passing employee id  as extra
+     */
     @Override
     public void navigateToAvailableRequestsToAssign(String employeeId) {
         Intent intent = new Intent(UpdateCatalogueEmployeeMenuActivity.this, AvailableRequestsToAssignActivity.class);
@@ -87,7 +108,10 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         startActivity(intent);
     }
 
-
+    /**
+     * {@inheritDoc}
+     * Shows an Android {@link AlertDialog} with confirmation logic.
+     */
     @Override
     public void showDeleteAccountConfirmation() {
         new AlertDialog.Builder(this)
@@ -104,6 +128,11 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     * The navigation is executed via Intent object which
+     * clears the Activity stack to ensure a clean logout experience.
+     */
     @Override
     public void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -114,6 +143,10 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         finish();
     }
 
+    /**
+     * {@inheritDoc}
+     * The navigation is executed via Intent object, passing employee id (user id) as extra
+     */
     @Override
     public void navigateToProcessAccount(String employeeId){
         Intent intent = new Intent(this, UserEditDataActivity.class);
@@ -123,6 +156,9 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

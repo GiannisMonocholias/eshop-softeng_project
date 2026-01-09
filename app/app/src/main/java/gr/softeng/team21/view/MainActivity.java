@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 import gr.softeng.team21.R;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.view.user.login.LoginActivity;
-// Αφαίρεσα τα διπλά/αχρείαστα imports
 
 public class MainActivity extends AppCompatActivity {
     private Button btnEntrance;

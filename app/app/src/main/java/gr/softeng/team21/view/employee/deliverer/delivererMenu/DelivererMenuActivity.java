@@ -20,12 +20,22 @@ import gr.softeng.team21.view.employee.deliverer.delivererOrdersList.DelivererOr
 import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.user.login.LoginActivity;
 
+/**
+ * Main Activity representing the Deliverer's dashboard.
+ * Manages UI interactions and implements the {@link DelivererMenuView}
+ * to handle navigation and feedback as directed by the Presenter.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class DelivererMenuActivity extends AppCompatActivity implements DelivererMenuView {
 
     private DelivererMenuPresenter presenter;
     private static final String EMP_ID_EXTRA = "DELIVERER_ID";
     private String employeeId;
 
+    /**
+     * Initializes the layout, binds UI listeners, and notifies the presenter
+     * that the view has been created.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +73,18 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showEmployeeName(String fullname) {
         ((TextView) findViewById(R.id.txtDelivererMenuName)).setText(fullname);
     }
 
+    /**
+     * {@inheritDoc}
+     * The navigation is executed via Intent object, with employee id as an intent extra
+     */
     @Override
     public void navigateToOrdersList(String employeeId) {
         Intent intent = new Intent(DelivererMenuActivity.this, DelivererOrdersListActivity.class);
@@ -76,8 +93,10 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
     }
 
 
-
-
+    /**
+     * {@inheritDoc}
+     * Shows an Android {@link AlertDialog} with confirmation buttons.
+     */
     @Override
     public void showDeleteAccountConfirmation() {
         new AlertDialog.Builder(this)
@@ -94,15 +113,24 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Clears the activity stack to ensure security after logout or deletion.
+     */
     @Override
     public void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
         startActivity(intent);
         finish();
     }
 
+    /**
+     * {@inheritDoc}
+     * The navigation is executed via Intent object, with employee id (user id) as an intent extra
+     */
     @Override
     public void navigateToProcessAccount(String employeeId){
         Intent intent = new Intent(this, UserEditDataActivity.class);
@@ -112,6 +140,9 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

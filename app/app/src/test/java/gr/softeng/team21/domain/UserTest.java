@@ -13,6 +13,13 @@ import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.util.Date;
 
+/**
+ * Unit tests for the abstract {@link User} class (tested via its subclasses
+ * {@link Employee} and {@link Customer}).
+ * This suite verifies core user functionalities such as profile data management,
+ * the dynamic {@code editData} system, and the internal messaging/email system.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class UserTest {
 
     private Employee sender;
@@ -22,6 +29,11 @@ public class UserTest {
     private EmailDAOMemory recipientProvider;
     private EmailDAOMemory customerProvider;
 
+    /**
+     * Initializes the testing environment before each test.
+     * Sets up sample Employees and a Customer, while instantiating memory-based
+     * email providers to simulate communication.
+     */
     @Before
     public void setUp() {
         EmailAddress senderAddress = new EmailAddress("sender@example.com");
@@ -41,42 +53,44 @@ public class UserTest {
 
         sender.setEmailProvider(senderProvider);
         recipient.setEmailProvider(recipientProvider);
-
-        // Ο User customer1 δεν χρησιμοποιείται, τον αφαιρούμε.
-        // User customer1 = new Customer("giannispap", "Giannis", "pass1234", "Papadopoulos", "697123456", new EmailAddress("giannis@mail.com"), "Customer1", new Date());
     }
 
-
+    /** Tests the username property accessors. */
     @Test
     public void testUsernameGetterSetter() {
         customer.setUsername("newUser");
         assertEquals("newUser", customer.getUsername());
     }
 
+    /** Tests the password property accessors. */
     @Test
     public void testPasswordGetterSetter() {
         customer.setPassword("newPass");
         assertEquals("newPass", customer.getPassword());
     }
 
+    /** Tests the first name property accessors. */
     @Test
     public void testFirstnameGetterSetter() {
         customer.setFirstname("NewFirst");
         assertEquals("NewFirst", customer.getFirstname());
     }
 
+    /** Tests the last name property accessors. */
     @Test
     public void testLastnameGetterSetter() {
         customer.setLastname("NewLast");
         assertEquals("NewLast", customer.getLastname());
     }
 
+    /** Tests the phone number property accessors. */
     @Test
     public void testPhoneNumberGetterSetter() {
         customer.setPhonenumber("99999");
         assertEquals("99999", customer.getPhonenumber());
     }
 
+    /** Tests the email address property accessors. */
     @Test
     public void testEmailAddressGetterSetter() {
         EmailAddress newAddress = new EmailAddress("new@example.com");
@@ -84,12 +98,14 @@ public class UserTest {
         assertEquals(newAddress, customer.getEmailAddress());
     }
 
+    /** Tests the email provider property accessors. */
     @Test
     public void testEmailProviderStubGetterSetter() {
         customer.setEmailProvider(customerProvider);
         assertEquals(customerProvider, customer.getEmailProvider());
     }
 
+    /** Tests the address property accessors. */
     @Test
     public void testAddressGetterSetter() {
         EmailAddress newEmailAddress = new EmailAddress("GiannisP@gmail.com");
@@ -97,25 +113,28 @@ public class UserTest {
         assertEquals(newEmailAddress, customer.getEmailAddress());
     }
 
-
+    /** Verifies that editData correctly updates the username (Choice "1"). */
     @Test
     public void editData_ChangeUsername() {
         customer.editData("1", "giannis15", null, null);
         assertEquals("giannis15", customer.getUsername());
     }
 
+    /** Verifies that editData correctly updates the password (Choice "2"). */
     @Test
     public void editData_ChangePassword() {
         customer.editData("2", "gianis123!", null, null);
         assertEquals("gianis123!", customer.getPassword());
     }
 
+    /** Verifies that editData correctly updates the phone number (Choice "5"). */
     @Test
     public void editData_ChangePhoneNumber() {
         customer.editData("5", "6987654321", null, null);
         assertEquals("6987654321", customer.getPhonenumber());
     }
 
+    /** Verifies that editData correctly updates the physical address (Choice "3"). */
     @Test
     public void editData_ChangeAddress() {
         Address newaddr = new Address("Solonos", "25", "Athens", "Greece", "10672");
@@ -123,6 +142,7 @@ public class UserTest {
         assertEquals(newaddr, customer.getAddress());
     }
 
+    /** Verifies that editData correctly updates the email address (Choice "4"). */
     @Test
     public void editData_ChangeEmail() {
         EmailAddress newEmail = new EmailAddress("giannis15@mail.com");
@@ -130,6 +150,7 @@ public class UserTest {
         assertEquals(newEmail, customer.getEmailAddress());
     }
 
+    /** Verifies that editData does not modify data when an unhandled choice is provided. */
     @Test
     public void editData_InvalidChoice() {
         String oldusername = customer.getUsername();
@@ -137,32 +158,30 @@ public class UserTest {
         assertEquals(oldusername, customer.getUsername());
     }
 
-
+    /** Verifies that an invalid choice outside specified bounds results in an exception. */
     @Test(expected = IllegalArgumentException.class)
     public void editData_ErrorChoiceThrowsException() {
-        // Error choice "10"
         customer.editData("10", "giannis7", null, null);
     }
 
+    /** Verifies that a null choice results in an exception. */
     @Test(expected = IllegalArgumentException.class)
     public void editData_NullChoiceThrowsException() {
-        // Null choice
         customer.editData(null, "giannis77", null, null);
     }
 
-
+    /** * Verifies that editData correctly processes specific choices even when
+     * multiple non-null parameters are provided for other choices.
+     */
     @Test
     public void editData_withMultipleEdits() {
         EmailAddress newEmail = new EmailAddress("giannis15@mail.com");
-
-
         customer.editData("1", "giannis15", null, newEmail);
-
         assertEquals("giannis15", customer.getUsername());
-
         assertEquals(new EmailAddress("giannis@mail.com"), customer.getEmailAddress());
     }
 
+    /** Tests the full reply-to-email workflow between two users. */
     @Test
     public void replyToEmail() {
         EmailMessage original = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(), "Original", "Original body", new Date());
@@ -179,6 +198,7 @@ public class UserTest {
         assertEquals(1, sender.getEmailProvider().getSentEmails().size());
     }
 
+    /** Tests the basic send-email functionality between two users. */
     @Test
     public void sendEmail() {
         sender.sendEmail(sender, recipient, "Hello", "Body text", new Date());
@@ -192,6 +212,7 @@ public class UserTest {
         assertEquals(1, sender.getEmailProvider().getSentEmails().size());
     }
 
+    /** Tests the delivery-style email reply workflow. */
     @Test
     public void deliverEmail() {
         EmailMessage original = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(),
@@ -208,6 +229,7 @@ public class UserTest {
         assertEquals(1, sender.getEmailProvider().getSentEmails().size());
     }
 
+    /** Verifies that the setEmailRead method correctly updates a message's read status. */
     @Test
     public void readEmail() {
         EmailMessage msg = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(),
@@ -218,6 +240,7 @@ public class UserTest {
         assertTrue(msg.isRead());
     }
 
+    /** Cleans up repositories after each test to ensure state isolation. */
     @After
     public void tearDownTest(){
         EmployeeDAOMemory.getInstance().clear();

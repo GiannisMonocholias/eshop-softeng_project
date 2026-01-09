@@ -17,14 +17,29 @@ import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 
+/**
+ * Adapter for displaying products in the stock verification screen during order preparation.
+ * It compares the requested quantity from the cart with the actual warehouse stock.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapter.ViewHolder> {
 
     private final List<CartItem> cartItems;
 
+    /**
+     * Constructor for StockProductAdapter.
+     * @param cartItems The list of items contained in the order.
+     */
     public StockProductAdapter(List<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
 
+    /**
+     * Inflates the layout for the stock product item.
+     * @param parent The ViewGroup into which the new View will be added.
+     * @param viewType The view type of the new View.
+     * @return A new ViewHolder instance.
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,6 +48,12 @@ public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapte
         return new ViewHolder(view);
     }
 
+    /**
+     * Binds the product and stock data to the UI components.
+     * Highlights the stock quantity in RED if it is less than the requested quantity.
+     * @param holder The ViewHolder to update.
+     * @param position The position of the item in the list.
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CartItem item = cartItems.get(position);
@@ -53,6 +74,7 @@ public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapte
         holder.txtReqValue.setText(String.valueOf(reqQty));
         holder.txtStockValue.setText(String.valueOf(stockQty));
 
+        // Logic for color coding the stock availability
         if (reqQty > stockQty) {
             holder.txtStockValue.setTextColor(Color.RED);
         } else {
@@ -60,11 +82,18 @@ public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapte
         }
     }
 
+    /**
+     * Returns the total number of items in the cart.
+     * @return The size of the cart items list.
+     */
     @Override
     public int getItemCount() {
         return (cartItems != null) ? cartItems.size() : 0;
     }
 
+    /**
+     * ViewHolder class for caching the UI components of a stock product item.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtCodeValue, txtNameValue, txtPriceValue, txtReqValue, txtStockValue;
 

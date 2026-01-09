@@ -92,7 +92,7 @@ public class Admin extends User {
         EmployeeDAOMemory.getInstance().addEmployee(deliverer);
     }
 
-    public void createDeliveret(Deliverer deliverer){
+    public void createDeliverer(Deliverer deliverer){
         EmployeeDAOMemory.getInstance().addEmployee(deliverer);
     }
 

@@ -7,11 +7,21 @@ import static org.junit.Assert.*;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.util.Money;
 
+/**
+ * Unit tests for the {@link CatalogueUpdateRequest} class.
+ * This suite verifies the integrity of request metadata, including unique identifiers,
+ * submission dates, descriptions, product associations, and execution status.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class CatalogueUpdateRequestTest {
     private CatalogueUpdateRequest request;
     private  ProductType product1;
     Date previousDate;
 
+    /**
+     * Sets up the testing environment before each test case.
+     * Initializes a sample product and an update request with predefined values.
+     */
     @Before
     public void setUp(){
         product1 = new ProductType ( "Mouse Logitech", "Wireless", new Money( 50, "€" ), "product1245" );
@@ -19,11 +29,17 @@ public class CatalogueUpdateRequestTest {
         request = new CatalogueUpdateRequest(previousDate, "Add new laptop to catalogue", product1, AllowedRequest.INSERT_PRODUCT, 101);
     }
 
+    /**
+     * Verifies that the unique request ID is correctly retrieved.
+     */
     @Test
     public void getIdTest() {
         assertEquals(101, request.getId());
     }
 
+    /**
+     * Tests the modification date property accessors.
+     */
     @Test
     public void dateModifiedGetterSetterTest() {
         assertEquals(previousDate, request.getDateModified());
@@ -33,7 +49,9 @@ public class CatalogueUpdateRequestTest {
         assertEquals(newDate, request.getDateModified());
     }
 
-
+    /**
+     * Tests the update description property accessors.
+     */
     @Test
     public void updateDescriptionGetterSetterTest() {
         // Previous description
@@ -44,6 +62,9 @@ public class CatalogueUpdateRequestTest {
         assertEquals("Updated description", request.getUpdateDescription());
     }
 
+    /**
+     * Tests the product association property accessors.
+     */
     @Test
     public void productGetterSetterTest() {
         // Previous product
@@ -55,6 +76,9 @@ public class CatalogueUpdateRequestTest {
         assertEquals(newProduct, request.getProduct());
     }
 
+    /**
+     * Tests the request type (AllowedRequest enum) property accessors.
+     */
     @Test
     public void typeGetterSetterTest() {
         assertEquals(AllowedRequest.INSERT_PRODUCT, request.getType());
@@ -63,6 +87,10 @@ public class CatalogueUpdateRequestTest {
         assertEquals(AllowedRequest.DELETE_PRODUCT, request.getType());
     }
 
+    /**
+     * Verifies the execution status logic.
+     * Ensures requests start as unexecuted and correctly transition to executed.
+     */
     @Test
     public void executedGetterSetterTest(){
         //Initially the request is not executed
@@ -72,6 +100,4 @@ public class CatalogueUpdateRequestTest {
         // Now the request has been executed
         assertTrue(request.getExecuted());
     }
-
-
 }

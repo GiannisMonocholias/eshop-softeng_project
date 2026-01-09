@@ -21,13 +21,21 @@ import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 import gr.softeng.team21.view.util.UpdateRequestAdapterTypes;
 import gr.softeng.team21.view.util.UpdateRequestsAdapter;
 
+/**
+ * Activity that displays a list of unassigned catalogue update requests.
+ * Provides the UI for Catalogue Employees to pick up new tasks.
+ * Implements {@link AvailableRequestsToAssignView}.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class AvailableRequestsToAssignActivity extends AppCompatActivity implements AvailableRequestsToAssignView{
 
     private AvailableRequestsToAssignPresenter presenter;
     UpdateRequestsAdapter adapter;
     private static final String EMP_ID_EXTRA = "UPDATE_CATALOGUE_EMPLOYEE_ID";
 
-
+    /**
+     * Initializes the UI, sets up the RecyclerView, and loads data via the presenter.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +65,9 @@ public class AvailableRequestsToAssignActivity extends AppCompatActivity impleme
         recyclerView.setAdapter(adapter);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMessage(String message) {
         new AlertDialog.Builder(this)
@@ -68,6 +78,9 @@ public class AvailableRequestsToAssignActivity extends AppCompatActivity impleme
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         new AlertDialog.Builder(this)
@@ -78,6 +91,10 @@ public class AvailableRequestsToAssignActivity extends AppCompatActivity impleme
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Visually removes the request from the list after successful assignment.
+     */
     @Override
     public void onRequestAssignedSuccess(CatalogueUpdateRequest request) {
         if (adapter != null) {
@@ -85,6 +102,9 @@ public class AvailableRequestsToAssignActivity extends AppCompatActivity impleme
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateList() {
         if (adapter != null) {
@@ -92,6 +112,10 @@ public class AvailableRequestsToAssignActivity extends AppCompatActivity impleme
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * Displays an Android {@link AlertDialog} to confirm the assignment transaction.
+     */
     @Override
     public void showConfirmationDialog(CatalogueUpdateRequest request, String confirmationMessage) {
         new AlertDialog.Builder(this)

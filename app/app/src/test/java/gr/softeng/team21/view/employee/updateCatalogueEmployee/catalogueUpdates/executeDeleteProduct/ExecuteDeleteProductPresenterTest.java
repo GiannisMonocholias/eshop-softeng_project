@@ -14,6 +14,13 @@ import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
+/**
+ * Unit tests for {@link ExecuteDeleteProductPresenter}.
+ * This suite verifies the full workflow of deleting a product based on an approved request,
+ * ensuring proper data loading, user confirmation, and synchronized updates across
+ * product and request repositories.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class ExecuteDeleteProductPresenterTest {
 
     private ExecuteDeleteProductPresenter presenter;
@@ -25,6 +32,11 @@ public class ExecuteDeleteProductPresenterTest {
     private static final int DELETE_REQUEST_ID = 4;
     private static final String PRODUCT_CODE = "TECH-015";
 
+    /**
+     * Initializes the testing environment before each test.
+     * Prepares memory data, sets up the presenter, and assigns a specific
+     * delete request to the test employee.
+     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
@@ -39,12 +51,14 @@ public class ExecuteDeleteProductPresenterTest {
 
         catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
 
-
         CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(DELETE_REQUEST_ID);
         catEmployee.assignRequest(request.getId());
     }
 
-
+    /**
+     * Verifies that the product details associated with the delete request
+     * are correctly loaded and passed to the view for display.
+     */
     @Test
     public void loadRequestDetailsValidDataSetsViewDetails() {
         presenter.loadRequestDetails(EMPLOYEE_ID, DELETE_REQUEST_ID);
@@ -54,34 +68,54 @@ public class ExecuteDeleteProductPresenterTest {
         Assert.assertTrue(viewStub.getPrice().contains("109.9"));
     }
 
+    /**
+     * Verifies that attempting to load a non-existing request results in
+     * an error message in the view.
+     */
     @Test
     public void loadRequestDetailsInvalidIdShowsError() {
         presenter.loadRequestDetails(EMPLOYEE_ID, -999);
         Assert.assertTrue(viewStub.getErrorMessage().contains("Σφάλμα"));
     }
 
+    /**
+     * Tests if clicking the delete button triggers the confirmation dialog.
+     */
     @Test
     public void onDeleteButtonClickedShowsConfirmationDialog() {
         presenter.onDeleteButtonClicked();
         Assert.assertTrue(viewStub.isConfirmationDialogShown());
     }
 
+    /**
+     * Verifies the successful execution of the product deletion:
+     * 1. Confirms the product exists before deletion.
+     * 2. Executes deletion and verifies the product is removed from the catalogue.
+     * 3. Checks if the request status transitions to SERVED.
+     * 4. Ensures the request is removed from the employee's active assigned tasks.
+     * 5. Confirms success feedback to the user.
+     */
     @Test
     public void onDeleteConfirmedSuccessDeletesProductAndUpdatesRequest() {
         presenter.loadRequestDetails(EMPLOYEE_ID, DELETE_REQUEST_ID);
 
+        // Pre-condition check
         Assert.assertNotNull(ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE));
 
         presenter.onDeleteConfirmed();
 
+        // Verification of product removal
         ProductType deletedProduct = ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE);
         Assert.assertNull("Το προϊόν έπρεπε να έχει διαγραφεί", deletedProduct);
 
+        // Request lifecycle verification
         CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(DELETE_REQUEST_ID);
         Assert.assertEquals(RequestStatusType.SERVED, request.getStatus());
 
+        // Employee task list cleanup verification
         Assert.assertFalse(catEmployee.getAssignedRequests().containsKey(DELETE_REQUEST_ID));
 
+        // View feedback verification
         Assert.assertTrue(viewStub.getSuccessMessage().contains("επιτυχώς"));
     }
 }

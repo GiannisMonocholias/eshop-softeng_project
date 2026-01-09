@@ -20,6 +20,12 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 
+/**
+ * Activity providing the UI for new customer registration.
+ * Manages form inputs and implements {@link RegisterView} to handle feedback
+ * from the registration logic.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class RegisterActivity extends AppCompatActivity implements RegisterView {
 
     private TextInputEditText edtRegisterUsername;
@@ -40,6 +46,10 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     // Presenter
     private RegisterPresenter presenter;
 
+    /**
+     * Initializes the UI, sets up the presenter, and configures
+     * click listeners for the registration action and login redirection.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +82,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         });
     }
 
+    /**
+     * Binds class members to XML components.
+     */
     private void initializeViews() {
         edtRegisterUsername = findViewById(R.id.edtRegisterUsername);
         edtRegisterPassword = findViewById(R.id.edtRegisterPassword);
@@ -89,6 +102,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         txtLoginLink = findViewById(R.id.txtLoginLink);
     }
 
+    /**
+     *  Helper method to extract trimmed text from EditText fields.
+     */
     private String getTextFromField(EditText field) {
         if (field.getText() != null) {
             return field.getText().toString().trim();
@@ -96,17 +112,25 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         return "";
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showErrorMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clearInputFields() {
         edtRegisterUsername.setText("");

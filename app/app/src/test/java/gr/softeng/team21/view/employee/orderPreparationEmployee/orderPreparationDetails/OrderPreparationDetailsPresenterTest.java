@@ -16,6 +16,13 @@ import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
 import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 
+/**
+ * Unit tests for {@link OrderPreparationDetailsPresenter}.
+ * This suite validates the detailed order preparation process, focusing on stock checking
+ * logic, status transitions (SHIPPED vs DELAYED), and error handling for unassigned
+ * or missing orders.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class OrderPreparationDetailsPresenterTest {
 
     private OrderPreparationDetailsPresenter presenter;
@@ -26,6 +33,9 @@ public class OrderPreparationDetailsPresenterTest {
     private static final String EMPLOYEE_ID = "PREP-201";
     private static final String ORDER_CODE = "ORD-2023-001";
 
+    /**
+     * Initializes data and sets up the presenter and target domain objects before each test.
+     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
@@ -43,7 +53,9 @@ public class OrderPreparationDetailsPresenterTest {
         prepEmployee.addOrder(order);
     }
 
-
+    /**
+     * Verifies that order details are correctly loaded and mapped to the view.
+     */
     @Test
     public void loadOrderDisplaysCorrectDetails() {
         ArrayList<CartItem> items = presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
@@ -53,6 +65,9 @@ public class OrderPreparationDetailsPresenterTest {
         Assert.assertFalse(items.isEmpty());
     }
 
+    /**
+     * Verifies successful stock verification leading to the "SHIPPED" status.
+     */
     @Test
     public void checkStockOrderSufficientStock_Success() {
         presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
@@ -62,6 +77,9 @@ public class OrderPreparationDetailsPresenterTest {
         Assert.assertEquals(OrderStatusType.SHIPPED, order.getOrderstatus());
     }
 
+    /**
+     * Verifies that insufficient stock results in a "DELAYED" status and appropriate error message.
+     */
     @Test
     public void checkStockOrderInsufficientStockShowsError() {
         presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
@@ -75,7 +93,9 @@ public class OrderPreparationDetailsPresenterTest {
         Assert.assertEquals(OrderStatusType.DELAYED, order.getOrderstatus());
     }
 
-
+    /**
+     * Verifies error handling when attempting to check stock for a null order.
+     */
     @Test
     public void checkStockOrder_NullOrderShowsErrorMessage() {
         presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
@@ -87,22 +107,27 @@ public class OrderPreparationDetailsPresenterTest {
         Assert.assertEquals("Σφάλμα: Δεν δόθηκε παραγγελία (null Order pointer)", viewStub.getErrorMessage());
     }
 
+    /**
+     * Verifies that an employee cannot prepare an order that is not assigned to them.
+     */
     @Test
     public void checkStockOrderOrderNotAssignedShowsErrorMessage() {
         presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
-
 
         prepEmployee.removeOrder(order);
 
         presenter.checkStockOrder();
 
-        Assert.assertEquals("Σφάλμα: Δεν ασας έχει ανατεθεί η συγκεκριμένη παραγγελία", viewStub.getErrorMessage());
+        Assert.assertEquals("Σφάλμα: Δεν σας έχει ανατεθεί η συγκεκριμένη παραγγελία", viewStub.getErrorMessage());
     }
 
+    /**
+     * Verifies that if no deliverers exist in the system, an {@link IllegalStateException} is thrown
+     * during the order shipping phase.
+     */
     @Test(expected = IllegalStateException.class)
     public void checkStockOrderNoDeliverersAvailableThrowsIllegalStateException() {
         presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
-
 
         EmployeeDAOMemory memoryDAO = (EmployeeDAOMemory) EmployeeDAOMemory.getInstance();
         memoryDAO.getEmployees().remove("DEL-401");
@@ -110,7 +135,5 @@ public class OrderPreparationDetailsPresenterTest {
         memoryDAO.getEmployees().remove("DEL-403");
 
         presenter.checkStockOrder();
-
-        Assert.assertEquals("Σφάλμα: Δεν δόθηκε παραγγελία (null Order pointer)", viewStub.getErrorMessage());
     }
 }

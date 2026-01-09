@@ -2,6 +2,12 @@ package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrders
 
 import gr.softeng.team21.domain.Order;
 
+/**
+ * A stub implementation of the {@link AvailableOrdersToAssignView} interface for unit testing.
+ * It provides a simulated UI environment to capture messages, confirmation dialogs,
+ * and list update events during the order assignment process.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class AvailableOrdersToAssignViewStub implements AvailableOrdersToAssignView {
 
     private String messageShown = "";
@@ -23,11 +29,20 @@ public class AvailableOrdersToAssignViewStub implements AvailableOrdersToAssignV
         this.errorShown = message;
     }
 
+    /**
+     * Records the order that was successfully assigned and should be removed from the available list.
+     * @param order The assigned order.
+     */
     @Override
     public void onOrderAssignedSuccess(Order order) {
         this.removedOrder = order;
     }
 
+    /**
+     * Captures the state and message of the confirmation dialog shown to the user.
+     * @param order The order to be assigned.
+     * @param message The confirmation message text.
+     */
     @Override
     public void showConfirmationDialog(Order order, String message) {
         this.confirmationDialogShown = true;
@@ -35,11 +50,15 @@ public class AvailableOrdersToAssignViewStub implements AvailableOrdersToAssignV
         this.confirmationMessage = message;
     }
 
+    /**
+     * Marks that the UI list was requested to be refreshed.
+     */
     @Override
     public void updateList() {
         this.listUpdated = true;
     }
 
+    // --- Getters for Testing verification ---
 
     public String getMessageShown() {
         return messageShown;

@@ -12,21 +12,37 @@ import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.util.Date;
 
+/**
+ * Unit tests for the {@link AuthenticationSystem} class.
+ * This test suite verifies the Singleton integrity, user registration logic,
+ * successful and failed login attempts, and account removal processes.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class AuthenticationSystemTest {
     private AuthenticationSystem authSystem;
     private UserCredentialsDAOMemory repo;
 
+    /**
+     * Sets up the testing environment before each test.
+     * Initializes the credentials repository and the authentication system instance.
+     */
     @Before
     public void setUp() {
         repo = UserCredentialsDAOMemory.getInstance();
         authSystem = AuthenticationSystem.getInstance();
     }
 
+    /**
+     * Verifies that the repository is empty at the start of testing.
+     */
     @Test
     public void initiallyEmptyRepositoryTest(){
         Assertions.assertTrue(repo.getUsersCredentials().isEmpty());
     }
 
+    /**
+     * Verifies that the {@link AuthenticationSystem} correctly implements the Singleton pattern.
+     */
     @Test
     public void getInstanceReturnsSameReferencesTest() {
         AuthenticationSystem sys1 = AuthenticationSystem.getInstance();
@@ -34,6 +50,10 @@ public class AuthenticationSystemTest {
         Assertions.assertSame(sys1, sys2);
     }
 
+    /**
+     * Tests the registration of a new customer.
+     * Validates that all user attributes are correctly persisted in the repository.
+     */
     @Test
     public void registerCustomerStoresUserTest() {
         Date now = new Date();
@@ -55,6 +75,10 @@ public class AuthenticationSystemTest {
         Assertions.assertEquals(now, cust.getRegistdateDate());
     }
 
+    /**
+     * Verifies that the system prevents duplicate registrations with the same username.
+     * Expected behavior is to throw an {@link IllegalArgumentException}.
+     */
     @Test
     public void registerCustomerDuplicateUsernameThrowsExceptionTest() {
         Date now = new Date();
@@ -68,7 +92,9 @@ public class AuthenticationSystemTest {
         });
     }
 
-
+    /**
+     * Tests a successful login operation using valid credentials.
+     */
     @Test
     public void loginSuccessTest() {
         Date now = new Date();
@@ -81,11 +107,19 @@ public class AuthenticationSystemTest {
         Assertions.assertEquals("giannispap", user.getUsername());
     }
 
+    /**
+     * Tests login failure behavior when provided with non-existent credentials.
+     * Expected behavior is to throw a {@link SecurityException}.
+     */
     @Test
     public void loginFailureThrowsExceptionTest() {
         Assertions.assertThrows(SecurityException.class, () -> authSystem.login("unknown", "wrongpass"));
     }
 
+    /**
+     * Tests the removal of a user account.
+     * Validates that after removal, the user can no longer log in.
+     */
     @Test(expected = SecurityException.class)
     public void removeUserTest() {
         Date now = new Date();
@@ -98,14 +132,17 @@ public class AuthenticationSystemTest {
         authSystem.login("giannispap", "pass789");
     }
 
+    /**
+     * Verifies that attempting to remove a user that does not exist throws an exception.
+     */
     @Test
     public void removeNonExistingUserTest(){
         Assertions.assertThrows(NoSuchElementException.class,()->{authSystem.removeUser("giannispap");});
     }
 
-
-
-
+    /**
+     * Cleans up the repositories after each test to ensure test isolation and a clean state.
+     */
     @After
     public void tearDown(){
         repo.clear();

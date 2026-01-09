@@ -23,6 +23,12 @@ import gr.softeng.team21.memorydao.OrderDAOMemory;
 import gr.softeng.team21.view.util.OrderAdapter;
 import gr.softeng.team21.view.util.OrderAdapterType;
 
+/**
+ * Activity that displays a list of unassigned orders to Order Preparation Employees.
+ * Provides the interface for employees to manually pick up orders from the list of newly submitted orders.
+ * Implements the {@link AvailableOrdersToAssignView} interface.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class AvailableOrdersToAssignActivity extends AppCompatActivity implements AvailableOrdersToAssignView {
 
     private AvailableOrdersToAssignPresenter presenter;
@@ -30,6 +36,9 @@ public class AvailableOrdersToAssignActivity extends AppCompatActivity implement
 
     private static final String EMP_ID_EXTRA = "ORDER_PREPARATION_EMPLOYEE_ID";
 
+    /**
+     * Configures the RecyclerView and initializes the Presenter to load available orders.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +70,10 @@ public class AvailableOrdersToAssignActivity extends AppCompatActivity implement
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * {@inheritDoc}
+     * Shows an informative Android {@link AlertDialog}.
+     */
     @Override
     public void showMessage(String message) {
         new AlertDialog.Builder(this)
@@ -71,6 +84,10 @@ public class AvailableOrdersToAssignActivity extends AppCompatActivity implement
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Shows an error {@link AlertDialog} with an alert icon.
+     */
     @Override
     public void showError(String message) {
         new AlertDialog.Builder(this)
@@ -81,6 +98,9 @@ public class AvailableOrdersToAssignActivity extends AppCompatActivity implement
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+      */
     @Override
     public void updateList() {
         if (adapter != null) {
@@ -88,6 +108,10 @@ public class AvailableOrdersToAssignActivity extends AppCompatActivity implement
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * Removes the order from the current adapter to reflect its change in status.
+     */
     @Override
     public void onOrderAssignedSuccess(Order order) {
         if (adapter != null) {
@@ -95,6 +119,11 @@ public class AvailableOrdersToAssignActivity extends AppCompatActivity implement
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * Builds and displays a confirmation dialog with "YES" and "NO" options
+     * about assigning the selected order
+     */
     @Override
     public void showConfirmationDialog(Order order, String message) {
         new AlertDialog.Builder(this)

@@ -10,6 +10,13 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
+/**
+ * Unit tests for {@link DelivererMenuPresenter}.
+ * This suite ensures that the Deliverer's main menu logic functions correctly,
+ * including loading profile data, navigating to task lists, and managing
+ * sensitive account-related operations.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class DelivererMenuPresenterTest {
 
     private DelivererMenuPresenter presenter;
@@ -18,6 +25,10 @@ public class DelivererMenuPresenterTest {
 
     private static final String EMPLOYEE_ID = "DEL-401";
 
+    /**
+     * Sets up the testing environment before each test.
+     * Populates memory DAOs and instantiates the presenter with its dependencies.
+     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
@@ -27,36 +38,62 @@ public class DelivererMenuPresenterTest {
         presenter = new DelivererMenuPresenter(viewStub, employeeDAO);
     }
 
+    /**
+     * Verifies that the presenter correctly retrieves and displays
+     * the Deliverer's name upon view creation.
+     */
     @Test
     public void onViewCreatedShowsCorrectName() {
         presenter.onViewCreated(EMPLOYEE_ID);
         Assert.assertEquals("Νίκος Στάμος", viewStub.getShownName());
     }
 
+    /**
+     * Verifies that the presenter handles an invalid employee ID gracefully
+     * during initialization.
+     */
     @Test
     public void onViewCreated_InvalidIdDoesNothing() {
         presenter.onViewCreated("INVALID_ID");
         Assert.assertEquals("", viewStub.getShownName());
     }
 
+    /**
+     * Tests if selecting the orders list triggers the correct navigation event.
+     */
     @Test
     public void onOrdersListSelectedNavigatesToOrdersList() {
         presenter.onOrdersListSelected(EMPLOYEE_ID);
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigatedOrdersListId());
     }
 
+    /**
+     * Tests if selecting the process account option triggers the correct navigation event.
+     */
     @Test
     public void onProcessAccountSelectedNavigatesToEditData() {
         presenter.onProcessAccountSelected(EMPLOYEE_ID);
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigatedProcessAccountId());
     }
 
+    /**
+     * Verifies that the account deletion flow correctly requests a confirmation
+     * from the user via the UI.
+     */
     @Test
     public void onDeleteAccountSelectedShowsConfirmationDialog() {
         presenter.onDeleteAccountSelected();
         Assert.assertTrue(viewStub.isDeleteConfirmationShown());
     }
 
+    /**
+     * Verifies the successful account deletion process:
+     * 1. Confirms existence of the employee in memory.
+     * 2. Executes deletion and verifies UI feedback and navigation.
+     * 3. Ensures the employee is removed from EmployeeDAO.
+     * 4. Ensures the employee's credentials are wiped (throwing SecurityException).
+     * @throws SecurityException when trying to validate a deleted user (expected).
+     */
     @Test(expected = SecurityException.class)
     public void onDeleteAccountConfirmedSuccessRemovesUserAndNavigates() {
         Assert.assertNotNull(employeeDAO.getEmployee(EMPLOYEE_ID));
@@ -70,9 +107,14 @@ public class DelivererMenuPresenterTest {
 
         Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID));
 
+        // Attempting to validate should now fail as credentials are removed
         UserCredentialsDAOMemory.getInstance().validateAndGetUser("n_stamos", "pass1246");
     }
 
+    /**
+     * Verifies that attempting to confirm deletion for a non-existent ID
+     * results in a proper error message.
+     */
     @Test
     public void onDeleteAccountConfirmedInvalidIdShowsError() {
         presenter.onDeleteAccountConfirmed("INVALID_ID");

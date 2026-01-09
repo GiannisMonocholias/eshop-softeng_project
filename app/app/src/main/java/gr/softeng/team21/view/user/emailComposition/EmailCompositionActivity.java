@@ -16,6 +16,11 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
+/**
+ * Activity providing the UI for drafting and sending internal emails.
+ * Implements {@link EmailCompositionView}
+ * @author Γιάννης Μονοχολιάς
+ */
 public class EmailCompositionActivity extends AppCompatActivity implements EmailCompositionView {
 
     // UI Components
@@ -25,20 +30,22 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
 
     private EmailCompositionPresenter presenter;
 
+    /**
+     * Initializes UI components, instantiates the presenter, and identifies
+     * the sender ID from the calling intent.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_email_composition);
 
-        // Ρύθμιση για Edge-to-Edge εμφάνιση (από το δικό σου template)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.viewEmailCompsition), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // 1. Σύνδεση με τα XML στοιχεία (IDs που μου έδωσες στο XML)
         txtSenderName = findViewById(R.id.txtEmailDetailsSenderName);
         txtSenderEmail = findViewById(R.id.txtEmailDetailsSenderEmail);
         edtRecipient = findViewById(R.id.edtEmailDetailsReceiver);
@@ -46,16 +53,12 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
         edtBody = findViewById(R.id.edtEmailBody);
         btnSend = findViewById(R.id.btnEmailSend);
 
-        // 2. Αρχικοποίηση του Presenter
-        // Περνάμε το View (this) και τα Singletons των DAOs
         presenter = new EmailCompositionPresenter(
                 this,
                 CustomerDAOMemory.getInstance(),
                 EmployeeDAOMemory.getInstance()
         );
 
-        // 3. Λήψη του ID χρήστη από το Intent
-        // Ελέγχουμε όλα τα πιθανά κλειδιά που μπορεί να στείλει το μενού
         String userId = null;
         if (getIntent().hasExtra("CUSTOMER_SERVICE_EMPLOYEE_ID")) {
             userId = getIntent().getStringExtra("CUSTOMER_SERVICE_EMPLOYEE_ID");
@@ -67,52 +70,69 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
             userId = getIntent().getStringExtra("ORDER_PREPARATION_EMPLOYEE_ID");
         }
 
-        // Αν βρήκαμε ID, ενημερώνουμε τον Presenter για να φορτώσει τα στοιχεία
         if (userId != null) {
             presenter.onViewCreated(userId);
         } else {
-            // Αν για κάποιο λόγο ανοίξει η οθόνη χωρίς ID, εμφανίζουμε μήνυμα και κλείνουμε
             Toast.makeText(this, "Σφάλμα: Δεν βρέθηκε ID χρήστη.", Toast.LENGTH_LONG).show();
             finish();
         }
 
-        // 4. Ρύθμιση του κουμπιού Αποστολής
         btnSend.setOnClickListener(v -> presenter.onSendClicked());
     }
 
-    // --- Υλοποίηση των μεθόδων του View Interface ---
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getRecipientEmail() {
         return edtRecipient.getText().toString().trim();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSubject() {
         return edtSubject.getText().toString().trim();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getBody() {
         return edtBody.getText().toString().trim();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSenderDetails(String name, String email) {
         txtSenderName.setText(name);
         txtSenderEmail.setText(email);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showErrorMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void finishActivity() {
         finish();

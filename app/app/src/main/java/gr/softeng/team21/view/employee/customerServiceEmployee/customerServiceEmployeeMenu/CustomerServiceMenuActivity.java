@@ -20,12 +20,23 @@ import gr.softeng.team21.view.user.login.LoginActivity;
 import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListActivity;
 import gr.softeng.team21.view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity;
 
+/**
+ * Main menu activity for the Customer Service Employee.
+ * Handles UI components, click listeners, and navigation via Android Intents.
+ * Implements {@link CustomerServiceMenuView} to update the interface based on Presenter logic.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class CustomerServiceMenuActivity extends AppCompatActivity implements CustomerServiceMenuView {
 
     private CustomerServiceMenuPresenter presenter;
     private static final String EMP_ID_EXTRA = "CUSTOMER_SERVICE_EMPLOYEE_ID";
     private String employeeId;
 
+    /**
+     * Initializes the activity layout, instantiates the presenter, and
+     * attaches listeners to the menu buttons.
+     * @param savedInstanceState The saved state bundle if the activity is re-initialized.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +75,15 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
         });
     }
 
-
+    /** {@inheritDoc} */
     @Override
     public void showEmployeeName(String fullname) {
         ((TextView) findViewById(R.id.txtCustomerServiceEmployeeMenuName)).setText(fullname);
     }
 
+    /** {@inheritDoc}
+     * The employee id is passed to the OrderStatusActivity as Intent extra
+     * */
     @Override
     public void navigateToOrderStatus(String employeeId){
         Intent intent = new Intent(CustomerServiceMenuActivity.this, OrderStatusActivity.class);
@@ -77,6 +91,9 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
         startActivity(intent);
     }
 
+    /** {@inheritDoc}
+     * The employee id is passed to the CustomerServiceEmployeeEmailListActivity as Intent extra
+     * */
     @Override
     public void navigateToEmailInbox(String employeeId){
         Intent intent = new Intent(CustomerServiceMenuActivity.this, CustomerServiceEmployeeEmailListActivity.class);
@@ -84,7 +101,10 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
         startActivity(intent);
     }
 
-
+    /**
+     * {@inheritDoc}
+     * Builds and displays an {@link AlertDialog} to ensure user intent before account deletion.
+     */
     @Override
     public void showDeleteAccountConfirmation() {
         new AlertDialog.Builder(this)
@@ -101,6 +121,11 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Uses Intent flags to clear the activity stack, ensuring the user cannot
+     * return to the menu via the back button after logging out.
+     */
     @Override
     public void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -111,6 +136,10 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
         finish();
     }
 
+    /** {@inheritDoc}
+     * It navigates user to the UserEditDataActivity via Intent.
+     * The user id is passed to the UserEditDataActivity as Intent extra
+     * */
     @Override
     public void navigateToProcessAccount(String employeeId){
         Intent intent = new Intent(this, UserEditDataActivity.class);
@@ -120,7 +149,7 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
         startActivity(intent);
     }
 
-
+    /** {@inheritDoc} */
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

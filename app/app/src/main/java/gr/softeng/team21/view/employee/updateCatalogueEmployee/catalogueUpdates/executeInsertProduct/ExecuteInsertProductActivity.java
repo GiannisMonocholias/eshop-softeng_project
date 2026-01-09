@@ -19,6 +19,13 @@ import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
+/**
+ * Activity providing the UI form for registering a new product into the catalogue.
+ * Captures user input via TextInputEditText fields and delegates the logic
+ * to the {@link ExecuteInsertProductPresenter}.
+ * implements {@link ExecuteInsertProductView}
+ * @author Γιάννης Μονοχολιάς
+ */
 public class ExecuteInsertProductActivity extends AppCompatActivity implements ExecuteInsertProductView {
 
     private ExecuteInsertProductPresenter presenter;
@@ -30,6 +37,10 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
     private static final String EMP_ID_EXTRA = "UPDATE_CATALOGUE_EMPLOYEE_ID";
     private static final String REQ_ID_EXTRA = "REQUEST_ID";
 
+    /**
+     * Initializes the Activity, binds UI components to XML IDs, and
+     * initiates the request detail loading process.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +69,9 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
         btnConfirm.setOnClickListener(v -> presenter.onConfirmInsert());
     }
 
+    /**
+     * Binds class members to layout views.
+     * */
     private void initializeViews() {
         txtRequestDescription = findViewById(R.id.txtexecuteInsertProductRequestDescription);
 
@@ -69,32 +83,52 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
         btnConfirm = findViewById(R.id.btnexecuteInsertProductInsertConfirm);
     }
 
+    // Getters for Presenter data retrieval
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductCode() {
         return edtCode.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductName() {
         return edtName.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductPrice() {
         return edtPrice.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductDescription() {
         return edtDesc.getText().toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setRequestDescription(String description) {
         txtRequestDescription.setText(description);
     }
 
+    /**
+     * {@inheritDoc}
+     * Sets an error message on the corresponding input field and requests focus for it.
+     */
     @Override
     public void showInputError(String field, String message) {
         switch (field) {
@@ -113,6 +147,9 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) {
         new AlertDialog.Builder(this)
@@ -129,6 +166,9 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
                 .show();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         new AlertDialog.Builder(this)
