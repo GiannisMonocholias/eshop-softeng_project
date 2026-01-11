@@ -1,7 +1,7 @@
 package gr.softeng.team21.view.admin.createEmp;
 
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.EmailAddress;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.domain.EmployeeState;

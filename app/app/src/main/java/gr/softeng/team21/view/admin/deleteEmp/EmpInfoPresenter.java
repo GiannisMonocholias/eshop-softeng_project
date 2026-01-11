@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 /**
  * Η EmpInfoPresenter βρίσκει με βάση τα δεδομένα που παίρνει απο την DeleteEmployeeActivity
@@ -38,6 +39,7 @@ public class EmpInfoPresenter {
         }
 
         if(toDelete != null){
+            UserCredentialsDAOMemory.getInstance().removeUser(toDelete.getUsername());
             employeeDAOMemory.removeEmployee(toDelete);
         }
 

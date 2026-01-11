@@ -11,21 +11,54 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
+
         <activity
-            android:name=".view.admin.changeQuantity.ChangeQuantityProductsActivity"
+            android:name=".view.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".view.user.login.LoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.customer.homePage.CustomerHomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".view.admin.requests.AdminRequestsActivity"
+            android:name=".view.customer.FindProduct.CustomerFindProductActivity"
             android:exported="false" />
         <activity
-            android:name=".view.admin.requests.NewRequestActivity"
+            android:name=".view.customer.ShoppingCart.CustomerShoppingCartActivity"
             android:exported="false" />
         <activity
-            android:name=".view.admin.deleteEmp.EmpInfo"
-            android:exported="false" /> <!-- Remote / Existing Activities -->
+            android:name=".view.customer.Payment.CustomerPaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.customer.EmailList.CustomerEmailListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListActivity"
+            android:exported="false" />
+
         <activity
             android:name=".view.product.ProductDetailsActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.user.emailComposition.EmailCompositionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.contact.emailDetails.EmailDetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.user.EditData.UserEditDataActivity"
+            android:exported="false" />
+
         <activity
             android:name=".view.contact.editdata.Phone.PhoneActivity"
             android:exported="false" />
@@ -41,27 +74,10 @@
         <activity
             android:name=".view.contact.editdata.Address.AddressActivity"
             android:exported="false" />
-        <activity
-            android:name=".view.user.EditData.UserEditDataActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.customer.homePage.CustomerHomePageActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".view.customer.FindProduct.CustomerFindProductActivity"
-            android:exported="true" />
-        <activity
-            android:name=".view.MainActivity"
-            android:exported="true" /> <!-- Admin / Custom Activities -->
         <activity
             android:name=".view.admin.AdminPanelActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.admin.data.AdminDataActivity"
             android:exported="false" />
@@ -70,10 +86,51 @@
             android:exported="false" />
         <activity
             android:name=".view.admin.deleteEmp.DeleteEmployeeActivity"
-            android:exported="true" /> <!-- Delete Employee Activity Layout Example -->
+            android:exported="false" />
+        <activity
+            android:name=".view.admin.deleteEmp.EmpInfo"
+            android:exported="false" />
+        <activity
+            android:name=".view.admin.requests.AdminRequestsActivity"
+            android:exported="false" />
         <activity
             android:name=".view.admin.requests.RequestsActivity"
             android:exported="false" />
-    </application>
+        <activity
+            android:name=".view.admin.requests.NewRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.admin.changeQuantity.ChangeQuantityProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity"
+            android:exported="false" />
 
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu.OrderPreparationEmployeeMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.assignedOrdersToPrepare.AssignedOrdersToPrepareActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.employee.deliverer.delivererMenu.DelivererMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.employee.deliverer.delivererOrdersList.DelivererOrdersListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity"
+            android:exported="false" />
+    </application>
 </manifest>

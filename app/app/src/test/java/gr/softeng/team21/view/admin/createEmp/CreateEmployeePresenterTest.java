@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import gr.softeng.team21.domain.Address;
-import gr.softeng.team21.domain.Date;
-import gr.softeng.team21.domain.EmailAddress;
+import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.domain.EmployeeState;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;

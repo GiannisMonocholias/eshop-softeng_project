@@ -2,7 +2,7 @@ package gr.softeng.team21.view.admin.requests;
 
 import gr.softeng.team21.domain.AllowedRequest;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
-import gr.softeng.team21.domain.Date;
+import gr.softeng.team21.util.Date;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;

@@ -1,8 +1,8 @@
 package gr.softeng.team21.view.admin.data;
 
-import gr.softeng.team21.domain.Address;
+import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.domain.Admin;
-import gr.softeng.team21.domain.EmailAddress;
+import gr.softeng.team21.contact.EmailAddress;
 
 /**
  * Η AdminDataPresenter έχει ένα αντικείμενο Admin το οποίο αντιστοιχεί στον διαχειριστή

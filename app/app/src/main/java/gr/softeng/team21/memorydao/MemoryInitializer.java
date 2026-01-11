@@ -8,6 +8,7 @@ import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.domain.Admin;
 import gr.softeng.team21.util.Money;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.domain.AllowedRequest;
@@ -271,6 +272,19 @@ public class MemoryInitializer {
         getUserCredentialsDAO().addUser(del3);
         //=====================================================
         //END: INITIALIZE EMPLOYEES
+        //=====================================================
+
+
+        //=====================================================
+        //START: INITIALIZE ADMIN
+        //=====================================================
+
+        EmailAddress emailAdmin = new EmailAddress("geopap@team21.gr");
+        Admin admin = Admin.getInstance("g_papadakis" , "Γεώργιος" , "ppd246" , "Παπαδάκης" , "6908381070" , emailAdmin , 2000);
+        getUserCredentialsDAO().addUser(admin);
+
+        //=====================================================
+        //END: INITIALIZE ADMIN
         //=====================================================
 
 

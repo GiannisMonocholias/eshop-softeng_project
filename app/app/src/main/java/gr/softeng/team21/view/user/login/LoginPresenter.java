@@ -1,5 +1,6 @@
 package gr.softeng.team21.view.user.login;
 
+import gr.softeng.team21.domain.Admin;
 import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
@@ -57,7 +58,11 @@ public class LoginPresenter {
                 usertype = UserType.ORDER_PREPARATION_EMPLOYEE;
             } else if (user instanceof UpdateCatalogueEmployee) {
                 usertype = UserType.UPDATE_CATALOGUE_EMPLOYEE;
+            } else if (user instanceof Admin){
+                usertype = UserType.ADMIN;
             }
+
+
 
             if (usertype != null) {
                 view.navigateUserToHomePage(usertype, user);

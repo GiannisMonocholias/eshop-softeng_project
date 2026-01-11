@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.EmailAddress;
+import gr.softeng.team21.contact.EmailAddress;
 
 /**
  * Activity responsible for creating a new employee.

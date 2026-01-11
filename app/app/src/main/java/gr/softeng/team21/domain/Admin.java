@@ -8,12 +8,8 @@ import gr.softeng.team21.util.Date;
 
 /**
  * Η κλάση αυτή αναπαριστά το ανν διαχειριστή του καταστήματος.
- *
  * Επεκτείνει την κλάση User αφού κάθε άτομο που χρησιμοποιεί την εφαρμογή είναι ένας user.
- *
- *
  */
-
 public class Admin extends User {
 
     private static Admin instance;
@@ -39,8 +35,6 @@ public class Admin extends User {
 
 
     public static Admin getInstance(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, int salary){
-
-        // Δημιουργία ΜΟΝΟ αν δεν υπάρχει ήδη.
         if(instance == null){
             instance = new Admin(username, firstname, password, lastname, phoneNumber, emailaddress, salary);
         }
@@ -129,7 +123,6 @@ public class Admin extends User {
      * Η deleteEmployee δέχεται ένα αντικείμενο υπαλλήλου τον οποίο μέσω αυτου εντοπίζει
      * και διαγράφει από τη λίστα.
      */
-
     public void deleteEmployee(Employee emp){
         rep.removeEmployee(emp);
     }
