@@ -1,0 +1,50 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Όνομα προϊόντος -->
+        <TextView
+            android:id="@+id/txtProductName"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#009688"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- Κωδικός -->
+        <TextView
+            android:id="@+id/txtProductCode"
+            android:textSize="14sp"
+            android:textColor="#666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- Διαθέσιμη ποσότητα -->
+        <TextView
+            android:layout_marginTop="12dp"
+            android:text="Διαθέσιμη ποσότητα"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/edtAvailableQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Πληκτρολόγησε ποσότητα"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

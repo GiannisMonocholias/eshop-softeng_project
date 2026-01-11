@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>483</x>
+      <y>203</y>
+      <w>231</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>NewRequestPresenter
+--
+- int reqId
+--
++ createRequest(String choice , String description , 
+String productName , String productId): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>511</x>
+      <y>350</y>
+      <w>161</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>CatalogueUpdateRequest
+--
+- requestId: int
+- submissionDate: Date {readOnly}
+- dateModified: Date 
+- type: AllowedRequest
+- product: ProductType
+- updateDescription: String
+- executed: boolean
+fontsize=11
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>581</x>
+      <y>266</y>
+      <w>98</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+r1= - updateRequest</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>749</x>
+      <y>56</y>
+      <w>315</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+updateRequestDAO
+--
++ getUpdateRequest(int requestId): CatalogueUpdateRequest
++ addUpdateRequest(CatalogueUpdateRequest request): void
++ deleteUpdateRequest(CatalogueUpdateRequest request): void
++ getUpdateRequests(): HashMap&lt;Integer,CatalogueUpdateRequest&gt;
++ clear(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>140</y>
+      <w>385</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+r1= - updateRequestDAOMemory</panel_attributes>
+    <additional_attributes>340.0;10.0;340.0;50.0;10.0;50.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>889</x>
+      <y>210</y>
+      <w>266</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+ProductTypeDAO
+--
++ getProduct(String productCode): ProductType
++ addProductType(ProductType product):void
++ deleteProductType(ProductType product): void
++ processProduct(ProductType updatedProduct): void
++ getProducts (): HashMap&lt;String, ProductType&gt;
++ clear(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>707</x>
+      <y>217</y>
+      <w>196</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+r1= - productTypeDAOMemory</panel_attributes>
+    <additional_attributes>260.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>77</x>
+      <y>189</y>
+      <w>224</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>NewRequestActivity
+--
+- adapter : ArrayAdapter&lt;String&gt;
+--
+# onCreate(Bundle savedInstanceState) : void
++ createRequest() : void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>203</y>
+      <w>203</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+r1= - presenter </panel_attributes>
+    <additional_attributes>270.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+</diagram>
