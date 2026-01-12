@@ -1,0 +1,34 @@
+<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>144</x><y>63</y><w>189</w><h>27</h></coordinates><panel_attributes>AvailableOrdersToAssignPresenter</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>225</x><y>81</y><w>27</w><h>603</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;650;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>225</x><y>108</y><w>18</w><h>387</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>63</y><w>189</w><h>27</h></coordinates><panel_attributes>this.employeeDAO: EmployeeDAO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>108</y><w>243</w><h>36</h></coordinates><panel_attributes>lt=&lt;-
+getEmployee(employeeId)
+fontsize=10
+</panel_attributes><additional_attributes>250;20;10;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>459</x><y>108</y><w>18</w><h>54</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>459</x><y>81</y><w>27</w><h>603</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;650;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>135</y><w>243</w><h>36</h></coordinates><panel_attributes>lt=&lt;.
+loggedInEmployee
+fontsize=10
+</panel_attributes><additional_attributes>10;20;250;20</additional_attributes></element><element><id>Relation</id><coordinates><x>9</x><y>99</y><w>234</w><h>36</h></coordinates><panel_attributes>lt=-&gt;
+loadAvailableOrders(String employeeId)
+fontsize=10
+</panel_attributes><additional_attributes>10;20;240;20</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>135</x><y>198</y><w>603</w><h>252</h></coordinates><panel_attributes>loop
+--
+[for each order]
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLFrame</id><coordinates><x>180</x><y>306</y><w>522</w><h>126</h></coordinates><panel_attributes>opt
+--
+[cur_order !=  null]
+fontsize=10
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>603</x><y>63</y><w>171</w><h>27</h></coordinates><panel_attributes>this.orderDAO: OrderDAO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>675</x><y>81</y><w>27</w><h>603</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;650;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>675</x><y>252</y><w>18</w><h>36</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>243</y><w>459</w><h>36</h></coordinates><panel_attributes>lt=&lt;-
+getOrders().get(ordId)
+fontsize=10
+</panel_attributes><additional_attributes>490;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>261</y><w>468</w><h>36</h></coordinates><panel_attributes>lt=&lt;.
+cur_order
+fontsize=10
+</panel_attributes><additional_attributes>10;20;500;20</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>198</x><y>342</y><w>459</w><h>72</h></coordinates><panel_attributes>opt
+--
+[cur_order.getOrderstatus() == OrderStatusType.NEW]
+fontsize=10
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>504</x><y>162</y><w>153</w><h>27</h></coordinates><panel_attributes>newOrders: ArrayList&lt;Order&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>162</y><w>288</w><h>36</h></coordinates><panel_attributes>lt=.&gt;
+new</panel_attributes><additional_attributes>10;20;300;20</additional_attributes></element><element><id>Relation</id><coordinates><x>585</x><y>180</y><w>27</w><h>513</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;550</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>585</x><y>378</y><w>18</w><h>27</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>234</x><y>378</y><w>369</w><h>36</h></coordinates><panel_attributes>lt=&lt;-
+add(cur_order)
+fontsize=10
+</panel_attributes><additional_attributes>390;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>72</x><y>468</y><w>171</w><h>36</h></coordinates><panel_attributes>lt=&lt;.
+newOrders
+fontsize=10
+</panel_attributes><additional_attributes>10;20;170;20</additional_attributes></element></diagram>

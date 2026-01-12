@@ -1,0 +1,79 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><element><id>UMLClass</id><coordinates><x>104</x><y>248</y><w>240</w><h>168</h></coordinates><panel_attributes>ProductDetailsActivity
+--
+
+--
+# onCreate(Bundle savedInstanceState) : void
+-addToCart():void
+-plus():void
+-minus():void
+-etImageResIdByCode(String code):int
++ showMessage(String msg) : void
++ showQuantity(int quantity) : void
++showProductDetails(String name,   String code, 
+ String price, String description, String imgCode):void
++ showAddToCartSuccess() : void
++goToCart():void
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>128</y><w>128</w><h>40</h></coordinates><panel_attributes>AppCompatActivity
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>256</x><y>96</y><w>24</w><h>168</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element><element><id>UMLClass</id><coordinates><x>168</x><y>0</y><w>264</w><h>104</h></coordinates><panel_attributes>&lt;&lt; Interface &gt;&gt;
+ProductDetailsView
+--
++ showMessage(String msg) : void
++ showQuantity(int quantity) : void
++showProductDetails(String name,   String code, 
+ String price, String description, String imgCode):void
++ showAddToCartSuccess() : void
++goToCart():void
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>336</x><y>320</y><w>192</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - presenter</panel_attributes><additional_attributes>10;20;220;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>512</x><y>288</y><w>264</w><h>104</h></coordinates><panel_attributes>CustomerHomePagePresenter
+--
+- currentQuantity : int = 1
+--
++plusClicked():void
++minusClicked():void
++addToCartClicked():void
++openShoppingCartClicked():void
++loadProduct():void
+
+fontsize=12</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>424</x><y>40</y><w>232</w><h>264</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - view</panel_attributes><additional_attributes>260;310;260;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>40</x><y>160</y><w>96</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;100;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>192</x><y>536</y><w>224</w><h>184</h></coordinates><panel_attributes>Customer
+--
+- customer_id:String 
+-registdate:Date 
+-shoppingCart:ShoppingCart
+--
++findProduct (HashMap&lt;String, ProductType&gt;,
+String):ProductType
++addItemToCart (ProductType,int):void
++removeItemFromCart(ProductType,
+int):void
++Checkout ( ):Order
++selectPaymentType (PaymentType, 
+String, Order):void
++Confirm (String, Order):void
++remove():void
+
+
+fontsize=12</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>408</y><w>72</w><h>144</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - customer</panel_attributes><additional_attributes>10;10;10;160</additional_attributes></element><element><id>Relation</id><coordinates><x>408</x><y>384</y><w>248</w><h>240</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - customer</panel_attributes><additional_attributes>280;10;280;270;10;270</additional_attributes></element><element><id>Relation</id><coordinates><x>768</x><y>328</y><w>192</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - foundProduct</panel_attributes><additional_attributes>10;20;220;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>944</x><y>288</y><w>120</w><h>88</h></coordinates><panel_attributes>ProductType
+--
+- productname: String 
+- description: String 
+- price: Money
+- productcode: String 
+--
++ toString() : String
+
+
+</panel_attributes><additional_attributes></additional_attributes></element></diagram>
