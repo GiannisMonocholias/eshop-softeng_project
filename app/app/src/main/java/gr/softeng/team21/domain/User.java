@@ -11,7 +11,7 @@ import gr.softeng.team21.util.Date;
  * An abstract base class representing a generic user in the system.
  * It provides common profile attributes (credentials, contact details) and
  * includes a built-in messaging mechanism for communication between users.
- * @author Γιάννης Μονοχολιάς
+ * @author PAVLOS GRATSANIS,Γιάννης Μονοχολιάς
  */
 public abstract class User {
     protected String username;

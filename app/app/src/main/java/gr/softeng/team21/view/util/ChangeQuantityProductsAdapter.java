@@ -50,6 +50,7 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
             if (!hasFocus) {
                 String value = holder.edtAvailableQuantity.getText().toString();
                 if (!value.isEmpty()) {
+
                     ProductsWareHouseDAOMemory.getInstance().increaseProductStock(product , Integer.parseInt(value));
                 }
             }
