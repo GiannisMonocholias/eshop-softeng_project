@@ -6,10 +6,7 @@ import gr.softeng.team21.util.Money;
 
 /**
  * Represents a shopping cart that contains cart items for a customer calculates the total cost.
- *
  * @author PAVLOS GRATSANIS
- * @version 1.0
- * AM: 3230036
  */
 public class ShoppingCart {
 
@@ -38,14 +35,15 @@ public class ShoppingCart {
         }
     }
 
-
+    /**
+     * Default constructor
+     */
     public ShoppingCart() {
     }
 
     /**
      Creates and returns a copy of this shopping cart,
      specifically the products are copied to other shopping carts
-     *
      * @return a copy of the shopping cart
      */
     public ShoppingCart copy() {
@@ -57,13 +55,16 @@ public class ShoppingCart {
         return newCart;
     }
 
+    /**
+     * Returns the list of items in the shopping cart.
+     * @return the list of cart items
+     */
     public ArrayList<CartItem> getItems() {
         return items;
     }
 
     /**
      * Adds a cart item to the shopping cart.
-     *
      * @param item the cart item to add
      */
     public void addItem(CartItem item) {
@@ -72,7 +73,6 @@ public class ShoppingCart {
 
     /**
      * Removes a cart item from the shopping cart.
-     *
      * @param item the cart item to remove
      */
     public void removeItem(CartItem item) {
@@ -81,7 +81,7 @@ public class ShoppingCart {
 
     /**
      * Calculates and returns the total cost of the shopping cart.
-     *
+
      * @return the total cost
      */
     public Money getTotalCost() {
@@ -98,18 +98,34 @@ public class ShoppingCart {
         return totalcost;
     }
 
+    /**
+     * Returns the customer who owns this shopping cart.
+     * @return the customer
+     */
     public Customer getCustomer() {
         return customer;
     }
 
+    /**
+     * Sets the customer who owns this shopping cart.
+     * @param customer the new customer
+     */
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
+    /**
+     * Returns the order associated with this shopping cart.
+     * @return the order
+     */
     public Order getOrder() {
         return order;
     }
 
+    /**
+     * Sets the order associated with this shopping cart.
+     * @param order the new order
+     */
     public void setOrder(Order order) {
         this.order = order;
     }

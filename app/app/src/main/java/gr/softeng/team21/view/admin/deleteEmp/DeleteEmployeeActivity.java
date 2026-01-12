@@ -65,7 +65,7 @@ public class DeleteEmployeeActivity extends AppCompatActivity implements DeleteE
 
         if (employee != null){
 
-            Intent intent = new Intent(DeleteEmployeeActivity.this , EmpInfo.class);
+            Intent intent = new Intent(DeleteEmployeeActivity.this , EmpInfoActivity.class);
             intent.putExtra("empName" , employee.getFirstname());
             intent.putExtra("empSurname" , employee.getLastname());
             intent.putExtra("empPhone" , employee.getPhonenumber());

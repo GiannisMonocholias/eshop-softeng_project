@@ -13,7 +13,7 @@ import gr.softeng.team21.domain.ProductType;
  * This suite verifies the persistence logic for product definitions within the
  * catalogue, covering operations such as addition, retrieval, deletion, and
  * modification of product metadata in memory.
- * @author Γιάννης Μονοχολιάς
+ * @author PAVLOS GRRATSANIS
  */
 public class ProductTypeDAOMemoryTest {
     private ProductTypeDAOMemory typesRepository;

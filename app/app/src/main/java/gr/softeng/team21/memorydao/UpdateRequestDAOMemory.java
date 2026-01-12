@@ -1,5 +1,4 @@
 package gr.softeng.team21.memorydao;
-
 import java.util.HashMap;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;

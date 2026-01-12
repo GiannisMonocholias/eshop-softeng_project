@@ -45,7 +45,7 @@ public class CustomerEmailListPresenterTest {
         }
     @Test
     public void onCreateNewMsgSelectedNavigatesWithCorrectId() {
-        presenter.onCreateNewMsgSelected("CUST-500");
+        presenter.onCreateNewMsgSelectedClicked("CUST-500");
 
         Assert.assertEquals(1, view.getCreateNewMsgCount());
         Assert.assertEquals(customer.getCustomer_id(), view.getPassedCustomerId());

@@ -17,7 +17,7 @@ import gr.softeng.team21.domain.TestHelper;
  * Unit tests for the {@link CustomerDAOMemory} class.
  * This suite verifies the in-memory persistence logic for customer entities,
  * ensuring correct CRUD operations and handling of edge cases like duplicate or null entries.
- * @author Γιάννης Μονοχολιάς
+ * @author PAVLOS GRATSANIS
  */
 public class CustomerDAOMemoryTest {
 

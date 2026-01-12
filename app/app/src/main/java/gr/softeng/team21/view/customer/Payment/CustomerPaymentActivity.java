@@ -75,8 +75,8 @@ public class CustomerPaymentActivity extends AppCompatActivity implements Custom
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void showMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 
     }
 

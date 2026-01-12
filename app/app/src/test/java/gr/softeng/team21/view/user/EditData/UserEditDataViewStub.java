@@ -1,6 +1,4 @@
-package gr.softeng.team21.view.user;
-
-import gr.softeng.team21.view.user.EditData.UserEditDataView;
+package gr.softeng.team21.view.user.EditData;
 
 public class UserEditDataViewStub implements UserEditDataView {
     private int UsernameCount = 0;

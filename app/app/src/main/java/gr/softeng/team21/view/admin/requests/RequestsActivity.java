@@ -21,7 +21,6 @@ import gr.softeng.team21.view.admin.AdminPanelActivity;
 
 public class RequestsActivity extends AppCompatActivity {
 
-    RequestsPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +28,6 @@ public class RequestsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_requests);
 
-        presenter = new RequestsPresenter();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

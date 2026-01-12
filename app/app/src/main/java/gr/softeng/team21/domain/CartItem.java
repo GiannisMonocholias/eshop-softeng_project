@@ -1,13 +1,12 @@
 package gr.softeng.team21.domain;
 import gr.softeng.team21.util.Money;
+
 /**
  * Represents an item in the shopping cart.
  * Each CartItem corresponds to a specific product type
  * and a quantity, and maintains a subtotal amount.
  *
  * @author PAVLOS GRATSANIS
- * @version 1.0
- * AM: 3230036
  */
 public class CartItem {
 
@@ -47,13 +46,16 @@ public class CartItem {
         this.productType = productType;
     }
 
-
+    /**
+     * Returns the quantity of the product.
+     * @return the quantity
+     */
     public int getQuantity() {
         return quantity;
     }
 
     /**
-     * Sets the quantity of the product and recalculates the subtotal.
+     * Sets the quantity of the product and calculates again the subtotal.
      *
      * @param quantity the new quantity
      */
@@ -69,26 +71,43 @@ public class CartItem {
         this.subtotal_amount = productType.getPrice().multiply(quantity);
     }
 
-
+    /**
+     * Returns the subtotal amount for this cart item.
+     * @return the subtotal amount
+     */
     public Money getSubtotal_amount() {
         return subtotal_amount;
     }
 
-
+    /**
+     * Returns the unique ID of the cart item.
+     * @return the cart item ID
+     */
     public int getId() {
         return id;
     }
 
-
+    /**
+     * Sets the unique ID of the cart item.
+     * @param id the new cart item ID
+     */
     public void setId(int id) {
         this.id = id;
     }
 
-
+    /**
+     * Returns the product type associated with this cart item.
+     * @return the product type
+     */
     public ProductType getProductType() {
         return productType;
     }
 
+    /**
+     * Returns a string representation of the cart item.
+     * The string includes the product name, the quantity and the subtotal amount.
+     * @return a formatted string representing the cart item
+     */
     @Override
     public String toString() {
         String productName = productType.getProductname();

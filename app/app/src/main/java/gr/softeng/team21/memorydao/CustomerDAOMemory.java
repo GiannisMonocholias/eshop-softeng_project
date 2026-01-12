@@ -8,7 +8,7 @@ import gr.softeng.team21.domain.Customer;
  * In-memory implementation of the {@link CustomerDAO} interface.
  * This class provides a centralized repository for customer data,
  * utilizing the Singleton pattern to ensure a single global point of access.
- * @author Γιάννης Μονοχολιάς
+ * @author PAVLOS GRATSANIS
  */
 public class CustomerDAOMemory implements CustomerDAO {
 

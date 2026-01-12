@@ -27,7 +27,6 @@ import gr.softeng.team21.view.admin.requests.RequestsActivity;
 public class AdminPanelActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

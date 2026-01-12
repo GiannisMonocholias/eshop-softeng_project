@@ -1,13 +1,11 @@
-package gr.softeng.team21.view.user;
+package gr.softeng.team21.view.user.EditData;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import gr.softeng.team21.view.user.EditData.UserEditDataPresenter;
-
 public class UserEditDataPresenterTest {
-private  UserEditDataViewStub view;
+private UserEditDataViewStub view;
 private UserEditDataPresenter presenter;
     @Before
     public void setUp() throws Exception {
