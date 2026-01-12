@@ -13,12 +13,23 @@ import gr.softeng.team21.domain.ShoppingCart;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 
+/**
+ * Unit tests for the {@link CustomerPaymentPresenter} class.
+ * These tests verify the logic for selecting payment methods (Cash/Card), confirming/cancelling orders,
+ * displaying totals and shipping details, and handling edge cases.
+ * @author PAVLOS GRATSANIS
+ */
 public class CustomerPaymentPresenterTest {
     private CustomerPaymentPresenter presenter;
     private CustomerPaymentViewStub view;
     private Customer customer;
     private boolean payWithCash;
 
+    /**
+     * Sets up the test environment before each test case.
+     *Initializes in-memory data, a view stub and the presenter, retrieves a test customer
+     *  and sets up a cart with one product.
+     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
@@ -31,16 +42,25 @@ public class CustomerPaymentPresenterTest {
         payWithCash = true;
     }
 
+    /**
+     * Test the payment method selection logic.
+     * Checks if selecting Cash shows the confirmation dialog with the correct amount,
+     * and if selecting Card navigates to the card payment screen.
+     */
     @Test
     public void paymentClicked() {
         presenter.paymentClicked(payWithCash);
         Assert.assertEquals(0, view.getCardPaymentCount());
         Assert.assertEquals(new BigDecimal("679.0"), view.getConfirmationAmount().getAmount());
+
         payWithCash = false;
         presenter.paymentClicked(payWithCash);
         Assert.assertEquals(1, view.getCardPaymentCount());
     }
 
+    /**
+     * Test that confirming the order finalizes it and navigates to the home page.
+     */
     @Test
     public void confirmClicked() {
         presenter.paymentClicked(payWithCash);
@@ -49,6 +69,9 @@ public class CustomerPaymentPresenterTest {
         Assert.assertEquals(1, view.getHomePageCount());
     }
 
+    /**
+     * Test that cancelling the order stops the process and navigates to the home page.
+     */
     @Test
     public void cancelClicked() {
         presenter.paymentClicked(payWithCash);
@@ -58,6 +81,9 @@ public class CustomerPaymentPresenterTest {
 
     }
 
+    /**
+     * Test that the total amount is correctly passed to the view for display.
+     */
     @Test
     public void setpaymentClicked() {
         String amount = "1000 €";
@@ -65,6 +91,9 @@ public class CustomerPaymentPresenterTest {
         Assert.assertEquals(amount, view.getTotalAmount());
     }
 
+    /**
+     * Test that shipping details (name, phone) are correctly loaded and displayed in the view.
+     */
     @Test
     public void setShippingDetails() {
         Address addr2 = new Address("Τσιμισκή", "42", "Θεσσαλονίκη", "Ελλάδα", "54623");
@@ -74,6 +103,10 @@ public class CustomerPaymentPresenterTest {
         //  Assert.assertEquals(addr2, view.getShippingAddress());
     }
 
+    /**
+     * Test the presenter's behavior with null arguments or confirming/cancelling without an active order,
+     * attempting payment with a null shopping cart.
+     */
     @Test
     public void testWithNullArgumnets() {
         presenter.ConfirmClicked();
@@ -86,6 +119,4 @@ public class CustomerPaymentPresenterTest {
         presenter.paymentClicked(true);
         Assert.assertEquals("Το καλάθι είναι άδειο!", view.getMessage());
     }
-
-
 }
