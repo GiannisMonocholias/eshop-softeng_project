@@ -11,6 +11,8 @@ import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Admin;
 import gr.softeng.team21.util.Money;
 import gr.softeng.team21.util.Date;
+import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.domain.Admin;
 import gr.softeng.team21.domain.AllowedRequest;
 import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.domain.CartItem;
@@ -19,7 +21,6 @@ import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
 import gr.softeng.team21.domain.Deliverer;
 import gr.softeng.team21.contact.EmailAddress;
-import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.domain.EmployeeState;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
@@ -274,14 +275,24 @@ public class MemoryInitializer {
         //END: INITIALIZE EMPLOYEES
         //=====================================================
 
-
         //=====================================================
         //START: INITIALIZE ADMIN
         //=====================================================
 
         EmailAddress emailAdmin = new EmailAddress("geopap@team21.gr");
-        Admin admin = Admin.getInstance("g_papadakis" , "Γεώργιος" , "ppd246" , "Παπαδάκης" , "6908381070" , emailAdmin , 2000);
-        getUserCredentialsDAO().addUser(admin);
+        Admin admin = new Admin("g_papadakis" , "Γεώργιος" , "ppd246" , "Παπαδάκης" , "6908381070" , emailAdmin , 2000);
+
+        //=====================================================
+        //END: INITIALIZE ADMIN
+        //=====================================================
+
+        //=====================================================
+        //START: INITIALIZE ADMIN
+        //=====================================================
+
+        EmailAddress email_Admin = new EmailAddress("geopap@team21.gr");
+        Admin ad = Admin.getInstance("g_papadakis" , "Γεώργιος" , "ppd246" , "Παπαδάκης" , "6908381070" , email_Admin , 2000);
+        getUserCredentialsDAO().addUser(ad);
 
         //=====================================================
         //END: INITIALIZE ADMIN
@@ -362,6 +373,11 @@ public class MemoryInitializer {
 
         ProductType accessory4 = new ProductType("iPad Air 5th Gen", "Tablet με επεξεργαστή M1 και οθόνη Liquid Retina.", new Money(BigDecimal.valueOf(679.00), "€"), "TECH-020");
         products.addProductType(accessory4);
+
+        ProductType applewatch = new ProductType("AppleWatch SE 44mm" , "Έξυπνο ρολοι με λειτουργικό iOS" , new Money(BigDecimal.valueOf(299.00) , "€") , "TECH-021");
+
+        ProductType airTag = new ProductType("Apple AirTag" , "Tag για πανεύκολο εντοπισμό αντικειμένων" , new Money(BigDecimal.valueOf(29.00) , "€") , "TECH-022");
+
 
         //=====================================================
         //END: INITIALIZE PRODUCT TYPES

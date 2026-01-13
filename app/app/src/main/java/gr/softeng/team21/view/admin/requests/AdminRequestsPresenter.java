@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
+
 public class AdminRequestsPresenter {
 
     private AdminRequestsView view;
