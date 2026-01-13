@@ -13,12 +13,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 
+/**
+ * Activity responsible for editing the user's address.
+ * Implements {@link AddressView} and manages the UI elements for address input, sush as button and editText.
+ * @author PAVLOS GRATSANIS
+ */
 public class AddressActivity extends AppCompatActivity implements AddressView {
 
     private EditText etStreet, etNumber, etZip, etCity, etCountry;
     private Button btnSave;
     private AddressPresenter presenter;
 
+    /**
+     * Initializes the activity, sets the UI layout, retrieves the user ID,
+     * * and initializes the presenter and associated editText and save button.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +54,9 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
         btnSave.setOnClickListener(v -> saveAddress());
     }
 
+    /**
+     * Collects input data from the UI fields and calls the presenter to save the changes.
+     */
     private void saveAddress() {
         String street = etStreet.getText().toString().trim();
         String number = etNumber.getText().toString().trim();
@@ -54,19 +67,31 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
         presenter.saveAddressClicked(street, number, zip, city, country);
     }
 
+    /**
+     * {@inheritDoc}
+     * Shows a success message via Toast and finishes the activity.
+     */
     @Override
     public void SaveSuccess(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         finish();
     }
 
+    /**
+     * {@inheritDoc}
+     * Shows an error message via Toast.
+     */
     @Override
     public void showError(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * {@inheritDoc}
+     * Populates the input fields with the existing address details.
+     */
     @Override
-    public void setAddressDetails(String street, String number, String city, String country,String zip) {
+    public void setAddressDetails(String street, String number, String city, String country, String zip) {
         etStreet.setText(street);
         etNumber.setText(number);
         etZip.setText(zip);
@@ -74,6 +99,10 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
         etCountry.setText(country);
     }
 
+    /**
+     * {@inheritDoc}
+     * Closes the current activity.
+     */
     @Override
     public void finishView() {
         finish();

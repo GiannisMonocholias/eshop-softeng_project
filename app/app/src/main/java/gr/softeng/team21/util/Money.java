@@ -4,10 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * Represents a monetary value consisting of an amount and a currency.
- *
  * @author PAVLOS GRATSANIS
- * @version 1.0
- * AM: 3230036
  */
 public class Money {
 
@@ -39,18 +36,34 @@ public class Money {
         this.currency = currency;
     }
 
+    /**
+     * Returns the monetary amount.
+     * @return the amount
+     */
     public BigDecimal getAmount() {
         return amount;
     }
 
+    /**
+     * Sets the monetary amount.
+     * @param amount the new amount
+     */
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
+    /**
+     * Returns the currency of the monetary value.
+     * @return the currency
+     */
     public String getCurrency() {
         return currency;
     }
 
+    /**
+     * Sets the currency of the monetary value.
+     * @param currency the new currency
+     */
     public void setCurrency(String currency) {
         this.currency = currency;
     }
@@ -101,7 +114,11 @@ public class Money {
         return false;
     }
 
-
+    /**
+     * Returns a string representation of the money object.
+     * The string includes the amount formatted to two decimal places and the currency.
+     * @return a formatted string representing the monetary value
+     */
     @Override
     public String toString() {
         return String.format("%.2f %s", amount, currency);

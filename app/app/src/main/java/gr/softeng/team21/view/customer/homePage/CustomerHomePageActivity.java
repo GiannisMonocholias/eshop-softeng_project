@@ -15,17 +15,28 @@ import androidx.core.view.WindowInsetsCompat;
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.view.MainActivity;
 import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;
 import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.user.login.LoginActivity;
 
+/**
+ * Activity that represents the Customer’s Home Page, i.e., the main menu.
+ * Implements the {@link CustomerHomePageView} to provide navigation within the user interface, namely
+ * (Product Search, Edit Details, View Inbox, and Logout), as well as the Delete Account functionality.
+ * It manages UI elements such as the menu buttons that implement these navigation options and this functionality.
+ * @author PAVLOS GRATSANIS
+ */
 public class CustomerHomePageActivity extends AppCompatActivity implements CustomerHomePageView {
     private CustomerHomePagePresenter presenter;
     private  Customer customer;
 
     private Button btnEditData, btnDeleteAccount, btnFindProduct, btnLogout,btnInbox;
 
+    /**
+     * Initializes the activity, sets up the UI layout, retrieves the customer ID,
+     *  and initializes the presenter, customer, and the customer's navigation and action buttons.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +50,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         });
         String customerId=getIntent().getStringExtra("CUSTOMER_ID");
         if (customerId == null) {
-          showMessage("Προσοχή: Ο πελάτης δεν βρέθηκε στη μνήμη!");
+            showMessage("Προσοχή: Ο πελάτης δεν βρέθηκε!");
             finish();
             return;
         }
@@ -61,28 +72,42 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         btnInbox.setOnClickListener(v->Inbox());
 
     }
-
+    /**
+     *Calls the corresponding presenter method
+     */
     private void Inbox() {
         presenter.InboxClicked();
     }
-
+    /**
+     *Calls the corresponding presenter method
+     */
     private void Logout() {
         presenter.LogoutClicked();
     }
-
+    /**
+     *Calls the corresponding presenter method
+     */
     private void FindProduct() {
         presenter.FindProductClicked();
     }
-
+    /**
+     *Calls the corresponding presenter method
+     */
     private void Delete() {
         presenter.DeleteClicked();
     }
-
+    /**
+     *Calls the corresponding presenter method
+     */
     private void EditData() {
         presenter.EditDataClicked();
     }
 
 
+    /**
+     * {@inheritDoc}
+     * Starts the LoginActivity and clears the activity stack to prevent returning to the home page.
+     */
     @Override
     public void goToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -91,20 +116,34 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         finish();
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the UserEditDataActivity, passing the customer's ID as an Intent extra.
+     */
     @Override
     public void goToEditData() {
+        String customerId = getIntent().getStringExtra("CUSTOMER_ID");
         Intent intent = new Intent(this, UserEditDataActivity.class);
-        intent.putExtra("user_id", customer.getCustomer_id());
+        intent.putExtra("user_id", customerId);
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the CustomerFindProductActivity (Product Details), passing the product ID and customer ID.
+     */
     @Override
     public void goToFindProduct() {
+        String customerId = getIntent().getStringExtra("CUSTOMER_ID");
         Intent intent = new Intent(this, CustomerFindProductActivity.class);
-        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
+        intent.putExtra("CUSTOMER_ID", customerId);
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the CustomerEmailListActivity via an Intent, passing the customer's ID as an extra.
+     */
     @Override
     public void goToInbox() {
         Intent intent = new Intent(this, gr.softeng.team21.view.customer.EmailList.CustomerEmailListActivity.class);
@@ -112,6 +151,10 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Displays an AlertDialog asking the user to confirm the account deletion irreversibly.
+     */
     @Override
     public void showDeleteConfirmation() {
         new AlertDialog.Builder(this)
@@ -122,9 +165,13 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
                 .setCancelable(false)
                 .show();
     }
+
+    /**
+     * {@inheritDoc}
+     * Shows a short Toast message to the user with the provided text.
+     */
     @Override
     public void showMessage(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-
 }

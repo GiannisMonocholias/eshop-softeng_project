@@ -52,9 +52,7 @@ public class ChangeQuantityProductsPresenterTest {
 
     @Test
     public void loadProducts() {
-
         ArrayList<ProductType> products = presenter.loadProducts();
-
         assertEquals(20 , products.size());
 
     }

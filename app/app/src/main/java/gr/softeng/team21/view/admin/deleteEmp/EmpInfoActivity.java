@@ -3,7 +3,6 @@ package gr.softeng.team21.view.admin.deleteEmp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,7 +18,7 @@ import gr.softeng.team21.R;
  * submits the final deletion.
  */
 
-public class EmpInfo extends AppCompatActivity implements EmpInfoView {
+public class EmpInfoActivity extends AppCompatActivity implements EmpInfoView {
 
     //Presenter is responsible for the logical part of deleting an employee.
     private EmpInfoPresenter presenter;

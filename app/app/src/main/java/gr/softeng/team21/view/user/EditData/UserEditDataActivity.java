@@ -19,6 +19,12 @@ import gr.softeng.team21.view.contact.editdata.Password.PasswordActivity;
 import gr.softeng.team21.view.contact.editdata.Phone.PhoneActivity;
 import gr.softeng.team21.view.contact.editdata.Username.UsernameActivity;
 
+/**
+ * Activity responsible for displaying the menu options for editing user data.
+ * Implements {@link UserEditDataView} and manages the UI elements, such as  ListView,
+ * to allow navigation to  data editing screens (Username, Password, Address, Email, Phone).
+ * @author PAVLOS GRATSANIS
+ */
 public class UserEditDataActivity extends AppCompatActivity implements UserEditDataView {
 
     private ListView list;
@@ -34,6 +40,11 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
             "5. Αλλαγή Τηλεφώνου"
     };
 
+    /**
+     * Initializes the activity, sets the UI layout, retrieves the user ID,
+     * initializes the presenter, and sets up the ListView with the available editing options.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +56,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-
         userId = getIntent().getStringExtra("user_id");
-
-
         presenter = new UserEditDataPresenter(this);
 
         list = findViewById(R.id.ViewlistUserEditData);
@@ -59,11 +66,19 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         list.setOnItemClickListener((parent, view, position, id) -> OptionSelected(position));
     }
 
+    /**
+     *Calls the corresponding presenter method
+     * @param position The position of the item clicked in the list.
+     */
     private void OptionSelected(int position) {
         presenter.Selection(position);
     }
 
 
+    /**
+     * {@inheritDoc}
+     * Starts the UsernameActivity for editing the username via an Intent, passing the user's ID as an extra.
+     */
     @Override
     public void goToUsername() {
         Intent intent = new Intent(UserEditDataActivity.this, UsernameActivity.class);
@@ -71,6 +86,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the PasswordActivity for editing the password via an Intent, passing the user's ID as an extra.
+     */
     @Override
     public void goToPassword() {
         Intent intent = new Intent(UserEditDataActivity.this, PasswordActivity.class);
@@ -78,6 +97,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the AddressActivity for editing the address via an Intent, passing the user's ID as an extra.
+     */
     @Override
     public void goToAddress() {
         Intent intent = new Intent(UserEditDataActivity.this, AddressActivity.class);
@@ -85,6 +108,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the EmailActivity for editing the email address via an Intent, passing the user's ID as an extra.
+     */
     @Override
     public void goToEmail() {
         Intent intent = new Intent(UserEditDataActivity.this, EmailActivity.class);
@@ -92,6 +119,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the PhoneActivity for editing the phone number via an Intent, passing the user's ID as an extra.
+     */
     @Override
     public void goToPhone() {
         Intent intent = new Intent(UserEditDataActivity.this, PhoneActivity.class);

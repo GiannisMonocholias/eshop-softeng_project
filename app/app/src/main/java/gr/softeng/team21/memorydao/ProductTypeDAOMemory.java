@@ -8,7 +8,7 @@ import gr.softeng.team21.domain.ProductType;
  * In-memory implementation of the {@link ProductTypeDAO} interface.
  * Provides a centralized repository for managing product types and ensures
  * synchronization with the warehouse stock levels.
- * @author Γιάννης Μονοχολιάς
+ * @author PAVLOS GRATSANIS
  */
 public class ProductTypeDAOMemory implements ProductTypeDAO {
     private static ProductTypeDAOMemory instance;

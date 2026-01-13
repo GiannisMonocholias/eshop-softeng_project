@@ -20,22 +20,18 @@ public class AdminTest {
 
     @Before 
     public void setup() {
-
         EmployeeDAOMemory.getInstance().clear();
         UpdateRequestDAOMemory.getInstance().clear();
 
         rep = EmployeeDAOMemory.getInstance();
         updateRequest = UpdateRequestDAOMemory.getInstance();
-
-
         admin = Admin.getInstance();
-
         admin.setSalary(1000);
     }
 
     @Test
     public void getInstanceReturnsTheSameReference(){
-        Admin admin1 = Admin.getInstance("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), 5000);
+        Admin admin1 = Admin.getInstance("Alex" , "Drak" , "123" , "alexdr" , "6969696969", new EmailAddress("alexd@gmail.vom"), 5000);
         Admin admin2 = Admin.getInstance();
         assertSame(admin, admin1);
         assertSame(admin, admin2);
@@ -45,7 +41,7 @@ public class AdminTest {
     public void createEmployee() {
         int before = rep.getEmployees().size();
 
-        admin.createEmployee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "2s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date());
+        admin.createEmployee("Alex" , "Drak" , "123" , "alexdr" , "6969696969", new EmailAddress("alexd@gmail.vom"), "2s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date());
 
         int after = rep.getEmployees().size();
 
@@ -54,7 +50,7 @@ public class AdminTest {
 
         before = rep.getEmployees().size();
 
-        admin.createEmployee(new Employee("Alex" , "Drak" , "123" , "alexdr" , "69696969", new EmailAddress("alexd@gmail.vom"), "3s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date()));
+        admin.createEmployee(new Employee("Alex" , "Drak" , "123" , "alexdr" , "6969696969", new EmailAddress("alexd@gmail.vom"), "3s" , 200 , 1000 , 40 , EmployeeState.ACTIVE, new Date()));
 
         after = rep.getEmployees().size();
 

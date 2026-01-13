@@ -1,0 +1,67 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>160</x><y>280</y><w>272</w><h>128</h></coordinates><panel_attributes>AvailableOrdersToAssignActivity
+--
+_-EMP_ID_EXTRA  : String {readOnly}_
+- adapter : OrderAdapter
+--
+# onCreate(Bundle savedInstanceState) : void
++ showMessage(String message) : void
++ showError(String message) :void
++ updateList() : void
++onOrderAssignedSuccess(Order order) : void
++ showConfirmationDialog(Order order, String message) : void
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>192</x><y>32</y><w>264</w><h>96</h></coordinates><panel_attributes>&lt;&lt; Interface &gt;&gt;
+AvailableOrdersToAssignView
+--
++ showMessage(String message) : void
++ showError(String message):void
++ onOrderAssignedSuccess(Order order) : void
++ showConfirmationDialog(Order order, String message): void
++ updateList(): void
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>120</y><w>24</w><h>176</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;200</additional_attributes></element><element><id>Relation</id><coordinates><x>64</x><y>72</y><w>160</w><h>224</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;170;180;170;180;260</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>40</y><w>128</w><h>40</h></coordinates><panel_attributes>AppCompatActivity
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>544</x><y>312</y><w>264</w><h>72</h></coordinates><panel_attributes>AvailableOrdersToAssignPresenter
+--
++ loadAvailableOrders(String employeeId) : ArrayList&lt;Order&gt;
++ onOrderClicked(Order order) : void
++ onOrderConfirmed(Order order) : void 
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>424</x><y>320</y><w>136</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - presenter</panel_attributes><additional_attributes>10;20;150;20</additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>200</y><w>192</w><h>168</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - employeeDAO</panel_attributes><additional_attributes>10;180;130;180;130;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>768</x><y>112</y><w>224</w><h>96</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
+EmployeeDAO
+--
++ getEmployees() : HashMap&lt;String, Employee&gt;
++ getEmployee(String id) : Employee
++ addEmployee(Employee employee) : void
++ removeEmployee(Employee employee) : void
++ clear() :  void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>960</x><y>336</y><w>224</w><h>96</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
+OrderDAO
+--
++ getOrder(String orderCode) : Order
++ addOrder(Order order) : void
++ getOrders() : HashMap&lt;String,Order&gt;
++ clear() : void
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>360</y><w>176</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - orderDAO</panel_attributes><additional_attributes>10;20;200;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>680</x><y>496</y><w>184</w><h>104</h></coordinates><panel_attributes>OrderPreparationEmployee
+--
+- totalOrdersPreparations: int
+- totalUpdateReserveRequests: int 
+- wareHouse: ProductsWareHouse
+--
++ selectRandomEmployee(Class&lt;? extends
+ Employee&gt;): Employee
++ selectOrder(String): void
++ prepareOrder(Order): void
+
+fontsize=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>744</x><y>376</y><w>120</w><h>136</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+m2=1
+r1= - loggedInEmployee </panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>448</x><y>64</y><w>224</w><h>264</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+m2=1
+r2= - view</panel_attributes><additional_attributes>250;310;250;20;10;20</additional_attributes></element></diagram>

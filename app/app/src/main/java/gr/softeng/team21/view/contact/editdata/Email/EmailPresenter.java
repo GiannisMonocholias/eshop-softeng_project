@@ -7,11 +7,15 @@ import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
+/**
+ * Presenter for the Email Edit activity.
+ * Handles interactions between the {@link EmailView} and the User domain model.
+ * @author PAVLOS GRATSANIS
+ */
 public class EmailPresenter {
     private EmailView view;
     private User user;
 
-    // Ορίζουμε ένα Pattern για email χρησιμοποιώντας καθαρή Java
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
             "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
                     "\\@" +
@@ -22,11 +26,21 @@ public class EmailPresenter {
                     ")+"
     );
 
+    /**
+     * Initializes the presenter with the view and attempts to find the user by ID.
+     * @param view The view interface.
+     * @param userId The ID of the user to edit.
+     */
     public EmailPresenter(EmailView view, String userId) {
         this.view = view;
         findUser(userId);
     }
 
+    /**
+     * Searches for the user in both Customer and Employee repositories.
+     * If found, it completes the view with the existing email address.
+     * @param userId The ID of the user.
+     */
     private void findUser(String userId) {
         user = CustomerDAOMemory.getInstance().getCustomer(userId);
 
@@ -45,6 +59,11 @@ public class EmailPresenter {
         }
     }
 
+    /**
+     * Validates the input and saves the new email address for the user.
+     * Checks if the email format is valid.
+     * @param mailtxt The new email address to save.
+     */
     public void saveEmailClicked(String mailtxt) {
         if (user == null) return;
         if (mailtxt.isEmpty()) {
@@ -56,8 +75,7 @@ public class EmailPresenter {
             view.showError("Μη έγκυρη μορφή email");
             return;
         }
-            user.editData("4", mailtxt, null, new EmailAddress(mailtxt));
-            view.SaveSuccess("Το email ενημερώθηκε επιτυχώς!");
-        }
-
+        user.editData("4", mailtxt, null, new EmailAddress(mailtxt));
+        view.SaveSuccess("Το email ενημερώθηκε επιτυχώς!");
+    }
 }

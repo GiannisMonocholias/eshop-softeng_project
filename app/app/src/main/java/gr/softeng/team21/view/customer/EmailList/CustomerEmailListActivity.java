@@ -25,13 +25,26 @@ import gr.softeng.team21.view.contact.emailDetails.EmailDetailsActivity;
 import gr.softeng.team21.view.user.emailComposition.EmailCompositionActivity;
 import gr.softeng.team21.view.util.EmailAdapter;
 
+/**
+ * Activity responsible for displaying the list of emails for a Customer.
+ * Implements the {@link CustomerEmailListView} and manages UI elements such as RecyclerView, SearchView and FloatingActionButton.
+ * @author PAVLOS GRATSANIS
+ */
 public class CustomerEmailListActivity extends AppCompatActivity implements CustomerEmailListView {
 
     private CustomerEmailListPresenter presenter;
     private static final String CUSTOMER_ID_EXTRA = "CUSTOMER_ID";
+    private  RecyclerView recyclerView;
+    private FloatingActionButton emailMsgComposition;
+    private  SearchView searchView;
 
     private EmailAdapter adapter;
 
+    /**
+     * Initializes the presenter, UI components, sets up the RecyclerView with an EmailAdapter,
+     * and configures the search and creation actions.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,25 +53,22 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
 
         View mainView = findViewById(R.id.viewEmailListRoot);
         ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
-                    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                    return insets;
-                });
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
         presenter = new CustomerEmailListPresenter(this, CustomerDAOMemory.getInstance());
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewEmails);
+        recyclerView = findViewById(R.id.recyclerViewEmails);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         String customerId = getIntent().getStringExtra(CUSTOMER_ID_EXTRA);
-
-        // Setup Adapter
         adapter = new EmailAdapter(new ArrayList<>(), email -> presenter.onEmailSelected(email, customerId));
         recyclerView.setAdapter(adapter);
 
-        // Load Data
         loadEmails(customerId);
 
-        SearchView searchView = findViewById(R.id.searchViewEmails);
+        searchView = findViewById(R.id.searchViewEmails);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -74,10 +84,20 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
             }
         });
 
-        FloatingActionButton emailMsgComposition = findViewById(R.id.fabNewEmail);
-        emailMsgComposition.setOnClickListener(v -> presenter.onCreateNewMsgSelected(customerId));
+        emailMsgComposition = findViewById(R.id.fabNewEmail);
+        emailMsgComposition.setOnClickListener(v -> onCreateNewMsgSelected(customerId));
     }
 
+    /**
+     *Calls the corresponding presenter method
+    */
+    private void onCreateNewMsgSelected(String customerId) {
+        presenter.onCreateNewMsgSelectedClicked(customerId);
+    }
+
+    /**
+     * Refreshes the email list from the presenter whenever the activity comes to the foreground.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -85,6 +105,10 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
         loadEmails(customerId);
     }
 
+    /**
+     * Helper method to load, sort and display emails for the  customer.
+     * @param customerId The ID of the customer.
+     */
     private void loadEmails(String customerId) {
         if (presenter != null && adapter != null && customerId != null) {
             ArrayList<EmailMessage> emailList = presenter.getInbox(customerId);
@@ -93,7 +117,10 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
         }
     }
 
-
+    /**
+     * {@inheritDoc}
+     * Starts the EmailCompositionActivity via an Intent, passing the customer's ID as an extra.
+     */
     @Override
     public void goToCreateNewMessge(String customerId) {
         Toast.makeText(this, "Δημιουργία Νέου Μηνύματος...", Toast.LENGTH_SHORT).show();
@@ -102,16 +129,18 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
         startActivity(intent);
     }
 
+    /**
+     * {@inheritDoc}
+     * Starts the EmailDetailsActivity, passing all necessary email data via Intent extras.
+     */
     @Override
     public void goToEmailDetails(String subject, String body, String sender, String receiver, String customerId) {
         Intent intent = new Intent(this, EmailDetailsActivity.class);
-
         intent.putExtra("SUBJECT_EXTRA", subject);
         intent.putExtra("BODY_EXTRA", body);
         intent.putExtra("SENDER_EXTRA", sender);
         intent.putExtra("RECEIVER_EXTRA", receiver);
         intent.putExtra("user_id", customerId);
-
         startActivity(intent);
     }
 }

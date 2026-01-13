@@ -161,7 +161,6 @@ public class MemoryInitializer {
         employees.addEmployee(csr1);
         getUserCredentialsDAO().addUser(csr1);
 
-
         EmailAddress emailCs2 = new EmailAddress("p.dimitriou@team21.gr");
         CustomerServiceEmployee csr2 = new CustomerServiceEmployee(
                 "p_dimitriou", "Πέτρος", "pass1238", "Δημητρίου",
