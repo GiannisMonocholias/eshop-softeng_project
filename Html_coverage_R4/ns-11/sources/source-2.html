@@ -1,0 +1,211 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EmailDetailsPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.contact.emailDetails</a>
+</div>
+
+<h1>Coverage Summary for Class: EmailDetailsPresenter (gr.softeng.team21.view.contact.emailDetails)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmailDetailsPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (28/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.contact.emailDetails;
+&nbsp;
+&nbsp;import gr.softeng.team21.dao.CustomerDAO;
+&nbsp;import gr.softeng.team21.dao.EmployeeDAO;
+&nbsp;import gr.softeng.team21.domain.Admin;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.domain.Employee;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Email Details screen.
+&nbsp; * Handles the logic for resolving sender and receiver identities (Names and Roles)
+&nbsp; * across different user categories (Employee, Customer, Admin).
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class EmailDetailsPresenter {
+&nbsp;    private EmailDetailsView view;
+&nbsp;    private EmployeeDAO employeeDAO;
+&nbsp;    private CustomerDAO customerDAO;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with view and data access repositories.
+&nbsp;     * @param view The view implementation to be updated.
+&nbsp;     * @param employeeDAO Data access for employee-related information.
+&nbsp;     * @param customerDAO Data access for customer-related information.
+&nbsp;     */
+<b class="fc">&nbsp;    public EmailDetailsPresenter(EmailDetailsView view, EmployeeDAO employeeDAO, CustomerDAO customerDAO) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.employeeDAO = employeeDAO;</b>
+<b class="fc">&nbsp;        this.customerDAO = customerDAO;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes the raw email data and coordinates with the view to display resolved information.
+&nbsp;     * @param subject The subject of the email.
+&nbsp;     * @param senderEmailAddress The email address of the sender.
+&nbsp;     * @param receiverEmailAddress The email address of the receiver.
+&nbsp;     * @param body The body content of the email.
+&nbsp;     * @param employeeId The unique ID of the current user (receiver).
+&nbsp;     */
+&nbsp;    public void onViewCreated(String subject, String senderEmailAddress, String receiverEmailAddress, String body, String employeeId) {
+<b class="fc">&nbsp;        String senderName = findSenderName(senderEmailAddress);</b>
+&nbsp;
+<b class="fc">&nbsp;        view.displaySubject(subject != null ? subject : &quot;&quot;);</b>
+<b class="fc">&nbsp;        view.displaySenderName(senderName != null ? senderName : &quot;Άγνωστο όνομα αποστολέα&quot;);</b>
+<b class="fc">&nbsp;        view.displayReceiverName(findReceiverName(employeeId));</b>
+<b class="fc">&nbsp;        view.displayBody(body != null ? body : &quot;&quot;);</b>
+<b class="fc">&nbsp;        view.displaySenderEmail(senderEmailAddress);</b>
+<b class="fc">&nbsp;        view.displayReceiverEmail(receiverEmailAddress);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resolves the receiver&#39;s name by checking Employee and Customer repositories.
+&nbsp;     * @param userId The unique identifier of the user.
+&nbsp;     * @return The full name of the receiver or an empty string if not found.
+&nbsp;     */
+&nbsp;    public String findReceiverName(String userId){
+<b class="fc">&nbsp;        Employee employee = employeeDAO.getEmployee(userId);</b>
+<b class="fc">&nbsp;        if(employee != null){</b>
+<b class="fc">&nbsp;            return employee.getFirstname() + &quot; &quot; +  employee.getLastname();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Customer customer = customerDAO.getCustomer(userId);</b>
+<b class="fc">&nbsp;        if(customer != null){</b>
+<b class="fc">&nbsp;            return customer.getFirstname() + &quot; &quot; + customer.getLastname();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return &quot;&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resolves the sender&#39;s identity and role label based on their email address.
+&nbsp;     * Checks in order: Employees, Customers, and finally the Admin singleton.
+&nbsp;     * @param senderEmailAddress The email address to search for in the DAOs.
+&nbsp;     * @return A string containing the full name and role label, or null if no match exists.
+&nbsp;     */
+&nbsp;    public String findSenderName(String senderEmailAddress){
+<b class="fc">&nbsp;        Employee employee = ((EmployeeDAOMemory)employeeDAO).getEmployeeByEmail(senderEmailAddress);</b>
+<b class="fc">&nbsp;        if(employee != null){</b>
+<b class="fc">&nbsp;            return employee.getFirstname() + &quot; &quot; +  employee.getLastname() + &quot; (Υπάλληλος)&quot;;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Customer customer = ((CustomerDAOMemory)customerDAO).getCustomerByEmail(senderEmailAddress);</b>
+<b class="fc">&nbsp;        if(customer != null){</b>
+<b class="fc">&nbsp;            return customer.getFirstname() + &quot; &quot; +  customer.getLastname() + &quot; (Πελάτης)&quot;;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Admin admin = Admin.getInstance();</b>
+<b class="fc">&nbsp;        if(admin.getEmailAddress().toString().equals(senderEmailAddress)){</b>
+<b class="fc">&nbsp;            return admin.getFirstname() + &quot; &quot; + admin.getLastname() + &quot; (Διαχειριστής)&quot;;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

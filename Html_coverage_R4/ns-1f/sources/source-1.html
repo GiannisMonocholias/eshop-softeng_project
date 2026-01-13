@@ -1,0 +1,261 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OrderPreparationDetailsActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderPreparationDetailsActivity (gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderPreparationDetailsActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/38)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">OrderPreparationDetailsActivity$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/40)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails;
+&nbsp;
+&nbsp;import android.app.AlertDialog;
+&nbsp;import android.content.DialogInterface;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.TextView;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import androidx.recyclerview.widget.LinearLayoutManager;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.CartItem;
+&nbsp;import gr.softeng.team21.domain.OrderStatusType;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;import gr.softeng.team21.memorydao.OrderDAOMemory;
+&nbsp;import gr.softeng.team21.view.util.StockProductAdapter;
+&nbsp;
+&nbsp;/**
+&nbsp; * Android Activity providing the UI for reviewing order contents and
+&nbsp; * executing stock check.
+&nbsp; * Implements {@link OrderPreparationDetailsView} to receive updates from the presenter.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class OrderPreparationDetailsActivity extends AppCompatActivity implements OrderPreparationDetailsView{</b>
+&nbsp;    private OrderPreparationDetailsPresenter presenter;
+&nbsp;    private static final String EMP_ID_EXTRA = &quot;ORDER_PREPARATION_EMPLOYEE_ID&quot;;
+&nbsp;    private static final String ORD_CODE_EXTRA = &quot;ORDER_CODE&quot;;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Configures the layout, binds UI components, and sets up the RecyclerView
+&nbsp;     * to display the list of products in the order.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_order_preparation_details);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.order_preparation_details), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        presenter = new OrderPreparationDetailsPresenter(this, EmployeeDAOMemory.getInstance(), OrderDAOMemory.getInstance());</b>
+&nbsp;
+<b class="nc">&nbsp;        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);</b>
+<b class="nc">&nbsp;        String ordercode = getIntent().getStringExtra(ORD_CODE_EXTRA);</b>
+&nbsp;
+<b class="nc">&nbsp;        ArrayList&lt;CartItem&gt; cartItems = presenter.loadOrder(employeeId, ordercode);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        RecyclerView recyclerView = findViewById(R.id.rvOrderDetailsProducts);</b>
+<b class="nc">&nbsp;        recyclerView.setLayoutManager(new LinearLayoutManager(this));</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        StockProductAdapter adapter = new StockProductAdapter(cartItems);</b>
+&nbsp;
+<b class="nc">&nbsp;        recyclerView.setAdapter(adapter);</b>
+&nbsp;
+<b class="nc">&nbsp;        Button btnStockCheck = findViewById(R.id.btnOrderDetailsStockCheck);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnStockCheck.setOnClickListener(order -&gt; {</b>
+<b class="nc">&nbsp;            presenter.checkStockOrder();</b>
+&nbsp;        });
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setOrderDetails(String ordercode, String customerName, String submissionDate, String price, OrderStatusType status) {
+<b class="nc">&nbsp;        ((TextView) findViewById(R.id.txtOrderDetailsOrderIdValue)).setText(ordercode);</b>
+<b class="nc">&nbsp;        ((TextView) findViewById(R.id.txtOrderDetailsOrderCustomerNameValue)).setText(customerName);</b>
+<b class="nc">&nbsp;        ((TextView) findViewById(R.id.txtOrderDetailsOrderSubmissionDateValue)).setText(submissionDate);</b>
+<b class="nc">&nbsp;        ((TextView) findViewById(R.id.txtOrderDetailsOrderPriceValue)).setText(price);</b>
+<b class="nc">&nbsp;        ((TextView) findViewById(R.id.txtOrderDetailsOrderStatus)).setText(status.toString());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows an Android error alert dialog with an alert icon.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showErrorMessage(String message) {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Σφάλμα&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(message)</b>
+<b class="nc">&nbsp;                .setIcon(android.R.drawable.ic_dialog_alert)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;OK&quot;, null)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    };
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows a success Android alert dialog. Upon confirmation, the activity finishes.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showSuccessMessage(String message) {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Επιτυχία&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(message)</b>
+<b class="nc">&nbsp;                .setIcon(android.R.drawable.ic_dialog_info)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;OK&quot;, new DialogInterface.OnClickListener() {</b>
+&nbsp;                    @Override
+&nbsp;                    public void onClick(DialogInterface dialog, int which) {
+<b class="nc">&nbsp;                        finish();</b>
+&nbsp;                    }
+&nbsp;                })
+<b class="nc">&nbsp;                .setCancelable(false)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void finishActivity() {
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

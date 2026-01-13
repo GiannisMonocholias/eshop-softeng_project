@@ -1,0 +1,293 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerHomePageActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.homePage</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerHomePageActivity (gr.softeng.team21.view.customer.homePage)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerHomePageActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/52)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.homePage;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AlertDialog;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;
+&nbsp;import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
+&nbsp;import gr.softeng.team21.view.user.login.LoginActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity that represents the Customer’s Home Page, i.e., the main menu.
+&nbsp; * Implements the {@link CustomerHomePageView} to provide navigation within the user interface, namely
+&nbsp; * (Product Search, Edit Details, View Inbox, and Logout), as well as the Delete Account functionality.
+&nbsp; * It manages UI elements such as the menu buttons that implement these navigation options and this functionality.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+<b class="nc">&nbsp;public class CustomerHomePageActivity extends AppCompatActivity implements CustomerHomePageView {</b>
+&nbsp;    private CustomerHomePagePresenter presenter;
+&nbsp;    private  Customer customer;
+&nbsp;
+&nbsp;    private Button btnEditData, btnDeleteAccount, btnFindProduct, btnLogout,btnInbox;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the activity, sets up the UI layout, retrieves the customer ID,
+&nbsp;     *  and initializes the presenter, customer, and the customer&#39;s navigation and action buttons.
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_customer_home_page);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+<b class="nc">&nbsp;        String customerId=getIntent().getStringExtra(&quot;CUSTOMER_ID&quot;);</b>
+<b class="nc">&nbsp;        if (customerId == null) {</b>
+<b class="nc">&nbsp;            showMessage(&quot;Προσοχή: Ο πελάτης δεν βρέθηκε!&quot;);</b>
+<b class="nc">&nbsp;            finish();</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);</b>
+<b class="nc">&nbsp;        presenter = new CustomerHomePagePresenter(this, customer);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        btnEditData = findViewById(R.id.btnCustomerHomePageEditData);</b>
+<b class="nc">&nbsp;        btnEditData.setOnClickListener(v -&gt; EditData());</b>
+&nbsp;
+<b class="nc">&nbsp;        btnDeleteAccount = findViewById(R.id.btnCustomerHomePageDeleteaccount);</b>
+<b class="nc">&nbsp;        btnDeleteAccount.setOnClickListener(v -&gt; Delete());</b>
+&nbsp;
+<b class="nc">&nbsp;        btnFindProduct = findViewById(R.id.btnCustomerHomePageFindProduct);</b>
+<b class="nc">&nbsp;        btnFindProduct.setOnClickListener(v -&gt; FindProduct());</b>
+<b class="nc">&nbsp;        btnLogout = findViewById(R.id.btnCustomerHomePageLogout);</b>
+<b class="nc">&nbsp;        btnLogout.setOnClickListener(v -&gt; Logout());</b>
+<b class="nc">&nbsp;        btnInbox=findViewById(R.id.btnCustomerHomePageMessages);</b>
+<b class="nc">&nbsp;        btnInbox.setOnClickListener(v-&gt;Inbox());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void Inbox() {
+<b class="nc">&nbsp;        presenter.InboxClicked();</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void Logout() {
+<b class="nc">&nbsp;        presenter.LogoutClicked();</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void FindProduct() {
+<b class="nc">&nbsp;        presenter.FindProductClicked();</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void Delete() {
+<b class="nc">&nbsp;        presenter.DeleteClicked();</b>
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void EditData() {
+<b class="nc">&nbsp;        presenter.EditDataClicked();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the LoginActivity and clears the activity stack to prevent returning to the home page.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToLogin() {
+<b class="nc">&nbsp;        Intent intent = new Intent(this, LoginActivity.class);</b>
+<b class="nc">&nbsp;        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the UserEditDataActivity, passing the customer&#39;s ID as an Intent extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToEditData() {
+<b class="nc">&nbsp;        String customerId = getIntent().getStringExtra(&quot;CUSTOMER_ID&quot;);</b>
+<b class="nc">&nbsp;        Intent intent = new Intent(this, UserEditDataActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;user_id&quot;, customerId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the CustomerFindProductActivity (Product Details), passing the product ID and customer ID.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToFindProduct() {
+<b class="nc">&nbsp;        String customerId = getIntent().getStringExtra(&quot;CUSTOMER_ID&quot;);</b>
+<b class="nc">&nbsp;        Intent intent = new Intent(this, CustomerFindProductActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;CUSTOMER_ID&quot;, customerId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the CustomerEmailListActivity via an Intent, passing the customer&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToInbox() {
+<b class="nc">&nbsp;        Intent intent = new Intent(this, gr.softeng.team21.view.customer.EmailList.CustomerEmailListActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;CUSTOMER_ID&quot;, customer.getCustomer_id());</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Displays an AlertDialog asking the user to confirm the account deletion irreversibly.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showDeleteConfirmation() {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Διαγραφή Λογαριασμού&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(&quot;Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Η ενέργεια δεν αναιρείται.&quot;)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;Ναι&quot;, (dialog, which) -&gt; presenter.DeleteConfirm())</b>
+<b class="nc">&nbsp;                .setNegativeButton(&quot;Όχι&quot;, (dialog, which) -&gt; dialog.dismiss())</b>
+<b class="nc">&nbsp;                .setCancelable(false)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows a short Toast message to the user with the provided text.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showMessage(String msg) {
+<b class="nc">&nbsp;        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

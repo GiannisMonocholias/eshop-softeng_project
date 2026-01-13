@@ -1,0 +1,110 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AvailableOrdersToAssignView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign</a>
+</div>
+
+<h1>Coverage Summary for Class: AvailableOrdersToAssignView (gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AvailableOrdersToAssignView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.Order;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the UI operations for listing unassigned orders and managing
+&nbsp; * the manual assignment workflow via dialogs.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface AvailableOrdersToAssignView {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays an informative message to the user.
+&nbsp;     * @param message The text content of the message.
+&nbsp;     */
+&nbsp;    void showMessage(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays an error alert dialog.
+&nbsp;     * @param message The error description.
+&nbsp;     */
+&nbsp;    void showError(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Triggered when an order is successfully assigned.
+&nbsp;     * Typically removes the order from the available list.
+&nbsp;     * @param order The newly assigned order.
+&nbsp;     */
+&nbsp;    void onOrderAssignedSuccess(Order order);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Shows a confirmation dialog before an employee takes responsibility for an order.
+&nbsp;     * @param order   The order to be assigned.
+&nbsp;     * @param message The confirmation prompt message.
+&nbsp;     */
+&nbsp;    void showConfirmationDialog(Order order, String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Refreshes the UI list to reflect the current state of available orders.
+&nbsp;     */
+&nbsp;    void updateList();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

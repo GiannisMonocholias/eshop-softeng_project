@@ -274,16 +274,6 @@ public class MemoryInitializer {
         //END: INITIALIZE EMPLOYEES
         //=====================================================
 
-        //=====================================================
-        //START: INITIALIZE ADMIN
-        //=====================================================
-
-        EmailAddress emailAdmin = new EmailAddress("geopap@team21.gr");
-        Admin admin = new Admin("g_papadakis" , "Γεώργιος" , "ppd246" , "Παπαδάκης" , "6908381070" , emailAdmin , 2000);
-
-        //=====================================================
-        //END: INITIALIZE ADMIN
-        //=====================================================
 
         //=====================================================
         //START: INITIALIZE ADMIN

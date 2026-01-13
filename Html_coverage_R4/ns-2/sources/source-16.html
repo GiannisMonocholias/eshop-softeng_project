@@ -1,0 +1,364 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > User</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: User (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">User</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.7%
+  </span>
+  <span class="absValue">
+    (22/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97.9%
+  </span>
+  <span class="absValue">
+    (47/48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import gr.softeng.team21.contact.Address;
+&nbsp;import gr.softeng.team21.contact.EmailAddress;
+&nbsp;import gr.softeng.team21.contact.EmailMessage;
+&nbsp;import gr.softeng.team21.dao.EmailDAO;
+&nbsp;import gr.softeng.team21.memorydao.EmailDAOMemory;
+&nbsp;import gr.softeng.team21.util.Date;
+&nbsp;
+&nbsp;/**
+&nbsp; * An abstract base class representing a generic user in the system.
+&nbsp; * It provides common profile attributes (credentials, contact details) and
+&nbsp; * includes a built-in messaging mechanism for communication between users.
+&nbsp; * @author Γιάννης Μονοχολιάς, PAVLOS GRATSANIS
+&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes
+&nbsp; */
+&nbsp;public abstract class User {
+&nbsp;    protected String username;
+&nbsp;    protected String firstname;
+&nbsp;    protected String password;
+&nbsp;    protected String lastname;
+&nbsp;    protected String phoneNumber;
+&nbsp;    protected EmailAddress emailaddress;
+&nbsp;    protected EmailDAO emailDAOMemory;
+&nbsp;    protected Address address;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Default constructor for the User class.
+&nbsp;     *  @author PAVLOS GRATSANIS and IOANNIS MONOCHOLIAS
+&nbsp;     */
+<b class="nc">&nbsp;    public User(){}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new User with essential profile information and initializes their email provider.
+&nbsp;     * @param username     The unique account username.
+&nbsp;     * @param firstname    The user&#39;s first name.
+&nbsp;     * @param password     The account password.
+&nbsp;     * @param lastname     The user&#39;s last name.
+&nbsp;     * @param phoneNumber  The contact phone number.
+&nbsp;     * @param emailaddress The user&#39;s email address.
+&nbsp;     */
+<b class="fc">&nbsp;    public User (String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress) {</b>
+<b class="fc">&nbsp;        this.username = username;</b>
+<b class="fc">&nbsp;        this.firstname = firstname;</b>
+<b class="fc">&nbsp;        this.password = password;</b>
+<b class="fc">&nbsp;        this.lastname = lastname;</b>
+<b class="fc">&nbsp;        this.phoneNumber = phoneNumber;</b>
+<b class="fc">&nbsp;        this.emailaddress = emailaddress;</b>
+<b class="fc">&nbsp;        this.emailDAOMemory = new EmailDAOMemory();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the user&#39;s residential address.
+&nbsp;     */
+&nbsp;    public Address getAddress() {
+<b class="fc">&nbsp;        return address;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param address the address to set.
+&nbsp;     */
+<b class="fc">&nbsp;    public void setAddress(Address address) {this.address = address;}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the unique username.
+&nbsp;     */
+&nbsp;    public String getUsername() {
+<b class="fc">&nbsp;        return username;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param username the username to set.
+&nbsp;     */
+&nbsp;    public void setUsername(String username) {
+<b class="fc">&nbsp;        this.username = username;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** @return the account password. */
+&nbsp;    public String getPassword() {
+<b class="fc">&nbsp;        return password;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** @param password the password to set. */
+&nbsp;    public void setPassword(String password) {
+<b class="fc">&nbsp;        this.password = password;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** @return the user&#39;s first name. */
+&nbsp;    public String getFirstname() {
+<b class="fc">&nbsp;        return firstname;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param firstname the first name to set.
+&nbsp;     */
+&nbsp;    public void setFirstname(String firstname) {
+<b class="fc">&nbsp;        this.firstname = firstname;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the user&#39;s last name.
+&nbsp;     */
+&nbsp;    public String getLastname() {
+<b class="fc">&nbsp;        return lastname;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param lastname the last name to set.
+&nbsp;     */
+&nbsp;    public void setLastname(String lastname) {
+<b class="fc">&nbsp;        this.lastname = lastname;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the contact phone number.
+&nbsp;     */
+&nbsp;    public String getPhonenumber() {
+<b class="fc">&nbsp;        return phoneNumber;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param phonenumber the phone number to set.
+&nbsp;     */
+&nbsp;    public void setPhonenumber(String phonenumber) {
+<b class="fc">&nbsp;        this.phoneNumber = phonenumber;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the EmailAddress object.
+&nbsp;     */
+&nbsp;    public EmailAddress getEmailAddress() {
+<b class="fc">&nbsp;        return emailaddress;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param emailaddress the email address object to set.
+&nbsp;     */
+&nbsp;    public void setEmailaddress(EmailAddress emailaddress) {
+<b class="fc">&nbsp;        this.emailaddress = emailaddress;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the email DAO provider for this user.
+&nbsp;     */
+<b class="fc">&nbsp;    public EmailDAO getEmailProvider() {return emailDAOMemory;}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param emailDAOMemory the email provider to set.
+&nbsp;     */
+&nbsp;    protected void setEmailProvider(EmailDAOMemory emailDAOMemory) {
+<b class="fc">&nbsp;        this.emailDAOMemory = emailDAOMemory;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sends a reply to an existing email message.
+&nbsp;     * @param sender    The user sending the reply.
+&nbsp;     * @param recipient The user receiving the reply.
+&nbsp;     * @param original  The original email being replied to.
+&nbsp;     * @param subject   The subject of the reply.
+&nbsp;     * @param body      The main content of the reply.
+&nbsp;     * @param dateSent  The date the reply is sent.
+&nbsp;     */
+&nbsp;    protected void replyToEmail(User sender, User recipient, EmailMessage original, String subject, String body, Date dateSent){
+<b class="fc">&nbsp;        deliverEmail(sender, recipient, original, subject, body, true, dateSent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initiates a new email communication.
+&nbsp;     * @param sender    The user sending the email.
+&nbsp;     * @param recipient The user receiving the email.
+&nbsp;     * @param subject   The subject of the message.
+&nbsp;     * @param body      The content of the message.
+&nbsp;     * @param dateSent  The date the email is sent.
+&nbsp;     */
+&nbsp;    public void sendEmail(User sender, User recipient, String subject, String body, Date dateSent) {
+<b class="fc">&nbsp;        deliverEmail(sender, recipient, null, subject, body, false, dateSent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Core logic for creating and delivering an email message between two users.
+&nbsp;     * It updates both the sender&#39;s &#39;Sent&#39; box and the recipient&#39;s &#39;Inbox&#39;.
+&nbsp;     * @param sender          The message sender.
+&nbsp;     * @param recipient       The message recipient.
+&nbsp;     * @param original        The original message (if this is a reply).
+&nbsp;     * @param subject         The message subject.
+&nbsp;     * @param body            The message body.
+&nbsp;     * @param isReplyMessage  Flag indicating if this is a reply.
+&nbsp;     * @param dateSent        The dispatch date.
+&nbsp;     */
+&nbsp;    protected void deliverEmail(User sender, User recipient, EmailMessage original, String subject, String body, boolean isReplyMessage, Date dateSent) {
+<b class="fc">&nbsp;        EmailMessage email = new EmailMessage();</b>
+<b class="fc">&nbsp;        email.setFrom(sender.getEmailAddress());</b>
+<b class="fc">&nbsp;        email.setTo(recipient.getEmailAddress());</b>
+<b class="fc">&nbsp;        email.setSubject(subject);</b>
+<b class="fc">&nbsp;        email.setBody(body);</b>
+<b class="fc">&nbsp;        email.setReplyMessage(isReplyMessage);</b>
+<b class="fc">&nbsp;        email.setDateSent(dateSent);</b>
+&nbsp;
+<b class="fc">&nbsp;        if(original != null)</b>
+<b class="fc">&nbsp;            original.setReplied(true);</b>
+&nbsp;
+<b class="fc">&nbsp;        recipient.getEmailProvider().saveInboxEmails(email);</b>
+<b class="fc">&nbsp;        sender.getEmailProvider().saveSentEmails(email);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Marks a specific email message as read.
+&nbsp;     * @param email The message to be updated.
+&nbsp;     */
+&nbsp;    protected void setEmailRead(EmailMessage email) {
+<b class="fc">&nbsp;        email.setRead(true);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates specific fields of the user&#39;s profile based on a numeric choice.
+&nbsp;     * @param choice     The menu option indicating which field to update (1-6).
+&nbsp;     * @param change     The new value for String fields (username, password, phone).
+&nbsp;     * @param newaddress The new address object (used if choice is &quot;3&quot;).
+&nbsp;     * @param email      The new email address object (used if choice is &quot;4&quot;).
+&nbsp;     * @throws IllegalArgumentException if choice is null or out of the 1-6 range.
+&nbsp;     */
+&nbsp;    public void editData (String choice, String change, Address newaddress, EmailAddress email) {
+<b class="fc">&nbsp;        if ( choice == null )</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException ( &quot;Choice cannot be null!!!&quot; );</b>
+&nbsp;
+<b class="fc">&nbsp;        switch (choice) {</b>
+&nbsp;            case &quot;1&quot;:
+<b class="fc">&nbsp;                this.setUsername ( change );</b>
+&nbsp;                break;
+&nbsp;            case &quot;2&quot;:
+<b class="fc">&nbsp;                this.setPassword ( change );</b>
+&nbsp;                break;
+&nbsp;            case &quot;3&quot;:
+<b class="fc">&nbsp;                this.setAddress ( newaddress );</b>
+&nbsp;                break;
+&nbsp;            case &quot;4&quot;:
+<b class="fc">&nbsp;                this.setEmailaddress ( email );</b>
+&nbsp;                break;
+&nbsp;            case &quot;5&quot;:
+<b class="fc">&nbsp;                this.setPhonenumber ( change );</b>
+&nbsp;                break;
+&nbsp;            case &quot;6&quot;:
+&nbsp;                break;
+&nbsp;            default:
+<b class="fc">&nbsp;                throw new IllegalArgumentException ( &quot;Choice must be 1-6&quot; );</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DelivererMenuView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.deliverer.delivererMenu</a>
+</div>
+
+<h1>Coverage Summary for Class: DelivererMenuView (gr.softeng.team21.view.employee.deliverer.delivererMenu)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">DelivererMenuView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.deliverer.delivererMenu;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the essential UI operations for displaying profile info,
+&nbsp; * navigating to delivery lists, and handling account lifecycle actions.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface DelivererMenuView {
+&nbsp;    /**
+&nbsp;     * Updates the UI to display the Deliverer&#39;s full name.
+&nbsp;     * @param fullName The concatenated first and last name of the employee.
+&nbsp;     */
+&nbsp;    void showEmployeeName(String fullName);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the screen displaying orders assigned for delivery.
+&nbsp;     * @param employeeId The unique identifier of the deliverer.
+&nbsp;     */
+&nbsp;    void navigateToOrdersList(String employeeId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a confirmation dialog to prevent accidental account deletion.
+&nbsp;     */
+&nbsp;    void showDeleteAccountConfirmation();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Redirects the user to the Login screen, typically after logout or account deletion.
+&nbsp;     */
+&nbsp;    void navigateToLogin();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the account modification screen.
+&nbsp;     * @param employeeId The unique identifier of the deliverer.
+&nbsp;     */
+&nbsp;    void navigateToProcessAccount(String employeeId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a transient notification message (Toast) to the user.
+&nbsp;     * @param message The text content of the message.
+&nbsp;     */
+&nbsp;    void showMessage(String message);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

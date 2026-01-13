@@ -1,0 +1,117 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OrdersPreparationEmployeeMenuView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu</a>
+</div>
+
+<h1>Coverage Summary for Class: OrdersPreparationEmployeeMenuView (gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">OrdersPreparationEmployeeMenuView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu;
+&nbsp;
+&nbsp;/**
+&nbsp; * View contract for the Order Preparation Employee main menu.
+&nbsp; * Defines the navigation methods and UI interactions available from the dashboard.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface OrdersPreparationEmployeeMenuView {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the full name of the employee on the header.
+&nbsp;     * @param fullName The employee&#39;s full name.
+&nbsp;     */
+&nbsp;    void showEmployeeName(String fullName);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the list of orders already assigned to this employee.
+&nbsp;     * @param employeeId The unique identifier of the employee.
+&nbsp;     */
+&nbsp;    void navigateToAssignedOrders(String employeeId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the pool of new orders available for pickup/assignment.
+&nbsp;     * @param employeeId The unique identifier of the employee.
+&nbsp;     */
+&nbsp;    void navigateToAvailableOrdersToAssign(String employeeId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the account settings screen.
+&nbsp;     * @param employeeId The unique identifier of the employee.
+&nbsp;     */
+&nbsp;    void navigateToProcessAccount(String employeeId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a confirmation dialog before proceeding with account deletion.
+&nbsp;     */
+&nbsp;    void showDeleteAccountConfirmation();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Redirects the user to the Login screen.
+&nbsp;     */
+&nbsp;    void navigateToLogin();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a temporary notification message (Toast).
+&nbsp;     * @param message The content of the message.
+&nbsp;     */
+&nbsp;    void showMessage(String message);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

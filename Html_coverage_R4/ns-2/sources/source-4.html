@@ -1,0 +1,221 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CartItem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: CartItem (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CartItem</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (15/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents an item in the shopping cart.
+&nbsp; * Each CartItem corresponds to a specific product type
+&nbsp; * and a quantity, and maintains a subtotal amount.
+&nbsp; *
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class CartItem {
+&nbsp;
+&nbsp;    /** The quantity of the product in the cart */
+&nbsp;    private int quantity;
+&nbsp;
+&nbsp;    /** Static counter used to generate unique IDs */
+&nbsp;    private static int counter;
+&nbsp;
+&nbsp;    /** The subtotal amount for this cart item */
+&nbsp;    private Money subtotal_amount;
+&nbsp;
+&nbsp;    /** Unique id of the cart item */
+&nbsp;    private int id;
+&nbsp;
+&nbsp;    /** The type of product associated with this cart item */
+&nbsp;    private ProductType productType;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a CartItem with a given product type and quantity.
+&nbsp;     * Automatically assigns an ID and calculates the subtotal.
+&nbsp;     * @param productType the product type
+&nbsp;     * @param quantity the quantity of the product
+&nbsp;     */
+<b class="fc">&nbsp;    public CartItem(ProductType productType, int quantity) {</b>
+<b class="fc">&nbsp;        this.productType = productType;</b>
+<b class="fc">&nbsp;        this.quantity = quantity;</b>
+<b class="fc">&nbsp;        this.id = ++counter;</b>
+<b class="fc">&nbsp;        calculateSubtotal();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a CartItem with a given product type.
+&nbsp;     * @param productType the product type
+&nbsp;     */
+<b class="fc">&nbsp;    public CartItem(ProductType productType) {</b>
+<b class="fc">&nbsp;        this.productType = productType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the quantity of the product.
+&nbsp;     * @return the quantity
+&nbsp;     */
+&nbsp;    public int getQuantity() {
+<b class="fc">&nbsp;        return quantity;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the quantity of the product and calculates again the subtotal.
+&nbsp;     *
+&nbsp;     * @param quantity the new quantity
+&nbsp;     */
+&nbsp;    public void setQuantity(int quantity) {
+<b class="fc">&nbsp;        this.quantity = quantity;</b>
+<b class="fc">&nbsp;        calculateSubtotal();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculates the subtotal amount based on product price and quantity.
+&nbsp;     */
+&nbsp;    public void calculateSubtotal() {
+<b class="fc">&nbsp;        this.subtotal_amount = productType.getPrice().multiply(quantity);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the subtotal amount for this cart item.
+&nbsp;     * @return the subtotal amount
+&nbsp;     */
+&nbsp;    public Money getSubtotal_amount() {
+<b class="fc">&nbsp;        return subtotal_amount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the unique ID of the cart item.
+&nbsp;     * @return the cart item ID
+&nbsp;     */
+&nbsp;    public int getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the unique ID of the cart item.
+&nbsp;     * @param id the new cart item ID
+&nbsp;     */
+&nbsp;    public void setId(int id) {
+<b class="fc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the product type associated with this cart item.
+&nbsp;     * @return the product type
+&nbsp;     */
+&nbsp;    public ProductType getProductType() {
+<b class="fc">&nbsp;        return productType;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a string representation of the cart item.
+&nbsp;     * The string includes the product name, the quantity and the subtotal amount.
+&nbsp;     * @return a formatted string representing the cart item
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="nc">&nbsp;        String productName = productType.getProductname();</b>
+<b class="nc">&nbsp;        String totalStr = subtotal_amount.toString();</b>
+<b class="nc">&nbsp;        return productName + &quot; (x&quot; + quantity + &quot;) -- &quot; + totalStr;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

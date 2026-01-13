@@ -1,0 +1,207 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerPaymentPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.Payment</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerPaymentPresenter (gr.softeng.team21.view.customer.Payment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerPaymentPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.Payment;
+&nbsp;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import gr.softeng.team21.contact.Address;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.domain.Order;
+&nbsp;import gr.softeng.team21.domain.PaymentType;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Customer Payment activity.
+&nbsp; * Handles the business logic for payment selection, order checkout, confirmation and cancellation.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class CustomerPaymentPresenter {
+&nbsp;    private CustomerPaymentView view;
+&nbsp;    private Order order;
+&nbsp;    private Customer customer;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with the view and customer.
+&nbsp;     * @param view The view interface.
+&nbsp;     * @param customer The customer domain object.
+&nbsp;     */
+<b class="fc">&nbsp;    public CustomerPaymentPresenter(CustomerPaymentView view, Customer customer) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.customer = customer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the click for payment.
+&nbsp;     * Initiates checkout and directs to either cash confirmation or card payment screen.
+&nbsp;     * @param cashCheck True if payment is by cash, false if by card.
+&nbsp;     */
+&nbsp;    public void paymentClicked(boolean cashCheck) {
+<b class="fc">&nbsp;        if (cashCheck) {</b>
+<b class="fc">&nbsp;            order = customer.Checkout();</b>
+<b class="fc">&nbsp;            if (order == null) {</b>
+<b class="fc">&nbsp;                view.showMessage(&quot;Το καλάθι είναι άδειο!&quot;);</b>
+&nbsp;                return;
+&nbsp;            }
+<b class="fc">&nbsp;            customer.selectPaymentType(PaymentType.CASH, &quot;&quot;, order);</b>
+<b class="fc">&nbsp;            view.showConfirmation(order.getTotal_amount());</b>
+&nbsp;        } else
+<b class="fc">&nbsp;            view.goToToCardPayment();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Confirms the order and navigates back to the HomePage.
+&nbsp;     */
+&nbsp;    public void ConfirmClicked() {
+&nbsp;        try {
+<b class="fc">&nbsp;            customer.Confirm(&quot;CONFIRM&quot;, order);</b>
+<b class="fc">&nbsp;            view.showMessage(&quot;Η παραγγελία σας καταχωρήθυκε.&quot;);</b>
+<b class="fc">&nbsp;            view.goToCustomerHomePage();</b>
+&nbsp;        } catch (Exception e) {
+<b class="fc">&nbsp;            view.showMessage(&quot;Σφάλμα: &quot; + e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cancels the order and navigates back to the HomePage.
+&nbsp;     */
+&nbsp;    public void CancelClicked() {
+&nbsp;        try {
+<b class="fc">&nbsp;            customer.Confirm(&quot;CANCEL&quot;, order);</b>
+<b class="fc">&nbsp;            view.showMessage(&quot;Η παραγγελία σας ακυρώθηκε.&quot;);</b>
+<b class="fc">&nbsp;            view.goToCustomerHomePage();</b>
+&nbsp;        } catch (Exception e) {
+<b class="fc">&nbsp;            view.showMessage(&quot;Σφάλμα: &quot; + e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the total payment amount in the view.
+&nbsp;     * @param amount The amount string to display.
+&nbsp;     */
+&nbsp;    public void setpaymentClicked(String amount) {
+<b class="fc">&nbsp;        view.showTotalAmount(amount);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the customer&#39;s shipping details (name, address, phone) and updates the view.
+&nbsp;     */
+&nbsp;    public void loadShippingDetails() {
+<b class="fc">&nbsp;        String fullName = customer.getFirstname() + &quot; &quot; + customer.getLastname();</b>
+<b class="fc">&nbsp;        String address = customer.getAddress().toString();</b>
+<b class="fc">&nbsp;        String phone = customer.getPhonenumber();</b>
+<b class="fc">&nbsp;        view.showShippingDetails(fullName, address, phone);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

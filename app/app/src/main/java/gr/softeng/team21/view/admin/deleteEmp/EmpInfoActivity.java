@@ -54,8 +54,6 @@ public class EmpInfoActivity extends AppCompatActivity implements EmpInfoView {
         Button btnDeleteEmp2 = findViewById(R.id.btnDeleteEmp2);
         btnDeleteEmp2.setOnClickListener(v -> deleteEmp());
 
-
-
     }
 
     /**
@@ -75,6 +73,7 @@ public class EmpInfoActivity extends AppCompatActivity implements EmpInfoView {
         String PhoneKeyword = edtPhone.getText().toString();
 
         presenter.deleteEmp(FnameKeyword, LnameKeyword, PhoneKeyword);
+        finish();
     }
 
 }

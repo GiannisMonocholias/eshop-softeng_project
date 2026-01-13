@@ -1,0 +1,114 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EmailDetailsView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.contact.emailDetails</a>
+</div>
+
+<h1>Coverage Summary for Class: EmailDetailsView (gr.softeng.team21.view.contact.emailDetails)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">EmailDetailsView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.contact.emailDetails;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the methods required to display the full metadata and content
+&nbsp; * of a specific email message.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface EmailDetailsView {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the UI to show the email&#39;s subject line.
+&nbsp;     * @param subject The subject text of the email.
+&nbsp;     */
+&nbsp;    void displaySubject(String subject);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the human-readable name of the sender.
+&nbsp;     * This may include role labels (e.g., &quot;John Doe (Customer)&quot;).
+&nbsp;     * @param sender The resolved name of the sender.
+&nbsp;     */
+&nbsp;    void displaySenderName(String sender);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the human-readable name of the receiver.
+&nbsp;     * @param receiver The resolved name of the receiver.
+&nbsp;     */
+&nbsp;    void displayReceiverName(String receiver);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the main content or message body of the email.
+&nbsp;     * @param body The text content of the message.
+&nbsp;     */
+&nbsp;    void displayBody(String body);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the raw email address of the sender.
+&nbsp;     * @param email The sender&#39;s email address string.
+&nbsp;     */
+&nbsp;    void displaySenderEmail(String email);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the raw email address of the receiver.
+&nbsp;     * @param email The receiver&#39;s email address string.
+&nbsp;     */
+&nbsp;    void displayReceiverEmail(String email);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

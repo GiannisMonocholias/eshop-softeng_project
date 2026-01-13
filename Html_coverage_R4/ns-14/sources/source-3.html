@@ -1,0 +1,273 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerPaymentActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.Payment</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerPaymentActivity (gr.softeng.team21.view.customer.Payment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerPaymentActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/46)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.Payment;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.RadioButton;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AlertDialog;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity responsible for handling the payment process for the customer.
+&nbsp; * Implements {@link CustomerPaymentView} and manages UI elements,such as buttons and textView for payment method selection,
+&nbsp; * shipping details display and final confirmation.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+<b class="nc">&nbsp;public class CustomerPaymentActivity extends AppCompatActivity implements CustomerPaymentView {</b>
+&nbsp;
+&nbsp;    private TextView txtFinalAmount,txtShippingName, txtShippingAddress, txtShippingPhone;
+&nbsp;    private Button btnPay;
+&nbsp;    private RadioButton rbCash, rbCard;
+&nbsp;    private CustomerPaymentPresenter presenter;
+&nbsp;    private Customer customer;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the activity, sets the UI layout, retrieves the customer ID,
+&nbsp;     * initializes the presenter,customer and sets up UI components like text views for shipping info and buttons for payment.
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_customer_payment);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+<b class="nc">&nbsp;        String customerId=getIntent().getStringExtra(&quot;CUSTOMER_ID&quot;);</b>
+<b class="nc">&nbsp;        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);</b>
+<b class="nc">&nbsp;        presenter = new CustomerPaymentPresenter(this, customer);</b>
+<b class="nc">&nbsp;        txtFinalAmount = findViewById(R.id.txtCustomerPaymentActivityFinalAmount);</b>
+<b class="nc">&nbsp;        txtShippingName = findViewById(R.id.txtCustomerPaymentActivityShippingName);</b>
+<b class="nc">&nbsp;        txtShippingAddress = findViewById(R.id.txtCustomerPaymentActivityShippingAddress);</b>
+<b class="nc">&nbsp;        txtShippingPhone = findViewById(R.id.txtCustomerPaymentActivityShippingPhone);</b>
+<b class="nc">&nbsp;        btnPay = findViewById(R.id.btnCustomerPaymentActivityPayment);</b>
+<b class="nc">&nbsp;        rbCash = findViewById(R.id.rbCustomerPaymentActivityCash);</b>
+<b class="nc">&nbsp;        rbCard = findViewById(R.id.rbCustomerPaymentActivityCard);</b>
+<b class="nc">&nbsp;        btnPay.setOnClickListener(v -&gt; payment(rbCash.isChecked()));</b>
+<b class="nc">&nbsp;        setdata();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves and sets the initial data for the view (payment amount and shipping details).
+&nbsp;     */
+&nbsp;    private void setdata() {
+<b class="nc">&nbsp;        setpayamount();</b>
+<b class="nc">&nbsp;        setShippingDetails();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method.
+&nbsp;     */
+&nbsp;    private void setShippingDetails() {
+<b class="nc">&nbsp;        presenter.loadShippingDetails();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the total cost from the cart and calls the corresponding presenter method.
+&nbsp;     */
+&nbsp;    private void setpayamount() {
+<b class="nc">&nbsp;        String amount = customer.getShoppingCart().getTotalCost().toString();</b>
+<b class="nc">&nbsp;        presenter.setpaymentClicked(amount);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     * @param check True if Cash is selected, false otherwise.
+&nbsp;     */
+&nbsp;    private void payment(boolean check) {
+<b class="nc">&nbsp;        presenter.paymentClicked(check);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows a short Toast message to the user.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showMessage(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_LONG).show();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Navigates back to the HomePage, clearing the activity stack,via an Intent, passing the customer&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToCustomerHomePage() {
+<b class="nc">&nbsp;        Intent intent = new Intent(CustomerPaymentActivity.this, CustomerHomePageActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;CUSTOMER_ID&quot;, customer.getCustomer_id());</b>
+<b class="nc">&nbsp;        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the CustomerCardPaymentActivity for card transactions via an Intent, passing the customer&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToToCardPayment() {
+<b class="nc">&nbsp;        Intent intent = new Intent(CustomerPaymentActivity.this, CustomerCardPaymentActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;CUSTOMER_ID&quot;, customer.getCustomer_id());</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Displays an AlertDialog to confirm or cancel the order.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showConfirmation(Money amount) {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Επιβεβαίωση ή Ακύρωση&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(&quot;Να καταχωρηθεί η παραγγελία σας αξίας: &quot;+amount+&quot;;&quot;)</b>
+<b class="nc">&nbsp;                .setCancelable(false)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;Επιβεβαίωση Παραγγελίας&quot;, (dialog, which) -&gt; presenter.ConfirmClicked())</b>
+<b class="nc">&nbsp;                .setNegativeButton(&quot;Ακύρωση&quot;, (dialog, which) -&gt; presenter.CancelClicked())</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Updates the text view with the final total amount.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showTotalAmount(String amount) {
+<b class="nc">&nbsp;        txtFinalAmount.setText(amount);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Updates the UI with the shipping details (name, address, phone).
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showShippingDetails(String name, String address, String phone) {
+<b class="nc">&nbsp;        txtShippingName.setText(name);</b>
+<b class="nc">&nbsp;        txtShippingAddress.setText(address);</b>
+<b class="nc">&nbsp;        txtShippingPhone.setText(phone);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

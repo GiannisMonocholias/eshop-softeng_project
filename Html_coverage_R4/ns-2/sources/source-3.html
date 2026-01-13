@@ -1,0 +1,193 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AuthenticationSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: AuthenticationSystem (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AuthenticationSystem</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import gr.softeng.team21.contact.EmailAddress;
+&nbsp;import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
+&nbsp;import gr.softeng.team21.util.Date;
+&nbsp;
+&nbsp;public class AuthenticationSystem {
+&nbsp;    private static AuthenticationSystem instance;
+&nbsp;    private UserCredentialsDAOMemory repo;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Private default constructor.
+&nbsp;     * it is used to avoid external initialization.
+&nbsp;     * initializes the repo variable as a reference to singleton instance
+&nbsp;     * of UserCredentialsDAOMemory.
+&nbsp;     */
+<b class="fc">&nbsp;    private AuthenticationSystem() {</b>
+<b class="fc">&nbsp;        repo = UserCredentialsDAOMemory.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the singleton instance of the AuthenticationSystem.
+&nbsp;     * Initializes the instance it it has not been initialized
+&nbsp;     * @return the unique instance of AuthenticationSystem
+&nbsp;     */
+&nbsp;    public static AuthenticationSystem getInstance() {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            instance = new AuthenticationSystem();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Authenticates a user based on their credentials.
+&nbsp;     * @param username the given username to validate
+&nbsp;     * @param password the given password to validate
+&nbsp;     * @return the User who corresponds to the given username and password
+&nbsp;     * @throws SecurityException if the username is not found or the password is incorrect
+&nbsp;     */
+&nbsp;    public User login(String username, String password) {
+<b class="fc">&nbsp;        return repo.validateAndGetUser(username, password);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Registers a new customer in the system using their identification data.
+&nbsp;     * @param username  account&#39;s unique identifier
+&nbsp;     * @param firstname  first name
+&nbsp;     * @param password  password
+&nbsp;     * @param lastname  last name
+&nbsp;     * @param phoneNumber  phone number
+&nbsp;     * @param emailaddress  email address
+&nbsp;     * @param customer_id unique business id assigned to the customer
+&nbsp;     * @param registdate date when registration took place
+&nbsp;     * @throws IllegalArgumentException if the username is already occupied from another account
+&nbsp;     */
+&nbsp;    public void registerCustomer(String username, String firstname, String password, String lastname, String phoneNumber,
+&nbsp;                                 EmailAddress emailaddress, String customer_id, Date registdate) {
+<b class="fc">&nbsp;        Customer customer = new Customer(username, firstname, password, lastname, phoneNumber, emailaddress, customer_id,</b>
+&nbsp;                registdate);
+<b class="fc">&nbsp;        repo.addUser(customer);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the account associated with the specified username.
+&nbsp;     * @param username the unique identifier of the account to be removed
+&nbsp;     * @throws NoSuchElementException if no account with the given username exists
+&nbsp;     */
+&nbsp;    public void removeUser(String username) {
+<b class="fc">&nbsp;        repo.removeUser(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

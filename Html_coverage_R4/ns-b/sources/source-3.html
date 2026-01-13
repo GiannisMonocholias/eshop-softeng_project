@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > NewRequestActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.admin.requests</a>
+</div>
+
+<h1>Coverage Summary for Class: NewRequestActivity (gr.softeng.team21.view.admin.requests)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NewRequestActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.admin.requests;
+&nbsp;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.ArrayAdapter;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.Spinner;
+&nbsp;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;
+&nbsp;/**
+&nbsp; * In this activity the admin has the ability to create a new request.
+&nbsp; */
+&nbsp;
+<b class="nc">&nbsp;public class NewRequestActivity extends AppCompatActivity implements NewRequestActivityView {</b>
+&nbsp;
+&nbsp;    NewRequestPresenter presenter;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_new_request);</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter = new NewRequestPresenter();</b>
+&nbsp;
+<b class="nc">&nbsp;        Spinner spinner = findViewById(R.id.spinnerAction);</b>
+&nbsp;
+<b class="nc">&nbsp;        String[] actions = {&quot;Εισαγωγή&quot;, &quot;Διαγραφή&quot;, &quot;Τροποποίηση&quot;};</b>
+&nbsp;
+<b class="nc">&nbsp;        ArrayAdapter&lt;String&gt; adapter = new ArrayAdapter&lt;&gt;(</b>
+&nbsp;                this,
+&nbsp;                android.R.layout.simple_spinner_item,
+&nbsp;                actions
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);</b>
+<b class="nc">&nbsp;        spinner.setAdapter(adapter);</b>
+&nbsp;
+<b class="nc">&nbsp;        String selectedAction = spinner.getSelectedItem().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        Button btnNewRequest = findViewById(R.id.btnCreateRequest);</b>
+<b class="nc">&nbsp;        btnNewRequest.setOnClickListener(v -&gt; createRequest());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * CreateRequest() takes the user input and passes them to the method of the presenter in order to create a new request.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void createRequest() {
+&nbsp;
+<b class="nc">&nbsp;        Spinner spinner = findViewById(R.id.spinnerAction);</b>
+<b class="nc">&nbsp;        String choice = spinner.getSelectedItem().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        EditText txtReqDescription = findViewById(R.id.txtRequestDescription);</b>
+<b class="nc">&nbsp;        String descriptionKeyword = txtReqDescription.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        EditText txtProductName = findViewById(R.id.txtRequestProductName);</b>
+<b class="nc">&nbsp;        String productNameKeyword = txtProductName.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        EditText txtProductId = findViewById(R.id.txtRequestProductId);</b>
+<b class="nc">&nbsp;        String productIdKeyword = txtProductId.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter.createRequest(choice , descriptionKeyword , productNameKeyword , productIdKeyword);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

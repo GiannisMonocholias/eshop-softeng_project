@@ -1,0 +1,328 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > LoginActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.user.login</a>
+</div>
+
+<h1>Coverage Summary for Class: LoginActivity (gr.softeng.team21.view.user.login)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LoginActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/44)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">LoginActivity$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.user.login;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AlertDialog;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.Admin;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.domain.CustomerServiceEmployee;
+&nbsp;import gr.softeng.team21.domain.Deliverer;
+&nbsp;import gr.softeng.team21.domain.OrderPreparationEmployee;
+&nbsp;import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+&nbsp;import gr.softeng.team21.domain.User;
+&nbsp;import gr.softeng.team21.memorydao.MemoryInitializer;
+&nbsp;import gr.softeng.team21.view.admin.AdminPanelActivity;
+&nbsp;import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
+&nbsp;import gr.softeng.team21.view.customer.register.RegisterActivity;
+&nbsp;import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity;
+&nbsp;import gr.softeng.team21.view.employee.deliverer.delivererMenu.DelivererMenuActivity;
+&nbsp;import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu.OrderPreparationEmployeeMenuActivity;
+&nbsp;import gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu.UpdateCatalogueEmployeeMenuActivity;
+&nbsp;import gr.softeng.team21.view.util.UserType;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity providing the primary Login UI.
+&nbsp; * Implements {@link LoginView} and routes users to role-specific activities
+&nbsp; * based on their authentication status.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class LoginActivity extends AppCompatActivity implements LoginView {</b>
+&nbsp;
+&nbsp;    private EditText usernameEditText;
+&nbsp;    private EditText passwordEditText;
+&nbsp;    private Button loginButton;
+&nbsp;    private TextView registerTextView;
+&nbsp;    private LoginPresenter presenter;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the layout, binds UI components, and connects the presenter.
+&nbsp;     * Configures click listeners for login and registration actions.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_login);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.loginActivity), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+<b class="nc">&nbsp;        usernameEditText = findViewById(R.id.edtloginUsername);</b>
+<b class="nc">&nbsp;        passwordEditText = findViewById(R.id.edtloginPassword);</b>
+<b class="nc">&nbsp;        loginButton = findViewById(R.id.loginButton);</b>
+<b class="nc">&nbsp;        registerTextView = findViewById(R.id.loginregisterTxtView);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        presenter = new LoginPresenter(this);</b>
+&nbsp;
+<b class="nc">&nbsp;        loginButton.setOnClickListener(v -&gt; presenter.onLogin());</b>
+&nbsp;
+<b class="nc">&nbsp;        registerTextView.setOnClickListener(v -&gt; presenter.onRegister());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String getUsername() {
+<b class="nc">&nbsp;        return usernameEditText.getText().toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String getPassword() {
+<b class="nc">&nbsp;        return passwordEditText.getText().toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showErrorMessage(String title, String message) {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(title)</b>
+<b class="nc">&nbsp;                .setMessage(message)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;OK&quot;, null)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showSuccessMessage(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Factory-style navigation logic that launches the appropriate dashboard
+&nbsp;     * and passes the correct unique ID extra (Customer ID or Employee ID).
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateUserToHomePage(UserType userType, User user) {
+<b class="nc">&nbsp;        Intent intent = null;</b>
+&nbsp;
+<b class="nc">&nbsp;        switch (userType){</b>
+&nbsp;            case CUSTOMER_SERVICE_EMPLOYEE:
+<b class="nc">&nbsp;                intent = new Intent(LoginActivity.this, CustomerServiceMenuActivity.class);</b>
+<b class="nc">&nbsp;                intent.putExtra(&quot;CUSTOMER_SERVICE_EMPLOYEE_ID&quot;, ((CustomerServiceEmployee)user).getEmployeeId());</b>
+&nbsp;                break;
+&nbsp;            case DELIVERER:
+<b class="nc">&nbsp;                intent = new Intent(LoginActivity.this, DelivererMenuActivity.class);</b>
+<b class="nc">&nbsp;                intent.putExtra(&quot;DELIVERER_ID&quot;, ((Deliverer)user).getEmployeeId());</b>
+&nbsp;                break;
+&nbsp;            case ORDER_PREPARATION_EMPLOYEE:
+<b class="nc">&nbsp;                intent = new Intent(LoginActivity.this, OrderPreparationEmployeeMenuActivity.class);</b>
+<b class="nc">&nbsp;                intent.putExtra(&quot;ORDER_PREPARATION_EMPLOYEE_ID&quot;, ((OrderPreparationEmployee)user).getEmployeeId());</b>
+&nbsp;                break;
+&nbsp;            case UPDATE_CATALOGUE_EMPLOYEE:
+<b class="nc">&nbsp;                intent = new Intent(LoginActivity.this, UpdateCatalogueEmployeeMenuActivity.class);</b>
+<b class="nc">&nbsp;                intent.putExtra(&quot;UPDATE_CATALOGUE_EMPLOYEE_ID&quot;, ((UpdateCatalogueEmployee)user).getEmployeeId());</b>
+&nbsp;                break;
+&nbsp;            case CUSTOMER:
+<b class="nc">&nbsp;                intent = new Intent(LoginActivity.this, CustomerHomePageActivity.class);</b>
+<b class="nc">&nbsp;                intent.putExtra(&quot;CUSTOMER_ID&quot;, ((Customer)user).getCustomer_id());</b>
+&nbsp;                break;
+&nbsp;            case ADMIN:
+<b class="nc">&nbsp;                intent = new Intent(LoginActivity.this, AdminPanelActivity.class);</b>
+&nbsp;                break;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if(intent != null){</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToRegister() {
+<b class="nc">&nbsp;        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Standard Android lifecycle method. Resets the login fields
+&nbsp;     * every time the user navigates back to the login screen.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onResume(){
+<b class="nc">&nbsp;        super.onResume();</b>
+<b class="nc">&nbsp;        presenter.loginReset();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void resetFields() {
+<b class="nc">&nbsp;        usernameEditText.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        passwordEditText.setText(&quot;&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

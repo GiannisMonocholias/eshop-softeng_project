@@ -1,0 +1,116 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EmailCompositionView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.user.emailComposition</a>
+</div>
+
+<h1>Coverage Summary for Class: EmailCompositionView (gr.softeng.team21.view.user.emailComposition)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">EmailCompositionView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.user.emailComposition;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines the methods for capturing message input and providing
+&nbsp; * feedback during the sending process.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface EmailCompositionView {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return recipient email input
+&nbsp;     */
+&nbsp;    String getRecipientEmail();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return email subject input
+&nbsp;     */
+&nbsp;    String getSubject();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return email body input
+&nbsp;     */
+&nbsp;    String getBody();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the sender&#39;s profile information in the UI header.
+&nbsp;     * @param name  The full name of the logged-in user.
+&nbsp;     * @param email The email address of the logged-in user.
+&nbsp;     */
+&nbsp;    void setSenderDetails(String name, String email);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays an error message, usually via a Toast or Alert.
+&nbsp;     * @param message The error description.
+&nbsp;     */
+&nbsp;    void showErrorMessage(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a success confirmation message.
+&nbsp;     * @param message The success description.
+&nbsp;     */
+&nbsp;    void showSuccessMessage(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Terminates the composition activity.
+&nbsp;     */
+&nbsp;    void finishActivity();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

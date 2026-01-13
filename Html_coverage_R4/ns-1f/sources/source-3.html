@@ -1,0 +1,106 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OrderPreparationDetailsView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderPreparationDetailsView (gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">OrderPreparationDetailsView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.OrderStatusType;
+&nbsp;
+&nbsp;/**
+&nbsp; * View contract for the Order Preparation Details screen.
+&nbsp; * Defines methods for displaying specific order data, handling success/error
+&nbsp; * feedback, and managing the activity lifecycle.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface OrderPreparationDetailsView {
+&nbsp;    /**
+&nbsp;     * Updates the UI with the detailed information of the order.
+&nbsp;     * @param ordercode The unique identifier of the order.
+&nbsp;     * @param customerName The full name of the customer.
+&nbsp;     * @param submissionDate The date the order was placed.
+&nbsp;     * @param price The total monetary value of the order.
+&nbsp;     * @param status The current status of the order.
+&nbsp;     */
+&nbsp;    void setOrderDetails(String ordercode, String customerName, String submissionDate, String price, OrderStatusType status);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays an error alert, typically for stock shortages or invalid access.
+&nbsp;     * @param message The error description.
+&nbsp;     */
+&nbsp;    void showErrorMessage(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a success alert, usually followed by closing the screen.
+&nbsp;     * @param message The success description.
+&nbsp;     */
+&nbsp;    void showSuccessMessage(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Terminates the current activity and returns to the previous screen.
+&nbsp;     */
+&nbsp;    void finishActivity();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AdminPanelActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: AdminPanelActivity (gr.softeng.team21.view.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdminPanelActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.admin;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.Admin;
+&nbsp;import gr.softeng.team21.memorydao.MemoryInitializer;
+&nbsp;import gr.softeng.team21.view.admin.changeQuantity.ChangeQuantityProductsActivity;
+&nbsp;import gr.softeng.team21.view.admin.createEmp.CreateEmplyeeActivity;
+&nbsp;import gr.softeng.team21.view.admin.data.AdminDataActivity;
+&nbsp;import gr.softeng.team21.view.admin.deleteEmp.DeleteEmployeeActivity;
+&nbsp;import gr.softeng.team21.view.admin.requests.AdminRequestsActivity;
+&nbsp;import gr.softeng.team21.view.admin.requests.RequestsActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * Home screen of the admin that shows the menu of the functions that he can execute.
+&nbsp; */
+&nbsp;
+<b class="nc">&nbsp;public class AdminPanelActivity extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+&nbsp;
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_admin_panel);</b>
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        Button btnEditData = findViewById(R.id.btnEditData);</b>
+<b class="nc">&nbsp;        btnEditData.setOnClickListener(v -&gt; editData());</b>
+&nbsp;
+<b class="nc">&nbsp;        btnEditData.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(AdminPanelActivity.this , AdminDataActivity.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        Button btnRequests = findViewById(R.id.btnRequests);</b>
+<b class="nc">&nbsp;        btnRequests.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(AdminPanelActivity.this , RequestsActivity.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        Button btnCreateEmp = findViewById(R.id.btnCreateEmp);</b>
+<b class="nc">&nbsp;        btnCreateEmp.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(AdminPanelActivity.this , CreateEmplyeeActivity.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        Button btnDeleteEmp = findViewById(R.id.btnDeleteEmp);</b>
+<b class="nc">&nbsp;        btnDeleteEmp.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(AdminPanelActivity.this , DeleteEmployeeActivity.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        Button btnQuantities = findViewById(R.id.btnQuantities);</b>
+<b class="nc">&nbsp;        btnQuantities.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            Intent intent = new Intent(AdminPanelActivity.this , ChangeQuantityProductsActivity.class);</b>
+<b class="nc">&nbsp;            startActivity(intent);</b>
+&nbsp;        });
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private void editData(){
+&nbsp;
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

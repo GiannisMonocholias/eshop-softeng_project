@@ -1,0 +1,197 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EmailPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.contact.editdata.Email</a>
+</div>
+
+<h1>Coverage Summary for Class: EmailPresenter (gr.softeng.team21.view.contact.editdata.Email)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmailPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.contact.editdata.Email;
+&nbsp;
+&nbsp;import java.util.regex.Pattern;
+&nbsp;
+&nbsp;import gr.softeng.team21.contact.EmailAddress;
+&nbsp;import gr.softeng.team21.domain.User;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Email Edit activity.
+&nbsp; * Handles interactions between the {@link EmailView} and the User domain model.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class EmailPresenter {
+&nbsp;    private EmailView view;
+&nbsp;    private User user;
+&nbsp;
+<b class="fc">&nbsp;    private static final Pattern EMAIL_PATTERN = Pattern.compile(</b>
+&nbsp;            &quot;[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}&quot; +
+&nbsp;                    &quot;\\@&quot; +
+&nbsp;                    &quot;[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}&quot; +
+&nbsp;                    &quot;(&quot; +
+&nbsp;                    &quot;\\.&quot; +
+&nbsp;                    &quot;[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}&quot; +
+&nbsp;                    &quot;)+&quot;
+&nbsp;    );
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with the view and attempts to find the user by ID.
+&nbsp;     * @param view The view interface.
+&nbsp;     * @param userId The ID of the user to edit.
+&nbsp;     */
+<b class="fc">&nbsp;    public EmailPresenter(EmailView view, String userId) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        findUser(userId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Searches for the user in both Customer and Employee repositories.
+&nbsp;     * If found, it completes the view with the existing email address.
+&nbsp;     * @param userId The ID of the user.
+&nbsp;     */
+&nbsp;    private void findUser(String userId) {
+<b class="fc">&nbsp;        user = CustomerDAOMemory.getInstance().getCustomer(userId);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (user == null) {</b>
+<b class="fc">&nbsp;            user = EmployeeDAOMemory.getInstance().getEmployee(userId);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (user == null) {</b>
+<b class="fc">&nbsp;            view.showError(&quot;Ο χρήστης δεν βρέθηκε.&quot;);</b>
+<b class="fc">&nbsp;            view.finishView();</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (user.getEmailAddress() != null &amp;&amp; !user.getEmailAddress().toString().isEmpty()) {</b>
+<b class="fc">&nbsp;            view.setEmail(user.getEmailAddress().toString());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Validates the input and saves the new email address for the user.
+&nbsp;     * Checks if the email format is valid.
+&nbsp;     * @param mailtxt The new email address to save.
+&nbsp;     */
+&nbsp;    public void saveEmailClicked(String mailtxt) {
+<b class="fc">&nbsp;        if (user == null) return;</b>
+<b class="fc">&nbsp;        if (mailtxt.isEmpty()) {</b>
+<b class="fc">&nbsp;            view.showError(&quot;Παρακαλώ εισάγετε Email&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (!EMAIL_PATTERN.matcher(mailtxt).matches()) {</b>
+<b class="fc">&nbsp;            view.showError(&quot;Μη έγκυρη μορφή email&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="fc">&nbsp;        user.editData(&quot;4&quot;, mailtxt, null, new EmailAddress(mailtxt));</b>
+<b class="fc">&nbsp;        view.SaveSuccess(&quot;Το email ενημερώθηκε επιτυχώς!&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductDetailsPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.product</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductDetailsPresenter (gr.softeng.team21.view.product)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductDetailsPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.product;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.domain.ProductType;
+&nbsp;import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Product Details activity.
+&nbsp; * Handles interactions between the {@link ProductDetailsView} and the domain logic,
+&nbsp; * including loading product data and managing cart additions.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class ProductDetailsPresenter {
+&nbsp;    private ProductDetailsView view;
+&nbsp;    private Customer customer;
+&nbsp;
+&nbsp;    private ProductType foundProduct;
+<b class="fc">&nbsp;    private int currentQuantity = 1;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with the view and the specific customer.
+&nbsp;     * @param view The view interface.
+&nbsp;     * @param customer The customer domain object.
+&nbsp;     */
+<b class="fc">&nbsp;    public ProductDetailsPresenter(ProductDetailsView view, Customer customer) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.customer = customer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Increases the selected quantity by 1 and updates the view.
+&nbsp;     */
+&nbsp;    public void plusClicked() {
+<b class="fc">&nbsp;        currentQuantity++;</b>
+<b class="fc">&nbsp;        view.showQuantity(currentQuantity);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Decreases the selected quantity by 1 ,if currentQuantity&gt;1, and updates the view.
+&nbsp;     */
+&nbsp;    public void minusClicked() {
+<b class="fc">&nbsp;        if (currentQuantity &gt; 1) {</b>
+<b class="fc">&nbsp;            currentQuantity--;</b>
+<b class="fc">&nbsp;            view.showQuantity(currentQuantity);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds the selected product with ths specific quantity to the customer&#39;s shopping cart.
+&nbsp;     * Displays a success message or error if the operation fails.
+&nbsp;     */
+&nbsp;    public void addToCartClicked() {
+&nbsp;        try {
+<b class="fc">&nbsp;            customer.addItemToCart(foundProduct, currentQuantity);</b>
+<b class="fc">&nbsp;            view.showAddToCartSuccess();</b>
+&nbsp;        } catch (Exception e) {
+<b class="fc">&nbsp;            view.showMessage(&quot;Σφάλμα: &quot; + e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the navigation to the shopping cart.
+&nbsp;     */
+&nbsp;    public void openShoppingCartClicked() {
+<b class="fc">&nbsp;        view.goToCart();</b>
+<b class="fc">&nbsp;        view.showMessage(&quot;Μετάβαση στο Καλάθι...&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the product details from the repository based on the provided product code and updates the view.
+&nbsp;     * @param productCode The unique code of the product to load.
+&nbsp;     */
+&nbsp;    public void loadProduct(String productCode) {
+<b class="fc">&nbsp;        if (productCode != null) {</b>
+<b class="fc">&nbsp;            HashMap&lt;String, ProductType&gt; allProducts = ProductTypeDAOMemory.getInstance().getProducts();</b>
+<b class="fc">&nbsp;            foundProduct = customer.findProduct(allProducts, productCode);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(foundProduct!=null){</b>
+<b class="fc">&nbsp;            view.showProductDetails(foundProduct.getProductname(),</b>
+<b class="fc">&nbsp;                    foundProduct.getProductCode(),</b>
+<b class="fc">&nbsp;                    foundProduct.getPrice().toString(),</b>
+<b class="fc">&nbsp;                    foundProduct.getDescription(), foundProduct.getProductCode());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        view.showQuantity(1);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

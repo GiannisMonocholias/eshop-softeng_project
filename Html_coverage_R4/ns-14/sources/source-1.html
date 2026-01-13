@@ -1,0 +1,205 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerCardPaymentActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.Payment</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerCardPaymentActivity (gr.softeng.team21.view.customer.Payment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerCardPaymentActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.Payment;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.Toast;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AlertDialog;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity responsible for handling the customer&#39;s card payment process.
+&nbsp; * Implements {@link CustomerCardPaymentView} and manages UI elements,such as edittext and button for entering card details
+&nbsp; * and confirming the transaction.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+<b class="nc">&nbsp;public class CustomerCardPaymentActivity extends AppCompatActivity implements CustomerCardPaymentView {</b>
+&nbsp;    private EditText eTCardNumber;
+&nbsp;    private Button btnPay;
+&nbsp;    private CustomerCardPaymentPresenter presenter;
+&nbsp;    private Customer customer;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the activity, sets the UI layout, retrieves the customer ID,
+&nbsp;     * initializes the presenter,customer and sets up the card input field and payment button.
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_customer_card_payment);</b>
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+<b class="nc">&nbsp;        String customerId=getIntent().getStringExtra(&quot;CUSTOMER_ID&quot;);</b>
+<b class="nc">&nbsp;        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);</b>
+<b class="nc">&nbsp;        presenter=new CustomerCardPaymentPresenter(this,customer);</b>
+<b class="nc">&nbsp;        eTCardNumber = findViewById(R.id.edittxtCustomerCardPaymentActivityCardNumber);</b>
+<b class="nc">&nbsp;        btnPay = findViewById(R.id.btnCustomerCardPaymentActivityPayment);</b>
+<b class="nc">&nbsp;        btnPay.setOnClickListener(v -&gt; CardPayment());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Collects the card number from the input field and calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void CardPayment() {
+<b class="nc">&nbsp;        String cardNumber = eTCardNumber.getText().toString().trim();</b>
+<b class="nc">&nbsp;        presenter.CardPaymentClicked(cardNumber);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Displays an AlertDialog asking the user to confirm the order amount.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showConfirmation(Money amount) {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Επιβεβαίωση ή Ακύρωση&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(&quot;Η κάρτα σας θα χρεωθεί το ποσό: &quot;+amount+&quot;\nΝα καταχωρηθεί η παραγγελία σας;&quot;)</b>
+<b class="nc">&nbsp;                .setCancelable(false)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;Επιβεβαίωση Παραγγελίας&quot;, (dialog, which) -&gt; presenter.ConfirmClicked())</b>
+<b class="nc">&nbsp;                .setNegativeButton(&quot;Ακύρωση&quot;, (dialog, which) -&gt; presenter.CancelClicked())</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows a short Toast message to the user.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showMessage(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_LONG).show();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Navigates back to the Customer Home Page, clearing the activity stack,via an Intent, passing the customer&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToCustomerHomePage() {
+<b class="nc">&nbsp;        Intent intent = new Intent(CustomerCardPaymentActivity.this, CustomerHomePageActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;CUSTOMER_ID&quot;, customer.getCustomer_id());</b>
+<b class="nc">&nbsp;        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

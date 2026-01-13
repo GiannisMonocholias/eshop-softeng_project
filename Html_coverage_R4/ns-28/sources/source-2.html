@@ -1,0 +1,159 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserEditDataPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.user.EditData</a>
+</div>
+
+<h1>Coverage Summary for Class: UserEditDataPresenter (gr.softeng.team21.view.user.EditData)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserEditDataPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.user.EditData;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the User Edit Data activity.
+&nbsp; * Handles user selection from the menu and triggers the appropriate navigation in the view.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class UserEditDataPresenter {
+&nbsp;    private UserEditDataView view;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with the view interface.
+&nbsp;     * @param view The view interface.
+&nbsp;     */
+<b class="fc">&nbsp;    public UserEditDataPresenter(UserEditDataView view) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the selection of a menu item based on its position in the list
+&nbsp;     * and calls the corresponding navigation method in the view.
+&nbsp;     * @param position The index of the selected item.
+&nbsp;     */
+&nbsp;    public void Selection(int position) {
+<b class="pc">&nbsp;        switch (position) {</b>
+&nbsp;            case 0:
+<b class="fc">&nbsp;                view.goToUsername();</b>
+&nbsp;                break;
+&nbsp;            case 1:
+<b class="fc">&nbsp;                view.goToPassword();</b>
+&nbsp;                break;
+&nbsp;            case 2:
+<b class="fc">&nbsp;                view.goToAddress();</b>
+&nbsp;                break;
+&nbsp;            case 3:
+<b class="fc">&nbsp;                view.goToEmail();</b>
+&nbsp;                break;
+&nbsp;            case 4:
+<b class="fc">&nbsp;                view.goToPhone();</b>
+&nbsp;                break;
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

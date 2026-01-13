@@ -1,0 +1,700 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MemoryInitializer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.memorydao</a>
+</div>
+
+<h1>Coverage Summary for Class: MemoryInitializer (gr.softeng.team21.memorydao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MemoryInitializer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (8/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.4%
+  </span>
+  <span class="absValue">
+    (208/225)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.memorydao;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import gr.softeng.team21.dao.CustomerDAO;
+&nbsp;import gr.softeng.team21.dao.EmployeeDAO;
+&nbsp;import gr.softeng.team21.dao.OrderDAO;
+&nbsp;import gr.softeng.team21.dao.ProductTypeDAO;
+&nbsp;import gr.softeng.team21.dao.ProductsWareHouseDAO;
+&nbsp;import gr.softeng.team21.dao.UpdateRequestDAO;
+&nbsp;import gr.softeng.team21.dao.UserCredentialsDAO;
+&nbsp;import gr.softeng.team21.domain.Admin;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;import gr.softeng.team21.util.Date;
+&nbsp;import gr.softeng.team21.contact.Address;
+&nbsp;import gr.softeng.team21.domain.Admin;
+&nbsp;import gr.softeng.team21.domain.AllowedRequest;
+&nbsp;import gr.softeng.team21.domain.AuthenticationSystem;
+&nbsp;import gr.softeng.team21.domain.CartItem;
+&nbsp;import gr.softeng.team21.domain.CatalogueUpdateRequest;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.domain.CustomerServiceEmployee;
+&nbsp;import gr.softeng.team21.domain.Deliverer;
+&nbsp;import gr.softeng.team21.contact.EmailAddress;
+&nbsp;import gr.softeng.team21.domain.EmployeeState;
+&nbsp;import gr.softeng.team21.domain.Order;
+&nbsp;import gr.softeng.team21.domain.OrderPreparationEmployee;
+&nbsp;import gr.softeng.team21.domain.PaymentType;
+&nbsp;import gr.softeng.team21.domain.ProductType;
+&nbsp;import gr.softeng.team21.domain.ShoppingCart;
+&nbsp;import gr.softeng.team21.domain.OrderStatusType;
+&nbsp;import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+&nbsp;
+<b class="nc">&nbsp;public class MemoryInitializer {</b>
+&nbsp;    public static void eraseData() {
+&nbsp;        try {
+<b class="fc">&nbsp;            getProductsWareHouseDAO().clear();</b>
+<b class="pc">&nbsp;            if (!getProductsWareHouseDAO().getProductStocks().isEmpty()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Products warehouse was not cleared&quot;);</b>
+&nbsp;            }
+&nbsp;        } catch (IllegalStateException e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // CustomerDAO erase data
+&nbsp;        try {
+<b class="fc">&nbsp;            getCustomerDAO().clear();</b>
+<b class="pc">&nbsp;            if (!getCustomerDAO().getCustomers().isEmpty()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Customers repository was not cleared&quot;);</b>
+&nbsp;            }
+&nbsp;        } catch (IllegalStateException e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // EmployeeDAO erase data
+&nbsp;        try {
+<b class="fc">&nbsp;            getEmployeeDAO().clear();</b>
+<b class="pc">&nbsp;            if (!getEmployeeDAO().getEmployees().isEmpty()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Employee repository was not cleared&quot;);</b>
+&nbsp;            }
+&nbsp;        } catch (IllegalStateException e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // ProductTypeDAO erase data
+&nbsp;        try {
+<b class="fc">&nbsp;            getProductTypeDAO().clear();</b>
+<b class="pc">&nbsp;            if (!getProductTypeDAO().getProducts().isEmpty()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Product types repository was not cleared&quot;);</b>
+&nbsp;            }
+&nbsp;        } catch (IllegalStateException e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // OrderDAO erase data
+&nbsp;        try {
+<b class="fc">&nbsp;            getOrderDAO().clear();</b>
+<b class="pc">&nbsp;            if (!getOrderDAO().getOrders().isEmpty()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Orders repository was not cleared&quot;);</b>
+&nbsp;            }
+&nbsp;        } catch (IllegalStateException e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // UpdateRequestDAO erase data
+&nbsp;        try {
+<b class="fc">&nbsp;            getUpdateRequestDAO().clear();</b>
+<b class="pc">&nbsp;            if (!getUpdateRequestDAO().getUpdateRequests().isEmpty()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Update requests repository was not cleared&quot;);</b>
+&nbsp;            }
+&nbsp;        } catch (IllegalStateException e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // UserCredentialsDAO erase data
+&nbsp;        try {
+<b class="fc">&nbsp;            getUserCredentialsDAO().clear();</b>
+<b class="pc">&nbsp;            if (!getUserCredentialsDAO().getUsersCredentials().isEmpty()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Users credentials repository was not cleared&quot;);</b>
+&nbsp;            }
+&nbsp;        } catch (IllegalStateException e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void prepareData() {
+&nbsp;
+<b class="fc">&nbsp;        eraseData();</b>
+&nbsp;        //=====================================================
+&nbsp;        //START: INITIALIZE CUSTOMERS
+&nbsp;        //=====================================================
+<b class="fc">&nbsp;        CustomerDAO customers = CustomerDAOMemory.getInstance();</b>
+&nbsp;
+<b class="fc">&nbsp;        Address addr1 = new Address(&quot;Ερμού&quot;, &quot;15&quot;, &quot;Αθήνα&quot;, &quot;Ελλάδα&quot;, &quot;10563&quot;);</b>
+<b class="fc">&nbsp;        Address addr2 = new Address(&quot;Τσιμισκή&quot;, &quot;42&quot;, &quot;Θεσσαλονίκη&quot;, &quot;Ελλάδα&quot;, &quot;54623&quot;);</b>
+<b class="fc">&nbsp;        Address addr3 = new Address(&quot;Μαιζώνος&quot;, &quot;120&quot;, &quot;Πάτρα&quot;, &quot;Ελλάδα&quot;, &quot;26221&quot;);</b>
+<b class="fc">&nbsp;        Address addr4 = new Address(&quot;Κύπρου&quot;, &quot;8&quot;, &quot;Λάρισα&quot;, &quot;Ελλάδα&quot;, &quot;41221&quot;);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        Customer cust1 = new Customer(&quot;nickgeorg&quot;, &quot;Νίκος&quot;, &quot;pass1234&quot;, &quot;Γεωργίου&quot;,</b>
+&nbsp;                &quot;6987654321&quot;, new EmailAddress(&quot;nickgeorg@team21.gr&quot;), &quot;CUST-500&quot;, new Date(10, 5, 2022));
+<b class="fc">&nbsp;        cust1.setAddress(addr1);</b>
+<b class="fc">&nbsp;        customers.addCustomer(cust1);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(cust1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Customer cust2 = new Customer(&quot;georgepap&quot;, &quot;Γιώργος&quot;, &quot;pass1235&quot;, &quot;Παπαδόπουλος&quot;,</b>
+&nbsp;                &quot;6987659483&quot;, new EmailAddress(&quot;georgepap@team21.gr&quot;), &quot;CUST-501&quot;, new Date(19, 3, 2021));
+<b class="fc">&nbsp;        cust2.setAddress(addr2);</b>
+<b class="fc">&nbsp;        customers.addCustomer(cust2);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(cust2);</b>
+&nbsp;
+<b class="fc">&nbsp;        Customer cust3 = new Customer(&quot;giannismonoh&quot;, &quot;Γιάννης&quot;, &quot;pass1236&quot;, &quot;Μονοχολιάς&quot;,</b>
+&nbsp;                &quot;6987651456&quot;, new EmailAddress(&quot;giannismonoh@team21.gr&quot;), &quot;CUST-502&quot;, new Date(22, 6, 2021));
+<b class="fc">&nbsp;        cust3.setAddress(addr3);</b>
+<b class="fc">&nbsp;        customers.addCustomer(cust3);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(cust3);</b>
+<b class="fc">&nbsp;        Customer cust4 = new Customer(</b>
+&nbsp;                &quot;giannis_oik&quot;, &quot;Γιάννης&quot;, &quot;pass3210&quot;, &quot;Οικονόμου&quot;, &quot;6944556677&quot;,
+&nbsp;                new EmailAddress(&quot;giannis.oik@team21.gr&quot;), &quot;CUST-503&quot;,new Date(22, 3, 2024)          // Date
+&nbsp;        );
+<b class="fc">&nbsp;        cust4.setAddress(addr4);</b>
+<b class="fc">&nbsp;        customers.addCustomer(cust4);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(cust4);</b>
+&nbsp;        //=====================================================
+&nbsp;        //END: INITIALIZE CUSTOMERS
+&nbsp;        //=====================================================
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //START: INITIALIZE EMPLOYEES
+&nbsp;        //=====================================================
+<b class="fc">&nbsp;        EmployeeDAO employees = (EmployeeDAO) EmployeeDAOMemory.getInstance();</b>
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //CUSTOMER SERVICE EMPLOYEES INITIALIZATION
+&nbsp;        //=====================================================
+<b class="fc">&nbsp;        EmailAddress emailCs1 = new EmailAddress(&quot;m.alexandrou@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        CustomerServiceEmployee csr1 = new CustomerServiceEmployee(</b>
+&nbsp;                &quot;m_alexandrou&quot;, &quot;Μαρία&quot;, &quot;pass1237&quot;, &quot;Αλεξάνδρου&quot;,
+&nbsp;                &quot;6971234567&quot;, emailCs1, &quot;CSR-101&quot;, 200, 1100, 40, EmployeeState.ACTIVE, new Date(19, 1, 2018)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(csr1);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(csr1);</b>
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress emailCs2 = new EmailAddress(&quot;p.dimitriou@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        CustomerServiceEmployee csr2 = new CustomerServiceEmployee(</b>
+&nbsp;                &quot;p_dimitriou&quot;, &quot;Πέτρος&quot;, &quot;pass1238&quot;, &quot;Δημητρίου&quot;,
+&nbsp;                &quot;6972345678&quot;, emailCs2, &quot;CSR-102&quot;, 180, 1050, 40, EmployeeState.ACTIVE, new Date(15, 2, 2024)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(csr2);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(csr2);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress emailCs3 = new EmailAddress(&quot;s.konst@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        CustomerServiceEmployee csr3 = new CustomerServiceEmployee(</b>
+&nbsp;                &quot;s_konstantinou&quot;, &quot;Σοφία&quot;, &quot;pass1239&quot;, &quot;Κωνσταντίνου&quot;,
+&nbsp;                &quot;6973456789&quot;, emailCs3, &quot;CSR-103&quot;, 220, 1150, 40, EmployeeState.ACTIVE, new Date(13, 9, 2019)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(csr3);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(csr3);</b>
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //ORDER PREPARATION EMPLOYEES INITIALIZATION
+&nbsp;        //=====================================================
+<b class="fc">&nbsp;        EmailAddress emailPrep1 = new EmailAddress(&quot;g.nikolaou@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        OrderPreparationEmployee prep1 = new OrderPreparationEmployee(</b>
+&nbsp;                &quot;g_nikolaou&quot;, &quot;Γιώργος&quot;, &quot;pass1240&quot;, &quot;Νικολάου&quot;,
+&nbsp;                &quot;6981122334&quot;, emailPrep1, &quot;PREP-201&quot;, 100, 1200, 40, EmployeeState.ACTIVE, new Date(25, 7, 2023)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(prep1);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(prep1);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress emailPrep2 = new EmailAddress(&quot;a.vasiliou@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        OrderPreparationEmployee prep2 = new OrderPreparationEmployee(</b>
+&nbsp;                &quot;a_vasiliou&quot;, &quot;Άννα&quot;, &quot;pass1241&quot;, &quot;Βασιλείου&quot;,
+&nbsp;                &quot;6982233445&quot;, emailPrep2, &quot;PREP-202&quot;, 120, 1250, 40, EmployeeState.ACTIVE, new Date(22, 1, 2020)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(prep2);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(prep2);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress emailPrep3 = new EmailAddress(&quot;k.papadakis@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        OrderPreparationEmployee prep3 = new OrderPreparationEmployee(</b>
+&nbsp;                &quot;k_papadakis&quot;, &quot;Κώστας&quot;, &quot;pass1242&quot;, &quot;Παπαδάκης&quot;,
+&nbsp;                &quot;6983344556&quot;, emailPrep3, &quot;PREP-203&quot;, 100, 1180, 40, EmployeeState.ACTIVE, new Date(27, 8, 2021)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(prep3);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(prep3);</b>
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //CATALOGUE UPDATE EMPLOYEES INITIALIZATION
+&nbsp;        //=====================================================
+<b class="fc">&nbsp;        EmailAddress emailCat1 = new EmailAddress(&quot;d.georgiou@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        UpdateCatalogueEmployee cat1 = new UpdateCatalogueEmployee(</b>
+&nbsp;                &quot;d_georgiou&quot;, &quot;Δήμητρα&quot;, &quot;pass1243&quot;, &quot;Γεωργίου&quot;,
+&nbsp;                &quot;6941112223&quot;, emailCat1, &quot;CAT-301&quot;, 150, 1300, 40, EmployeeState.ACTIVE, new Date(18, 9, 2022)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(cat1);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(cat1);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress emailCat2 = new EmailAddress(&quot;th.ioannou@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        UpdateCatalogueEmployee cat2 = new UpdateCatalogueEmployee(</b>
+&nbsp;                &quot;th_ioannou&quot;, &quot;Θάνος&quot;, &quot;pass1244&quot;, &quot;Ιωάννου&quot;,
+&nbsp;                &quot;6942223334&quot;, emailCat2, &quot;CAT-302&quot;, 150, 1300, 40, EmployeeState.ACTIVE, new Date(15, 3, 2018)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(cat2);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(cat2);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress emailCat3 = new EmailAddress(&quot;e.rizos@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        UpdateCatalogueEmployee cat3 = new UpdateCatalogueEmployee(</b>
+&nbsp;                &quot;e_rizos&quot;, &quot;Ελένη&quot;, &quot;pass1245&quot;, &quot;Ρίζου&quot;,
+&nbsp;                &quot;6943334445&quot;, emailCat3, &quot;CAT-303&quot;, 160, 1350, 40, EmployeeState.ACTIVE, new Date(25, 10, 2022)
+&nbsp;        );
+<b class="fc">&nbsp;        employees.addEmployee(cat3);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(cat3);</b>
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //DELIVERERS INITIALIZATION
+&nbsp;        //=====================================================
+<b class="fc">&nbsp;        EmailAddress emailDel1 = new EmailAddress(&quot;n.stamos@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        Deliverer del1 = new Deliverer(</b>
+&nbsp;                &quot;n_stamos&quot;, &quot;Νίκος&quot;, &quot;pass1246&quot;, &quot;Στάμος&quot;,
+&nbsp;                &quot;6955556661&quot;, emailDel1, &quot;DEL-401&quot;, 300, 900, 40, EmployeeState.ACTIVE, new Date(12, 11, 2024),
+&nbsp;                15, true
+&nbsp;        );
+<b class="fc">&nbsp;        getEmployeeDAO().addEmployee(del1);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(del1);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress emailDel2 = new EmailAddress(&quot;x.panou@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        Deliverer del2 = new Deliverer(</b>
+&nbsp;                &quot;x_panou&quot;, &quot;Χρήστος&quot;, &quot;pass1247&quot;, &quot;Πάνου&quot;,
+&nbsp;                &quot;6955556662&quot;, emailDel2, &quot;DEL-402&quot;, 280, 900, 40, EmployeeState.ACTIVE, new Date(7, 10, 2023),
+&nbsp;                12, true
+&nbsp;        );
+<b class="fc">&nbsp;        getEmployeeDAO().addEmployee(del2);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(del2);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress emailDel3 = new EmailAddress(&quot;m.lazarou@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        Deliverer del3 = new Deliverer(</b>
+&nbsp;                &quot;m_lazarou&quot;, &quot;Μιχάλης&quot;, &quot;pass1248&quot;, &quot;Λαζάρου&quot;,
+&nbsp;                &quot;6955556663&quot;, emailDel3, &quot;DEL-403&quot;, 320, 950, 40, EmployeeState.ACTIVE, new Date(10, 9, 2021),
+&nbsp;                20, false
+&nbsp;        );
+<b class="fc">&nbsp;        getEmployeeDAO().addEmployee(del3);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(del3);</b>
+&nbsp;        //=====================================================
+&nbsp;        //END: INITIALIZE EMPLOYEES
+&nbsp;        //=====================================================
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //START: INITIALIZE ADMIN
+&nbsp;        //=====================================================
+&nbsp;
+<b class="fc">&nbsp;        EmailAddress email_Admin = new EmailAddress(&quot;geopap@team21.gr&quot;);</b>
+<b class="fc">&nbsp;        Admin ad = Admin.getInstance(&quot;g_papadakis&quot; , &quot;Γεώργιος&quot; , &quot;ppd246&quot; , &quot;Παπαδάκης&quot; , &quot;6908381070&quot; , email_Admin , 2000);</b>
+<b class="fc">&nbsp;        getUserCredentialsDAO().addUser(ad);</b>
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //END: INITIALIZE ADMIN
+&nbsp;        //=====================================================
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //START: INITIALIZE PRODUCT TYPES
+&nbsp;        //=====================================================
+&nbsp;
+<b class="fc">&nbsp;        ProductTypeDAO products = ProductTypeDAOMemory.getInstance();</b>
+&nbsp;
+&nbsp;        // --- 1. Laptops ---
+<b class="fc">&nbsp;        ProductType laptop1 = new ProductType(&quot;Dell XPS 15&quot;, &quot;Φορητός υπολογιστής υψηλών επιδόσεων με οθόνη αφής 4K.&quot;, new Money(BigDecimal.valueOf(1850.00), &quot;€&quot;), &quot;TECH-001&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(laptop1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType laptop2 = new ProductType(&quot;MacBook Air M2&quot;, &quot;Ελαφρύ και κομψό laptop της Apple με κορυφαία αυτονομία.&quot;, new Money(BigDecimal.valueOf(1299.90), &quot;€&quot;), &quot;TECH-002&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(laptop2);</b>
+&nbsp;
+&nbsp;        // --- 2. Mice ---
+<b class="fc">&nbsp;        ProductType mouse1 = new ProductType(&quot;Logitech MX Master 3S&quot;, &quot;Ασύρματο ποντίκι εργονομικής σχεδίασης με αθόρυβα κλικ.&quot;, new Money(BigDecimal.valueOf(99.90), &quot;€&quot;), &quot;TECH-003&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(mouse1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType mouse2 = new ProductType(&quot;Razer DeathAdder V3&quot;, &quot;Ενσύρματο ποντίκι gaming με εξαιρετικά ελαφρύ σχεδιασμό.&quot;, new Money(BigDecimal.valueOf(79.90), &quot;€&quot;), &quot;TECH-004&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(mouse2);</b>
+&nbsp;
+&nbsp;        // --- 3. Keyboards ---
+<b class="fc">&nbsp;        ProductType keyboard1 = new ProductType(&quot;Corsair K70 RGB&quot;, &quot;Μηχανικό πληκτρολόγιο gaming με διακόπτες Cherry MX.&quot;, new Money(BigDecimal.valueOf(169.90), &quot;€&quot;), &quot;TECH-005&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(keyboard1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType keyboard2 = new ProductType(&quot;Logitech MX Keys&quot;, &quot;Ασύρματο πληκτρολόγιο χαμηλού προφίλ με έξυπνο φωτισμό.&quot;, new Money(BigDecimal.valueOf(119.00), &quot;€&quot;), &quot;TECH-006&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(keyboard2);</b>
+&nbsp;
+&nbsp;        // --- 4. Monitors ---
+<b class="fc">&nbsp;        ProductType monitor1 = new ProductType(&quot;LG UltraGear 27\&quot;&quot;, &quot;Gaming οθόνη 27 ιντσών με ρυθμό ανανέωσης 144Hz.&quot;, new Money(BigDecimal.valueOf(349.00), &quot;€&quot;), &quot;TECH-007&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(monitor1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType monitor2 = new ProductType(&quot;Dell UltraSharp 32\&quot;&quot;, &quot;Επαγγελματική οθόνη 4K με εξαιρετική πιστότητα χρωμάτων.&quot;, new Money(BigDecimal.valueOf(750.00), &quot;€&quot;), &quot;TECH-008&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(monitor2);</b>
+&nbsp;
+&nbsp;        // --- 5. CPUs ---
+<b class="fc">&nbsp;        ProductType cpu1 = new ProductType(&quot;Intel Core i9-14900K&quot;, &quot;Κορυφαίος επεξεργαστής desktop με 24 πυρήνες.&quot;, new Money(BigDecimal.valueOf(680.00), &quot;€&quot;), &quot;TECH-009&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(cpu1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType cpu2 = new ProductType(&quot;AMD Ryzen 7 7800X3D&quot;, &quot;Ο καλύτερος επεξεργαστής για gaming με τεχνολογία 3D V-Cache.&quot;, new Money(BigDecimal.valueOf(420.00), &quot;€&quot;), &quot;TECH-010&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(cpu2);</b>
+&nbsp;
+&nbsp;        // --- 6. RAM ---
+<b class="fc">&nbsp;        ProductType ram1 = new ProductType(&quot;Corsair Vengeance 32GB&quot;, &quot;Σετ μνήμης RAM DDR5 υψηλής ταχύτητας με RGB.&quot;, new Money(BigDecimal.valueOf(145.00), &quot;€&quot;), &quot;TECH-011&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(ram1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType ram2 = new ProductType(&quot;G.Skill Trident Z5&quot;, &quot;Μνήμη RAM εξαιρετικά χαμηλής καθυστέρησης για overclocking.&quot;, new Money(BigDecimal.valueOf(180.00), &quot;€&quot;), &quot;TECH-012&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(ram2);</b>
+&nbsp;
+&nbsp;        // --- 7. GPUs ---
+<b class="fc">&nbsp;        ProductType gpu1 = new ProductType(&quot;Nvidia RTX 4070&quot;, &quot;Κάρτα γραφικών νέας γενιάς με υποστήριξη DLSS 3.&quot;, new Money(BigDecimal.valueOf(650.00), &quot;€&quot;), &quot;TECH-013&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(gpu1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType gpu2 = new ProductType(&quot;AMD Radeon RX 7800 XT&quot;, &quot;Ισχυρή κάρτα γραφικών με 16GB μνήμης VRAM.&quot;, new Money(BigDecimal.valueOf(540.00), &quot;€&quot;), &quot;TECH-014&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(gpu2);</b>
+&nbsp;
+&nbsp;        // --- 8. Storage ---
+<b class="fc">&nbsp;        ProductType storage1 = new ProductType(&quot;Samsung 990 Pro 1TB&quot;, &quot;Δίσκος SSD NVMe M.2 με απίστευτες ταχύτητες.&quot;, new Money(BigDecimal.valueOf(109.90), &quot;€&quot;), &quot;TECH-015&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(storage1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType storage2 = new ProductType(&quot;WD Blue 4TB HDD&quot;, &quot;Κλασικός σκληρός δίσκος μεγάλης χωρητικότητας.&quot;, new Money(BigDecimal.valueOf(85.00), &quot;€&quot;), &quot;TECH-016&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(storage2);</b>
+&nbsp;
+&nbsp;        // --- 9. Accessories ---
+<b class="fc">&nbsp;        ProductType accessory1 = new ProductType(&quot;Sony WH-1000XM5&quot;, &quot;Ασύρματα ακουστικά με κορυφαία ακύρωση θορύβου.&quot;, new Money(BigDecimal.valueOf(329.00), &quot;€&quot;), &quot;TECH-017&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(accessory1);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType accessory2 = new ProductType(&quot;Razer Kraken&quot;, &quot;Ενσύρματα gaming ακουστικά με ήχο 7.1 Surround, οδηγούς 50mm και μαξιλαράκια Cooling Gel για μέγιστη άνεση.&quot;, new Money(BigDecimal.valueOf(79.90), &quot;€&quot;), &quot;TECH-018&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(accessory2);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType accessory3 = new ProductType(&quot;Logitech C920 HD Pro&quot;, &quot;Web κάμερα υψηλής ευκρίνειας 1080p.&quot;, new Money(BigDecimal.valueOf(65.50), &quot;€&quot;), &quot;TECH-019&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(accessory3);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType accessory4 = new ProductType(&quot;iPad Air 5th Gen&quot;, &quot;Tablet με επεξεργαστή M1 και οθόνη Liquid Retina.&quot;, new Money(BigDecimal.valueOf(679.00), &quot;€&quot;), &quot;TECH-020&quot;);</b>
+<b class="fc">&nbsp;        products.addProductType(accessory4);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType applewatch = new ProductType(&quot;AppleWatch SE 44mm&quot; , &quot;Έξυπνο ρολοι με λειτουργικό iOS&quot; , new Money(BigDecimal.valueOf(299.00) , &quot;€&quot;) , &quot;TECH-021&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        ProductType airTag = new ProductType(&quot;Apple AirTag&quot; , &quot;Tag για πανεύκολο εντοπισμό αντικειμένων&quot; , new Money(BigDecimal.valueOf(29.00) , &quot;€&quot;) , &quot;TECH-022&quot;);</b>
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //END: INITIALIZE PRODUCT TYPES
+&nbsp;        //=====================================================
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //START: PRODUCTS WARAHOUSE FILLING
+&nbsp;        //=====================================================
+<b class="fc">&nbsp;        ProductsWareHouseDAO warehouse = getProductsWareHouseDAO();</b>
+&nbsp;
+&nbsp;        try {
+<b class="pc">&nbsp;            if (warehouse.getProductStocks().size() != products.getProducts().size()) {</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;Products warehouse does not have all productTypes&quot;);</b>
+&nbsp;            }
+&nbsp;            // --- Laptops (Ακριβά είδη - Λίγο απόθεμα) ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-001&quot;), 10); // Dell XPS</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-002&quot;), 8);  // MacBook Air</b>
+&nbsp;
+&nbsp;            // --- Mice (Περιφερειακά - Αρκετό απόθεμα) ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-003&quot;), 45); // Logitech MX</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-004&quot;), 30); // Razer Mouse</b>
+&nbsp;
+&nbsp;            // --- Keyboards ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-005&quot;), 25); // Corsair</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-006&quot;), 35); // Logitech Keys</b>
+&nbsp;
+&nbsp;            // --- Monitors (Ογκώδη είδη) ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-007&quot;), 15); // LG Monitor</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-008&quot;), 10); // Dell Monitor</b>
+&nbsp;
+&nbsp;            // --- CPUs (Υψηλή ζήτηση) ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-009&quot;), 12); // Intel i9</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-010&quot;), 12); // Ryzen 7</b>
+&nbsp;
+&nbsp;            // --- RAM (Συχνή αγορά) ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-011&quot;), 50); // Corsair RAM</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-012&quot;), 40); // G.Skill RAM</b>
+&nbsp;
+&nbsp;            // --- GPUs (Πολύ ακριβά - Περιορισμένο απόθεμα) ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-013&quot;), 6);  // Nvidia 4070</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-014&quot;), 8);  // AMD 7800 XT</b>
+&nbsp;
+&nbsp;            // --- Storage ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-015&quot;), 60); // Samsung SSD</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-016&quot;), 40); // WD HDD</b>
+&nbsp;
+&nbsp;            // --- Accessories ---
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-017&quot;), 20); // Sony Headphones</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-018&quot;), 25); // Razer Headset</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-019&quot;), 30); // Webcam</b>
+<b class="fc">&nbsp;            warehouse.increaseProductStock(products.getProduct(&quot;TECH-020&quot;), 15); // iPad Air</b>
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //END: PRODUCTS WARAHOUSE FILLING
+&nbsp;        //=====================================================
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //START: INITIALIZE ORDERS
+&nbsp;        //=====================================================
+<b class="fc">&nbsp;        OrderDAO orders = (OrderDAO) OrderDAOMemory.getInstance();</b>
+&nbsp;
+&nbsp;
+&nbsp;        //ORDER 1
+<b class="fc">&nbsp;        ShoppingCart cart1 = new ShoppingCart(cust1);</b>
+<b class="fc">&nbsp;        cart1.addItem(new CartItem(products.getProduct(&quot;TECH-001&quot;), 1));</b>
+<b class="fc">&nbsp;        cart1.addItem(new CartItem(products.getProduct(&quot;TECH-003&quot;), 1));</b>
+&nbsp;
+<b class="fc">&nbsp;        Order order1 = new Order(&quot;ORD-2023-001&quot;, new Date(10, 11, 2023), OrderStatusType.SHIPPED,</b>
+&nbsp;                true, PaymentType.CARD, new Date(14, 11, 2023), cart1
+&nbsp;        );
+&nbsp;
+<b class="fc">&nbsp;        order1.setTotal_amount(cart1.getTotalCost());</b>
+<b class="fc">&nbsp;        cust1.Confirm(&quot;CONFIRM&quot;,order1);</b>
+&nbsp;
+&nbsp;        //ORDER 2
+<b class="fc">&nbsp;        ShoppingCart cart2 = new ShoppingCart(cust2);</b>
+&nbsp;        // CPU (1), GPU (1), RAM (2)
+<b class="fc">&nbsp;        cart2.addItem(new CartItem(products.getProduct(&quot;TECH-009&quot;), 1));</b>
+<b class="fc">&nbsp;        cart2.addItem(new CartItem(products.getProduct(&quot;TECH-013&quot;), 1));</b>
+<b class="fc">&nbsp;        cart2.addItem(new CartItem(products.getProduct(&quot;TECH-011&quot;), 2));</b>
+&nbsp;
+<b class="fc">&nbsp;        Order order2 = new Order(&quot;ORD-2024-002&quot;, new Date(5, 1, 2024), OrderStatusType.NEW,</b>
+&nbsp;                false, PaymentType.CASH, null, cart2
+&nbsp;        );
+<b class="fc">&nbsp;        order2.setTotal_amount(cart2.getTotalCost());</b>
+<b class="fc">&nbsp;        cust2.Confirm(&quot;CONFIRM&quot;,order2);</b>
+&nbsp;
+&nbsp;        //ORDER 3
+<b class="fc">&nbsp;        ShoppingCart cart3 = new ShoppingCart(cust3);</b>
+&nbsp;        // Headphones (1) + Webcam (1)
+<b class="fc">&nbsp;        cart3.addItem(new CartItem(products.getProduct(&quot;TECH-017&quot;), 1));</b>
+<b class="fc">&nbsp;        cart3.addItem(new CartItem(products.getProduct(&quot;TECH-019&quot;), 1));</b>
+&nbsp;
+<b class="fc">&nbsp;        Order order3 = new Order(&quot;ORD-2024-003&quot;, new Date(12, 1, 2024), OrderStatusType.SHIPPED,</b>
+&nbsp;                false, PaymentType.CASH, null, cart3
+&nbsp;        );
+<b class="fc">&nbsp;        order3.setTotal_amount(cart3.getTotalCost());</b>
+<b class="fc">&nbsp;        cust3.Confirm(&quot;CONFIRM&quot;,order3);</b>
+&nbsp;
+&nbsp;
+&nbsp;        //ORDER 4
+<b class="fc">&nbsp;        ShoppingCart cart4 = new ShoppingCart(cust1);</b>
+<b class="fc">&nbsp;        cart4.addItem(new CartItem(products.getProduct(&quot;TECH-007&quot;), 2));</b>
+&nbsp;
+<b class="fc">&nbsp;        Order order4 = new Order(&quot;ORD-2024-004&quot;, new Date(15, 1, 2024), OrderStatusType.DELAYED,</b>
+&nbsp;                false, PaymentType.CASH, null, cart4
+&nbsp;        );
+&nbsp;
+<b class="fc">&nbsp;        order4.setTotal_amount(cart4.getTotalCost());</b>
+<b class="fc">&nbsp;        cust1.Confirm(&quot;CONFIRM&quot;,order4);</b>
+&nbsp;
+&nbsp;
+&nbsp;        //ORDER 5
+<b class="fc">&nbsp;        ShoppingCart cart5 = new ShoppingCart(cust2);</b>
+<b class="fc">&nbsp;        cart5.addItem(new CartItem(products.getProduct(&quot;TECH-020&quot;), 1));</b>
+&nbsp;
+<b class="fc">&nbsp;        Order order5 = new Order(&quot;ORD-2024-005&quot;, new Date(20, 1, 2024), OrderStatusType.SHIPPED,</b>
+&nbsp;                true, PaymentType.CARD, null, cart5
+&nbsp;        );
+&nbsp;
+<b class="fc">&nbsp;        order5.setTotal_amount(cart5.getTotalCost());</b>
+<b class="fc">&nbsp;        cust2.Confirm(&quot;CONFIRM&quot;,order5);</b>
+&nbsp;        //=====================================================
+&nbsp;        //END: INITIALIZE ORDERS
+&nbsp;        //=====================================================
+&nbsp;
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //START: INITIALIZE CATALOGUE UPDATE REQUESTS
+&nbsp;        //=====================================================
+&nbsp;
+<b class="fc">&nbsp;        UpdateRequestDAO requests = getUpdateRequestDAO();</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Request 1
+<b class="fc">&nbsp;        CatalogueUpdateRequest req1 = new CatalogueUpdateRequest(new Date(15, 1, 2024), &quot;Αύξηση τιμής κατά 50€ λόγω νέας παρτίδας.&quot;,</b>
+<b class="fc">&nbsp;                products.getProduct(&quot;TECH-001&quot;), AllowedRequest.PROCESS_PRODUCT, 1</b>
+&nbsp;        );
+<b class="fc">&nbsp;        requests.addUpdateRequest(req1); // Ή requests.save(req1)</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Request 2
+<b class="fc">&nbsp;        CatalogueUpdateRequest req2 = new CatalogueUpdateRequest(new Date(16, 1, 2024), &quot;Διόρθωση τυπογραφικού λάθους στα DPI του αισθητήρα.&quot;,</b>
+<b class="fc">&nbsp;                products.getProduct(&quot;TECH-004&quot;), AllowedRequest.PROCESS_PRODUCT, 2</b>
+&nbsp;        );
+<b class="fc">&nbsp;        requests.addUpdateRequest(req2);</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Request 3
+<b class="fc">&nbsp;        CatalogueUpdateRequest req3 = new CatalogueUpdateRequest(new Date(18, 1, 2024), &quot;Εφαρμογή έκπτωσης 10% για προωθητική ενέργεια.&quot;,</b>
+<b class="fc">&nbsp;                products.getProduct(&quot;TECH-017&quot;), AllowedRequest.PROCESS_PRODUCT, 3</b>
+&nbsp;        );
+<b class="fc">&nbsp;        requests.addUpdateRequest(req3);</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Request 4
+<b class="fc">&nbsp;        CatalogueUpdateRequest req4 = new CatalogueUpdateRequest(new Date(20, 1, 2024), &quot;Το προϊόν καταργήθηκε από τον προμηθευτή, παρακαλώ να αφαιρεθεί.&quot;,</b>
+<b class="fc">&nbsp;                products.getProduct(&quot;TECH-015&quot;), AllowedRequest.DELETE_PRODUCT, 4</b>
+&nbsp;        );
+<b class="fc">&nbsp;        requests.addUpdateRequest(req4);</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Request 5
+<b class="fc">&nbsp;        ProductType newPrinter = new ProductType(&quot;Canon Pixma TS3450&quot;, &quot;Πολυμηχάνημα Inkjet έγχρωμο με WiFi.&quot;,</b>
+<b class="fc">&nbsp;                new Money(BigDecimal.valueOf(55.90), &quot;€&quot;), &quot;TECH-NEW-01&quot;</b>
+&nbsp;        );
+&nbsp;
+<b class="fc">&nbsp;        CatalogueUpdateRequest req5 = new CatalogueUpdateRequest(new Date(22, 1, 2024), &quot;Εισαγωγή νέου κωδικού εκτυπωτή στον κατάλογο.&quot;,</b>
+&nbsp;                newPrinter, AllowedRequest.INSERT_PRODUCT, 5
+&nbsp;        );
+<b class="fc">&nbsp;        requests.addUpdateRequest(req5);</b>
+&nbsp;
+&nbsp;        //=====================================================
+&nbsp;        //END: INITIALIZE CATALOGUE UPDATE REQUESTS
+&nbsp;        //=====================================================
+&nbsp;
+&nbsp;        //Initialize Authentication System
+<b class="fc">&nbsp;        AuthenticationSystem.getInstance();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    public static CustomerDAO getCustomerDAO() {
+<b class="fc">&nbsp;        return CustomerDAOMemory.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static EmployeeDAO getEmployeeDAO() {
+<b class="fc">&nbsp;        return (EmployeeDAO) EmployeeDAOMemory.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static OrderDAO getOrderDAO() {
+<b class="fc">&nbsp;        return (OrderDAO) OrderDAOMemory.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static ProductsWareHouseDAO getProductsWareHouseDAO() {
+<b class="fc">&nbsp;        return (ProductsWareHouseDAO) ProductsWareHouseDAOMemory.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static ProductTypeDAO getProductTypeDAO() {
+<b class="fc">&nbsp;        return (ProductTypeDAO) ProductTypeDAOMemory.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static UpdateRequestDAO getUpdateRequestDAO() {
+<b class="fc">&nbsp;        return UpdateRequestDAOMemory.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static UserCredentialsDAO getUserCredentialsDAO() {
+<b class="fc">&nbsp;        return UserCredentialsDAOMemory.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

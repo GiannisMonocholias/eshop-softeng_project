@@ -1,0 +1,260 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > StockProductAdapter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.util</a>
+</div>
+
+<h1>Coverage Summary for Class: StockProductAdapter (gr.softeng.team21.view.util)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StockProductAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">StockProductAdapter$ViewHolder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/26)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.util;
+&nbsp;
+&nbsp;import android.graphics.Color;
+&nbsp;import android.view.LayoutInflater;
+&nbsp;import android.view.View;
+&nbsp;import android.view.ViewGroup;
+&nbsp;import android.widget.TextView;
+&nbsp;
+&nbsp;import androidx.annotation.NonNull;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.dao.ProductsWareHouseDAO;
+&nbsp;import gr.softeng.team21.domain.CartItem;
+&nbsp;import gr.softeng.team21.domain.ProductType;
+&nbsp;import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Adapter for displaying products in the stock verification screen during order preparation.
+&nbsp; * It compares the requested quantity from the cart with the actual warehouse stock.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class StockProductAdapter extends RecyclerView.Adapter&lt;StockProductAdapter.ViewHolder&gt; {
+&nbsp;
+&nbsp;    private final List&lt;CartItem&gt; cartItems;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor for StockProductAdapter.
+&nbsp;     * @param cartItems The list of items contained in the order.
+&nbsp;     */
+<b class="nc">&nbsp;    public StockProductAdapter(List&lt;CartItem&gt; cartItems) {</b>
+<b class="nc">&nbsp;        this.cartItems = cartItems;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Inflates the layout for the stock product item.
+&nbsp;     * @param parent The ViewGroup into which the new View will be added.
+&nbsp;     * @param viewType The view type of the new View.
+&nbsp;     * @return A new ViewHolder instance.
+&nbsp;     */
+&nbsp;    @NonNull
+&nbsp;    @Override
+&nbsp;    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+<b class="nc">&nbsp;        View view = LayoutInflater.from(parent.getContext())</b>
+<b class="nc">&nbsp;                .inflate(R.layout.item_product_stock, parent, false);</b>
+<b class="nc">&nbsp;        return new ViewHolder(view);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the product and stock data to the UI components.
+&nbsp;     * Highlights the stock quantity in RED if it is less than the requested quantity.
+&nbsp;     * @param holder The ViewHolder to update.
+&nbsp;     * @param position The position of the item in the list.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+<b class="nc">&nbsp;        CartItem item = cartItems.get(position);</b>
+<b class="nc">&nbsp;        ProductType product = item.getProductType();</b>
+&nbsp;
+<b class="nc">&nbsp;        holder.txtCodeValue.setText(product.getProductCode());</b>
+<b class="nc">&nbsp;        holder.txtNameValue.setText(product.getProductname());</b>
+&nbsp;
+<b class="nc">&nbsp;        if (product.getPrice() != null) {</b>
+<b class="nc">&nbsp;            holder.txtPriceValue.setText(product.getPrice().getAmount() + &quot; €&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            holder.txtPriceValue.setText(&quot;-&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        int reqQty = item.getQuantity();</b>
+<b class="nc">&nbsp;        int stockQty = ProductsWareHouseDAOMemory.getInstance().getProductStock(product);</b>
+&nbsp;
+<b class="nc">&nbsp;        holder.txtReqValue.setText(String.valueOf(reqQty));</b>
+<b class="nc">&nbsp;        holder.txtStockValue.setText(String.valueOf(stockQty));</b>
+&nbsp;
+&nbsp;        // Logic for color coding the stock availability
+<b class="nc">&nbsp;        if (reqQty &gt; stockQty) {</b>
+<b class="nc">&nbsp;            holder.txtStockValue.setTextColor(Color.RED);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            holder.txtStockValue.setTextColor(Color.parseColor(&quot;#2E7D32&quot;));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the total number of items in the cart.
+&nbsp;     * @return The size of the cart items list.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public int getItemCount() {
+<b class="nc">&nbsp;        return (cartItems != null) ? cartItems.size() : 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * ViewHolder class for caching the UI components of a stock product item.
+&nbsp;     */
+&nbsp;    public static class ViewHolder extends RecyclerView.ViewHolder {
+&nbsp;        TextView txtCodeValue, txtNameValue, txtPriceValue, txtReqValue, txtStockValue;
+&nbsp;
+&nbsp;        public ViewHolder(@NonNull View itemView) {
+<b class="nc">&nbsp;            super(itemView);</b>
+&nbsp;
+<b class="nc">&nbsp;            txtCodeValue = itemView.findViewById(R.id.txtItemProductStockProductCodeValue);</b>
+<b class="nc">&nbsp;            txtNameValue = itemView.findViewById(R.id.txtItemProductStockProductNameValue);</b>
+<b class="nc">&nbsp;            txtPriceValue = itemView.findViewById(R.id.txtItemProductStockSubTotalValue);</b>
+<b class="nc">&nbsp;            txtReqValue = itemView.findViewById(R.id.txtItemProductStockRequestedQuantityValue);</b>
+<b class="nc">&nbsp;            txtStockValue = itemView.findViewById(R.id.txtItemProductStockStockQuantityValue);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

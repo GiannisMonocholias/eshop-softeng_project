@@ -1,0 +1,313 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Address</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.contact</a>
+</div>
+
+<h1>Coverage Summary for Class: Address (gr.softeng.team21.contact)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Address</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    76.8%
+  </span>
+  <span class="absValue">
+    (43/56)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96%
+  </span>
+  <span class="absValue">
+    (48/50)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.contact;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents a physical address with street, number, city, country, and zipcode.
+&nbsp; * @author PAVLOS GRATSANIS,Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class Address {
+&nbsp;
+&nbsp;    /** The street of the address */
+&nbsp;    private String street;
+&nbsp;
+&nbsp;    /** The number of the address */
+&nbsp;    private String number;
+&nbsp;
+&nbsp;    /** The city of the address */
+&nbsp;    private String city;
+&nbsp;
+&nbsp;    /** The country of the address */
+&nbsp;    private String country;
+&nbsp;
+&nbsp;    /** The zipcode of the address */
+&nbsp;    private String zipcode;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Default constructor
+&nbsp;     */
+<b class="fc">&nbsp;    public Address() {}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new Address with the specified details.
+&nbsp;     * @param street  the street name
+&nbsp;     * @param number  the street number
+&nbsp;     * @param city    the city name
+&nbsp;     * @param country the country name
+&nbsp;     * @param zipcode the postal code
+&nbsp;     */
+<b class="fc">&nbsp;    public Address (String street, String number, String city,String country, String zipcode) {</b>
+<b class="fc">&nbsp;        this.street = street;</b>
+<b class="fc">&nbsp;        this.number = number;</b>
+<b class="fc">&nbsp;        this.country = country;</b>
+<b class="fc">&nbsp;        this.city = city;</b>
+<b class="fc">&nbsp;        this.zipcode = zipcode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the street of the address.
+&nbsp;     * @return the street
+&nbsp;     */
+&nbsp;    public String getStreet() {
+<b class="fc">&nbsp;        return street;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the street of the address.
+&nbsp;     * @param street the new street
+&nbsp;     */
+&nbsp;    public void setStreet(String street) {
+<b class="fc">&nbsp;        this.street = street;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the zipcode of the address.
+&nbsp;     * @return the zipcode
+&nbsp;     */
+&nbsp;    public String getZipcode() {
+<b class="fc">&nbsp;        return zipcode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the zipcode of the address.
+&nbsp;     * @param zipcode the new zipcode
+&nbsp;     */
+&nbsp;    public void setZipcode(String zipcode) {
+<b class="fc">&nbsp;        this.zipcode = zipcode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the country of the address.
+&nbsp;     * @return the country
+&nbsp;     */
+&nbsp;    public String getCountry() {
+<b class="fc">&nbsp;        return country;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the country of the address.
+&nbsp;     * @param country the new country
+&nbsp;     */
+&nbsp;    public void setCountry(String country) {
+<b class="fc">&nbsp;        this.country = country;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the city of the address.
+&nbsp;     * @return the city
+&nbsp;     */
+&nbsp;    public String getCity() {
+<b class="fc">&nbsp;        return city;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the city of the address.
+&nbsp;     * @param city the new city
+&nbsp;     */
+&nbsp;    public void setCity(String city) {
+<b class="fc">&nbsp;        this.city = city;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the number of the address.
+&nbsp;     * @return the number
+&nbsp;     */
+&nbsp;    public String getNumber() {
+<b class="fc">&nbsp;        return number;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the number of the address.
+&nbsp;     * @param number the new number
+&nbsp;     */
+&nbsp;    public void setNumber(String number) {
+<b class="fc">&nbsp;        this.number = number;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks whether this Address object is equal to another object.
+&nbsp;     * Equality is based on street, number, city, country, and zipcode.
+&nbsp;     * @param other the object to compare with
+&nbsp;     * @return true if all address fields are equal
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object other){
+<b class="pc">&nbsp;        if(other == null){</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(this == other){</b>
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (!(other instanceof Address)) {</b>
+<b class="nc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Address otherAddress = (Address) other;</b>
+<b class="fc">&nbsp;        if (!(street == null ? otherAddress.street</b>
+<b class="fc">&nbsp;                == null : street.equals(otherAddress.street))) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (!(number == null ? otherAddress.number</b>
+<b class="fc">&nbsp;                == null : number.equals(otherAddress.number))) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (!(city == null ? otherAddress.city</b>
+<b class="fc">&nbsp;                == null : city.equals(otherAddress.city))) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (!(zipcode == null ? otherAddress.zipcode</b>
+<b class="fc">&nbsp;                == null : zipcode.equals(otherAddress.zipcode))) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (!(country == null ? otherAddress.country</b>
+<b class="fc">&nbsp;                == null : country.equals(otherAddress.country))) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a hash code value for the address.
+&nbsp;     * The hash code is calculated based on all address fields.
+&nbsp;     * @return the hash code
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public int hashCode(){
+<b class="pc">&nbsp;        if (street == null &amp;&amp; number == null &amp;&amp; city == null</b>
+&nbsp;                &amp;&amp; zipcode == null &amp;&amp; country == null) {
+<b class="fc">&nbsp;            return 0;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        int result = 0;</b>
+<b class="pc">&nbsp;        result = street == null ? result : 13 * result + street.hashCode();</b>
+<b class="pc">&nbsp;        result = number == null ? result : 13 * result + number.hashCode();</b>
+<b class="pc">&nbsp;        result = city == null ? result : 13 * result + city.hashCode();</b>
+<b class="pc">&nbsp;        result = zipcode == null ? result : 13 * result + zipcode.hashCode();</b>
+<b class="fc">&nbsp;        result = country == null ? result : 13 * result + country.hashCode();</b>
+<b class="fc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a string representation of the address.
+&nbsp;     * Format: Street Number, City Country Zipcode
+&nbsp;     * @return the formatted address string
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String toString(){
+<b class="fc">&nbsp;        return this.getStreet() + &quot; &quot; + this.getNumber() + &quot;,&quot; + this.getCity()+&quot; &quot;+this.country+&quot; &quot;+this.zipcode;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

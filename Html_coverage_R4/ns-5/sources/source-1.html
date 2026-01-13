@@ -1,0 +1,180 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MainActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view</a>
+</div>
+
+<h1>Coverage Summary for Class: MainActivity (gr.softeng.team21.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MainActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.memorydao.MemoryInitializer;
+&nbsp;import gr.softeng.team21.view.user.login.LoginActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * The main activity of the application.
+&nbsp; * Initializes the in-memory data and provides navigation to the Login screen.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+<b class="nc">&nbsp;public class MainActivity extends AppCompatActivity {</b>
+&nbsp;
+&nbsp;    /** Button to navigate to the login screen */
+&nbsp;    private Button btnEntrance;
+&nbsp;
+&nbsp;    /** Flag to ensure data is prepared only once across the application lifecycle */
+<b class="nc">&nbsp;    private static boolean isDataPrepared = false;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Called when the activity is first created.
+&nbsp;     * Sets up the UI, initializes the memory data (if not already done),
+&nbsp;     * and configures the entrance button.
+&nbsp;     *
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after
+&nbsp;     * previously being shut down then this Bundle contains the data it most
+&nbsp;     * recently supplied in onSaveInstanceState(Bundle).
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_main);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        if (!isDataPrepared) {</b>
+<b class="nc">&nbsp;            MemoryInitializer.prepareData();</b>
+<b class="nc">&nbsp;            isDataPrepared = true;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        btnEntrance = findViewById(R.id.btnMainActivityEntrance);</b>
+<b class="nc">&nbsp;        btnEntrance.setOnClickListener(v -&gt; Entrance());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the Login.
+&nbsp;     */
+&nbsp;    private void Entrance() {
+<b class="nc">&nbsp;        Intent intent = new Intent(MainActivity.this, LoginActivity.class);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

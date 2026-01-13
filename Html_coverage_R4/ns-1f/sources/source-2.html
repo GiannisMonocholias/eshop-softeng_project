@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OrderPreparationDetailsPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderPreparationDetailsPresenter (gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderPreparationDetailsPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;import gr.softeng.team21.dao.EmployeeDAO;
+&nbsp;import gr.softeng.team21.dao.OrderDAO;
+&nbsp;import gr.softeng.team21.domain.CartItem;
+&nbsp;import gr.softeng.team21.domain.Order;
+&nbsp;import gr.softeng.team21.domain.OrderPreparationEmployee;
+&nbsp;import gr.softeng.team21.domain.OrderStatusType;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Order Preparation Details screen.
+&nbsp; * Manages the logic for loading order items and executing the stock verification
+&nbsp; * process through the domain model.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class OrderPreparationDetailsPresenter {
+&nbsp;    private OrderPreparationDetailsView view;
+&nbsp;    private OrderPreparationEmployee loggedInEmployee;
+&nbsp;    private Order orderToPrepare;
+&nbsp;    private EmployeeDAO employeeDAO;
+&nbsp;    private OrderDAO orderDAO;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with the view and data access layers.
+&nbsp;     * @param view The view implementation.
+&nbsp;     * @param employeeDAO Data access for employee information.
+&nbsp;     * @param orderDAO Data access for order information.
+&nbsp;     */
+<b class="fc">&nbsp;    public OrderPreparationDetailsPresenter(OrderPreparationDetailsView view, EmployeeDAO employeeDAO, OrderDAO orderDAO){</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.employeeDAO = employeeDAO;</b>
+<b class="fc">&nbsp;        this.orderDAO = orderDAO;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the order data and prepares the view for display.
+&nbsp;     * @param employeeId The ID of the employee performing the preparation.
+&nbsp;     * @param ordercode  The code of the order to load.
+&nbsp;     * @return A list of items contained in the order&#39;s shopping cart.
+&nbsp;     */
+&nbsp;    public ArrayList&lt;CartItem&gt; loadOrder(String employeeId, String ordercode){
+<b class="fc">&nbsp;        this.loggedInEmployee = (OrderPreparationEmployee) employeeDAO.getEmployee(employeeId);</b>
+<b class="fc">&nbsp;        this.orderToPrepare = orderDAO.getOrder(ordercode);</b>
+&nbsp;
+<b class="fc">&nbsp;        String customerFullName = orderToPrepare.getShoppingCart().getCustomer().getFirstname() + &quot; &quot; +</b>
+<b class="fc">&nbsp;                orderToPrepare.getShoppingCart().getCustomer().getLastname();</b>
+&nbsp;
+<b class="fc">&nbsp;        view.setOrderDetails(ordercode, customerFullName, orderToPrepare.getSubmissiondate().toString(),</b>
+<b class="fc">&nbsp;                orderToPrepare.getTotal_amount().toString(), orderToPrepare.getOrderstatus());</b>
+&nbsp;
+<b class="fc">&nbsp;        return new ArrayList&lt;&gt;(orderToPrepare.getShoppingCart().getItems());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Executes the stock check and preparation logic.
+&nbsp;     * Depending on the domain result, it updates the view with success (SHIPPED)
+&nbsp;     * or error (DELAYED due to insufficient stock) messages.
+&nbsp;     */
+&nbsp;    public void checkStockOrder() {
+&nbsp;        try {
+<b class="fc">&nbsp;            this.loggedInEmployee.prepareOrder(this.orderToPrepare);</b>
+&nbsp;
+<b class="fc">&nbsp;            if(this.orderToPrepare.getOrderstatus() == OrderStatusType.DELAYED){</b>
+<b class="fc">&nbsp;                view.showErrorMessage(&quot;Ανεπαρκές απόθεμα: Δεν μπορούν να συγκεντρωθούν όλα τα προϊόντα της παραγγελίας&quot;);</b>
+&nbsp;            }
+<b class="pc">&nbsp;            else if(this.orderToPrepare.getOrderstatus() == OrderStatusType.SHIPPED){</b>
+<b class="fc">&nbsp;                view.showSuccessMessage(&quot;Ο έλεγχος αποθέματος ολοκληρώθηκε επιτυχώς! Η παραγγελία είναι τώρα έτοιμη προς παράδοση.&quot;);</b>
+<b class="fc">&nbsp;                loggedInEmployee.removeOrder(orderToPrepare);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        catch(IllegalArgumentException e){
+<b class="fc">&nbsp;            view.showErrorMessage(&quot;Σφάλμα: Δεν δόθηκε παραγγελία (null Order pointer)&quot;);</b>
+&nbsp;        }
+&nbsp;        catch(NoSuchElementException e){
+<b class="fc">&nbsp;            view.showErrorMessage(&quot;Σφάλμα: Δεν σας έχει ανατεθεί η συγκεκριμένη παραγγελία&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Manually sets the order to be prepared (primarily used for junit testing).
+&nbsp;     * @param order The order instance.
+&nbsp;     */
+&nbsp;    public void setOrderToPrepare(Order order){
+<b class="fc">&nbsp;        this.orderToPrepare = order;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

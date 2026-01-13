@@ -1,0 +1,331 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ExecuteInsertProductActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct</a>
+</div>
+
+<h1>Coverage Summary for Class: ExecuteInsertProductActivity (gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ExecuteInsertProductActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/48)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ExecuteInsertProductActivity$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/50)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct;
+&nbsp;
+&nbsp;import android.content.DialogInterface;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.TextView;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AlertDialog;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import com.google.android.material.textfield.TextInputEditText;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+&nbsp;import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity providing the UI form for registering a new product into the catalogue.
+&nbsp; * Captures user input via TextInputEditText fields and delegates the logic
+&nbsp; * to the {@link ExecuteInsertProductPresenter}.
+&nbsp; * implements {@link ExecuteInsertProductView}
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class ExecuteInsertProductActivity extends AppCompatActivity implements ExecuteInsertProductView {</b>
+&nbsp;
+&nbsp;    private ExecuteInsertProductPresenter presenter;
+&nbsp;
+&nbsp;    private TextInputEditText edtCode, edtName, edtPrice, edtDesc;
+&nbsp;    private TextView txtRequestDescription;
+&nbsp;    private Button btnConfirm;
+&nbsp;
+&nbsp;    private static final String EMP_ID_EXTRA = &quot;UPDATE_CATALOGUE_EMPLOYEE_ID&quot;;
+&nbsp;    private static final String REQ_ID_EXTRA = &quot;REQUEST_ID&quot;;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the Activity, binds UI components to XML IDs, and
+&nbsp;     * initiates the request detail loading process.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_execute_insert_product);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.executeInsertProduct), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        initializeViews();</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter = new ExecuteInsertProductPresenter(</b>
+&nbsp;                this,
+<b class="nc">&nbsp;                EmployeeDAOMemory.getInstance(),</b>
+<b class="nc">&nbsp;                UpdateRequestDAOMemory.getInstance(),</b>
+<b class="nc">&nbsp;                ProductTypeDAOMemory.getInstance()</b>
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);</b>
+<b class="nc">&nbsp;        int requestId = getIntent().getIntExtra(REQ_ID_EXTRA, -1);</b>
+<b class="nc">&nbsp;        presenter.loadRequestDetails(employeeId, requestId);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnConfirm.setOnClickListener(v -&gt; presenter.onConfirmInsert());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds class members to layout views.
+&nbsp;     * */
+&nbsp;    private void initializeViews() {
+<b class="nc">&nbsp;        txtRequestDescription = findViewById(R.id.txtexecuteInsertProductRequestDescription);</b>
+&nbsp;
+<b class="nc">&nbsp;        edtCode = findViewById(R.id.edtexecuteInsertProductDataCodeContainer);</b>
+<b class="nc">&nbsp;        edtName = findViewById(R.id.edtexecuteInsertProductDataNameContainer);</b>
+<b class="nc">&nbsp;        edtPrice = findViewById(R.id.edtexecuteInsertProductDataPriceContainer);</b>
+<b class="nc">&nbsp;        edtDesc = findViewById(R.id.edtexecuteInsertProductDataDescriptionContainer);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnConfirm = findViewById(R.id.btnexecuteInsertProductInsertConfirm);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Getters for Presenter data retrieval
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String getProductCode() {
+<b class="nc">&nbsp;        return edtCode.getText().toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String getProductName() {
+<b class="nc">&nbsp;        return edtName.getText().toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String getProductPrice() {
+<b class="nc">&nbsp;        return edtPrice.getText().toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String getProductDescription() {
+<b class="nc">&nbsp;        return edtDesc.getText().toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setRequestDescription(String description) {
+<b class="nc">&nbsp;        txtRequestDescription.setText(description);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Sets an error message on the corresponding input field and requests focus for it.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showInputError(String field, String message) {
+<b class="nc">&nbsp;        switch (field) {</b>
+&nbsp;            case &quot;code&quot;:
+<b class="nc">&nbsp;                edtCode.setError(message);</b>
+<b class="nc">&nbsp;                edtCode.requestFocus();</b>
+&nbsp;                break;
+&nbsp;            case &quot;name&quot;:
+<b class="nc">&nbsp;                edtName.setError(message);</b>
+<b class="nc">&nbsp;                edtName.requestFocus();</b>
+&nbsp;                break;
+&nbsp;            case &quot;price&quot;:
+<b class="nc">&nbsp;                edtPrice.setError(message);</b>
+<b class="nc">&nbsp;                edtPrice.requestFocus();</b>
+&nbsp;                break;
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showSuccessMessage(String message) {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Επιτυχία&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(message)</b>
+<b class="nc">&nbsp;                .setIcon(android.R.drawable.ic_dialog_info)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;OK&quot;, new DialogInterface.OnClickListener() {</b>
+&nbsp;                    @Override
+&nbsp;                    public void onClick(DialogInterface dialog, int which) {
+<b class="nc">&nbsp;                        finish();</b>
+&nbsp;                    }
+&nbsp;                })
+<b class="nc">&nbsp;                .setCancelable(false)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showError(String message) {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Σφάλμα&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(message)</b>
+<b class="nc">&nbsp;                .setIcon(android.R.drawable.ic_dialog_alert)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;OK&quot;, null)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

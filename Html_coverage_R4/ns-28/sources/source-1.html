@@ -1,0 +1,236 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserEditDataActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.user.EditData</a>
+</div>
+
+<h1>Coverage Summary for Class: UserEditDataActivity (gr.softeng.team21.view.user.EditData)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserEditDataActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.user.EditData;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.util.Log;
+&nbsp;import android.widget.ArrayAdapter;
+&nbsp;import android.widget.ListView;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.view.contact.editdata.Address.AddressActivity;
+&nbsp;import gr.softeng.team21.view.contact.editdata.Email.EmailActivity;
+&nbsp;import gr.softeng.team21.view.contact.editdata.Password.PasswordActivity;
+&nbsp;import gr.softeng.team21.view.contact.editdata.Phone.PhoneActivity;
+&nbsp;import gr.softeng.team21.view.contact.editdata.Username.UsernameActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity responsible for displaying the menu options for editing user data.
+&nbsp; * Implements {@link UserEditDataView} and manages the UI elements, such as  ListView,
+&nbsp; * to allow navigation to  data editing screens (Username, Password, Address, Email, Phone).
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+<b class="nc">&nbsp;public class UserEditDataActivity extends AppCompatActivity implements UserEditDataView {</b>
+&nbsp;
+&nbsp;    private ListView list;
+&nbsp;    private UserEditDataPresenter presenter;
+&nbsp;
+&nbsp;    private String userId;
+&nbsp;
+<b class="nc">&nbsp;    private final String[] options = {</b>
+&nbsp;            &quot;1. Αλλαγή Username&quot;,
+&nbsp;            &quot;2. Αλλαγή Password&quot;,
+&nbsp;            &quot;3. Αλλαγή Διεύθυνσης&quot;,
+&nbsp;            &quot;4. Αλλαγή Email&quot;,
+&nbsp;            &quot;5. Αλλαγή Τηλεφώνου&quot;
+&nbsp;    };
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the activity, sets the UI layout, retrieves the user ID,
+&nbsp;     * initializes the presenter, and sets up the ListView with the available editing options.
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_user_edit_data);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+<b class="nc">&nbsp;        userId = getIntent().getStringExtra(&quot;user_id&quot;);</b>
+<b class="nc">&nbsp;        presenter = new UserEditDataPresenter(this);</b>
+&nbsp;
+<b class="nc">&nbsp;        list = findViewById(R.id.ViewlistUserEditData);</b>
+<b class="nc">&nbsp;        ArrayAdapter&lt;String&gt; adapter = new ArrayAdapter&lt;&gt;(this, android.R.layout.simple_list_item_1, options);</b>
+<b class="nc">&nbsp;        list.setAdapter(adapter);</b>
+&nbsp;
+<b class="nc">&nbsp;        list.setOnItemClickListener((parent, view, position, id) -&gt; OptionSelected(position));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     * @param position The position of the item clicked in the list.
+&nbsp;     */
+&nbsp;    private void OptionSelected(int position) {
+<b class="nc">&nbsp;        presenter.Selection(position);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the UsernameActivity for editing the username via an Intent, passing the user&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToUsername() {
+<b class="nc">&nbsp;        Intent intent = new Intent(UserEditDataActivity.this, UsernameActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;user_id&quot;, userId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the PasswordActivity for editing the password via an Intent, passing the user&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToPassword() {
+<b class="nc">&nbsp;        Intent intent = new Intent(UserEditDataActivity.this, PasswordActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;user_id&quot;, userId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the AddressActivity for editing the address via an Intent, passing the user&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToAddress() {
+<b class="nc">&nbsp;        Intent intent = new Intent(UserEditDataActivity.this, AddressActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;user_id&quot;, userId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the EmailActivity for editing the email address via an Intent, passing the user&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToEmail() {
+<b class="nc">&nbsp;        Intent intent = new Intent(UserEditDataActivity.this, EmailActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;user_id&quot;, userId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the PhoneActivity for editing the phone number via an Intent, passing the user&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToPhone() {
+<b class="nc">&nbsp;        Intent intent = new Intent(UserEditDataActivity.this, PhoneActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;user_id&quot;, userId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

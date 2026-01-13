@@ -1,0 +1,266 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RegisterActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.register</a>
+</div>
+
+<h1>Coverage Summary for Class: RegisterActivity (gr.softeng.team21.view.customer.register)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RegisterActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.register;
+&nbsp;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.view.View;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import com.google.android.material.button.MaterialButton;
+&nbsp;import com.google.android.material.textfield.TextInputEditText;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.dao.CustomerDAO;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity providing the UI for new customer registration.
+&nbsp; * Manages form inputs and implements {@link RegisterView} to handle feedback
+&nbsp; * from the registration logic.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class RegisterActivity extends AppCompatActivity implements RegisterView {</b>
+&nbsp;
+&nbsp;    private TextInputEditText edtRegisterUsername;
+&nbsp;    private TextInputEditText edtRegisterPassword;
+&nbsp;    private TextInputEditText edtRegisterName;
+&nbsp;    private TextInputEditText edtRegisterSurname;
+&nbsp;    private TextInputEditText edtRegisterEmail;
+&nbsp;    private TextInputEditText edtRegisterPhone;
+&nbsp;
+&nbsp;    private TextInputEditText edtRegisterStreet;
+&nbsp;    private TextInputEditText edtRegisterNumber;
+&nbsp;    private TextInputEditText edtRegisterCity;
+&nbsp;    private TextInputEditText edtRegisterZip;
+&nbsp;
+&nbsp;    private MaterialButton btnRegister;
+&nbsp;    private TextView txtLoginLink;
+&nbsp;
+&nbsp;    // Presenter
+&nbsp;    private RegisterPresenter presenter;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the UI, sets up the presenter, and configures
+&nbsp;     * click listeners for the registration action and login redirection.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+&nbsp;
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_register);</b>
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.registerActivity), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        initializeViews();</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter = new RegisterPresenter(this, CustomerDAOMemory.getInstance());</b>
+&nbsp;
+<b class="nc">&nbsp;        btnRegister.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            String username = getTextFromField(edtRegisterUsername);</b>
+<b class="nc">&nbsp;            String password = getTextFromField(edtRegisterPassword);</b>
+<b class="nc">&nbsp;            String firstname = getTextFromField(edtRegisterName);</b>
+<b class="nc">&nbsp;            String lastname = getTextFromField(edtRegisterSurname);</b>
+<b class="nc">&nbsp;            String email = getTextFromField(edtRegisterEmail);</b>
+<b class="nc">&nbsp;            String phone = getTextFromField(edtRegisterPhone);</b>
+&nbsp;
+<b class="nc">&nbsp;            presenter.register(username, firstname, password, lastname, phone, email);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        txtLoginLink.setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            finish();</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds class members to XML components.
+&nbsp;     */
+&nbsp;    private void initializeViews() {
+<b class="nc">&nbsp;        edtRegisterUsername = findViewById(R.id.edtRegisterUsername);</b>
+<b class="nc">&nbsp;        edtRegisterPassword = findViewById(R.id.edtRegisterPassword);</b>
+<b class="nc">&nbsp;        edtRegisterName = findViewById(R.id.edtRegisterName);</b>
+<b class="nc">&nbsp;        edtRegisterSurname = findViewById(R.id.edtRegisterSurname);</b>
+<b class="nc">&nbsp;        edtRegisterEmail = findViewById(R.id.edtRegisterEmail);</b>
+<b class="nc">&nbsp;        edtRegisterPhone = findViewById(R.id.edtRegisterPhone);</b>
+&nbsp;
+<b class="nc">&nbsp;        edtRegisterStreet = findViewById(R.id.edtRegisterStreet);</b>
+<b class="nc">&nbsp;        edtRegisterNumber = findViewById(R.id.edtRegisterNumber);</b>
+<b class="nc">&nbsp;        edtRegisterCity = findViewById(R.id.edtRegisterCity);</b>
+<b class="nc">&nbsp;        edtRegisterZip = findViewById(R.id.edtRegisterZip);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnRegister = findViewById(R.id.btnRegister);</b>
+<b class="nc">&nbsp;        txtLoginLink = findViewById(R.id.txtLoginLink);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *  Helper method to extract trimmed text from EditText fields.
+&nbsp;     */
+&nbsp;    private String getTextFromField(EditText field) {
+<b class="nc">&nbsp;        if (field.getText() != null) {</b>
+<b class="nc">&nbsp;            return field.getText().toString().trim();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return &quot;&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showSuccessMessage(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_LONG).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showErrorMessage(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void clearInputFields() {
+<b class="nc">&nbsp;        edtRegisterUsername.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        edtRegisterPassword.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        edtRegisterName.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        edtRegisterSurname.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        edtRegisterEmail.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        edtRegisterPhone.setText(&quot;&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        edtRegisterStreet.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        edtRegisterNumber.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        edtRegisterCity.setText(&quot;&quot;);</b>
+<b class="nc">&nbsp;        edtRegisterZip.setText(&quot;&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        edtRegisterUsername.requestFocus();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

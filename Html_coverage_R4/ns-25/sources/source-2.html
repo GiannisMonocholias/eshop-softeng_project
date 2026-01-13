@@ -1,0 +1,221 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ExecuteProcessProductPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct</a>
+</div>
+
+<h1>Coverage Summary for Class: ExecuteProcessProductPresenter (gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ExecuteProcessProductPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    64.3%
+  </span>
+  <span class="absValue">
+    (9/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (34/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import gr.softeng.team21.dao.EmployeeDAO;
+&nbsp;import gr.softeng.team21.dao.ProductTypeDAO;
+&nbsp;import gr.softeng.team21.dao.UpdateRequestDAO;
+&nbsp;import gr.softeng.team21.domain.CatalogueUpdateRequest;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;import gr.softeng.team21.domain.ProductType;
+&nbsp;import gr.softeng.team21.domain.RequestStatusType;
+&nbsp;import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the product modification screen.
+&nbsp; * Handles the logic for validating new inputs, updating the domain object,
+&nbsp; * and marking the administrative request as served.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class ExecuteProcessProductPresenter {
+&nbsp;    private ExecuteProcessProductView view;
+&nbsp;    private EmployeeDAO employeeDAO;
+&nbsp;    private UpdateRequestDAO updateRequestDAO;
+&nbsp;    private ProductTypeDAO productTypeDAO;
+&nbsp;    private CatalogueUpdateRequest currentRequest;
+&nbsp;    private UpdateCatalogueEmployee loggedInEmployee;
+&nbsp;    private ProductType productToEdit;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with required DAOs and view interface.
+&nbsp;     */
+<b class="fc">&nbsp;    public ExecuteProcessProductPresenter(ExecuteProcessProductView view, EmployeeDAO employeeDAO, UpdateRequestDAO updateRequestDAO, ProductTypeDAO productTypeDAO) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.employeeDAO = employeeDAO;</b>
+<b class="fc">&nbsp;        this.updateRequestDAO = updateRequestDAO;</b>
+<b class="fc">&nbsp;        this.productTypeDAO = productTypeDAO;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the request context and the specific product to be edited.
+&nbsp;     * @param employeeId The ID of the employee executing the process.
+&nbsp;     * @param requestId  The ID of the process request.
+&nbsp;     */
+&nbsp;    public void loadRequestDetails(String employeeId, int requestId) {
+<b class="fc">&nbsp;        this.loggedInEmployee = (UpdateCatalogueEmployee) employeeDAO.getEmployee(employeeId);</b>
+<b class="pc">&nbsp;        if (updateRequestDAO.getUpdateRequests() != null) {</b>
+<b class="fc">&nbsp;            this.currentRequest = updateRequestDAO.getUpdateRequests().get(requestId);</b>
+&nbsp;        }
+&nbsp;
+<b class="pc">&nbsp;        if (currentRequest == null || loggedInEmployee == null || currentRequest.getProduct() == null) {</b>
+<b class="fc">&nbsp;            view.showError(&quot;Σφάλμα: Τα στοιχεία του υπαλλήλου ή του αιτήματος ή του επηρεαζόμενου προϊόντος δεν βρέθηκαν.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        this.productToEdit = currentRequest.getProduct();</b>
+<b class="fc">&nbsp;        view.setRequestDescription(currentRequest.getUpdateDescription());</b>
+&nbsp;
+<b class="pc">&nbsp;        String priceStr = (productToEdit.getPrice() != null) ?</b>
+<b class="fc">&nbsp;                String.valueOf(productToEdit.getPrice().getAmount()) : &quot;&quot;;</b>
+&nbsp;
+<b class="fc">&nbsp;        view.setProductData(productToEdit.getProductCode(), productToEdit.getProductname(),</b>
+<b class="fc">&nbsp;                priceStr, productToEdit.getDescription());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Validates the price input and requests user confirmation.
+&nbsp;     */
+&nbsp;    public void onSaveClicked() {
+<b class="fc">&nbsp;        String newPriceStr = view.getProductPrice();</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            double priceVal = Double.parseDouble(newPriceStr);</b>
+<b class="fc">&nbsp;            if (priceVal &lt; 0) throw new NumberFormatException();</b>
+&nbsp;
+<b class="fc">&nbsp;            view.showConfirmationDialog();</b>
+&nbsp;        } catch (NumberFormatException e) {
+<b class="fc">&nbsp;            view.showInputError(&quot;price&quot;, &quot;Please enter a valid price value.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Applies the validated changes to the domain object and updates the request status.
+&nbsp;     * Cleans up the employee&#39;s assigned task queue upon success.
+&nbsp;     */
+&nbsp;    public void onSaveConfirmed() {
+<b class="fc">&nbsp;        String newCode = view.getProductCode();</b>
+<b class="fc">&nbsp;        String newName = view.getProductName();</b>
+<b class="fc">&nbsp;        String newPriceStr = view.getProductPrice();</b>
+<b class="fc">&nbsp;        String newDesc = view.getProductDescription();</b>
+&nbsp;
+<b class="fc">&nbsp;        Money newMoney = new Money(BigDecimal.valueOf(Double.parseDouble(newPriceStr)), &quot;€&quot;);</b>
+&nbsp;
+&nbsp;        // Domain updates
+<b class="fc">&nbsp;        productToEdit.setProductcode(newCode);</b>
+<b class="fc">&nbsp;        productToEdit.setProductname(newName);</b>
+<b class="fc">&nbsp;        productToEdit.setDescription(newDesc);</b>
+<b class="fc">&nbsp;        productToEdit.setPrice(newMoney);</b>
+&nbsp;
+<b class="fc">&nbsp;        currentRequest.setStatus(RequestStatusType.SERVED);</b>
+&nbsp;
+<b class="pc">&nbsp;        if (loggedInEmployee.getAssignedRequests() != null) {</b>
+<b class="fc">&nbsp;            loggedInEmployee.getAssignedRequests().remove(currentRequest.getId());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        view.showSuccessMessage(&quot;Οι αλλαγές αποθηκεύτηκαν επιτυχώς!&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

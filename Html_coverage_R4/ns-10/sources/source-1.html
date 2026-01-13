@@ -1,0 +1,202 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UsernameActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.contact.editdata.Username</a>
+</div>
+
+<h1>Coverage Summary for Class: UsernameActivity (gr.softeng.team21.view.contact.editdata.Username)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UsernameActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.contact.editdata.Username;
+&nbsp;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity responsible for editing the user&#39;s username.
+&nbsp; * Implements {@link UsernameView} and manages the UI elements for username input, such as button and editText.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+<b class="nc">&nbsp;public class UsernameActivity extends AppCompatActivity implements UsernameView {</b>
+&nbsp;
+&nbsp;    private EditText etUsername;
+&nbsp;    private Button btnSave;
+&nbsp;    private UsernamePresenter presenter;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the activity, sets the UI layout, retrieves the user ID,
+&nbsp;     * and initializes the presenter and associated editText and save button.
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_username);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        String userId = getIntent().getStringExtra(&quot;user_id&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        etUsername = findViewById(R.id.edittxtUsernameActivity);</b>
+<b class="nc">&nbsp;        btnSave = findViewById(R.id.btnUsernameActivitySave);</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter = new UsernamePresenter(this, userId);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnSave.setOnClickListener(v -&gt; saveUsername());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Collects input data from the UI fields and calls the presenter to save the changes.
+&nbsp;     */
+&nbsp;    private void saveUsername() {
+<b class="nc">&nbsp;        String name = etUsername.getText().toString().trim();</b>
+<b class="nc">&nbsp;        presenter.saveUsernameClicked(name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Populates the input field with the existing username.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void setUsername(String username) {
+<b class="nc">&nbsp;        etUsername.setText(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows a success message via Toast and finishes the activity.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void SaveSuccess(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();</b>
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows an error message via Toast.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showError(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Closes the current activity.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void finishView() {
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

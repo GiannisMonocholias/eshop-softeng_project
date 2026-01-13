@@ -1,0 +1,284 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AssignedRequestsToExecuteActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute</a>
+</div>
+
+<h1>Coverage Summary for Class: AssignedRequestsToExecuteActivity (gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AssignedRequestsToExecuteActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/36)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AssignedRequestsToExecuteActivity$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import androidx.recyclerview.widget.LinearLayoutManager;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.CatalogueUpdateRequest;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity;
+&nbsp;import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct.ExecuteInsertProductActivity;
+&nbsp;import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct.ExecuteProcessProductActivity;
+&nbsp;import gr.softeng.team21.view.util.UpdateRequestAdapterTypes;
+&nbsp;import gr.softeng.team21.view.util.UpdateRequestsAdapter;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity that displays the list of catalogue update tasks assigned to the employee.
+&nbsp; * It functions as a router, directing the user to ExecuteInsert, ExecuteDelete,
+&nbsp; * or ExecuteProcess activities depending on the {@link gr.softeng.team21.domain.AllowedRequest} type.
+&nbsp; * Implements {@link AssignedRequestsToExecuteView}
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class AssignedRequestsToExecuteActivity extends AppCompatActivity implements AssignedRequestsToExecuteView{</b>
+&nbsp;
+&nbsp;    private  AssignedRequestsToExecutePresenter presenter;
+&nbsp;
+&nbsp;    // Intent Extras Constants
+&nbsp;    private static final String EMP_ID_EXTRA = &quot;UPDATE_CATALOGUE_EMPLOYEE_ID&quot;;
+&nbsp;    private static final String REQ_ID_EXTRA = &quot;REQUEST_ID&quot;;
+&nbsp;    private static final String REQ_DESC = &quot;REQUEST_DESC&quot;;
+&nbsp;    private static final String PROD_NAME = &quot;PROD_NAME&quot;;
+&nbsp;    private static final String PROD_CODE = &quot;PROD_CODE&quot;;
+&nbsp;    private static final String PROD_DESC = &quot;PROD_DESC&quot;;
+&nbsp;    private static final String PROD_PRICE = &quot;PROD_PRICE&quot;;
+&nbsp;    private static final String PROD_CURRENCY = &quot;PROD_CURRENCY&quot;;
+&nbsp;
+&nbsp;    private RecyclerView recyclerView;
+&nbsp;
+&nbsp;    /**
+&nbsp;     *
+&nbsp;     * Configures layout and initializes the presenter
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_assigned_requests_to_execute);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.executeProcessProduct), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        presenter = new AssignedRequestsToExecutePresenter(this, EmployeeDAOMemory.getInstance());</b>
+&nbsp;
+<b class="nc">&nbsp;        recyclerView = findViewById(R.id.rvRequestsAssigned);</b>
+<b class="nc">&nbsp;        recyclerView.setLayoutManager(new LinearLayoutManager(this));</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Refreshes the assigned requests list whenever the user returns to this screen.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onResume() {
+<b class="nc">&nbsp;        super.onResume();</b>
+&nbsp;
+<b class="nc">&nbsp;        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);</b>
+<b class="nc">&nbsp;        ArrayList&lt;CatalogueUpdateRequest&gt; assignedRequestsMap = presenter.loadAssignedRequests(employeeId);</b>
+&nbsp;
+<b class="nc">&nbsp;        UpdateRequestsAdapter adapter = new UpdateRequestsAdapter(assignedRequestsMap, UpdateRequestAdapterTypes.EXECUTE_REQUEST, request -&gt;</b>
+<b class="nc">&nbsp;            presenter.onClickRequest(request)</b>
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        recyclerView.setAdapter(adapter);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Evaluates the request type and prepares the corresponding Intent with
+&nbsp;     * product metadata passed as extras.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToRequestDetails(String employeeId, CatalogueUpdateRequest request) {
+<b class="nc">&nbsp;        Toast.makeText(AssignedRequestsToExecuteActivity.this,</b>
+<b class="nc">&nbsp;                    &quot;Επιλέξατε το αίτημα #&quot; + request.getId(),</b>
+<b class="nc">&nbsp;                    Toast.LENGTH_SHORT).show();</b>
+&nbsp;
+<b class="nc">&nbsp;        Intent intent = null;</b>
+&nbsp;
+<b class="nc">&nbsp;        switch(request.getType()){</b>
+&nbsp;            case INSERT_PRODUCT:
+<b class="nc">&nbsp;                intent = new Intent(AssignedRequestsToExecuteActivity.this, ExecuteInsertProductActivity.class);</b>
+&nbsp;                break;
+&nbsp;            case PROCESS_PRODUCT:
+<b class="nc">&nbsp;                intent = new Intent(AssignedRequestsToExecuteActivity.this, ExecuteProcessProductActivity.class);</b>
+&nbsp;                break;
+&nbsp;            case DELETE_PRODUCT:
+<b class="nc">&nbsp;                intent = new Intent(AssignedRequestsToExecuteActivity.this, ExecuteDeleteProductActivity.class);</b>
+&nbsp;                break;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        intent.putExtra(EMP_ID_EXTRA, employeeId);</b>
+<b class="nc">&nbsp;        intent.putExtra(REQ_ID_EXTRA, request.getId());</b>
+<b class="nc">&nbsp;        intent.putExtra(REQ_DESC, request.getUpdateDescription());</b>
+&nbsp;
+<b class="nc">&nbsp;        if (request.getProduct() != null) {</b>
+&nbsp;
+<b class="nc">&nbsp;            intent.putExtra(PROD_NAME, request.getProduct().getProductname());</b>
+<b class="nc">&nbsp;            intent.putExtra(PROD_CODE, request.getProduct().getProductCode());</b>
+<b class="nc">&nbsp;            intent.putExtra(PROD_DESC, request.getProduct().getDescription());</b>
+&nbsp;
+<b class="nc">&nbsp;            if (request.getProduct().getPrice() != null) {</b>
+<b class="nc">&nbsp;                intent.putExtra(PROD_PRICE, request.getProduct().getPrice().getAmount().doubleValue());</b>
+<b class="nc">&nbsp;                intent.putExtra(PROD_CURRENCY, request.getProduct().getPrice().getCurrency());</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

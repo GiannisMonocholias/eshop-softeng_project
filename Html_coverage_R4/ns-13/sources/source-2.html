@@ -1,0 +1,209 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerFindProductPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.FindProduct</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerFindProductPresenter (gr.softeng.team21.view.customer.FindProduct)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerFindProductPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.FindProduct;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.domain.ProductType;
+&nbsp;import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the FindProductActivity.
+&nbsp; * Handles interactions between the {@link CustomerFindProductView} and the domain logic,
+&nbsp; * including product filtering, selection and cart status updates.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class CustomerFindProductPresenter {
+&nbsp;    private CustomerFindProductView view;
+&nbsp;    private ProductTypeDAOMemory dao;
+&nbsp;    private Customer customer;
+&nbsp;    private ArrayList&lt;ProductType&gt; allProducts;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with the view and customer.
+&nbsp;     * Loads all available products from the DAO.
+&nbsp;     * @param view The view interface.
+&nbsp;     * @param customer The customer domain object.
+&nbsp;     */
+<b class="fc">&nbsp;    public CustomerFindProductPresenter(CustomerFindProductView view, Customer customer) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.customer = customer;</b>
+<b class="fc">&nbsp;        this.dao = ProductTypeDAOMemory.getInstance();</b>
+<b class="fc">&nbsp;        this.allProducts = new ArrayList&lt;&gt;(dao.getProducts().values());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads and displays the full list of products in the view.
+&nbsp;     */
+&nbsp;    public void loadList() {
+<b class="fc">&nbsp;        view.showProducts(allProducts);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Filters the product list based on the user&#39;s search query.
+&nbsp;     * @param txt The search text entered by the customer.
+&nbsp;     */
+&nbsp;    public void filter(String txt) {
+<b class="fc">&nbsp;        ArrayList&lt;ProductType&gt; filteredList = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        if (txt == null || txt.isEmpty()) {</b>
+<b class="fc">&nbsp;            filteredList.addAll(allProducts);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            String searchText = txt.toLowerCase();</b>
+<b class="fc">&nbsp;            for (ProductType item : allProducts) {</b>
+<b class="fc">&nbsp;                if (item.getProductname().toLowerCase().contains(searchText)) {</b>
+<b class="fc">&nbsp;                    filteredList.add(item);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        view.showProducts(filteredList);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles selecting a product from the list and clicking to view the details screen for that product.
+&nbsp;     * @param selectedProduct The product clicked by the user.
+&nbsp;     */
+&nbsp;    public void ProductClicked(ProductType selectedProduct) {
+<b class="fc">&nbsp;        if (selectedProduct != null) {</b>
+<b class="fc">&nbsp;            view.goToProductDetails(selectedProduct.getProductCode());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the click on the shopping cart button.
+&nbsp;     * Checks if the cart is not empty or is not exists before navigating.
+&nbsp;     */
+&nbsp;    public void openShoppingCartClicked() {
+<b class="fc">&nbsp;        if (customer.getShoppingCart() == null) {</b>
+<b class="fc">&nbsp;            view.showEmptyShoppingCartMessage(&quot;To καλάθι είναι άδειο!!&quot;);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            view.goToShoppingCart();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the shopping cart item count in the screen.
+&nbsp;     */
+&nbsp;    public void updateShoppingCartStatus() {
+<b class="fc">&nbsp;        if (customer.getShoppingCart() != null) {</b>
+<b class="fc">&nbsp;            int quantity = customer.getShoppingCart().getItems().size();</b>
+<b class="fc">&nbsp;            view.updateShoppingCartQuantity(quantity);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            view.updateShoppingCartQuantity(0);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

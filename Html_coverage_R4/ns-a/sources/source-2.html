@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DeleteEmployeePresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.admin.deleteEmp</a>
+</div>
+
+<h1>Coverage Summary for Class: DeleteEmployeePresenter (gr.softeng.team21.view.admin.deleteEmp)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DeleteEmployeePresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.admin.deleteEmp;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.Employee;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Η DeleteEmployeePresenter διαγράφει όποιιον υπάλληλο επιθυμεί ο διαχειριστής.
+&nbsp; *
+&nbsp; * Για να έχει πρόσβαση στη λίστα υπαλλήλων χρησιμοποιεί ένα αντικείμενο τησ κλάσης EmployeeDAOMemory
+&nbsp; * και προκειμένου να κρατήσει τοπικά τα στοιχεια που χρειάζεται χρησιμοποιεί ενα hashmap στο οποίο
+&nbsp; * αποθηκεύει τιμές τύπου string ( μοναδικό κλειδί κάθε στοιχείου ) και employee ( αντικείμενο υπαλλήλου ).
+&nbsp; */
+<b class="fc">&nbsp;public class DeleteEmployeePresenter {</b>
+&nbsp;
+&nbsp;    private DeleteEmployeeView view;
+&nbsp;
+<b class="fc">&nbsp;    private EmployeeDAOMemory emp = EmployeeDAOMemory.getInstance();</b>
+<b class="fc">&nbsp;    private HashMap&lt;String , Employee&gt; map = emp.getEmployees();</b>
+&nbsp;
+&nbsp;
+&nbsp;    public void setView(DeleteEmployeeView view){
+<b class="fc">&nbsp;        this.view = view;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *
+&nbsp;     * @param username εκφράζει το όνομα χρήστη του υπαλλήλου που αναζητούμε
+&nbsp;     * @param id εκφράζει το μοναδικό id του ίδιου υπαλλήλου
+&nbsp;     * @return επιστρέφει τον αντίστοιχο υπάλληλο
+&nbsp;     *
+&nbsp;     * Η searchEmp(...) αναζητά τον προς διαγραφή υπάλληλο στο σύστημα με βάση το username που χρησιμοποιεί
+&nbsp;     * και το id του.
+&nbsp;     *
+&nbsp;     */
+&nbsp;
+&nbsp;    public Employee searchEmp(String username, String id){
+<b class="fc">&nbsp;        for(Employee emp : map.values()){</b>
+<b class="pc">&nbsp;            if((emp.getUsername().equals(username)) &amp;&amp; (emp.getEmployeeId().equals(id))){</b>
+<b class="fc">&nbsp;                return emp;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

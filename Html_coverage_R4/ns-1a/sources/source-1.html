@@ -1,0 +1,271 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OrderStatusActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.customerServiceEmployee.orderStatus</a>
+</div>
+
+<h1>Coverage Summary for Class: OrderStatusActivity (gr.softeng.team21.view.employee.customerServiceEmployee.orderStatus)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderStatusActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">OrderStatusActivity$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.customerServiceEmployee.orderStatus;
+&nbsp;
+&nbsp;import android.app.AlertDialog;
+&nbsp;import android.content.DialogInterface;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import androidx.recyclerview.widget.LinearLayoutManager;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.Order;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;import gr.softeng.team21.view.util.OrderAdapter;
+&nbsp;import gr.softeng.team21.view.util.OrderAdapterType;
+&nbsp;
+&nbsp;/**
+&nbsp; * Android Activity for notifying customers about their orders status.
+&nbsp; * Uses a RecyclerView to display orders assigned to the employee and provides
+&nbsp; * interaction via dialogs for sending automated updates.
+&nbsp; * Implements {@link OrderStatusView} to update the interface based on Presenter logic.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class OrderStatusActivity extends AppCompatActivity implements OrderStatusView {</b>
+&nbsp;
+&nbsp;    private OrderStatusPresenter presenter;
+&nbsp;    private RecyclerView recyclerView;
+&nbsp;    private OrderAdapter adapter;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Configures the layout, initializes the presenter, and populates the
+&nbsp;     * order list using a specialized RecyclerView adapter.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_order_status);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.recyclerViewOrders), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        recyclerView = findViewById(R.id.recyclerViewOrders);</b>
+<b class="nc">&nbsp;        recyclerView.setLayoutManager(new LinearLayoutManager(this));</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter = new OrderStatusPresenter(this, EmployeeDAOMemory.getInstance());</b>
+&nbsp;
+<b class="nc">&nbsp;        String employeeId = getIntent().getStringExtra(&quot;CUSTOMER_SERVICE_EMPLOYEE_ID&quot;);</b>
+<b class="nc">&nbsp;        ArrayList&lt;Order&gt; orders = presenter.loadOrders(employeeId);</b>
+&nbsp;
+<b class="nc">&nbsp;        adapter = new OrderAdapter(orders, OrderAdapterType.NOTIFY_ORDER_ADAPTER , order -&gt; {</b>
+<b class="nc">&nbsp;            presenter.onOrderClicked(order);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        recyclerView.setAdapter(adapter);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showError(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onOrderSelected(Order order) {
+<b class="nc">&nbsp;        Toast.makeText(this, &quot;Επιλέχθηκε η παραγγελία: &quot; + order.getOrdercode(), Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showMessage(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_LONG).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Refreshes the RecyclerView data set to reflect the removal of processed orders.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateList() {
+<b class="nc">&nbsp;        if (adapter != null) {</b>
+<b class="nc">&nbsp;            adapter.notifyDataSetChanged();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays an Android AlertDialog to confirm the intent to send
+&nbsp;     * a customer notification.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showConfirmationDialog(Order order, String message) {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Επιβεβαίωση Ενημέρωσης&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(message)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;ΝΑΙ&quot;, new DialogInterface.OnClickListener() {</b>
+&nbsp;                    @Override
+&nbsp;                    public void onClick(DialogInterface dialog, int which) {
+<b class="nc">&nbsp;                        presenter.onOrderConfirmed(order);</b>
+&nbsp;                    }
+&nbsp;                })
+<b class="nc">&nbsp;                .setNegativeButton(&quot;ΟΧΙ&quot;, null)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,296 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UpdateCatalogueEmployeeMenuActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu</a>
+</div>
+
+<h1>Coverage Summary for Class: UpdateCatalogueEmployeeMenuActivity (gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UpdateCatalogueEmployeeMenuActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/43)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UpdateCatalogueEmployeeMenuActivity$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu;
+&nbsp;
+&nbsp;import android.content.DialogInterface;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AlertDialog;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
+&nbsp;import gr.softeng.team21.view.user.login.LoginActivity;
+&nbsp;import gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute.AssignedRequestsToExecuteActivity;
+&nbsp;import gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign.AvailableRequestsToAssignActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * Main dashboard Activity for Update Catalogue Employees.
+&nbsp; * Provides the interface for navigating to assigned or available requests
+&nbsp; * and managing account settings.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity implements UpdateCatalogueEmployeeMenuView {</b>
+&nbsp;
+&nbsp;    private UpdateCatalogueEmployeeMenuPresenter presenter;
+&nbsp;    private static final String EMP_ID_EXTRA = &quot;UPDATE_CATALOGUE_EMPLOYEE_ID&quot;;
+&nbsp;    private String employeeId;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Configures the layout, attaches listeners to menu buttons,
+&nbsp;     * and initializes the presenter.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_update_catalogue_employee_menu);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.UpdateCatalogueEmployeeMenu), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        presenter = new UpdateCatalogueEmployeeMenuPresenter(this, EmployeeDAOMemory.getInstance());</b>
+<b class="nc">&nbsp;        employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);</b>
+<b class="nc">&nbsp;        presenter.onViewCreated(employeeId);</b>
+&nbsp;
+&nbsp;
+&nbsp;        // Assigned Requests Button
+<b class="nc">&nbsp;        findViewById(R.id.btnUptCatEmpMenuAssignedRequests).setOnClickListener(v -&gt;</b>
+<b class="nc">&nbsp;                presenter.onClickAssignedRequests(employeeId)</b>
+&nbsp;        );
+&nbsp;
+&nbsp;        // Available Requests Button
+<b class="nc">&nbsp;        findViewById(R.id.btnUptCatEmpMenuAssignNewRequest).setOnClickListener(v -&gt;</b>
+<b class="nc">&nbsp;                presenter.onClickAvailableRequestsToAssign(employeeId)</b>
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        findViewById(R.id.btnUptCatEmpMenuProcessAccount).setOnClickListener(v -&gt;</b>
+<b class="nc">&nbsp;                presenter.onProcessAccountSelected(employeeId)</b>
+&nbsp;        );
+&nbsp;
+&nbsp;        // Delete Account Button
+<b class="nc">&nbsp;        findViewById(R.id.btnUptCatEmpMenuDeleteAccount).setOnClickListener(v -&gt;</b>
+<b class="nc">&nbsp;                presenter.onDeleteAccountSelected()</b>
+&nbsp;        );
+&nbsp;
+&nbsp;        // Logout Button
+<b class="nc">&nbsp;        findViewById(R.id.btnUptCatEmpMenuLogout).setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            finish();</b>
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showEmployeeName(String fullName){
+<b class="nc">&nbsp;        ((TextView)findViewById(R.id.txtUptCatEmpMenuName)).setText(fullName);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * The navigation is executed via Intent object, passing employee id  as extra
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToAssignedRequests(String employeeId) {
+<b class="nc">&nbsp;        Intent intent = new Intent(UpdateCatalogueEmployeeMenuActivity.this, AssignedRequestsToExecuteActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(EMP_ID_EXTRA, employeeId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * The navigation is executed via Intent object, passing employee id  as extra
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToAvailableRequestsToAssign(String employeeId) {
+<b class="nc">&nbsp;        Intent intent = new Intent(UpdateCatalogueEmployeeMenuActivity.this, AvailableRequestsToAssignActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(EMP_ID_EXTRA, employeeId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows an Android {@link AlertDialog} with confirmation logic.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showDeleteAccountConfirmation() {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Διαγραφή Λογαριασμού&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(&quot;Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.&quot;)</b>
+<b class="nc">&nbsp;                .setIcon(android.R.drawable.ic_dialog_alert)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;ΝΑΙ&quot;, new DialogInterface.OnClickListener() {</b>
+&nbsp;                    @Override
+&nbsp;                    public void onClick(DialogInterface dialog, int which) {
+<b class="nc">&nbsp;                        presenter.onDeleteAccountConfirmed(employeeId);</b>
+&nbsp;                    }
+&nbsp;                })
+<b class="nc">&nbsp;                .setNegativeButton(&quot;ΟΧΙ&quot;, null)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * The navigation is executed via Intent object which
+&nbsp;     * clears the Activity stack to ensure a clean logout experience.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToLogin() {
+<b class="nc">&nbsp;        Intent intent = new Intent(this, LoginActivity.class);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * The navigation is executed via Intent object, passing employee id (user id) as extra
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToProcessAccount(String employeeId){
+<b class="nc">&nbsp;        Intent intent = new Intent(this, UserEditDataActivity.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        intent.putExtra(&quot;user_id&quot;,employeeId);</b>
+&nbsp;
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showMessage(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

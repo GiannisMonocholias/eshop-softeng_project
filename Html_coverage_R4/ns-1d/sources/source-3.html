@@ -1,0 +1,85 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AssignedOrdersToPrepareView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare</a>
+</div>
+
+<h1>Coverage Summary for Class: AssignedOrdersToPrepareView (gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AssignedOrdersToPrepareView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare;
+&nbsp;
+&nbsp;/**
+&nbsp; * View contract for the Assigned Orders list screen.
+&nbsp; * Defines the navigation logic required to move from the list of assignments
+&nbsp; * to the detailed preparation view.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface AssignedOrdersToPrepareView {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the detailed preparation screen for a specific order.
+&nbsp;     * @param employeeId The ID of the employee performing the preparation.
+&nbsp;     * @param ordercode  The unique code of the selected order.
+&nbsp;     */
+&nbsp;    void navigateToOrderPreparationDetails(String employeeId, String ordercode);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

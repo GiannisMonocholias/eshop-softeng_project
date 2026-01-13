@@ -1,0 +1,258 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UpdateCatalogueEmployee</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: UpdateCatalogueEmployee (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UpdateCatalogueEmployee</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/22)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UpdateCatalogueEmployee$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import gr.softeng.team21.contact.EmailAddress;
+&nbsp;import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+&nbsp;import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+&nbsp;import gr.softeng.team21.util.Date;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents an employee responsible for managing and updating the product catalogue.
+&nbsp; * This class handles the assignment and execution of catalogue update requests,
+&nbsp; * modifying the available product types in the system.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class UpdateCatalogueEmployee extends Employee {
+&nbsp;    private int totalCatalogueUpdates;
+&nbsp;    private HashMap&lt;Integer, CatalogueUpdateRequest&gt; assignedRequests;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new UpdateCatalogueEmployee with the specified details.
+&nbsp;     * Initializes the catalogue update counter and the assigned requests map.
+&nbsp;     * @param username      The unique account username.
+&nbsp;     * @param firstname     The employee&#39;s first name.
+&nbsp;     * @param password      The account password.
+&nbsp;     * @param lastname      The employee&#39;s last name.
+&nbsp;     * @param phoneNumber   The contact phone number.
+&nbsp;     * @param emailaddress  The professional email address.
+&nbsp;     * @param employeeId    The unique business identifier.
+&nbsp;     * @param bonus         Performance-based bonus amount.
+&nbsp;     * @param salary        Base salary.
+&nbsp;     * @param workingHours  Contracted weekly working hours.
+&nbsp;     * @param employeeState The current employment status.
+&nbsp;     * @param hireDate      The official date of hire.
+&nbsp;     */
+&nbsp;    public UpdateCatalogueEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate) {
+<b class="fc">&nbsp;        super(username, firstname, password, lastname, phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);</b>
+<b class="fc">&nbsp;        this.totalCatalogueUpdates = 0;</b>
+<b class="fc">&nbsp;        this.assignedRequests = new HashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the total number of catalogue updates executed by this employee.
+&nbsp;     */
+&nbsp;    public int getTotalCatalogueUpdates() {
+<b class="fc">&nbsp;        return totalCatalogueUpdates;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return a map of all catalogue update requests assigned to this employee.
+&nbsp;     */
+&nbsp;    public HashMap&lt;Integer, CatalogueUpdateRequest&gt; getAssignedRequests() {
+<b class="fc">&nbsp;        return assignedRequests;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Assigns a specific update request to this employee from the global request pool.
+&nbsp;     * @param requestId the unique identifier of the request to assign.
+&nbsp;     * @return true if the request was successfully found and assigned,
+&nbsp;     * false if the ID does not exist or is already assigned to this employee.
+&nbsp;     */
+&nbsp;    public boolean assignRequest(int requestId) {
+<b class="fc">&nbsp;        if (!UpdateRequestDAOMemory.getInstance().getUpdateRequests().containsKey(requestId))</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;
+<b class="fc">&nbsp;        CatalogueUpdateRequest selectedRequest = UpdateRequestDAOMemory.getInstance().getUpdateRequest(requestId);</b>
+<b class="fc">&nbsp;        if (!assignedRequests.containsKey(requestId))</b>
+<b class="fc">&nbsp;            assignedRequests.put(requestId, selectedRequest);</b>
+&nbsp;        else
+<b class="fc">&nbsp;            return false;</b>
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a specific request from the employee&#39;s assigned list.
+&nbsp;     * @param requestId the unique identifier of the request.
+&nbsp;     * @return the CatalogueUpdateRequest object, or null if not found in the assigned list.
+&nbsp;     */
+&nbsp;    public CatalogueUpdateRequest selectRequest(int requestId) {
+<b class="fc">&nbsp;        if (!assignedRequests.containsKey(requestId))</b>
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;
+<b class="fc">&nbsp;        return assignedRequests.get(requestId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Executes the specified catalogue update request.
+&nbsp;     * The operation performed (Insert, Delete, or Process) depends on the request type.
+&nbsp;     * @param request the catalogue update request to be executed.
+&nbsp;     * @throws IllegalArgumentException if the request argument is null.
+&nbsp;     */
+&nbsp;    public void executeUpdate(CatalogueUpdateRequest request) {
+<b class="fc">&nbsp;        if (request == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Request cannot be null&quot;);</b>
+&nbsp;
+<b class="pc">&nbsp;        switch (request.getType()) {</b>
+&nbsp;            case INSERT_PRODUCT:
+<b class="fc">&nbsp;                ProductTypeDAOMemory.getInstance().addProductType(request.getProduct());</b>
+&nbsp;                break;
+&nbsp;            case DELETE_PRODUCT:
+<b class="fc">&nbsp;                ProductTypeDAOMemory.getInstance().deleteProductType(request.getProduct());</b>
+&nbsp;                break;
+&nbsp;            case PROCESS_PRODUCT:
+<b class="fc">&nbsp;                ProductTypeDAOMemory.getInstance().processProduct(request.getProduct());</b>
+&nbsp;                break;
+&nbsp;        }
+<b class="fc">&nbsp;        totalCatalogueUpdates++;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

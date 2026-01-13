@@ -1,0 +1,226 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EmailDetailsActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.contact.emailDetails</a>
+</div>
+
+<h1>Coverage Summary for Class: EmailDetailsActivity (gr.softeng.team21.view.contact.emailDetails)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmailDetailsActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.contact.emailDetails;
+&nbsp;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.TextView;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity for viewing the content of a specific email.
+&nbsp; * Implements {@link EmailDetailsView} to render resolved sender/receiver data
+&nbsp; * passed from the presenter.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class EmailDetailsActivity extends AppCompatActivity implements EmailDetailsView {</b>
+&nbsp;
+&nbsp;    private EmailDetailsPresenter presenter;
+&nbsp;
+&nbsp;    private TextView txtSubject;
+&nbsp;    private TextView txtSenderName;
+&nbsp;    private TextView txtReceiverName;
+&nbsp;    private TextView txtSenderEmailAddress;
+&nbsp;    private TextView txtReceiverEmailAddress;
+&nbsp;    private TextView txtBody;
+&nbsp;
+&nbsp;    private static final String  EMP_ID_EXTRA = &quot;user_id&quot;;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the UI, connects to memory DAOs, and extracts
+&nbsp;     * email data from the calling intent.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_email_details);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.EmailDetails), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        presenter = new EmailDetailsPresenter(this, EmployeeDAOMemory.getInstance(), CustomerDAOMemory.getInstance());</b>
+&nbsp;
+<b class="nc">&nbsp;        txtSubject = findViewById(R.id.txtEmailDetailsEmailSubjectValue);</b>
+<b class="nc">&nbsp;        txtSenderName = findViewById(R.id.txtEmailDetailsSenderName);</b>
+<b class="nc">&nbsp;        txtReceiverName = findViewById(R.id.txtEmailDetailsReceiverName);</b>
+<b class="nc">&nbsp;        txtSenderEmailAddress = findViewById(R.id.txtEmailDetailsSenderEmail);</b>
+<b class="nc">&nbsp;        txtReceiverEmailAddress = findViewById(R.id.txtEmailDetailsReceiverEmail);</b>
+<b class="nc">&nbsp;        txtBody = findViewById(R.id.txtEmailDetailsEmailBody);</b>
+&nbsp;
+<b class="nc">&nbsp;        String subject = getIntent().getStringExtra(&quot;SUBJECT_EXTRA&quot;);</b>
+<b class="nc">&nbsp;        String senderEmailAddress = getIntent().getStringExtra(&quot;SENDER_EXTRA&quot;);</b>
+<b class="nc">&nbsp;        String receiverEmailAddress = getIntent().getStringExtra(&quot;RECEIVER_EXTRA&quot;);</b>
+<b class="nc">&nbsp;        String body = getIntent().getStringExtra(&quot;BODY_EXTRA&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);</b>
+<b class="nc">&nbsp;        presenter.onViewCreated(subject, senderEmailAddress, receiverEmailAddress, body, employeeId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Sets the text for the email subject field.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void displaySubject(String subject) {
+<b class="nc">&nbsp;        txtSubject.setText(subject);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Sets the text for the sender&#39;s display name.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void displaySenderName(String sender) {
+<b class="nc">&nbsp;        txtSenderName.setText(sender);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Sets the text for the receiver&#39;s full name.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void displayReceiverName(String receiver) {
+<b class="nc">&nbsp;        txtReceiverName.setText(receiver);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Sets the text for the message content.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void displayBody(String body) {
+<b class="nc">&nbsp;        txtBody.setText(body);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Displays the technical email address of the sender.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void displaySenderEmail(String email) {
+<b class="nc">&nbsp;        txtSenderEmailAddress.setText(email);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Displays the technical email address of the receiver.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void displayReceiverEmail(String email) {
+<b class="nc">&nbsp;        txtReceiverEmailAddress.setText(email);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

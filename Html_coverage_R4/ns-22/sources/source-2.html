@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AvailableRequestsToAssignPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign</a>
+</div>
+
+<h1>Coverage Summary for Class: AvailableRequestsToAssignPresenter (gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AvailableRequestsToAssignPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import gr.softeng.team21.dao.EmployeeDAO;
+&nbsp;import gr.softeng.team21.dao.UpdateRequestDAO;
+&nbsp;import gr.softeng.team21.domain.CatalogueUpdateRequest;
+&nbsp;import gr.softeng.team21.domain.RequestStatusType;
+&nbsp;import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Available Requests to Assign screen.
+&nbsp; * Handles the logic of filtering available catalogue requests and manages the
+&nbsp; * domain-level assignment to the logged-in employee.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class AvailableRequestsToAssignPresenter {
+&nbsp;    private AvailableRequestsToAssignView view;
+&nbsp;    private EmployeeDAO employeeDAO;
+&nbsp;    private UpdateRequestDAO updateRequestDAO;
+&nbsp;    private UpdateCatalogueEmployee loggedInEmployee;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with required DAOs and view interface.
+&nbsp;     * @param view The view implementation.
+&nbsp;     * @param employeeDAO Data source for employee records.
+&nbsp;     * @param updateRequestDAO Data source for catalogue update requests.
+&nbsp;     */
+<b class="fc">&nbsp;    public AvailableRequestsToAssignPresenter(AvailableRequestsToAssignView view, EmployeeDAO employeeDAO, UpdateRequestDAO updateRequestDAO){</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.employeeDAO = employeeDAO;</b>
+<b class="fc">&nbsp;        this.updateRequestDAO = updateRequestDAO;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads all catalogue update requests that currently have a status of NEW.
+&nbsp;     * @param employeeId The ID of the employee browsing the requests.
+&nbsp;     * @return An ArrayList of available requests.
+&nbsp;     */
+&nbsp;    public ArrayList&lt;CatalogueUpdateRequest&gt; loadAvailableRequests(String employeeId){
+<b class="fc">&nbsp;        this.loggedInEmployee = (UpdateCatalogueEmployee) employeeDAO.getEmployee(employeeId);</b>
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;CatalogueUpdateRequest&gt; requests = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(int req_id : updateRequestDAO.getUpdateRequests().keySet()){</b>
+<b class="fc">&nbsp;            CatalogueUpdateRequest cur_request = updateRequestDAO.getUpdateRequests().get(req_id);</b>
+<b class="pc">&nbsp;            if(cur_request != null &amp;&amp; cur_request.getStatus() == RequestStatusType.NEW) {</b>
+<b class="fc">&nbsp;                requests.add(cur_request);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return requests;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Triggered when a request is clicked. Requests a confirmation dialog from the view.
+&nbsp;     * @param request The selected request.
+&nbsp;     */
+&nbsp;    public void onRequestClicked(CatalogueUpdateRequest request) {
+<b class="fc">&nbsp;        String confirmationMessage = &quot;Θέλετε να αναλάβετε αυτή την παραγγελία;&quot;;</b>
+<b class="fc">&nbsp;        view.showConfirmationDialog(request, confirmationMessage);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Finalizes the assignment in the domain model and updates the request status.
+&nbsp;     * @param request The request confirmed for assignment.
+&nbsp;     */
+&nbsp;    public void onRequestConfirmed(CatalogueUpdateRequest request) {
+<b class="fc">&nbsp;        boolean result = loggedInEmployee.assignRequest(request.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        if(!result){</b>
+<b class="fc">&nbsp;            view.showError(&quot;Σφάλμα: το αίτημα με ID &quot; + request.getId() + &quot; δεν υπάρχει ή δεν σας έχει ανατεθεί&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        request.setStatus(RequestStatusType.ASSIGNED);</b>
+<b class="fc">&nbsp;        view.showMessage(&quot;Το αίτημα ανατέθηκε επιτυχώς!&quot;);</b>
+<b class="fc">&nbsp;        view.onRequestAssignedSuccess(request);</b>
+<b class="fc">&nbsp;        view.updateList();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerCardPaymentView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.Payment</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerCardPaymentView (gr.softeng.team21.view.customer.Payment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">CustomerCardPaymentView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.Payment;
+&nbsp;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;
+&nbsp;/**
+&nbsp; * Interface for the Customer Card Payment screen.
+&nbsp; * Defines methods for showing confirmation dialogs, messages, and navigation.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public interface CustomerCardPaymentView {
+&nbsp;    /**
+&nbsp;     * Shows a confirmation dialog for the card charge.
+&nbsp;     * @param amount The amount to be charged.
+&nbsp;     */
+&nbsp;    void showConfirmation(Money amount);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a message to the user.
+&nbsp;     * @param msg The message to display.
+&nbsp;     */
+&nbsp;    void showMessage(String msg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the HomePage.
+&nbsp;     */
+&nbsp;    void goToCustomerHomePage();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

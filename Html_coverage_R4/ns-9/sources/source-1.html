@@ -1,0 +1,187 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AdminDataActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.admin.data</a>
+</div>
+
+<h1>Coverage Summary for Class: AdminDataActivity (gr.softeng.team21.view.admin.data)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdminDataActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/26)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.admin.data;
+&nbsp;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.EditText;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import androidx.lifecycle.ViewModelProvider;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity responsible for displaying and updating
+&nbsp; * the administrator&#39;s personal data.
+&nbsp; */
+&nbsp;
+<b class="nc">&nbsp;public class AdminDataActivity extends AppCompatActivity implements AdminDataView {</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * ViewModel that holds the presenter instance.
+&nbsp;     */
+&nbsp;    private AdminDataViewModel viewModel;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Presenter responsible for handling the business logic
+&nbsp;     * related to updating admin&#39;s data.
+&nbsp;     */
+&nbsp;    private AdminDataPresenter presenter;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_admin_data);</b>
+&nbsp;
+<b class="nc">&nbsp;        viewModel = new ViewModelProvider(this).get(AdminDataViewModel.class);</b>
+<b class="nc">&nbsp;        presenter = viewModel.getPresenter();</b>
+<b class="nc">&nbsp;        presenter.setView(this);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        Button btnSaveData = findViewById(R.id.btnSaveAdminData);</b>
+<b class="nc">&nbsp;        btnSaveData.setOnClickListener(v -&gt; saveData());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Collects data from the UI input fields
+&nbsp;     * and forwards them to the presenter for validation and storage.
+&nbsp;     */
+&nbsp;
+&nbsp;    private void saveData(){
+&nbsp;
+<b class="nc">&nbsp;        EditText edtUserName = findViewById(R.id.txtAdminUserName);</b>
+<b class="nc">&nbsp;        String userNameKeyword = edtUserName.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        EditText edtEmail = findViewById(R.id.txtAdminEmail);</b>
+<b class="nc">&nbsp;        String EmailKeyword = edtEmail.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        EditText edtFirstName = findViewById(R.id.txtAdminFirstName);</b>
+<b class="nc">&nbsp;        String firstNameKeyword = edtFirstName.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        EditText edtLastName = findViewById(R.id.txtAdminLastName);</b>
+<b class="nc">&nbsp;        String lastNameKeyword = edtLastName.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        EditText edtPhone = findViewById(R.id.txtAdminPhone);</b>
+<b class="nc">&nbsp;        String phoneKeyword = edtPhone.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        EditText edtAddress = findViewById(R.id.txtAdminAddress);</b>
+<b class="nc">&nbsp;        String addressKeyword = edtAddress.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        viewModel.getPresenter().saveData(userNameKeyword , EmailKeyword , firstNameKeyword , lastNameKeyword , phoneKeyword , addressKeyword);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,308 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Order</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Order (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Order</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import gr.softeng.team21.util.Date;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents an order in the system containing transaction details, status,cost
+&nbsp; * and the associated shopping cart.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class Order {
+&nbsp;    /**
+&nbsp;     * The unique code identifying the order
+&nbsp;     */
+&nbsp;    private String ordercode;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The date when the order was submitted
+&nbsp;     */
+&nbsp;    private Date submissiondate;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The expected or actual delivery date
+&nbsp;     */
+&nbsp;    private Date deliverydate;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The current status of the order
+&nbsp;     */
+&nbsp;    private OrderStatusType orderstatus;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Indicates if the order has been paid
+&nbsp;     */
+&nbsp;    private boolean paid;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The method used for payment
+&nbsp;     */
+&nbsp;    private PaymentType paymentmethod;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The shopping cart associated with this order
+&nbsp;     */
+&nbsp;    private ShoppingCart shoppingCart;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * The total monetary amount of the order
+&nbsp;     */
+&nbsp;    private Money total_amount;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new Order with the specified details.
+&nbsp;     * A copy  shopping cart is created and assigned to the order.
+&nbsp;     *
+&nbsp;     * @param ordercode      the unique code for the order
+&nbsp;     * @param submissiondate the date the order was submitted
+&nbsp;     * @param orderstatus    the initial status of the order
+&nbsp;     * @param paid           true if the order is paid, false otherwise
+&nbsp;     * @param paymentmethod  the method of payment
+&nbsp;     * @param deliverydate   the delivery date
+&nbsp;     * @param shoppingCart   the shopping cart to be copied for this order
+&nbsp;     */
+&nbsp;    public Order(String ordercode, Date submissiondate, OrderStatusType orderstatus,
+<b class="fc">&nbsp;                 boolean paid, PaymentType paymentmethod, Date deliverydate, ShoppingCart shoppingCart) {</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        this.ordercode = ordercode;</b>
+<b class="fc">&nbsp;        this.submissiondate = submissiondate;</b>
+<b class="fc">&nbsp;        this.deliverydate = deliverydate;</b>
+<b class="fc">&nbsp;        this.orderstatus = orderstatus;</b>
+<b class="fc">&nbsp;        this.paid = paid;</b>
+<b class="fc">&nbsp;        this.paymentmethod = paymentmethod;</b>
+<b class="fc">&nbsp;        this.shoppingCart = shoppingCart.copy();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the total monetary amount of the order.
+&nbsp;     * @return the total amount
+&nbsp;     */
+&nbsp;    public Money getTotal_amount() {
+<b class="fc">&nbsp;        return total_amount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the total monetary amount of the order.
+&nbsp;     * @param total_amount the new total amount
+&nbsp;     */
+&nbsp;    public void setTotal_amount(Money total_amount) {
+<b class="fc">&nbsp;        this.total_amount = total_amount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the unique code of the order.
+&nbsp;     * @return the order code
+&nbsp;     */
+&nbsp;    public String getOrdercode() {
+<b class="fc">&nbsp;        return ordercode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the unique code of the order.
+&nbsp;     * @param ordercode the new order code
+&nbsp;     */
+&nbsp;    public void setOrdercode(String ordercode) {
+<b class="fc">&nbsp;        this.ordercode = ordercode;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the submission date of the order.
+&nbsp;     * @return the submission date
+&nbsp;     */
+&nbsp;    public Date getSubmissiondate() {
+<b class="fc">&nbsp;        return submissiondate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the submission date of the order.
+&nbsp;     * @param submissiondate the new submission date
+&nbsp;     */
+&nbsp;    public void setSubmissiondate(Date submissiondate) {
+<b class="fc">&nbsp;        this.submissiondate = submissiondate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the delivery date of the order.
+&nbsp;     * @return the delivery date
+&nbsp;     */
+&nbsp;    public Date getDeliverydate() {
+<b class="fc">&nbsp;        return deliverydate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the delivery date of the order.
+&nbsp;     * @param deliverydate the new delivery date
+&nbsp;     */
+&nbsp;    public void setDeliverydate(Date deliverydate) {
+<b class="fc">&nbsp;        this.deliverydate = deliverydate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the current status of the order.
+&nbsp;     * @return the order status
+&nbsp;     */
+&nbsp;    public OrderStatusType getOrderstatus() {
+<b class="fc">&nbsp;        return orderstatus;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the current status of the order.
+&nbsp;     * @param orderstatus the new order status
+&nbsp;     */
+&nbsp;    public void setOrderstatus(OrderStatusType orderstatus) {
+<b class="fc">&nbsp;        this.orderstatus = orderstatus;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if the order has been paid.
+&nbsp;     * @return true if paid, false otherwise
+&nbsp;     */
+&nbsp;    public boolean getPaid() {
+<b class="fc">&nbsp;        return paid;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the payment status of the order.
+&nbsp;     * @param paid true if paid, false otherwise
+&nbsp;     */
+&nbsp;    public void setPaid(boolean paid) {
+<b class="fc">&nbsp;        this.paid = paid;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the payment method used for the order.
+&nbsp;     * @return the payment method
+&nbsp;     */
+&nbsp;    public PaymentType getPaymentmethod() {
+<b class="fc">&nbsp;        return paymentmethod;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the payment method used for the order.
+&nbsp;     * @param paymentmethod the new payment method
+&nbsp;     */
+&nbsp;    public void setPaymentmethod(PaymentType paymentmethod) {
+<b class="fc">&nbsp;        this.paymentmethod = paymentmethod;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the shopping cart associated with this order.
+&nbsp;     * @return the shopping cart
+&nbsp;     */
+&nbsp;    public ShoppingCart getShoppingCart() {
+<b class="fc">&nbsp;        return shoppingCart;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the shopping cart associated with this order.
+&nbsp;     * @param shoppingCart the new shopping cart
+&nbsp;     */
+&nbsp;    public void setShoppingCart(ShoppingCart shoppingCart) {
+<b class="fc">&nbsp;        this.shoppingCart = shoppingCart;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

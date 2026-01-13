@@ -1,0 +1,207 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ExecuteInsertProductPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct</a>
+</div>
+
+<h1>Coverage Summary for Class: ExecuteInsertProductPresenter (gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ExecuteInsertProductPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96%
+  </span>
+  <span class="absValue">
+    (24/25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import gr.softeng.team21.dao.EmployeeDAO;
+&nbsp;import gr.softeng.team21.dao.ProductTypeDAO;
+&nbsp;import gr.softeng.team21.dao.UpdateRequestDAO;
+&nbsp;import gr.softeng.team21.domain.CatalogueUpdateRequest;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;import gr.softeng.team21.domain.ProductType;
+&nbsp;import gr.softeng.team21.domain.RequestStatusType;
+&nbsp;import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the product insertion screen.
+&nbsp; * Handles the logic for validating user input, creating a new {@link ProductType}
+&nbsp; * domain object, and updating the request status to SERVED.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class ExecuteInsertProductPresenter {
+&nbsp;    private ExecuteInsertProductView view;
+&nbsp;    private EmployeeDAO employeeDAO;
+&nbsp;    private UpdateRequestDAO updateRequestDAO;
+&nbsp;    private ProductTypeDAO productTypeDAO;
+&nbsp;
+&nbsp;    private CatalogueUpdateRequest currentRequest;
+&nbsp;    private UpdateCatalogueEmployee loggedInEmployee;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with required DAOs and the view interface.
+&nbsp;     */
+<b class="fc">&nbsp;    public ExecuteInsertProductPresenter(ExecuteInsertProductView view, EmployeeDAO employeeDAO, UpdateRequestDAO updateRequestDAO, ProductTypeDAO productTypeDAO) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.employeeDAO = employeeDAO;</b>
+<b class="fc">&nbsp;        this.updateRequestDAO = updateRequestDAO;</b>
+<b class="fc">&nbsp;        this.productTypeDAO = productTypeDAO;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the specific request instructions and employee context.
+&nbsp;     * @param employeeId The ID of the employee executing the insert.
+&nbsp;     * @param requestId The ID of the insert request.
+&nbsp;     */
+&nbsp;    public void loadRequestDetails(String employeeId, int requestId) {
+<b class="fc">&nbsp;        this.loggedInEmployee = (UpdateCatalogueEmployee) employeeDAO.getEmployee(employeeId);</b>
+&nbsp;
+<b class="pc">&nbsp;        if (updateRequestDAO.getUpdateRequests() != null) {</b>
+<b class="fc">&nbsp;            this.currentRequest = updateRequestDAO.getUpdateRequests().get(requestId);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        if (currentRequest == null || loggedInEmployee == null) {</b>
+<b class="fc">&nbsp;            view.showError(&quot;Σφάλμα: Τα στοιχεία του υπαλλήλου ή του αιτήματος δεν βρέθηκαν.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        view.setRequestDescription(currentRequest.getUpdateDescription());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Processes the insertion logic. Validates numeric input for price,
+&nbsp;     * creates the domain object, and persists it via the DAO.
+&nbsp;     */
+&nbsp;    public void onConfirmInsert() {
+<b class="fc">&nbsp;        String code = view.getProductCode();</b>
+<b class="fc">&nbsp;        String name = view.getProductName();</b>
+<b class="fc">&nbsp;        String priceStr = view.getProductPrice();</b>
+<b class="fc">&nbsp;        String desc = view.getProductDescription();</b>
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            double priceVal = Double.parseDouble(priceStr);</b>
+<b class="fc">&nbsp;            if (priceVal &lt; 0) throw new NumberFormatException();</b>
+&nbsp;
+&nbsp;            // Create Domain Model components
+<b class="fc">&nbsp;            Money money = new Money(BigDecimal.valueOf(priceVal), &quot;€&quot;);</b>
+<b class="fc">&nbsp;            ProductType newProduct = new ProductType(name, desc, money, code);</b>
+&nbsp;
+&nbsp;            // Persist and update status
+<b class="fc">&nbsp;            productTypeDAO.addProductType(newProduct);</b>
+<b class="fc">&nbsp;            currentRequest.setStatus(RequestStatusType.SERVED);</b>
+&nbsp;
+<b class="fc">&nbsp;            view.showSuccessMessage(&quot;Το προϊόν καταχωρήθηκε επιτυχώς!&quot;);</b>
+&nbsp;
+&nbsp;            // Cleanup employee&#39;s task queue
+<b class="fc">&nbsp;            loggedInEmployee.getAssignedRequests().remove(currentRequest.getId());</b>
+&nbsp;
+&nbsp;        } catch (NumberFormatException e) {
+<b class="fc">&nbsp;            view.showInputError(&quot;price&quot;, &quot;Please enter a valid price (e.g., 12.50)&quot;);</b>
+&nbsp;        } catch (IllegalArgumentException e) {
+<b class="nc">&nbsp;            view.showError(&quot;Error: &quot; + e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

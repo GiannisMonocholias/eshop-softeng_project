@@ -1,0 +1,161 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductsWareHouseDAO</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductsWareHouseDAO (gr.softeng.team21.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ProductsWareHouseDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.dao;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.ProductType;
+&nbsp;
+&nbsp;public interface ProductsWareHouseDAO {
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Retrieves the current stock level for a specific product type.
+&nbsp;      * @param type the product type to query.
+&nbsp;      * @return the stock quantity, or null if the product type is not tracked.
+&nbsp;      * @throws IllegalArgumentException if the type argument is null.
+&nbsp;      */
+&nbsp;     Integer getProductStock(ProductType type);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Calculates the percentage of warehouse capacity currently in use.
+&nbsp;      * @return a double representing the utilization ratio (0.0 to 1.0).
+&nbsp;      */
+&nbsp;     double getCapacityUtilization();
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Adds a new product type to the warehouse tracking system with zero initial stock.
+&nbsp;      * @param type the new product type to insert.
+&nbsp;      * @throws IllegalArgumentException if the type is null or already exists in the system.
+&nbsp;      */
+&nbsp;     void insertProduct(ProductType type);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Removes a product type from the warehouse tracking system.
+&nbsp;      * @param type the product type to remove.
+&nbsp;      * @throws IllegalArgumentException if the type is null.
+&nbsp;      * @throws NoSuchElementException if the product type is not found in stock.
+&nbsp;      */
+&nbsp;     void deleteProduct(ProductType type);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Increases the stock level for a specific product.
+&nbsp;      * @param type   the product type to update.
+&nbsp;      * @param amount the quantity to add (must be positive).
+&nbsp;      * @return true if the update was successful, false if the type is missing or amount is invalid.
+&nbsp;      */
+&nbsp;     boolean increaseProductStock(ProductType type,int amount);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Decreases the stock level for a specific product if sufficient stock exists.
+&nbsp;      * @param type   the product type to update.
+&nbsp;      * @param amount the quantity to subtract (must be positive).
+&nbsp;      * @return true if the update was successful, false if the type is missing or amount is invalid or warehouse stock is
+&nbsp;      * insufficient.
+&nbsp;      */
+&nbsp;     boolean decreaseProductStock(ProductType type,int amount);
+&nbsp;
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Checks if there is enough stock available for a specific product.
+&nbsp;      * @param type the product type to check.
+&nbsp;      * @param amount the quantity requested.
+&nbsp;      * @return true if current stock minus amount is greater than zero.
+&nbsp;      */
+&nbsp;     boolean sufficientStock(ProductType type, int amount);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Validates if the provided quantity is a positive integer.
+&nbsp;      * @param amount the quantity to validate.
+&nbsp;      * @return true if amount &gt; 0.
+&nbsp;      */
+&nbsp;     boolean isValidAmount(int amount);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * @return the complete map of product types and their respective stock quantities.
+&nbsp;      */
+&nbsp;     HashMap&lt;ProductType, Integer&gt; getProductStocks();
+&nbsp;
+&nbsp;     /**
+&nbsp;      * @return the maximum capacity limit of the warehouse.
+&nbsp;      */
+&nbsp;     int getMaxCapacity();
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Updates the maximum capacity limit of the warehouse.
+&nbsp;      * @param maxCapacity the new capacity limit.
+&nbsp;      */
+&nbsp;     void setMaxCapacity(int maxCapacity);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Resets the warehouse by clearing all product stock data.
+&nbsp;      */
+&nbsp;     void clear();
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

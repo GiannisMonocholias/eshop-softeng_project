@@ -1,0 +1,280 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DelivererMenuActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.deliverer.delivererMenu</a>
+</div>
+
+<h1>Coverage Summary for Class: DelivererMenuActivity (gr.softeng.team21.view.employee.deliverer.delivererMenu)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DelivererMenuActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/38)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DelivererMenuActivity$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/40)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.deliverer.delivererMenu;
+&nbsp;
+&nbsp;import android.content.DialogInterface;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.util.Log;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AlertDialog;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;import gr.softeng.team21.view.employee.deliverer.delivererOrdersList.DelivererOrdersListActivity;
+&nbsp;import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
+&nbsp;import gr.softeng.team21.view.user.login.LoginActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * Main Activity representing the Deliverer&#39;s dashboard.
+&nbsp; * Manages UI interactions and implements the {@link DelivererMenuView}
+&nbsp; * to handle navigation and feedback as directed by the Presenter.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class DelivererMenuActivity extends AppCompatActivity implements DelivererMenuView {</b>
+&nbsp;
+&nbsp;    private DelivererMenuPresenter presenter;
+&nbsp;    private static final String EMP_ID_EXTRA = &quot;DELIVERER_ID&quot;;
+&nbsp;    private String employeeId;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the layout, binds UI listeners, and notifies the presenter
+&nbsp;     * that the view has been created.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_deliverer_menu);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activityDelivererDashboard), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        presenter = new DelivererMenuPresenter(this, EmployeeDAOMemory.getInstance());</b>
+&nbsp;
+<b class="nc">&nbsp;        employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter.onViewCreated(employeeId);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        findViewById(R.id.btnDelivererMenuOrdersList).setOnClickListener(v -&gt;</b>
+<b class="nc">&nbsp;                presenter.onOrdersListSelected(employeeId)</b>
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        findViewById(R.id.btnDelivererMenuProcessAccount).setOnClickListener(v -&gt;</b>
+<b class="nc">&nbsp;                presenter.onProcessAccountSelected(employeeId)</b>
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        findViewById(R.id.btnDelivererMenuDeleteAccount).setOnClickListener(v -&gt;</b>
+<b class="nc">&nbsp;                presenter.onDeleteAccountSelected()</b>
+&nbsp;        );
+&nbsp;
+<b class="nc">&nbsp;        findViewById(R.id.btnDelivererMenuLogout).setOnClickListener(v -&gt; {</b>
+<b class="nc">&nbsp;            finish();</b>
+&nbsp;        });
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showEmployeeName(String fullname) {
+<b class="nc">&nbsp;        ((TextView) findViewById(R.id.txtDelivererMenuName)).setText(fullname);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * The navigation is executed via Intent object, with employee id as an intent extra
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToOrdersList(String employeeId) {
+<b class="nc">&nbsp;        Intent intent = new Intent(DelivererMenuActivity.this, DelivererOrdersListActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(EMP_ID_EXTRA, employeeId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows an Android {@link AlertDialog} with confirmation buttons.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showDeleteAccountConfirmation() {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Διαγραφή Λογαριασμού&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(&quot;Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.&quot;)</b>
+<b class="nc">&nbsp;                .setIcon(android.R.drawable.ic_dialog_alert)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;ΝΑΙ&quot;, new DialogInterface.OnClickListener() {</b>
+&nbsp;                    @Override
+&nbsp;                    public void onClick(DialogInterface dialog, int which) {
+<b class="nc">&nbsp;                        presenter.onDeleteAccountConfirmed(employeeId);</b>
+&nbsp;                    }
+&nbsp;                })
+<b class="nc">&nbsp;                .setNegativeButton(&quot;ΟΧΙ&quot;, null)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Clears the activity stack to ensure security after logout or deletion.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToLogin() {
+<b class="nc">&nbsp;        Intent intent = new Intent(this, LoginActivity.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);</b>
+&nbsp;
+<b class="nc">&nbsp;        startActivity(intent);</b>
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * The navigation is executed via Intent object, with employee id (user id) as an intent extra
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToProcessAccount(String employeeId){
+<b class="nc">&nbsp;        Intent intent = new Intent(this, UserEditDataActivity.class);</b>
+&nbsp;
+<b class="nc">&nbsp;        intent.putExtra(&quot;user_id&quot;,employeeId);</b>
+&nbsp;
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showMessage(String message) {
+<b class="nc">&nbsp;        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

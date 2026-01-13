@@ -1,0 +1,103 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AddressView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.contact.editdata.Address</a>
+</div>
+
+<h1>Coverage Summary for Class: AddressView (gr.softeng.team21.view.contact.editdata.Address)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">AddressView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.contact.editdata.Address;
+&nbsp;
+&nbsp;/**
+&nbsp; * Interface for the Address Edit .
+&nbsp; * Defines the methods for displaying messages and updating the address form.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public interface AddressView {
+&nbsp;    /**
+&nbsp;     * Displays a success message to the user.
+&nbsp;     * @param msg The message to display.
+&nbsp;     */
+&nbsp;    void SaveSuccess(String msg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays an error message to the user.
+&nbsp;     * @param msg The message to display.
+&nbsp;     */
+&nbsp;    void showError(String msg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Completes  the view with the user&#39;s current address details.
+&nbsp;     * @param street The street name.
+&nbsp;     * @param number The street number.
+&nbsp;     * @param city The city name.
+&nbsp;     * @param country The country name.
+&nbsp;     * @param zip The zip code.
+&nbsp;     */
+&nbsp;    void setAddressDetails(String street, String number, String city, String country, String zip);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Finishes the current activity.
+&nbsp;     */
+&nbsp;    void finishView();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

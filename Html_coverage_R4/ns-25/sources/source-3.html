@@ -1,0 +1,136 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ExecuteProcessProductView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct</a>
+</div>
+
+<h1>Coverage Summary for Class: ExecuteProcessProductView (gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ExecuteProcessProductView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines methods for data binding, retrieving user input from form fields,
+&nbsp; * and managing validation/confirmation workflows.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface ExecuteProcessProductView {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return product code input
+&nbsp;     */
+&nbsp;    String getProductCode();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return product name input
+&nbsp;     */
+&nbsp;    String getProductName();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return product price input
+&nbsp;     */
+&nbsp;    String getProductPrice();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return product description input
+&nbsp;     */
+&nbsp;    String getProductDescription();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Fills the form fields with the current product data.
+&nbsp;     * @param code The existing product code.
+&nbsp;     * @param name The existing product name.
+&nbsp;     * @param price The existing price value.
+&nbsp;     * @param description The existing product description.
+&nbsp;     */
+&nbsp;    void setProductData(String code, String name, String price, String description);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the Admin&#39;s instructions for the modification.
+&nbsp;     * @param description The update request details.
+&nbsp;     */
+&nbsp;    void setRequestDescription(String description);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a validation error on a specific input field.
+&nbsp;     * @param field   The target field name.
+&nbsp;     * @param message The error message.
+&nbsp;     */
+&nbsp;    void showInputError(String field, String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a success alert and terminates the activity.
+&nbsp;     * @param message The success description.
+&nbsp;     */
+&nbsp;    void showSuccessMessage(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a general error alert dialog.
+&nbsp;     * @param message The error description.
+&nbsp;     */
+&nbsp;    void showError(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Shows a confirmation dialog before applying changes to the catalogue.
+&nbsp;     */
+&nbsp;    void showConfirmationDialog();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

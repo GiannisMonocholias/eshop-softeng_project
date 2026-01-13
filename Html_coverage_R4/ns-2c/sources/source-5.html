@@ -1,0 +1,108 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UpdateRequestDAO</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: UpdateRequestDAO (gr.softeng.team21.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">UpdateRequestDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.dao;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.CatalogueUpdateRequest;
+&nbsp;
+&nbsp;public interface UpdateRequestDAO {
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Retrieves a specific update request based on its ID.
+&nbsp;      * @param requestId The unique identifier of the catalogue update request.
+&nbsp;      * @return The {@link CatalogueUpdateRequest} object, or null if no request is found with that ID.
+&nbsp;      */
+&nbsp;     CatalogueUpdateRequest getUpdateRequest(int requestId);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Adds a new catalogue update request to the repository.
+&nbsp;      * @param request The request object to be stored.
+&nbsp;      * @throws IllegalArgumentException if the request is null or if a request with the same ID already exists.
+&nbsp;      */
+&nbsp;     void addUpdateRequest(CatalogueUpdateRequest request);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Removes a specific catalogue update request from the repository.
+&nbsp;      * @param request The request object to be removed.
+&nbsp;      * @throws IllegalArgumentException if the request is null or if the request is not found in the repository.
+&nbsp;      */
+&nbsp;     void deleteUpdateRequest(CatalogueUpdateRequest request);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Returns a copy of all currently stored update requests.
+&nbsp;      * @return A new HashMap containing all catalogue update requests.
+&nbsp;      */
+&nbsp;     HashMap&lt;Integer,CatalogueUpdateRequest&gt; getUpdateRequests();
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Clears all stored update requests from the memory.
+&nbsp;      */
+&nbsp;     void clear();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

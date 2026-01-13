@@ -1,0 +1,116 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerDAO</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerDAO (gr.softeng.team21.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">CustomerDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.dao;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;
+&nbsp;public interface CustomerDAO {
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Returns the entire map of registered customers.
+&nbsp;      * @return A HashMap where the key is the customer ID and the value is the Customer object.
+&nbsp;      */
+&nbsp;     HashMap&lt;String, Customer&gt; getCustomers();
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Retrieves a specific customer by their unique identifier.
+&nbsp;      * @param id The unique customer ID.
+&nbsp;      * @return The Customer object associated with the given ID, or null if not found.
+&nbsp;      */
+&nbsp;     Customer getCustomer(String id);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Searches for a customer based on their email address.
+&nbsp;      * @param emailAddress The email address to search for.
+&nbsp;      * @return The Customer object if a match is found, or null otherwise.
+&nbsp;      */
+&nbsp;     Customer getCustomerByEmail(String emailAddress);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Adds a new customer to the repository.
+&nbsp;      * @param customer The Customer object to be added.
+&nbsp;      * @throws IllegalArgumentException if the customer is null or if a customer with the same ID already exists.
+&nbsp;      */
+&nbsp;     void addCustomer(Customer customer);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Removes a customer from the repository.
+&nbsp;      * @param customer The Customer object to be removed.
+&nbsp;      * @throws IllegalArgumentException if the customer is null or if the customer does not exist in the repository.
+&nbsp;      */
+&nbsp;     void removeCustomer(Customer customer);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Clears all customer records from the memory.
+&nbsp;      */
+&nbsp;     public void clear();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

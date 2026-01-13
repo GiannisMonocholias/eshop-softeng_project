@@ -1,0 +1,253 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ShoppingCartAdapter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.util</a>
+</div>
+
+<h1>Coverage Summary for Class: ShoppingCartAdapter (gr.softeng.team21.view.util)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ShoppingCartAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ShoppingCartAdapter$CartListener</td>
+  </tr>
+  <tr>
+    <td class="name">ShoppingCartAdapter$ViewHolder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/24)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.util;
+&nbsp;
+&nbsp;import android.view.LayoutInflater;
+&nbsp;import android.view.View;
+&nbsp;import android.view.ViewGroup;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.ImageButton;
+&nbsp;import android.widget.TextView;
+&nbsp;
+&nbsp;import androidx.annotation.NonNull;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.CartItem;
+&nbsp;
+&nbsp;/**
+&nbsp; * Adapter responsible for displaying the list of items in the shopping cart within a RecyclerView.
+&nbsp; * It manages the binding of {@link CartItem} data to the UI views and handles user interactions
+&nbsp; * such as increasing, decreasing or deleting items via the {@link CartListener}.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class ShoppingCartAdapter extends RecyclerView.Adapter&lt;ShoppingCartAdapter.ViewHolder&gt;{
+&nbsp;    private List&lt;CartItem&gt; cartItems;
+&nbsp;    private CartListener listener;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Interface to handle actions on cart items.
+&nbsp;     * Defines callbacks for increasing quantity, decreasing quantity or deleting an item.
+&nbsp;     */
+&nbsp;    public interface CartListener {
+&nbsp;        void plus(CartItem item);
+&nbsp;        void minus(CartItem item);
+&nbsp;        void delete(CartItem item);
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the adapter with the list of cart items and  listener.
+&nbsp;     * @param cartItems The list of items to display in the cart.
+&nbsp;     * @param listener The listener to handle click events on the items.
+&nbsp;     */
+<b class="nc">&nbsp;    public ShoppingCartAdapter(List&lt;CartItem&gt; cartItems,CartListener listener) {</b>
+<b class="nc">&nbsp;        this.cartItems = cartItems;</b>
+<b class="nc">&nbsp;        this.listener=listener;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Inflates the layout for individual cart items.
+&nbsp;     */
+&nbsp;    @NonNull
+&nbsp;    @Override
+&nbsp;    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+<b class="nc">&nbsp;        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.shoppingcart_list_item, parent, false));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Binds the data of a specific {@link CartItem} to the view elements.
+&nbsp;     * Calculates the total price for the item, formats it with the correct currency.
+&nbsp;     * It also sets up listeners for the increment, decrement, and delete buttons.
+&nbsp;     * @param holder The ViewHolder which should be updated to represent the contents of the item at the given position in the data set.
+&nbsp;     * @param position The position of the item within the adapter&#39;s data set.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+<b class="nc">&nbsp;        CartItem item = cartItems.get(position);</b>
+<b class="nc">&nbsp;        BigDecimal unitPrice = item.getProductType().getPrice().getAmount();</b>
+<b class="nc">&nbsp;        String currency = item.getProductType().getPrice().getCurrency();</b>
+<b class="nc">&nbsp;        int quantity = item.getQuantity();</b>
+<b class="nc">&nbsp;        BigDecimal totalPrice = unitPrice.multiply(new BigDecimal(quantity));</b>
+&nbsp;
+<b class="nc">&nbsp;        holder.txtName.setText(item.getProductType().getProductname());</b>
+<b class="nc">&nbsp;        holder.txtSubTotalPrice.setText(String.format(&quot;%.2f %s&quot;, totalPrice, currency));</b>
+<b class="nc">&nbsp;        holder.txtQuantity.setText(String.valueOf(item.getQuantity()));</b>
+&nbsp;
+<b class="nc">&nbsp;        holder.btnPlus.setOnClickListener(v -&gt; listener.plus(item));</b>
+<b class="nc">&nbsp;        holder.btnMinus.setOnClickListener(v -&gt; listener.minus(item));</b>
+<b class="nc">&nbsp;        holder.btnDelete.setOnClickListener(v -&gt; listener.delete(item));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Returns the total number of items in the cart.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public int getItemCount() {
+<b class="nc">&nbsp;        return cartItems.size();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * ViewHolder class that holds references to the UI components of a cart item layout.
+&nbsp;     */
+&nbsp;    public class ViewHolder extends RecyclerView.ViewHolder{
+&nbsp;
+&nbsp;        public TextView txtQuantity,txtName,txtSubTotalPrice;
+&nbsp;        public Button btnMinus,btnPlus;
+&nbsp;        public ImageButton btnDelete;
+&nbsp;
+&nbsp;        /**
+&nbsp;         * Initializes the ViewHolder and binds the UI components of the cart item layout.
+&nbsp;         * Retrieves references to the text views (name, price, quantity)
+&nbsp;         * and the action buttons (plus, minus, delete) from the provided row view.
+&nbsp;         * @param rowView The view representing a single row in the recycler view.
+&nbsp;         */
+<b class="nc">&nbsp;        public ViewHolder(@NonNull View rowView) {</b>
+<b class="nc">&nbsp;            super(rowView);</b>
+<b class="nc">&nbsp;            txtName = rowView.findViewById(R.id.txtCustomerCartItemActivityName);</b>
+<b class="nc">&nbsp;            txtSubTotalPrice = rowView.findViewById(R.id.txtCustomerCartItemActivitySubTotalPrice);</b>
+<b class="nc">&nbsp;            txtQuantity = rowView.findViewById(R.id.txtCustomerCartItemActivityQuantity);</b>
+&nbsp;
+<b class="nc">&nbsp;            btnPlus = rowView.findViewById(R.id.btnCustomerCartItemActivityPlus);</b>
+<b class="nc">&nbsp;            btnMinus = rowView.findViewById(R.id.btnCustomerCartItemActivityMinus);</b>
+<b class="nc">&nbsp;            btnDelete = rowView.findViewById(R.id.btnCustomerCartItemActivityDelete);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,209 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Date</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.util</a>
+</div>
+
+<h1>Coverage Summary for Class: Date (gr.softeng.team21.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Date</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    64.3%
+  </span>
+  <span class="absValue">
+    (9/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.util;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.ZoneOffset;
+&nbsp;import java.time.format.DateTimeFormatter;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents a date and provides basic date operations.
+&nbsp;
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp;
+&nbsp; */
+&nbsp;public class Date implements Comparable&lt;Date&gt; {
+&nbsp;
+&nbsp;    /** The internal LocalDate representation */
+&nbsp;    private LocalDate date;
+&nbsp;
+&nbsp;    /**Creates a Date object initialized to the current system date.*/
+<b class="fc">&nbsp;    public Date() {</b>
+<b class="fc">&nbsp;        this.date = LocalDate.now();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a Date object with the specified day, month, and year.
+&nbsp;     *
+&nbsp;     * @param day the day
+&nbsp;     * @param month the month
+&nbsp;     * @param year the year
+&nbsp;     */
+<b class="fc">&nbsp;    public Date(int day, int month, int year) {</b>
+<b class="fc">&nbsp;        this.date = LocalDate.of(year, month, day);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Changes the date by adding the specified number of days.
+&nbsp;     *
+&nbsp;     * @param days the number of days to be added, which can be negative
+&nbsp;     */
+&nbsp;    public void changeDays(int days) {
+<b class="fc">&nbsp;        this.date = this.date.plusDays(days);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the day of the month.
+&nbsp;     * @return the day
+&nbsp;     */
+&nbsp;    public int getDay() {
+<b class="fc">&nbsp;        return date.getDayOfMonth();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the month of the year.
+&nbsp;     * @return the month
+&nbsp;     */
+&nbsp;    public int getMonth() {
+<b class="fc">&nbsp;        return date.getMonthValue();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the year.
+&nbsp;     * @return the year
+&nbsp;     */
+&nbsp;    public int getYear() {
+<b class="fc">&nbsp;        return date.getYear();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Compares this Date object with another Date.
+&nbsp;     *
+&nbsp;     * @param other the Date object to compare with
+&nbsp;     * @return a negative, zero, or positive integer as this date
+&nbsp;     * is earlier than, equal to, or later than the specified date
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public int compareTo(Date other) {
+<b class="nc">&nbsp;        if (this.getYear() != other.getYear()) {</b>
+<b class="nc">&nbsp;            return this.getYear() - other.getYear();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        if (this.getMonth() != other.getMonth()) {</b>
+<b class="nc">&nbsp;            return this.getMonth() - other.getMonth();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return this.getDay() - other.getDay();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a string representation of the date in the format &quot;day/month/year&quot;.
+&nbsp;     * @return the formatted date string
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="fc">&nbsp;        return getDay() + &quot;/&quot; + getMonth() + &quot;/&quot; + getYear();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

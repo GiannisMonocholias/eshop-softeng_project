@@ -1,0 +1,256 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerShoppingCartActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.ShoppingCart</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerShoppingCartActivity (gr.softeng.team21.view.customer.ShoppingCart)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerShoppingCartActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.ShoppingCart;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import androidx.recyclerview.widget.LinearLayoutManager;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.CartItem;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;import gr.softeng.team21.view.customer.Payment.CustomerPaymentActivity;
+&nbsp;import gr.softeng.team21.view.util.ShoppingCartAdapter;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity responsible for displaying and managing the Customer&#39;s Shopping Cart.
+&nbsp; * Implements {@link CustomerShoppingCartView} and the {@link ShoppingCartAdapter.CartListener} to manage UI elements
+&nbsp; * such as the RecyclerView for items, the total price textView, and the payment button.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+<b class="nc">&nbsp;public class CustomerShoppingCartActivity extends AppCompatActivity implements ShoppingCartAdapter.CartListener, CustomerShoppingCartView {</b>
+&nbsp;
+&nbsp;    private TextView tvTotalPrice;
+&nbsp;    private Button btnPayment;
+&nbsp;    private RecyclerView recyclerView;
+&nbsp;    private ShoppingCartAdapter adapter;
+&nbsp;    private Customer customer;
+&nbsp;    private CustomerShoppingCartPresenter presenter;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the activity, sets up the UI layout, retrieves the customer ID,
+&nbsp;     * and initializes the presenter, customer, payment navigation button and the textView totalprice.
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_customer_shopping_cart);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+<b class="nc">&nbsp;        String customerId=getIntent().getStringExtra(&quot;CUSTOMER_ID&quot;);</b>
+<b class="nc">&nbsp;        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);</b>
+<b class="nc">&nbsp;        presenter=new CustomerShoppingCartPresenter(this,customer);</b>
+&nbsp;
+<b class="nc">&nbsp;        tvTotalPrice = findViewById(R.id.txtCustomerShoppingCartActivityTotalPrice);</b>
+<b class="nc">&nbsp;        btnPayment = findViewById(R.id.btnCustomerShoppingCartActivityPayment);</b>
+<b class="nc">&nbsp;        recyclerView = findViewById(R.id.recyclerviewCustomerShoppingCartActivity);</b>
+&nbsp;
+<b class="nc">&nbsp;        recyclerView.setLayoutManager(new LinearLayoutManager(this));</b>
+<b class="nc">&nbsp;        refresh();</b>
+<b class="nc">&nbsp;        btnPayment.setOnClickListener(v -&gt; ContinuePayment());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void ContinuePayment() {
+<b class="nc">&nbsp;        presenter.ContinuePaymentClicked();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Delegates the quantity increase action to the presenter.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void plus(CartItem item) {
+<b class="nc">&nbsp;        presenter.plusClicked(item);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Delegates the quantity decrease action to the presenter.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void minus(CartItem item) {
+<b class="nc">&nbsp;        presenter.minusClicked(item);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Delegates the item deletion action to the presenter.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void delete(CartItem item) {
+<b class="nc">&nbsp;        presenter.deleteClicked(item);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void refresh() {
+<b class="nc">&nbsp;        presenter.refreshClicked();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows a short Toast message to the user with the provided text.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showMessage(String msg) {
+<b class="nc">&nbsp;        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the CustomerPaymentActivity via an Intent, passing the customer&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToPayment() {
+<b class="nc">&nbsp;        Intent intent = new Intent(CustomerShoppingCartActivity.this, CustomerPaymentActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;CUSTOMER_ID&quot;, customer.getCustomer_id());</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Updates the total price TextView with the formatted price string.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showTotalPrice(String price) {
+<b class="nc">&nbsp;        tvTotalPrice.setText(&quot;Σύνολο: &quot;+price);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Updates the RecyclerView adapter with the current list of cart items.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showCartItems(ArrayList&lt;CartItem&gt; cartItems) {
+<b class="nc">&nbsp;        adapter = new ShoppingCartAdapter(cartItems, this);</b>
+<b class="nc">&nbsp;        recyclerView.setAdapter(adapter);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerServiceMenuView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerServiceMenuView (gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">CustomerServiceMenuView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu;
+&nbsp;
+&nbsp;/**
+&nbsp; * Defines methods to be implemented for displaying profile information, handling navigation
+&nbsp; * to various functional modules, and managing account-related alerts.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public interface CustomerServiceMenuView {
+&nbsp;    /**
+&nbsp;     * Displays the full name of the employee on the header section of the menu.
+&nbsp;     * @param fullName The concatenated first and last name to be displayed.
+&nbsp;     */
+&nbsp;    void showEmployeeName(String fullName);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates the user to the Order Status notification screen.
+&nbsp;     * @param employeeId The unique identifier of the employee.
+&nbsp;     */
+&nbsp;    void navigateToOrderStatus(String employeeId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates the user to their email inbox screen.
+&nbsp;     * @param employeeId The unique identifier of the employee.
+&nbsp;     */
+&nbsp;    void navigateToEmailInbox(String employeeId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a confirmation dialog before proceeding with permanent account deletion.
+&nbsp;     */
+&nbsp;    void showDeleteAccountConfirmation();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates the user back to the Login screen after a successful logout
+&nbsp;     * or account deletion.
+&nbsp;     */
+&nbsp;    void navigateToLogin();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates the user to the account data modification screen.
+&nbsp;     * @param employeeId The unique identifier of the employee.
+&nbsp;     */
+&nbsp;    void navigateToProcessAccount(String employeeId);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays a temporary notification message (Toast) to the user.
+&nbsp;     * @param message The text content of the notification.
+&nbsp;     */
+&nbsp;    void showMessage(String message);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

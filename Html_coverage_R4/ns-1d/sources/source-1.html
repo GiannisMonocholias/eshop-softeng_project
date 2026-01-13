@@ -1,0 +1,197 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AssignedOrdersToPrepareActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare</a>
+</div>
+
+<h1>Coverage Summary for Class: AssignedOrdersToPrepareActivity (gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AssignedOrdersToPrepareActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;import androidx.recyclerview.widget.LinearLayoutManager;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.Order;
+&nbsp;import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+&nbsp;import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity;
+&nbsp;import gr.softeng.team21.view.util.OrderAdapter;
+&nbsp;import gr.softeng.team21.view.util.OrderAdapterType;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity that displays a list of orders currently assigned to an Order Preparation Employee.
+&nbsp; * It uses a {@link RecyclerView} to display the assigned orders of the employee and refreshes the data
+&nbsp; * during the onResume lifecycle event.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+<b class="nc">&nbsp;public class AssignedOrdersToPrepareActivity extends AppCompatActivity implements AssignedOrdersToPrepareView {</b>
+&nbsp;
+&nbsp;    private AssignedOrdersToPreparePresenter presenter;
+&nbsp;    private static final String EMP_ID_EXTRA = &quot;ORDER_PREPARATION_EMPLOYEE_ID&quot;;
+&nbsp;    private static final String ORD_CODE_EXTRA = &quot;ORDER_CODE&quot;;
+&nbsp;    private RecyclerView recyclerView;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets up the UI layout and initializes the presenter.
+&nbsp;     * Configuration of the RecyclerView&#39;s LayoutManager is performed here.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_assigned_orders_to_prepare);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.OrdPrepEmpAssignedOrders), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        presenter = new AssignedOrdersToPreparePresenter(this, EmployeeDAOMemory.getInstance());</b>
+&nbsp;
+<b class="nc">&nbsp;        recyclerView = findViewById(R.id.OrdPrepEmprecyclerViewAssignedOrders);</b>
+<b class="nc">&nbsp;        recyclerView.setLayoutManager(new LinearLayoutManager(this));</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Refreshes the assigned orders list every time the Activity becomes visible.
+&nbsp;     * This ensures that any processed or newly assigned orders are updated in the UI.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void onResume() {
+<b class="nc">&nbsp;        super.onResume();</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);</b>
+&nbsp;
+<b class="nc">&nbsp;        ArrayList&lt;Order&gt; assignedOrders = presenter.loadAssignedOrders(employeeId);</b>
+&nbsp;
+<b class="nc">&nbsp;        OrderAdapter adapter = new OrderAdapter(assignedOrders, OrderAdapterType.ASSIGNED_ORDERS_ADAPTER, order -&gt; {</b>
+<b class="nc">&nbsp;            presenter.onClickOrder(order);</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        recyclerView.setAdapter(adapter);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Starts the {@link OrderPreparationDetailsActivity} using Intent extras
+&nbsp;     * for employee and order identification.
+&nbsp;     *
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void navigateToOrderPreparationDetails(String employeeId, String orderId) {
+<b class="nc">&nbsp;        Intent intent = new Intent(AssignedOrdersToPrepareActivity.this, OrderPreparationDetailsActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(EMP_ID_EXTRA, employeeId);</b>
+<b class="nc">&nbsp;        intent.putExtra(ORD_CODE_EXTRA, orderId);</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

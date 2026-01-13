@@ -1,0 +1,269 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductDetailsActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.product</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductDetailsActivity (gr.softeng.team21.view.product)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductDetailsActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/48)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.product;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.ImageView;
+&nbsp;import android.widget.TextView;
+&nbsp;import android.widget.Toast;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AlertDialog;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.memorydao.CustomerDAOMemory;
+&nbsp;import gr.softeng.team21.view.customer.ShoppingCart.CustomerShoppingCartActivity;
+&nbsp;
+&nbsp;/**
+&nbsp; * Activity responsible for displaying the detailed information of a specific product.
+&nbsp; * Implements {@link ProductDetailsView} and manages the UI elements,such as TextView,button and ImageView for viewing details,
+&nbsp; * adjusting quantity and adding the product to the shopping cart.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+<b class="nc">&nbsp;public class ProductDetailsActivity extends AppCompatActivity implements ProductDetailsView {</b>
+&nbsp;
+&nbsp;    private TextView tvName, tvCode, tvPrice, tvDescription, tvQuantity;
+&nbsp;    private ImageView imgProduct;
+&nbsp;    private Button btnAddToCart, btnQuantityminus, btnQuantityplus;
+&nbsp;
+&nbsp;    private ProductDetailsPresenter presenter;
+&nbsp;    private Customer customer;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the activity, sets the UI layout, retrieves the customer and product IDs from the Intent,
+&nbsp;     * and initializes the presenter and associated UI elements.
+&nbsp;     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_product_details);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+<b class="nc">&nbsp;        String customerId=getIntent().getStringExtra(&quot;CUSTOMER_ID&quot;);</b>
+<b class="nc">&nbsp;        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);</b>
+<b class="nc">&nbsp;        presenter = new ProductDetailsPresenter(this,customer);</b>
+<b class="nc">&nbsp;        imgProduct = findViewById(R.id.imgDetail);</b>
+<b class="nc">&nbsp;        tvName = findViewById(R.id.txtProductDetailActivityName);</b>
+<b class="nc">&nbsp;        tvCode = findViewById(R.id.txtProductDetailActivityCode);</b>
+<b class="nc">&nbsp;        tvPrice = findViewById(R.id.txtProductDetailActivityPrice);</b>
+<b class="nc">&nbsp;        tvDescription = findViewById(R.id.txtProductDetailActivityDetailDescription);</b>
+<b class="nc">&nbsp;        tvQuantity = findViewById(R.id.txtProductDetailActivityQuantity);</b>
+&nbsp;
+<b class="nc">&nbsp;        btnAddToCart = findViewById(R.id.btnProductDetailActivityAddCart);</b>
+<b class="nc">&nbsp;        btnQuantityminus = findViewById(R.id.btnProductDetailActivityQuantityMinus);</b>
+<b class="nc">&nbsp;        btnQuantityplus = findViewById(R.id.btnProductDetailActivityQuantityPlus);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        String productCode = getIntent().getStringExtra(&quot;PRODUCT_CODE&quot;);</b>
+<b class="nc">&nbsp;        presenter.loadProduct(productCode);</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        btnAddToCart.setOnClickListener(v -&gt; addToCart());</b>
+<b class="nc">&nbsp;        btnQuantityplus.setOnClickListener(v -&gt; plus());</b>
+<b class="nc">&nbsp;        btnQuantityminus.setOnClickListener(v -&gt; minus());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void addToCart() {
+<b class="nc">&nbsp;        presenter.addToCartClicked();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void plus() {
+<b class="nc">&nbsp;        presenter.plusClicked();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     *Calls the corresponding presenter method
+&nbsp;     */
+&nbsp;    private void minus() {
+<b class="nc">&nbsp;        presenter.minusClicked();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Updates the UI with the product&#39;s details (name, code, price, description, image).
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showProductDetails(String name, String code, String price, String description, String imgCode) {
+<b class="nc">&nbsp;        tvName.setText(name);</b>
+<b class="nc">&nbsp;        tvCode.setText(&quot;Κωδικός: &quot; + code);</b>
+<b class="nc">&nbsp;        tvPrice.setText(price);</b>
+<b class="nc">&nbsp;        tvDescription.setText(description);</b>
+<b class="nc">&nbsp;        imgProduct.setImageResource(getImageResIdByCode(imgCode));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Updates the quantity TextView with the current selected quantity.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showQuantity(int quantity) {
+<b class="nc">&nbsp;        tvQuantity.setText(String.valueOf(quantity));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Shows a short Toast message to the user.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showMessage(String msg) {
+<b class="nc">&nbsp;        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Displays an AlertDialog confirming the product addition and offering navigation options.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void showAddToCartSuccess() {
+<b class="nc">&nbsp;        new AlertDialog.Builder(this)</b>
+<b class="nc">&nbsp;                .setTitle(&quot;Επιτυχής Προσθήκη&quot;)</b>
+<b class="nc">&nbsp;                .setMessage(&quot;Το προϊόν προστέθηκε στο καλάθι σας.\nΠώς θέλετε να συνεχίσετε;&quot;)</b>
+<b class="nc">&nbsp;                .setPositiveButton(&quot;Προβολή Καλαθιού&quot;, (dialog, which) -&gt; presenter.openShoppingCartClicked())</b>
+<b class="nc">&nbsp;                .setNegativeButton(&quot;Συνέχεια Αγορών&quot;, (dialog, which) -&gt; finish())</b>
+<b class="nc">&nbsp;                .setCancelable(false)</b>
+<b class="nc">&nbsp;                .show();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * {@inheritDoc}
+&nbsp;     * Navigates to the CustomerShoppingCartActivity via an Intent, passing the customer&#39;s ID as an extra.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void goToCart() {
+<b class="nc">&nbsp;        Intent intent = new Intent(ProductDetailsActivity.this, CustomerShoppingCartActivity.class);</b>
+<b class="nc">&nbsp;        intent.putExtra(&quot;CUSTOMER_ID&quot;, customer.getCustomer_id());</b>
+<b class="nc">&nbsp;        startActivity(intent);</b>
+<b class="nc">&nbsp;        showMessage(&quot;Μετάβαση στο Καλάθι...&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method for a specific image from the drawable folder based on the product code string.
+&nbsp;     * @param code The product code.
+&nbsp;     * @return The resource ID of the image.
+&nbsp;     */
+&nbsp;    private int getImageResIdByCode(String code) {
+<b class="nc">&nbsp;        String codeimg = code.toLowerCase().replace(&quot;-&quot;, &quot;_&quot;);</b>
+<b class="nc">&nbsp;        return getResources().getIdentifier(codeimg, &quot;drawable&quot;, getPackageName());</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

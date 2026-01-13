@@ -1,0 +1,137 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EmailDAO</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: EmailDAO (gr.softeng.team21.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">EmailDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.dao;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import gr.softeng.team21.contact.EmailMessage;
+&nbsp;
+&nbsp;public interface EmailDAO {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return all emails currently in the inbox.
+&nbsp;     */
+&nbsp;    public ArrayList&lt;EmailMessage&gt; getInboxEmails();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return all emails that have been sent.
+&nbsp;     */
+&nbsp;    ArrayList&lt;EmailMessage&gt; getSentEmails();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Filters and returns all emails in the inbox that have not been read.
+&nbsp;     * @return a list of unread EmailMessages.
+&nbsp;     */
+&nbsp;    ArrayList&lt;EmailMessage&gt; getUnreadEmails();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Filters and returns all emails in the inbox that have been read.
+&nbsp;     * @return a list of read EmailMessages.
+&nbsp;     */
+&nbsp;    ArrayList&lt;EmailMessage&gt; getReadEmails();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Filters and returns all emails that have not received a reply yet.
+&nbsp;     * @return a list of unreplied EmailMessages.
+&nbsp;     */
+&nbsp;    ArrayList&lt;EmailMessage&gt; getUnrepliedEmails();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Filters and returns all emails that have been replied to.
+&nbsp;     * @return a list of replied EmailMessages.
+&nbsp;     */
+&nbsp;    ArrayList&lt;EmailMessage&gt; getRepliedEmails();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Saves a new message to the inbox storage.
+&nbsp;     * @param msg the message to save.
+&nbsp;     */
+&nbsp;    void saveInboxEmails(EmailMessage msg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Saves a new message to the sent messages storage.
+&nbsp;     * @param msg the message to save.
+&nbsp;     */
+&nbsp;    void saveSentEmails(EmailMessage msg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if a specific message exists in the inbox.
+&nbsp;     * @param msg the message to search for.
+&nbsp;     * @return true if found, false otherwise.
+&nbsp;     */
+&nbsp;    boolean inInbox(EmailMessage msg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if a specific message exists in the sent items.
+&nbsp;     * @param msg the message to search for.
+&nbsp;     * @return true if found, false otherwise.
+&nbsp;     */
+&nbsp;    boolean inSent(EmailMessage msg);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

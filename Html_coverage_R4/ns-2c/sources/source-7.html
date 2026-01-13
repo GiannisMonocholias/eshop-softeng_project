@@ -1,0 +1,111 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserCredentialsDAO</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: UserCredentialsDAO (gr.softeng.team21.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">UserCredentialsDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.dao;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.NoSuchElementException;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.User;
+&nbsp;
+&nbsp;public interface UserCredentialsDAO {
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Returns a copy of the current user credentials map.
+&nbsp;      *  @return A new HashMap containing all registered users.
+&nbsp;      */
+&nbsp;     HashMap&lt;String, User&gt; getUsersCredentials();
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Adds a new user to the memory storage.
+&nbsp;      * @param user The User object to be registered.
+&nbsp;      * @throws IllegalArgumentException if the username is already occupied from another account
+&nbsp;      */
+&nbsp;     void addUser(User user);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Removes the user associated with the specified username.
+&nbsp;      * @param username The unique identifier of the user to remove.
+&nbsp;      * @throws NoSuchElementException if the username is not found in the storage.
+&nbsp;      */
+&nbsp;     void removeUser(String username);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Validates user credentials and retrieves the corresponding User object.
+&nbsp;      * @param username The username to check.
+&nbsp;      * @param password The password to validate.
+&nbsp;      * @return The authenticated User object.
+&nbsp;      * @throws SecurityException if the username is not found or the password is incorrect.
+&nbsp;      */
+&nbsp;     User validateAndGetUser(String username, String password);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Clears all user credentials from the memory storage.
+&nbsp;      */
+&nbsp;     void clear();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

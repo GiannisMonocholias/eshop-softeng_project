@@ -1,0 +1,114 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerPaymentView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.Payment</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerPaymentView (gr.softeng.team21.view.customer.Payment)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">CustomerPaymentView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.Payment;
+&nbsp;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;
+&nbsp;/**
+&nbsp; * Interface for the Customer Payment.
+&nbsp; * Defines methods for displaying messages, navigation (HomePage and CardPayment), confirmation dialogs and updating UI details.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public interface CustomerPaymentView {
+&nbsp;    /**
+&nbsp;     * Displays a message to the user (error or success).
+&nbsp;     * @param msg The message to display.
+&nbsp;     */
+&nbsp;    void showMessage(String msg);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the customer&#39;s home page.
+&nbsp;     */
+&nbsp;    void goToCustomerHomePage();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Navigates to the card payment screen.
+&nbsp;     */
+&nbsp;    void goToToCardPayment();
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Shows a confirmation dialog for the order with the specified amount.
+&nbsp;     * @param amount The total amount of the order.
+&nbsp;     */
+&nbsp;    void showConfirmation(Money amount);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the total amount on the screen.
+&nbsp;     * @param amount The amount as a formatted string.
+&nbsp;     */
+&nbsp;    void showTotalAmount(String amount);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays the shipping details on the screen.
+&nbsp;     * @param name The customer&#39;s name.
+&nbsp;     * @param address The shipping address.
+&nbsp;     * @param phone The contact phone number.
+&nbsp;     */
+&nbsp;    void showShippingDetails(String name, String address, String phone);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

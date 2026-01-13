@@ -1,0 +1,99 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PasswordView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.contact.editdata.Password</a>
+</div>
+
+<h1>Coverage Summary for Class: PasswordView (gr.softeng.team21.view.contact.editdata.Password)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">PasswordView</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.contact.editdata.Password;
+&nbsp;
+&nbsp;/**
+&nbsp; * Interface for the Password Edit.
+&nbsp; * Defines the methods for displaying messages and updating the password form.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public interface PasswordView {
+&nbsp;    /**
+&nbsp;     * Displays a success message to the user.
+&nbsp;     * @param message The message to display.
+&nbsp;     */
+&nbsp;    void SaveSuccess(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Displays an error message to the user.
+&nbsp;     * @param message The message to display.
+&nbsp;     */
+&nbsp;    void showError(String message);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Completes the view with the user&#39;s current password.
+&nbsp;     * @param password The password string.
+&nbsp;     */
+&nbsp;    void setPassword(String password);
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Finishes the current activity.
+&nbsp;     */
+&nbsp;    void finishView();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

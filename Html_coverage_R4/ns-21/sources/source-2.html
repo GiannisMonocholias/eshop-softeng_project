@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AssignedRequestsToExecutePresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute</a>
+</div>
+
+<h1>Coverage Summary for Class: AssignedRequestsToExecutePresenter (gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AssignedRequestsToExecutePresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import gr.softeng.team21.dao.EmployeeDAO;
+&nbsp;import gr.softeng.team21.domain.CatalogueUpdateRequest;
+&nbsp;import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Assigned Requests list.
+&nbsp; * Handles the retrieval of requests from the logged-in employee&#39;s personal queue
+&nbsp; * and processes click events to trigger navigation.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class AssignedRequestsToExecutePresenter {
+&nbsp;    private AssignedRequestsToExecuteView view;
+&nbsp;    private EmployeeDAO employeeDAO;
+&nbsp;    private UpdateCatalogueEmployee loggedInEmployee;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with the view and employee repository.
+&nbsp;     * @param view The view implementation (Activity).
+&nbsp;     * @param employeeDAO The data access object for employees.
+&nbsp;     */
+<b class="fc">&nbsp;    public AssignedRequestsToExecutePresenter(AssignedRequestsToExecuteView view, EmployeeDAO employeeDAO){</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.employeeDAO = employeeDAO;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the map of requests assigned to the specific employee and converts them to a list.
+&nbsp;     * @param employeeId The unique identifier of the catalogue employee.
+&nbsp;     * @return An ArrayList of CatalogueUpdateRequest objects.
+&nbsp;     */
+&nbsp;    public ArrayList&lt;CatalogueUpdateRequest&gt; loadAssignedRequests(String employeeId){
+<b class="fc">&nbsp;        this.loggedInEmployee = (UpdateCatalogueEmployee) employeeDAO.getEmployee(employeeId);</b>
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;CatalogueUpdateRequest&gt; assignedRequests = new ArrayList&lt;&gt;();</b>
+<b class="pc">&nbsp;        if (loggedInEmployee != null &amp;&amp; loggedInEmployee.getAssignedRequests() != null) {</b>
+<b class="fc">&nbsp;            assignedRequests.addAll(loggedInEmployee.getAssignedRequests().values());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return assignedRequests;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Triggered when a request is selected from the list.
+&nbsp;     * @param request The catalogue update request to be executed.
+&nbsp;     */
+&nbsp;    public void onClickRequest(CatalogueUpdateRequest request){
+<b class="fc">&nbsp;        view.navigateToRequestDetails(loggedInEmployee.getEmployeeId(), request);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

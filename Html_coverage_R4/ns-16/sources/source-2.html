@@ -1,0 +1,191 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerHomePagePresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.customer.homePage</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerHomePagePresenter (gr.softeng.team21.view.customer.homePage)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerHomePagePresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.customer.homePage;
+&nbsp;
+&nbsp;import gr.softeng.team21.dao.UserCredentialsDAO;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the CustomerHomePageActivity.
+&nbsp; * Handles interactions between the {@link CustomerHomePageView} and the domain logic,
+&nbsp; * including navigation,message display and account deletion.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class CustomerHomePagePresenter {
+&nbsp;    private CustomerHomePageView view;
+&nbsp;    private Customer customer;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with the view and the logged-in customer.
+&nbsp;     * @param view The view interface.
+&nbsp;     * @param customer The customer domain object.
+&nbsp;     */
+<b class="fc">&nbsp;    public CustomerHomePagePresenter(CustomerHomePageView view, Customer customer) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.customer = customer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the click  for editing user data.
+&nbsp;     */
+&nbsp;    public void EditDataClicked() {
+<b class="fc">&nbsp;        view.goToEditData();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the logout click .
+&nbsp;     */
+&nbsp;    public void LogoutClicked() {
+<b class="fc">&nbsp;        view.goToLogin();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the click  for finding products.
+&nbsp;     */
+&nbsp;    public void FindProductClicked() {
+<b class="fc">&nbsp;        view.goToFindProduct();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the click  for account deletion request.
+&nbsp;     */
+&nbsp;    public void DeleteClicked() {
+<b class="fc">&nbsp;        view.showDeleteConfirmation();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Confirms and executes the account deletion process.
+&nbsp;     * Removes the user from repositories and navigates to login.
+&nbsp;     */
+&nbsp;    public void DeleteConfirm() {
+<b class="fc">&nbsp;        UserCredentialsDAOMemory userrepo = UserCredentialsDAOMemory.getInstance();</b>
+<b class="fc">&nbsp;        if(customer!=null){</b>
+<b class="fc">&nbsp;            userrepo.removeUser(customer.getUsername());</b>
+<b class="fc">&nbsp;            customer.remove();</b>
+<b class="fc">&nbsp;            view.showMessage(&quot;Ο λογαριασμός σας διαγράφηκε.&quot;);</b>
+<b class="fc">&nbsp;            view.goToLogin();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the click  for viewing the inbox.
+&nbsp;     */
+&nbsp;    public void InboxClicked() {
+<b class="fc">&nbsp;        view.goToInbox();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

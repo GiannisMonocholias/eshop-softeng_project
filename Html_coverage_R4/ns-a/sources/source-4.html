@@ -1,0 +1,183 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > EmpInfoActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.admin.deleteEmp</a>
+</div>
+
+<h1>Coverage Summary for Class: EmpInfoActivity (gr.softeng.team21.view.admin.deleteEmp)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmpInfoActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.admin.deleteEmp;
+&nbsp;
+&nbsp;import android.content.Intent;
+&nbsp;import android.os.Bundle;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.TextView;
+&nbsp;
+&nbsp;import androidx.activity.EdgeToEdge;
+&nbsp;import androidx.appcompat.app.AppCompatActivity;
+&nbsp;import androidx.core.graphics.Insets;
+&nbsp;import androidx.core.view.ViewCompat;
+&nbsp;import androidx.core.view.WindowInsetsCompat;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;
+&nbsp;/**
+&nbsp; * This Activity shows personal information of the employee and from here the admin
+&nbsp; * submits the final deletion.
+&nbsp; */
+&nbsp;
+<b class="nc">&nbsp;public class EmpInfoActivity extends AppCompatActivity implements EmpInfoView {</b>
+&nbsp;
+&nbsp;    //Presenter is responsible for the logical part of deleting an employee.
+&nbsp;    private EmpInfoPresenter presenter;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="nc">&nbsp;        EdgeToEdge.enable(this);</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_emp_info);</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter = new EmpInfoPresenter();</b>
+&nbsp;
+<b class="nc">&nbsp;        Intent intent = getIntent();</b>
+&nbsp;
+<b class="nc">&nbsp;        String empName = intent.getStringExtra(&quot;empName&quot;);</b>
+<b class="nc">&nbsp;        String empSurname = intent.getStringExtra(&quot;empSurname&quot;);</b>
+<b class="nc">&nbsp;        String empPhone = intent.getStringExtra(&quot;empPhone&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        TextView txtFname = findViewById(R.id.txtDeleteFname);</b>
+<b class="nc">&nbsp;        TextView txtLname = findViewById(R.id.txtDeleteLname);</b>
+<b class="nc">&nbsp;        TextView txtPhone = findViewById(R.id.txtDeletePhone);</b>
+&nbsp;
+<b class="nc">&nbsp;        txtFname.setText(empName);</b>
+<b class="nc">&nbsp;        txtLname.setText(empSurname);</b>
+<b class="nc">&nbsp;        txtPhone.setText(empPhone);</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -&gt; {</b>
+<b class="nc">&nbsp;            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);</b>
+<b class="nc">&nbsp;            return insets;</b>
+&nbsp;        });
+&nbsp;
+<b class="nc">&nbsp;        Button btnDeleteEmp2 = findViewById(R.id.btnDeleteEmp2);</b>
+<b class="nc">&nbsp;        btnDeleteEmp2.setOnClickListener(v -&gt; deleteEmp());</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Here the admin checks the information of the employee that he wants to delete.
+&nbsp;     * If they are correct he deletes his profile.
+&nbsp;     */
+&nbsp;
+&nbsp;    public void deleteEmp() {
+&nbsp;
+<b class="nc">&nbsp;        TextView edtFirstName = findViewById(R.id.txtDeleteFname);</b>
+<b class="nc">&nbsp;        String FnameKeyword = edtFirstName.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        TextView edtLastName = findViewById(R.id.txtDeleteLname);</b>
+<b class="nc">&nbsp;        String LnameKeyword = edtLastName.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        TextView edtPhone = findViewById(R.id.txtDeletePhone);</b>
+<b class="nc">&nbsp;        String PhoneKeyword = edtPhone.getText().toString();</b>
+&nbsp;
+<b class="nc">&nbsp;        presenter.deleteEmp(FnameKeyword, LnameKeyword, PhoneKeyword);</b>
+<b class="nc">&nbsp;        finish();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

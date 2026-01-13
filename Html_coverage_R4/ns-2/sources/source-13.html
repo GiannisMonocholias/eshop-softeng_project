@@ -1,0 +1,248 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ShoppingCart</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: ShoppingCart (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ShoppingCart</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (9/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92%
+  </span>
+  <span class="absValue">
+    (23/25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import gr.softeng.team21.util.Money;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents a shopping cart that contains cart items for a customer calculates the total cost.
+&nbsp; * @author PAVLOS GRATSANIS
+&nbsp; */
+&nbsp;public class ShoppingCart {
+&nbsp;
+&nbsp;    /** The customer that owns this shopping cart */
+&nbsp;    private Customer customer;
+&nbsp;
+&nbsp;    /** The total cost of the shopping cart */
+&nbsp;    private Money totalcost;
+&nbsp;
+&nbsp;    /** The list of cart items in the shopping cart */
+<b class="fc">&nbsp;    private ArrayList&lt;CartItem&gt; items = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;    /** The order associated with this shopping cart */
+&nbsp;    private Order order;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a ShoppingCart for the given customer.
+&nbsp;     * The shopping cart is also assigned to the customer.
+&nbsp;     *
+&nbsp;     * @param customer the customer owning the shopping cart
+&nbsp;     */
+<b class="fc">&nbsp;    public ShoppingCart(Customer customer) {</b>
+<b class="fc">&nbsp;        this.customer = customer;</b>
+<b class="fc">&nbsp;        if (customer != null) {</b>
+<b class="fc">&nbsp;            customer.setShoppingCart(this);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Default constructor
+&nbsp;     */
+<b class="fc">&nbsp;    public ShoppingCart() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     Creates and returns a copy of this shopping cart,
+&nbsp;     specifically the products are copied to other shopping carts
+&nbsp;     * @return a copy of the shopping cart
+&nbsp;     */
+&nbsp;    public ShoppingCart copy() {
+<b class="fc">&nbsp;        ShoppingCart newCart = new ShoppingCart(this.customer);</b>
+<b class="fc">&nbsp;        for (CartItem item : items) {</b>
+<b class="fc">&nbsp;            CartItem copyItem = new CartItem(item.getProductType(), item.getQuantity());</b>
+<b class="fc">&nbsp;            newCart.addItem(copyItem);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return newCart;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the list of items in the shopping cart.
+&nbsp;     * @return the list of cart items
+&nbsp;     */
+&nbsp;    public ArrayList&lt;CartItem&gt; getItems() {
+<b class="fc">&nbsp;        return items;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a cart item to the shopping cart.
+&nbsp;     * @param item the cart item to add
+&nbsp;     */
+&nbsp;    public void addItem(CartItem item) {
+<b class="fc">&nbsp;        items.add(item);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes a cart item from the shopping cart.
+&nbsp;     * @param item the cart item to remove
+&nbsp;     */
+&nbsp;    public void removeItem(CartItem item) {
+<b class="fc">&nbsp;        items.remove(item);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculates and returns the total cost of the shopping cart.
+&nbsp;
+&nbsp;     * @return the total cost
+&nbsp;     */
+&nbsp;    public Money getTotalCost() {
+&nbsp;        String currency;
+<b class="fc">&nbsp;        if (!items.isEmpty()) {</b>
+<b class="fc">&nbsp;            currency = items.get(0).getSubtotal_amount().getCurrency();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            currency = &quot;$&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        totalcost = new Money(0, currency);</b>
+<b class="fc">&nbsp;        for (CartItem item : items) {</b>
+<b class="fc">&nbsp;            totalcost = totalcost.add(item.getSubtotal_amount());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return totalcost;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the customer who owns this shopping cart.
+&nbsp;     * @return the customer
+&nbsp;     */
+&nbsp;    public Customer getCustomer() {
+<b class="fc">&nbsp;        return customer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the customer who owns this shopping cart.
+&nbsp;     * @param customer the new customer
+&nbsp;     */
+&nbsp;    public void setCustomer(Customer customer) {
+<b class="nc">&nbsp;        this.customer = customer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns the order associated with this shopping cart.
+&nbsp;     * @return the order
+&nbsp;     */
+&nbsp;    public Order getOrder() {
+<b class="nc">&nbsp;        return order;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the order associated with this shopping cart.
+&nbsp;     * @param order the new order
+&nbsp;     */
+&nbsp;    public void setOrder(Order order) {
+<b class="fc">&nbsp;        this.order = order;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

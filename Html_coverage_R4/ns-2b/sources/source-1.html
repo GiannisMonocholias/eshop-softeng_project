@@ -1,0 +1,223 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AdminRequestsAdapter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.util</a>
+</div>
+
+<h1>Coverage Summary for Class: AdminRequestsAdapter (gr.softeng.team21.view.util)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdminRequestsAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/15)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AdminRequestsAdapter$ViewHolder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.util;
+&nbsp;
+&nbsp;import android.view.LayoutInflater;
+&nbsp;import android.view.View;
+&nbsp;import android.view.ViewGroup;
+&nbsp;import android.widget.Button;
+&nbsp;import android.widget.TextView;
+&nbsp;
+&nbsp;import androidx.annotation.NonNull;
+&nbsp;import androidx.recyclerview.widget.RecyclerView;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import gr.softeng.team21.R;
+&nbsp;import gr.softeng.team21.domain.CatalogueUpdateRequest;
+&nbsp;
+&nbsp;public class AdminRequestsAdapter extends RecyclerView.Adapter&lt;AdminRequestsAdapter.ViewHolder&gt; {
+&nbsp;
+&nbsp;    private final List&lt;CatalogueUpdateRequest&gt; requests;
+&nbsp;
+<b class="nc">&nbsp;    public AdminRequestsAdapter(List&lt;CatalogueUpdateRequest&gt; requests){</b>
+<b class="nc">&nbsp;        this.requests = requests;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @NonNull
+&nbsp;    @Override
+&nbsp;    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+<b class="nc">&nbsp;        View view = LayoutInflater.from(parent.getContext())</b>
+<b class="nc">&nbsp;                .inflate(R.layout.item_assigned_catalogue_update_request, parent, false);</b>
+<b class="nc">&nbsp;        return new ViewHolder(view);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+<b class="nc">&nbsp;        CatalogueUpdateRequest request = requests.get(position);</b>
+&nbsp;
+<b class="nc">&nbsp;        holder.txtId.setText(&quot;REQ #&quot; + request.getId());</b>
+<b class="nc">&nbsp;        if (request.getSubmissionDate() != null) holder.txtDate.setText(request.getSubmissionDate().toString());</b>
+<b class="nc">&nbsp;        if (request.getType() != null) holder.txtType.setText(request.getType().toString());</b>
+<b class="nc">&nbsp;        if (request.getProduct() != null) {</b>
+<b class="nc">&nbsp;            holder.txtProductName.setText(request.getProduct().getProductname());</b>
+<b class="nc">&nbsp;            holder.txtProductCode.setText(&quot;Κωδικός: &quot; + request.getProduct().getProductCode());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        holder.txtDesc.setText(request.getUpdateDescription());</b>
+&nbsp;
+<b class="nc">&nbsp;        holder.btn.setVisibility(View.GONE);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getItemCount() {
+<b class="nc">&nbsp;        return requests.size();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static class ViewHolder extends RecyclerView.ViewHolder {
+&nbsp;        TextView txtId, txtDate, txtType, txtProductName, txtProductCode, txtDesc;
+&nbsp;
+&nbsp;        Button btn;
+&nbsp;
+&nbsp;        public ViewHolder(@NonNull View itemView) {
+<b class="nc">&nbsp;            super(itemView);</b>
+&nbsp;
+<b class="nc">&nbsp;            txtId = itemView.findViewById(R.id.txtItemRequestId);</b>
+<b class="nc">&nbsp;            txtDate = itemView.findViewById(R.id.txtItemRequestDate);</b>
+<b class="nc">&nbsp;            txtType = itemView.findViewById(R.id.txtItemRequestType);</b>
+<b class="nc">&nbsp;            txtProductName = itemView.findViewById(R.id.txtItemRequestProductName);</b>
+<b class="nc">&nbsp;            txtProductCode = itemView.findViewById(R.id.txtItemRequestProductCode);</b>
+<b class="nc">&nbsp;            txtDesc = itemView.findViewById(R.id.txtItemRequestDesc);</b>
+&nbsp;
+<b class="nc">&nbsp;            btn = itemView.findViewById(R.id.btnItemRequestExecute);</b>
+&nbsp;
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

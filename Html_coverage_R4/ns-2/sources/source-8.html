@@ -1,0 +1,262 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CustomerServiceEmployee</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: CustomerServiceEmployee (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CustomerServiceEmployee</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    63.6%
+  </span>
+  <span class="absValue">
+    (7/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (32/36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import gr.softeng.team21.contact.EmailAddress;
+&nbsp;import gr.softeng.team21.contact.EmailMessage;
+&nbsp;import gr.softeng.team21.util.Date;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents an employee specialized in customer service.
+&nbsp; * Responsibilities include handling customer inquiries
+&nbsp; * and sending notifications regarding order status.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class CustomerServiceEmployee extends Employee {
+&nbsp;    private int totalResponses;
+&nbsp;    private ArrayList&lt;Order&gt; orders;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new CustomerServiceEmployee with full details.
+&nbsp;     * * @param username      The unique account username.
+&nbsp;     * @param firstname     The employee&#39;s first name.
+&nbsp;     * @param password      The account password.
+&nbsp;     * @param lastname      The employee&#39;s last name.
+&nbsp;     * @param phoneNumber   The contact phone number.
+&nbsp;     * @param emailaddress  The professional email address.
+&nbsp;     * @param employeeId    The unique business ID.
+&nbsp;     * @param bonus         Performance-based bonus amount.
+&nbsp;     * @param salary        Base salary.
+&nbsp;     * @param workingHours  Contracted weekly working hours.
+&nbsp;     * @param employeeState The current state (e.g., ACTIVE, ON_LEAVE).
+&nbsp;     * @param hireDate      The official employment date.
+&nbsp;     */
+&nbsp;    public CustomerServiceEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate) {
+<b class="fc">&nbsp;        super(username, firstname, password, lastname, phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);</b>
+<b class="fc">&nbsp;        totalResponses = 0;</b>
+<b class="fc">&nbsp;        orders = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the number of customer emails that have not yet been replied to.
+&nbsp;     */
+&nbsp;    public int getUnansweredRequests() {
+<b class="nc">&nbsp;        return emailDAOMemory.getUnrepliedEmails().size();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the total number of responses sent by this employee.
+&nbsp;     */
+&nbsp;    public int getTotalResponses() {
+<b class="nc">&nbsp;        return totalResponses;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the list of orders managed by this employee.
+&nbsp;     */
+<b class="fc">&nbsp;    public ArrayList&lt;Order&gt; getOrders() { return orders; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Assigns a new order to this employee.
+&nbsp;     * @param order the order to add.
+&nbsp;     */
+<b class="fc">&nbsp;    public void addOrder(Order order) { orders.add(order); }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes an order from this employee&#39;s responsibility.
+&nbsp;     * @param order the order to remove.
+&nbsp;     */
+<b class="fc">&nbsp;    public void removeOrder(Order order) { orders.remove(order); }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Replaces the current list of orders with a new set.
+&nbsp;     * @param orders the new list of orders.
+&nbsp;     */
+<b class="nc">&nbsp;    public void setOrders(ArrayList&lt;Order&gt; orders) { this.orders = orders; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all messages currently in the employee&#39;s inbox.
+&nbsp;     * @return an ArrayList of EmailMessage objects.
+&nbsp;     */
+&nbsp;    ArrayList&lt;EmailMessage&gt; getEmails() {
+<b class="nc">&nbsp;        return emailDAOMemory.getInboxEmails();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifies a customer via email that their order has been delayed.
+&nbsp;     * @param order    the delayed order.
+&nbsp;     * @param customer the recipient customer.
+&nbsp;     * @throws NullPointerException if the order or customer is null.
+&nbsp;     */
+&nbsp;    public void notifyCustomerDelay(Order order, Customer customer) {
+<b class="fc">&nbsp;        if(order == null) throw new NullPointerException(&quot;The Order order argument is null&quot;);</b>
+<b class="fc">&nbsp;        if(customer == null) throw new NullPointerException(&quot;The Customer customer argument is null&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        StringBuilder msg = new StringBuilder();</b>
+<b class="fc">&nbsp;        msg.append(&quot;Dear Customer,\n\n&quot;);</b>
+<b class="fc">&nbsp;        msg.append(&quot;Your order &quot;).append(order.getOrdercode());</b>
+<b class="fc">&nbsp;        msg.append(&quot; is delayed due to insufficient stock:\n&quot;);</b>
+<b class="fc">&nbsp;        msg.append(&quot;\nWe apologize for the inconvenience.\nCustomer Service Team&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Date dateSent = new Date();</b>
+<b class="fc">&nbsp;        sendEmail(this, customer, &quot;Order Delay Notification&quot;, msg.toString(), dateSent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifies a customer via email that their order is ready for delivery.
+&nbsp;     * @param order    the ready order.
+&nbsp;     * @param customer the recipient customer.
+&nbsp;     * @throws NullPointerException if the order or customer is null.
+&nbsp;     */
+&nbsp;    public void notifyCustomerReady(Order order, Customer customer) {
+<b class="fc">&nbsp;        if(order == null) throw new NullPointerException(&quot;The Order order argument is null&quot;);</b>
+<b class="fc">&nbsp;        if(customer == null) throw new NullPointerException(&quot;The Customer customer argument is null&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        StringBuilder msg = new StringBuilder();</b>
+<b class="fc">&nbsp;        msg.append(&quot;Dear Customer,\n\n&quot;);</b>
+<b class="fc">&nbsp;        msg.append(&quot;Your order &quot;).append(order.getOrdercode()).append(&quot; is now ready for delivery.\n&quot;);</b>
+<b class="fc">&nbsp;        msg.append(&quot;You will be contacted by our courier shortly.\n\n&quot;);</b>
+<b class="fc">&nbsp;        msg.append(&quot;Best regards,\nCustomer Service Team&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Date dateSent = new Date();</b>
+<b class="fc">&nbsp;        sendEmail(this, customer, &quot;Order Ready for Delivery&quot;, msg.toString(), dateSent);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Replies to a specific customer inquiry and updates the total response count.
+&nbsp;     * @param customer     the customer to reply to.
+&nbsp;     * @param inquiry      the original email inquiry.
+&nbsp;     * @param responseBody the content of the reply.
+&nbsp;     * @throws NullPointerException if any argument is null.
+&nbsp;     */
+&nbsp;    public void replyToCustomerInquiry(Customer customer, EmailMessage inquiry, String responseBody) {
+<b class="fc">&nbsp;        if(customer == null) throw new NullPointerException(&quot;The Customer customer argument is null&quot;);</b>
+<b class="fc">&nbsp;        if(inquiry == null) throw new NullPointerException(&quot;The EmailMessage inquiry argument is null&quot;);</b>
+<b class="fc">&nbsp;        if(responseBody == null) throw new NullPointerException(&quot;The responseBody inquiry argument is null&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        String msg = &quot;Dear Customer,\n\n&quot; + responseBody + &quot;\n\n&quot; +</b>
+&nbsp;                &quot;If you have further questions, feel free to contact us.\n&quot; +
+&nbsp;                &quot;Customer Service Team&quot;;
+&nbsp;
+<b class="fc">&nbsp;        String subject = &quot;Reply to inquiry: &#39;&quot; + inquiry.getSubject() + &quot;&#39;&quot;;</b>
+<b class="fc">&nbsp;        totalResponses++;</b>
+&nbsp;
+<b class="fc">&nbsp;        Date dateSent = new Date();</b>
+<b class="fc">&nbsp;        replyToEmail(this, customer, inquiry, subject, msg, dateSent);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

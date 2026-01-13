@@ -1,0 +1,228 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Deliverer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: Deliverer (gr.softeng.team21.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Deliverer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (4/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.3%
+  </span>
+  <span class="absValue">
+    (14/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.domain;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import gr.softeng.team21.contact.EmailAddress;
+&nbsp;import gr.softeng.team21.util.Date;
+&nbsp;
+&nbsp;/**
+&nbsp;&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
+&nbsp; * Represents a delivery employee (Deliverer) in the domain model.
+&nbsp; * This class manages the deliverer&#39;s order capacity and calculates availability
+&nbsp; * based on the current workload.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class Deliverer extends Employee {
+&nbsp;/**
+&nbsp; * Deliverer class extends Employee as deliverer is also
+&nbsp; * working for the company.
+&nbsp; *
+&nbsp; * Max_quantity is the maximum number of orders a deliverer can have.
+&nbsp; *
+&nbsp; * Boolean available is true when a deliverer can take one more order and false when
+&nbsp; * the number of orders that he has to deliver is equal to the max_quantity.
+&nbsp; *
+&nbsp; * ArrayList orders contains Order objects that the deliverer has to deliver.
+&nbsp; */
+&nbsp;    private int max_quantity;
+&nbsp;    private boolean available;
+&nbsp;    private ArrayList&lt;Order&gt; orders;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new Deliverer with personal, professional, and delivery-specific details.
+&nbsp;     * * @param username      The unique account username.
+&nbsp;     * @param firstname     The employee&#39;s first name.
+&nbsp;     * @param password      The account password.
+&nbsp;     * @param lastname      The employee&#39;s last name.
+&nbsp;     * @param phoneNumber   The contact phone number.
+&nbsp;     * @param emailaddress  The professional email address.
+&nbsp;     * @param employeeId    The unique business identifier for the employee.
+&nbsp;     * @param bonus         Performance-based bonus amount.
+&nbsp;     * @param salary        The employee&#39;s base salary.
+&nbsp;     * @param workingHours  The contracted weekly working hours.
+&nbsp;     * @param employeeState The current employment status (e.g., ACTIVE).
+&nbsp;     * @param hireDate      The official date of hire.
+&nbsp;     * @param quan          The maximum number of orders the deliverer can handle.
+&nbsp;     * @param available     The initial availability status (legacy support).
+&nbsp;     */
+&nbsp;    public Deliverer(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress,
+&nbsp;                     String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate, int quan,
+&nbsp;                     boolean available) {
+<b class="fc">&nbsp;        super(username, firstname, password, lastname, phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);</b>
+<b class="fc">&nbsp;        this.max_quantity = quan;</b>
+<b class="fc">&nbsp;        this.available = available;</b>
+<b class="fc">&nbsp;        orders = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the maximum number of orders this deliverer is allowed to carry.
+&nbsp;     */
+&nbsp;    public int getQuantity() {
+<b class="fc">&nbsp;        return max_quantity;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the maximum capacity of the deliverer.
+&nbsp;     * @param quan the new capacity limit.
+&nbsp;     */
+&nbsp;    public void setQuantity(int quan) {
+<b class="fc">&nbsp;        this.max_quantity = quan;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calculates the deliverer&#39;s availability dynamically.
+&nbsp;     * @return true if the current number of orders is less than the maximum capacity.
+&nbsp;     */
+&nbsp;    public boolean getAvailability() {
+<b class="pc">&nbsp;        return orders.size() &lt; max_quantity;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the list of orders currently assigned to this deliverer.
+&nbsp;     */
+&nbsp;    public ArrayList&lt;Order&gt; getOrders() {
+<b class="fc">&nbsp;        return orders;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Assigns a new order to the deliverer if they have not reached their maximum capacity.
+&nbsp;     * Validates capacity using the dynamic availability check.
+&nbsp;     * @param order the order to be assigned.
+&nbsp;     * @throws IllegalArgumentException if the deliverer&#39;s capacity is full.
+&nbsp;     */
+&nbsp;    public void addOrder(Order order){
+<b class="pc">&nbsp;        if(orders.size() &lt; max_quantity){</b>
+<b class="fc">&nbsp;            orders.add(order);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Η λίστα του διανομέα είναι γεμάτη&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Verifies if a specific order is in the deliverer&#39;s list and marks it as paid.
+&nbsp;     * @param order the order to be checked and updated.
+&nbsp;     * @return true if the order exists in the list and was updated, false otherwise.
+&nbsp;     */
+&nbsp;    public boolean checkfor(Order order){
+<b class="fc">&nbsp;        if(orders.contains(order)){</b>
+<b class="fc">&nbsp;            order.setPaid(true);</b>
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

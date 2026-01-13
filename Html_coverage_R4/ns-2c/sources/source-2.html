@@ -1,0 +1,117 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductTypeDAO</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductTypeDAO (gr.softeng.team21.dao)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ProductTypeDAO</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.dao;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.ProductType;
+&nbsp;import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
+&nbsp;
+&nbsp;public interface ProductTypeDAO {
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Retrieves a specific product type based on its unique product code.
+&nbsp;      * @param productCode the unique code of the product type to retrieve.
+&nbsp;      * @return the ProductType object, or null if no such product code is registered.
+&nbsp;      * @throws IllegalArgumentException if the productCode is null.
+&nbsp;      */
+&nbsp;     ProductType getProduct(String productCode);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Registers a new product type in the repository and initializes it in the warehouse.
+&nbsp;      * @param product the ProductType object to add.
+&nbsp;      * @throws IllegalArgumentException if the product is null or already exists in the repository.
+&nbsp;      */
+&nbsp;     void addProductType(ProductType product);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Removes a product type from the repository and also deletes it from the warehouse.
+&nbsp;      * @param product the ProductType object to remove.
+&nbsp;      * @throws IllegalArgumentException if the product is null or not found in the repository.
+&nbsp;      */
+&nbsp;     void deleteProductType(ProductType product);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Updates the details of an existing product type (name, price, description).
+&nbsp;      * @param updatedProduct the ProductType object containing the updated information.
+&nbsp;      * @throws IllegalArgumentException if the updatedProduct is null.
+&nbsp;      * @throws IllegalStateException if the product code is not found in the repository.
+&nbsp;      */
+&nbsp;     void processProduct(ProductType updatedProduct);
+&nbsp;
+&nbsp;     /**
+&nbsp;      * @return a map containing all registered product types.
+&nbsp;      */
+&nbsp;     HashMap&lt;String, ProductType&gt; getProducts ();
+&nbsp;
+&nbsp;     /**
+&nbsp;      * Clears all registered product types from the repository.
+&nbsp;      */
+&nbsp;     void clear();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

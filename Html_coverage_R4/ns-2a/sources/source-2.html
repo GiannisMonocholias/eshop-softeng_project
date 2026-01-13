@@ -1,0 +1,207 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > LoginPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.user.login</a>
+</div>
+
+<h1>Coverage Summary for Class: LoginPresenter (gr.softeng.team21.view.user.login)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LoginPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    63.6%
+  </span>
+  <span class="absValue">
+    (14/22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (24/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.user.login;
+&nbsp;
+&nbsp;import gr.softeng.team21.domain.Admin;
+&nbsp;import gr.softeng.team21.domain.AuthenticationSystem;
+&nbsp;import gr.softeng.team21.domain.Customer;
+&nbsp;import gr.softeng.team21.domain.CustomerServiceEmployee;
+&nbsp;import gr.softeng.team21.domain.Deliverer;
+&nbsp;import gr.softeng.team21.domain.OrderPreparationEmployee;
+&nbsp;import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+&nbsp;import gr.softeng.team21.domain.User;
+&nbsp;import gr.softeng.team21.view.util.UserType;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Login screen.
+&nbsp; * Coordinates with the {@link AuthenticationSystem} to validate credentials
+&nbsp; * and determines the user&#39;s role to trigger appropriate navigation.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class LoginPresenter {
+&nbsp;    private LoginView view;
+&nbsp;    private AuthenticationSystem authenticationSystem;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter and connects to the singleton AuthenticationSystem.
+&nbsp;     * @param view The login view implementation.
+&nbsp;     */
+<b class="fc">&nbsp;    public LoginPresenter(LoginView view) {</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        authenticationSystem = AuthenticationSystem.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles the login logic. Validates input, attempts authentication,
+&nbsp;     * and maps the resulting User object to a role-specific UserType for navigation.
+&nbsp;     */
+&nbsp;    public void onLogin() {
+<b class="fc">&nbsp;        String username = view.getUsername();</b>
+<b class="fc">&nbsp;        String password = view.getPassword();</b>
+&nbsp;
+<b class="pc">&nbsp;        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {</b>
+<b class="fc">&nbsp;            view.showErrorMessage(&quot;Σφάλμα&quot;, &quot;Παρακαλώ συμπληρώστε όλα τα πεδία.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            User user = authenticationSystem.login(username, password);</b>
+<b class="fc">&nbsp;            view.showSuccessMessage(&quot;Επιτυχής σύνδεση!&quot;);</b>
+&nbsp;
+&nbsp;            // Identify user role through instance checking
+<b class="fc">&nbsp;            UserType usertype = null;</b>
+<b class="fc">&nbsp;            if (user instanceof Customer) {</b>
+<b class="fc">&nbsp;                usertype = UserType.CUSTOMER;</b>
+<b class="pc">&nbsp;            } else if (user instanceof CustomerServiceEmployee) {</b>
+<b class="nc">&nbsp;                usertype = UserType.CUSTOMER_SERVICE_EMPLOYEE;</b>
+<b class="fc">&nbsp;            } else if (user instanceof Deliverer) {</b>
+<b class="fc">&nbsp;                usertype = UserType.DELIVERER;</b>
+<b class="fc">&nbsp;            } else if (user instanceof OrderPreparationEmployee) {</b>
+<b class="fc">&nbsp;                usertype = UserType.ORDER_PREPARATION_EMPLOYEE;</b>
+<b class="pc">&nbsp;            } else if (user instanceof UpdateCatalogueEmployee) {</b>
+<b class="fc">&nbsp;                usertype = UserType.UPDATE_CATALOGUE_EMPLOYEE;</b>
+<b class="nc">&nbsp;            } else if (user instanceof Admin){</b>
+<b class="nc">&nbsp;                usertype = UserType.ADMIN;</b>
+&nbsp;            }
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="pc">&nbsp;            if (usertype != null) {</b>
+<b class="fc">&nbsp;                view.navigateUserToHomePage(usertype, user);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                view.showErrorMessage(&quot;Unsupported User&quot;, &quot;This user type is not supported by the system.&quot;);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        } catch (SecurityException e) {
+<b class="fc">&nbsp;            view.showErrorMessage(&quot;Αποτυχία σύνδεσης&quot;, &quot;Λάθος όνομα χρήστη ή κωδικός.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Triggers navigation to the registration screen.
+&nbsp;     */
+&nbsp;    public void onRegister() {
+<b class="fc">&nbsp;        view.navigateToRegister();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Requests the view to clear all input fields.
+&nbsp;     */
+&nbsp;    public void loginReset(){
+<b class="fc">&nbsp;        view.resetFields();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>

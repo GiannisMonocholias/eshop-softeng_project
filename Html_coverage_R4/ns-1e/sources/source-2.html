@@ -1,0 +1,193 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AvailableOrdersToAssignPresenter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign</a>
+</div>
+
+<h1>Coverage Summary for Class: AvailableOrdersToAssignPresenter (gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AvailableOrdersToAssignPresenter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import gr.softeng.team21.dao.EmployeeDAO;
+&nbsp;import gr.softeng.team21.dao.OrderDAO;
+&nbsp;import gr.softeng.team21.domain.Order;
+&nbsp;import gr.softeng.team21.domain.OrderPreparationEmployee;
+&nbsp;import gr.softeng.team21.domain.OrderStatusType;
+&nbsp;
+&nbsp;/**
+&nbsp; * Presenter for the Available Orders to Assign screen.
+&nbsp; * Handles the logic of filtering unassigned orders and manages the
+&nbsp; * transactional logic of assigning an order to the currently logged in employee.
+&nbsp; * @author Γιάννης Μονοχολιάς
+&nbsp; */
+&nbsp;public class AvailableOrdersToAssignPresenter {
+&nbsp;
+&nbsp;    private AvailableOrdersToAssignView view;
+&nbsp;    private EmployeeDAO employeeDAO;
+&nbsp;    private OrderDAO orderDAO;
+&nbsp;    private OrderPreparationEmployee loggedInEmployee;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Initializes the presenter with required DAOs and the view interface.
+&nbsp;     * @param view The view implementation.
+&nbsp;     * @param employeeDAO The data source for employee records.
+&nbsp;     * @param orderDAO The data source for all system orders.
+&nbsp;     */
+<b class="fc">&nbsp;    public AvailableOrdersToAssignPresenter(AvailableOrdersToAssignView view, EmployeeDAO employeeDAO, OrderDAO orderDAO){</b>
+<b class="fc">&nbsp;        this.view = view;</b>
+<b class="fc">&nbsp;        this.employeeDAO = employeeDAO;</b>
+<b class="fc">&nbsp;        this.orderDAO = orderDAO;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Filters and loads all orders that have a status of NEW.
+&nbsp;     * @param employeeId The unique ID of the employee browsing the list.
+&nbsp;     * @return An ArrayList of orders available for assignment.
+&nbsp;     */
+&nbsp;    public ArrayList&lt;Order&gt; loadAvailableOrders(String employeeId){
+<b class="fc">&nbsp;        this.loggedInEmployee = (OrderPreparationEmployee) employeeDAO.getEmployee(employeeId);</b>
+&nbsp;
+<b class="fc">&nbsp;        ArrayList&lt;Order&gt; newOrders = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(String ordId: orderDAO.getOrders().keySet()){</b>
+<b class="fc">&nbsp;            Order cur_order = orderDAO.getOrders().get(ordId);</b>
+<b class="pc">&nbsp;            if(cur_order != null &amp;&amp; cur_order.getOrderstatus() == OrderStatusType.NEW){</b>
+<b class="fc">&nbsp;                newOrders.add(cur_order);</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return newOrders;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Triggered when a user clicks on an available order.
+&nbsp;     * Requests the view to show a confirmation prompt.
+&nbsp;     * @param order The selected order.
+&nbsp;     */
+&nbsp;    public void onOrderClicked(Order order) {
+<b class="fc">&nbsp;        String confirmationMessage = &quot;Θέλετε να αναλάβετε αυτή την παραγγελία;&quot;;</b>
+<b class="fc">&nbsp;        view.showConfirmationDialog(order, confirmationMessage);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Finalizes the assignment process.
+&nbsp;     * Adds the order to the employee&#39;s list and updates the order status
+&nbsp;     * to {@link OrderStatusType#PROCESSING}.
+&nbsp;     * @param order The order confirmed for assignment.
+&nbsp;     */
+&nbsp;    public void onOrderConfirmed(Order order) {
+<b class="fc">&nbsp;        loggedInEmployee.addOrder(order);</b>
+<b class="fc">&nbsp;        order.setOrderstatus(OrderStatusType.PROCESSING);</b>
+&nbsp;
+<b class="fc">&nbsp;        view.showMessage(&quot;Η παραγγελία ανατέθηκε επιτυχώς!&quot;);</b>
+<b class="fc">&nbsp;        view.onOrderAssignedSuccess(order);</b>
+<b class="fc">&nbsp;        view.updateList();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-01-13 15:56</div>
+</div>
+</body>
+</html>
