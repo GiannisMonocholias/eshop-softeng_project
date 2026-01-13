@@ -13,14 +13,25 @@ import gr.softeng.team21.domain.EmployeeState;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 
+/**
+ * In this test we check the methods of the presenter who is
+ * responsible for the creation of an employee.
+ */
+
 public class CreateEmployeePresenterTest {
 
     CreateEmployeePresenter presenter;
     CreateEmployeeViewStub view;
     EmployeeDAOMemory employeeDAOMemory;
 
+    /**
+     *
+     * Prepares data in memory and initializes presenter
+     * view and memory objects.
+     *
+     */
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
 
         MemoryInitializer.prepareData();
 
@@ -31,6 +42,9 @@ public class CreateEmployeePresenterTest {
 
     }
 
+    /**
+     * Tests if the new employee has succesfully been added in the list.
+     */
     @Test
     public void saveData() {
 
@@ -39,6 +53,7 @@ public class CreateEmployeePresenterTest {
         presenter.saveData("alexdrak" , new EmailAddress("alexdrak@team21.gr") , "Alex" , "Drakakis" , "6900000000" ,  "Agia Galini", "123456" , "Emp12" , 1000 );
 
         int after = employeeDAOMemory.getEmployees().size();
+
 
         assertEquals(after , before + 1);
 
