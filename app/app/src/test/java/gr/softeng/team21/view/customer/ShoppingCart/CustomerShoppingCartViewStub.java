@@ -98,4 +98,9 @@ public class CustomerShoppingCartViewStub implements CustomerShoppingCartView {
         this.CartItems = cartItems;
         this.showCartItemsCount++;
     }
+
+    @Override
+    public void goBack() {
+
+    }
 }

@@ -2,15 +2,21 @@ package gr.softeng.team21.view.customer.homePage;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.domain.Customer;
@@ -20,22 +26,25 @@ import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.user.login.LoginActivity;
 
 /**
- * Activity that represents the Customer’s Home Page, i.e., the main menu.
- * Implements the {@link CustomerHomePageView} to provide navigation within the user interface, namely
- * (Product Search, Edit Details, View Inbox, and Logout), as well as the Delete Account functionality.
- * It manages UI elements such as the menu buttons that implement these navigation options and this functionality.
+ * Activity that represents the Customer’s Home Page using a Navigation Drawer.
+ * Implements the {@link CustomerHomePageView} to provide navigation within the user interface.
+ * It manages the DrawerLayout and NavigationView to handle user actions.
  * @author PAVLOS GRATSANIS
  */
 public class CustomerHomePageActivity extends AppCompatActivity implements CustomerHomePageView {
-    private CustomerHomePagePresenter presenter;
-    private  Customer customer;
 
-    private Button btnEditData, btnDeleteAccount, btnFindProduct, btnLogout,btnInbox;
+    private CustomerHomePagePresenter presenter;
+    private Customer customer;
+
+    // UI Components για το Menu
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ImageButton btnMenu;
 
     /**
-     * Initializes the activity, sets up the UI layout, retrieves the customer ID,
-     *  and initializes the presenter, customer, and the customer's navigation and action buttons.
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
+     * Initializes the activity, sets up the Drawer layout, retrieves the customer ID,
+     * and initializes the presenter.
+     * @param savedInstanceState If the activity is being re-initialized.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,70 +52,57 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_customer_home_page);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        String customerId=getIntent().getStringExtra("CUSTOMER_ID");
+
+        String customerId = getIntent().getStringExtra("CUSTOMER_ID");
         if (customerId == null) {
             showMessage("Προσοχή: Ο πελάτης δεν βρέθηκε!");
             finish();
             return;
         }
-        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);
+
+        customer = CustomerDAOMemory.getInstance().getCustomer(customerId);
         presenter = new CustomerHomePagePresenter(this, customer);
 
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        btnMenu = findViewById(R.id.btnMenu);
 
-        btnEditData = findViewById(R.id.btnCustomerHomePageEditData);
-        btnEditData.setOnClickListener(v -> EditData());
+        // 4. Λειτουργία Κουμπιού Μενού -> Ανοίγει το Συρτάρι
+        btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
-        btnDeleteAccount = findViewById(R.id.btnCustomerHomePageDeleteaccount);
-        btnDeleteAccount.setOnClickListener(v -> Delete());
+        // 5. Λειτουργία Επιλογών Μενού (Listeners)
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.btnCustomerHomePageFindProduct) {
+                    presenter.FindProductClicked();
+                } else if (id == R.id.btnCustomerHomePageEditData) {
+                    presenter.EditDataClicked();
+                } else if (id == R.id.btnCustomerHomePageMessages) {
+                    presenter.InboxClicked();
+                } else if (id == R.id.btnCustomerHomePageΟrderΗistory) {
+                } else if (id == R.id.btnCustomerHomePageDeleteaccount) {
+                    presenter.DeleteClicked();
+                } else if (id == R.id.btnCustomerHomePageLogout) {
+                    presenter.LogoutClicked();
+                }
 
-        btnFindProduct = findViewById(R.id.btnCustomerHomePageFindProduct);
-        btnFindProduct.setOnClickListener(v -> FindProduct());
-        btnLogout = findViewById(R.id.btnCustomerHomePageLogout);
-        btnLogout.setOnClickListener(v -> Logout());
-        btnInbox=findViewById(R.id.btnCustomerHomePageMessages);
-        btnInbox.setOnClickListener(v->Inbox());
-
+                // Κλείνουμε το συρτάρι μετά την επιλογή
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
     }
-    /**
-     *Calls the corresponding presenter method
-     */
-    private void Inbox() {
-        presenter.InboxClicked();
-    }
-    /**
-     *Calls the corresponding presenter method
-     */
-    private void Logout() {
-        presenter.LogoutClicked();
-    }
-    /**
-     *Calls the corresponding presenter method
-     */
-    private void FindProduct() {
-        presenter.FindProductClicked();
-    }
-    /**
-     *Calls the corresponding presenter method
-     */
-    private void Delete() {
-        presenter.DeleteClicked();
-    }
-    /**
-     *Calls the corresponding presenter method
-     */
-    private void EditData() {
-        presenter.EditDataClicked();
-    }
-
 
     /**
      * {@inheritDoc}
-     * Starts the LoginActivity and clears the activity stack to prevent returning to the home page.
+     * Starts the LoginActivity and clears the activity stack.
      */
     @Override
     public void goToLogin() {
@@ -118,31 +114,29 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
 
     /**
      * {@inheritDoc}
-     * Starts the UserEditDataActivity, passing the customer's ID as an Intent extra.
+     * Starts the UserEditDataActivity.
      */
     @Override
     public void goToEditData() {
-        String customerId = getIntent().getStringExtra("CUSTOMER_ID");
         Intent intent = new Intent(this, UserEditDataActivity.class);
-        intent.putExtra("user_id", customerId);
+        intent.putExtra("user_id", customer.getCustomer_id());
         startActivity(intent);
     }
 
     /**
      * {@inheritDoc}
-     * Starts the CustomerFindProductActivity (Product Details), passing the product ID and customer ID.
+     * Starts the CustomerFindProductActivity.
      */
     @Override
     public void goToFindProduct() {
-        String customerId = getIntent().getStringExtra("CUSTOMER_ID");
         Intent intent = new Intent(this, CustomerFindProductActivity.class);
-        intent.putExtra("CUSTOMER_ID", customerId);
+        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
         startActivity(intent);
     }
 
     /**
      * {@inheritDoc}
-     * Starts the CustomerEmailListActivity via an Intent, passing the customer's ID as an extra.
+     * Starts the CustomerEmailListActivity.
      */
     @Override
     public void goToInbox() {
@@ -153,7 +147,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
 
     /**
      * {@inheritDoc}
-     * Displays an AlertDialog asking the user to confirm the account deletion irreversibly.
+     * Displays an AlertDialog asking the user to confirm the account deletion.
      */
     @Override
     public void showDeleteConfirmation() {
@@ -168,7 +162,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
 
     /**
      * {@inheritDoc}
-     * Shows a short Toast message to the user with the provided text.
+     * Shows a short Toast message.
      */
     @Override
     public void showMessage(String msg) {

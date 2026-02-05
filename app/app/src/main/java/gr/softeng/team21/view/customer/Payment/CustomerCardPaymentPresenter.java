@@ -5,6 +5,7 @@ import android.widget.Toast;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.PaymentType;
+import gr.softeng.team21.memorydao.OrderDAOMemory;
 
 /**
  * Presenter for the Customer Card Payment activity.
@@ -51,6 +52,7 @@ public class CustomerCardPaymentPresenter {
     public void ConfirmClicked() {
         try {
             customer.Confirm("CONFIRM", order);
+            OrderDAOMemory.getInstance().addOrder(order);
             view.showMessage("Η παραγγελία σας καταχωρήθυκε.");
             view.goToCustomerHomePage();
         } catch (Exception e) {

@@ -1,10 +1,6 @@
 package gr.softeng.team21.domain;
-
 import java.util.*;
-
 import gr.softeng.team21.contact.EmailAddress;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.memorydao.OrderDAOMemory;
 import gr.softeng.team21.util.Date;
 
 /**
@@ -16,28 +12,35 @@ import gr.softeng.team21.util.Date;
  */
 public class Customer extends User {
 
-    /** The unique ID of the customer */
+    /**
+     * The unique ID of the customer
+     */
     private String customer_id;
 
-    /** The date the customer registered */
+    /**
+     * The date the customer registered
+     */
     private Date registdate;
 
-    /** The customer's shopping cart   */
+    /**
+     * The customer's shopping cart
+     */
     private ShoppingCart shoppingCart;
 
     /**
      * Creates a new Customer with the specified details.
-     * @param username the username of the customer
-     * @param firstname the first name of the customer
-     * @param password the password of the customer
-     * @param lastname the last name of the customer
-     * @param phoneNumber the phone number of the customer
+     *
+     * @param username     the username of the customer
+     * @param firstname    the first name of the customer
+     * @param password     the password of the customer
+     * @param lastname     the last name of the customer
+     * @param phoneNumber  the phone number of the customer
      * @param emailaddress the email address of the customer
-     * @param customer_id the unique customer ID
-     * @param registdate the date of registration
+     * @param customer_id  the unique customer ID
+     * @param registdate   the date of registration
      */
-    public Customer (String username, String firstname, String password, String lastname, String phoneNumber,
-                     EmailAddress emailaddress, String customer_id, Date registdate) {
+    public Customer(String username, String firstname, String password, String lastname, String phoneNumber,
+                    EmailAddress emailaddress, String customer_id, Date registdate) {
         super(username, firstname, password, lastname, phoneNumber, emailaddress);
         this.customer_id = customer_id;
         this.registdate = registdate;
@@ -45,6 +48,7 @@ public class Customer extends User {
 
     /**
      * Returns the registration date of the customer.
+     *
      * @return the registration date
      */
     public Date getRegistdateDate() {
@@ -53,6 +57,7 @@ public class Customer extends User {
 
     /**
      * Returns the unique customer ID.
+     *
      * @return the customer ID
      */
     public String getCustomer_id() {
@@ -61,6 +66,7 @@ public class Customer extends User {
 
     /**
      * Returns the shopping cart of the customer.
+     *
      * @return the shopping cart
      */
     public ShoppingCart getShoppingCart() {
@@ -69,6 +75,7 @@ public class Customer extends User {
 
     /**
      * Sets the shopping cart for the customer.
+     *
      * @param shoppingCart the new shopping cart
      */
     public void setShoppingCart(ShoppingCart shoppingCart) {
@@ -76,23 +83,12 @@ public class Customer extends User {
     }
 
     /**
-     * Searches for a product in the given map of products using the product code.
-     * @param products the map of available products
-     * @param prodcode the code of the product to search for
-     * @return the product type if found, or null otherwise
-     */
-    public ProductType findProduct(HashMap<String, ProductType> products, String prodcode) {
-        if (products.isEmpty()) return null;
-        if (!products.containsKey(prodcode)) return null;
-        return products.get(prodcode);
-    }
-
-    /**
      * Adds a product to the customer's shopping cart.
      * If the customer does not have a shopping cart, a cart associated with them is created.
      * If the product already exists in the cart, its quantity is increased.
+     *
      * @param productType the product to add
-     * @param quantity  the quantity to add
+     * @param quantity    the quantity to add
      * @throws IllegalArgumentException if the product is null or quantity <= 0
      */
     public void addItemToCart(ProductType productType, int quantity) {
@@ -115,8 +111,9 @@ public class Customer extends User {
     /**
      * Removes a specific quantity of a product from the shopping cart.
      * If the quantity to remove equals the current quantity, the item is removed completely.
+     *
      * @param productType the product to remove
-     * @param quantity  the quantity to remove
+     * @param quantity    the quantity to remove
      * @throws IllegalArgumentException if the cart is empty, inputs are invalid, product not found or insufficient quantity
      */
     public void removeItemFromCart(ProductType productType, int quantity) {
@@ -135,7 +132,8 @@ public class Customer extends User {
             }
         }
 
-        if (targetItem == null) throw new IllegalArgumentException("The product isn't in shopping cart!!!");
+        if (targetItem == null)
+            throw new IllegalArgumentException("The product isn't in shopping cart!!!");
 
         int currentquantity = targetItem.getQuantity();
         if (quantity == currentquantity) {
@@ -151,6 +149,7 @@ public class Customer extends User {
      * Creates a new order based on the current shopping cart contents.
      * The order is assigned a new unique code and a delivery date 30 days from now.
      * The order has cash as the default payment method and is considered unpaid.
+     *
      * @return the created order, or null if the shopping cart is null
      */
     public Order Checkout() {
@@ -167,9 +166,10 @@ public class Customer extends User {
     /**
      * Selects the payment type for the order and validates card details if applicable.
      * If the card payment method is selected and it is valid, then the order is paid.
+     *
      * @param paymentType the selected payment type
-     * @param cardNumber the card number (required if payment type is CARD)
-     * @param order the order to update
+     * @param cardNumber  the card number (required if payment type is CARD)
+     * @param order       the order to update
      * @throws IllegalArgumentException if order or payment type is null or card format is invalid
      */
     public void selectPaymentType(PaymentType paymentType, String cardNumber, Order order) {
@@ -189,35 +189,20 @@ public class Customer extends User {
     }
 
     /**
-     * Confirms the order if the confirmchoice is "CONFIRM", saves it to the order repository and the shopping cart is "deleted".
-     * otherwise if it is "CANCEL" it is not saved.
+     * Confirms the order locally for the customer domain logic.
+     * If choice is "CONFIRM", it links the current shopping cart to the order and clears the active cart.
+     * NOTE: The actual saving to the database/DAO should be handled by the Presenter.
+     *
      * @param confirmchoice the confirmation choice (must be "CONFIRM" or "CANCEL")
-     * @param order the order to confirm
+     * @param order         the order being confirmed
      * @throws IllegalArgumentException if order is null or confirm choice is invalid
      */
     public void Confirm(String confirmchoice, Order order) {
         if (order == null) throw new IllegalArgumentException("Order cannot be null!!!");
         if (confirmchoice == null || confirmchoice.equals(""))
             throw new IllegalArgumentException("Confirmchoice cannot be null or empty string!!!");
-
         if (confirmchoice.equals("CONFIRM")) {
-            OrderDAOMemory.getInstance().addOrder(order);
-            if (shoppingCart != null) shoppingCart.setOrder(order);
-            shoppingCart = null;
-        }
-    }
-
-    /**
-     * Removes this customer from the customer repository.
-     * @throws IllegalStateException if the customer does not exist in the repository
-     */
-    public void remove() {
-        CustomerDAOMemory repo = CustomerDAOMemory.getInstance();
-        String id = this.getCustomer_id();
-        if (repo.getCustomers().containsKey(id)) {
-            repo.removeCustomer(this);
-        } else {
-            throw new IllegalStateException("This customer does not exist in the CustomerRepository!!!");
+            this.shoppingCart = null;
         }
     }
 }

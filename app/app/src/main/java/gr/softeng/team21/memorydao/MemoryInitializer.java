@@ -12,7 +12,6 @@ import gr.softeng.team21.domain.Admin;
 import gr.softeng.team21.util.Money;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.contact.Address;
-import gr.softeng.team21.domain.Admin;
 import gr.softeng.team21.domain.AllowedRequest;
 import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.domain.CartItem;
@@ -133,9 +132,10 @@ public class MemoryInitializer {
         cust3.setAddress(addr3);
         customers.addCustomer(cust3);
         getUserCredentialsDAO().addUser(cust3);
+
         Customer cust4 = new Customer(
                 "giannis_oik", "Γιάννης", "pass3210", "Οικονόμου", "6944556677",
-                new EmailAddress("giannis.oik@team21.gr"), "CUST-503",new Date(22, 3, 2024)          // Date
+                new EmailAddress("giannis.oik@team21.gr"), "CUST-503",new Date(22, 3, 2024)
         );
         cust4.setAddress(addr4);
         customers.addCustomer(cust4);
@@ -444,6 +444,8 @@ public class MemoryInitializer {
 
         order1.setTotal_amount(cart1.getTotalCost());
         cust1.Confirm("CONFIRM",order1);
+        orders.addOrder(order1); // <--- ΑΠΟΘΗΚΕΥΣΗ
+
 
         //ORDER 2
         ShoppingCart cart2 = new ShoppingCart(cust2);
@@ -457,6 +459,8 @@ public class MemoryInitializer {
         );
         order2.setTotal_amount(cart2.getTotalCost());
         cust2.Confirm("CONFIRM",order2);
+        orders.addOrder(order2); // <--- ΑΠΟΘΗΚΕΥΣΗ
+
 
         //ORDER 3
         ShoppingCart cart3 = new ShoppingCart(cust3);
@@ -469,6 +473,7 @@ public class MemoryInitializer {
         );
         order3.setTotal_amount(cart3.getTotalCost());
         cust3.Confirm("CONFIRM",order3);
+        orders.addOrder(order3); // <--- ΑΠΟΘΗΚΕΥΣΗ
 
 
         //ORDER 4
@@ -481,6 +486,7 @@ public class MemoryInitializer {
 
         order4.setTotal_amount(cart4.getTotalCost());
         cust1.Confirm("CONFIRM",order4);
+        orders.addOrder(order4); // <--- ΑΠΟΘΗΚΕΥΣΗ
 
 
         //ORDER 5
@@ -493,6 +499,8 @@ public class MemoryInitializer {
 
         order5.setTotal_amount(cart5.getTotalCost());
         cust2.Confirm("CONFIRM",order5);
+        orders.addOrder(order5); // <--- ΑΠΟΘΗΚΕΥΣΗ
+
         //=====================================================
         //END: INITIALIZE ORDERS
         //=====================================================

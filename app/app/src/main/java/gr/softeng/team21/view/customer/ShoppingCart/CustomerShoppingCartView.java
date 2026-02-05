@@ -32,4 +32,5 @@ public interface CustomerShoppingCartView {
      * @param cartItems The list of CartItem objects.
      */
     void showCartItems(ArrayList<CartItem> cartItems);
+    void goBack();
 }

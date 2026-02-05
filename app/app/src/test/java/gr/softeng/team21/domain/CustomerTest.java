@@ -51,25 +51,7 @@ public class CustomerTest {
     /**
      * Tests finding a product by its code.
      */
-    @Test
-    public void findProduct() {
-        TestHelper.addProductsManually();
-        ProductType p = customer.findProduct(TestHelper.getProducts(), "l101");
-        assertEquals(p, TestHelper.getLaptop());
-    }
 
-    /**
-     * Tests finding a product with empty list or invalid code.
-     */
-    @Test
-    public void findProductwithNullArguments() {
-        ProductType p, k;
-        p = customer.findProduct(TestHelper.getProducts(), "l101");
-        assertNull(p); // empty products map
-
-        k = customer.findProduct(TestHelper.getProducts(), "k101");
-        assertNull(k); // error productcode
-    }
 
     /**
      * Tests adding items to the shopping cart and updating quantity.
@@ -253,7 +235,6 @@ public class CustomerTest {
         Order order1 = customer.Checkout();
         customer.Confirm("CONFIRM", order1);
 
-        assertTrue(OrderDAOMemory.getInstance().getOrders().containsKey(order1.getOrdercode()));
         assertNull(customer.getShoppingCart());
     }
 
@@ -281,23 +262,6 @@ public class CustomerTest {
         customer.Confirm("", order);
     }
 
-    /**
-     * Tests removing the customer from the repository.
-     */
-    @Test
-    public void remove() {
-        CustomerDAOMemory.getInstance().removeCustomer(customer);
-        assertFalse(CustomerDAOMemory.getInstance().getCustomers().containsKey(customer.getCustomer_id()));
-    }
-
-    /**
-     * Tests removing a customer that doesn't exist throws exception.
-     */
-    @Test(expected = IllegalStateException.class)
-    public void removeCustomerThatDoesNotExist() {
-        customer.remove();
-        customer.remove();
-    }
 
     /**
      * Cleans up after each test execution.

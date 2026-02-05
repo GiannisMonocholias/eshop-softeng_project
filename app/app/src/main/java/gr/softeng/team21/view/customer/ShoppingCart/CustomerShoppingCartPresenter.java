@@ -107,4 +107,10 @@ public class CustomerShoppingCartPresenter {
         setTotalprice();
         loadCartData();
     }
+
+
+    public void BackToSearchClicked() {
+        view.showMessage("Μετάβαση στην Αναζήτηση Προϊόντων....");
+        view.goBack();
+    }
 }

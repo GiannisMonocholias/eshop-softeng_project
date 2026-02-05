@@ -2,6 +2,7 @@ package gr.softeng.team21.view.customer.homePage;
 
 import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 /**
@@ -58,9 +59,10 @@ public class CustomerHomePagePresenter {
      */
     public void DeleteConfirm() {
         UserCredentialsDAOMemory userrepo = UserCredentialsDAOMemory.getInstance();
+        CustomerDAOMemory customerrepo = CustomerDAOMemory.getInstance();
         if(customer!=null){
             userrepo.removeUser(customer.getUsername());
-            customer.remove();
+            customerrepo.removeCustomer(customer);
             view.showMessage("Ο λογαριασμός σας διαγράφηκε.");
             view.goToLogin();
         }

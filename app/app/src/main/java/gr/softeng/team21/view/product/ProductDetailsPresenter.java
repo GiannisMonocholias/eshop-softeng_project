@@ -74,8 +74,7 @@ public class ProductDetailsPresenter {
      */
     public void loadProduct(String productCode) {
         if (productCode != null) {
-            HashMap<String, ProductType> allProducts = ProductTypeDAOMemory.getInstance().getProducts();
-            foundProduct = customer.findProduct(allProducts, productCode);
+            foundProduct = ProductTypeDAOMemory.getInstance().getProduct(productCode);
         }
         if(foundProduct!=null){
             view.showProductDetails(foundProduct.getProductname(),

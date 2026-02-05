@@ -1,104 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="15.1">
-  <zoom_level>10</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>760</x>
-      <y>390</y>
-      <w>440</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>EmpInfoPresenter
+<diagram program="umletino" version="15.1"><zoom_level>5</zoom_level><element><id>UMLClass</id><coordinates><x>470</x><y>235</y><w>220</w><h>45</h></coordinates><panel_attributes>EmpInfoPresenter
 --
 - map : HashMap&lt;String , Employee&gt;
 - toDelete : Employee
 --
 + deleteEmp(String firstname , String lastname , String phone): void
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1270</x>
-      <y>160</y>
-      <w>330</w>
-      <h>130</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>725</x><y>120</y><w>165</w><h>65</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
 EmployeeDAO
 --
 + getEmployees() : HashMap&lt;String, Employee&gt;
 + getEmployee(String id) : Employee
 + addEmployee(Employee employee) : void
 + removeEmployee(Employee employee) : void
-+ clear() :  void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1090</x>
-      <y>200</y>
-      <w>200</w>
-      <h>210</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
++ clear() :  void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>645</x><y>140</y><w>90</w><h>105</h></coordinates><panel_attributes>lt=-&gt;
 m1=1
 m2=1
-r2= - employeeDAOMemory</panel_attributes>
-    <additional_attributes>60.0;190.0;60.0;20.0;180.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>270</x>
-      <y>380</y>
-      <w>310</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>EmpInfo
+r2= - employeeDAOMemory</panel_attributes><additional_attributes>40;190;40;20;160;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>225</x><y>230</y><w>155</w><h>35</h></coordinates><panel_attributes>EmpInfo
 --
 # onCreate(Bundle savedInstanceState) : void
-+ deleteEmp() : void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>570</x>
-      <y>400</y>
-      <w>210</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
++ deleteEmp() : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>375</x><y>240</y><w>105</w><h>25</h></coordinates><panel_attributes>lt=&lt;-
 m1=1
 m2=1
-r1= - presenter</panel_attributes>
-    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>360</x>
-      <y>50</y>
-      <w>160</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>AppCompatActivity
---</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>430</x>
-      <y>90</y>
-      <w>30</w>
-      <h>310</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;290.0</additional_attributes>
-  </element>
-</diagram>
+r1= - presenter</panel_attributes><additional_attributes>190;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>65</y><w>80</w><h>25</h></coordinates><panel_attributes>AppCompatActivity
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>305</x><y>85</y><w>15</w><h>155</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;290</additional_attributes></element></diagram>

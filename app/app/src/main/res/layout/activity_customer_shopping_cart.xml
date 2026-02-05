@@ -39,7 +39,7 @@
         android:id="@+id/dividerBottom"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="10dp"
         android:background="#EEEEEE"
         app:layout_constraintBottom_toTopOf="@+id/txtCustomerShoppingCartActivityTotalPrice"/>
 
@@ -47,14 +47,26 @@
         android:id="@+id/txtCustomerShoppingCartActivityTotalPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:text="Σύνολο: 0.00 €"
         android:textColor="#000000"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnCustomerShoppingCartActivityBackToSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/btnCustomerShoppingCartActivityBackToSearch"
+        android:layout_width="337dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#F44336"
+        android:text="Πίσω στην Αναζήτηση"
+        android:drawableLeft="@drawable/outline_category_search_24"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btnCustomerShoppingCartActivityPayment"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -62,8 +74,6 @@
         android:id="@+id/btnCustomerShoppingCartActivityPayment"
         android:layout_width="337dp"
         android:layout_height="46dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginBottom="40dp"
         android:backgroundTint="#009688"
         android:text="Συνέχεια στην Πληρωμή"

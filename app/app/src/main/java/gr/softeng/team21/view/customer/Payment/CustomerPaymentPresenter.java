@@ -6,6 +6,7 @@ import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.PaymentType;
+import gr.softeng.team21.memorydao.OrderDAOMemory;
 
 /**
  * Presenter for the Customer Payment activity.
@@ -51,6 +52,7 @@ public class CustomerPaymentPresenter {
     public void ConfirmClicked() {
         try {
             customer.Confirm("CONFIRM", order);
+            OrderDAOMemory.getInstance().addOrder(order);
             view.showMessage("Η παραγγελία σας καταχωρήθυκε.");
             view.goToCustomerHomePage();
         } catch (Exception e) {

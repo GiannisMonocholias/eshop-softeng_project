@@ -19,6 +19,7 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;
 import gr.softeng.team21.view.customer.Payment.CustomerPaymentActivity;
 import gr.softeng.team21.view.util.ShoppingCartAdapter;
 
@@ -31,11 +32,12 @@ import gr.softeng.team21.view.util.ShoppingCartAdapter;
 public class CustomerShoppingCartActivity extends AppCompatActivity implements ShoppingCartAdapter.CartListener, CustomerShoppingCartView {
 
     private TextView tvTotalPrice;
-    private Button btnPayment;
+    private Button btnPayment,btnBackToSearch;
     private RecyclerView recyclerView;
     private ShoppingCartAdapter adapter;
     private Customer customer;
     private CustomerShoppingCartPresenter presenter;
+
 
     /**
      * Initializes the activity, sets up the UI layout, retrieves the customer ID,
@@ -59,11 +61,17 @@ public class CustomerShoppingCartActivity extends AppCompatActivity implements S
 
         tvTotalPrice = findViewById(R.id.txtCustomerShoppingCartActivityTotalPrice);
         btnPayment = findViewById(R.id.btnCustomerShoppingCartActivityPayment);
+        btnBackToSearch=findViewById(R.id.btnCustomerShoppingCartActivityBackToSearch);
         recyclerView = findViewById(R.id.recyclerviewCustomerShoppingCartActivity);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         refresh();
         btnPayment.setOnClickListener(v -> ContinuePayment());
+        btnBackToSearch.setOnClickListener(v -> BackToSearch());
+    }
+
+    private void BackToSearch() {
+        presenter.BackToSearchClicked();
     }
 
     /**
@@ -148,5 +156,12 @@ public class CustomerShoppingCartActivity extends AppCompatActivity implements S
     public void showCartItems(ArrayList<CartItem> cartItems) {
         adapter = new ShoppingCartAdapter(cartItems, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void goBack() {
+        Intent intent = new Intent(CustomerShoppingCartActivity.this, CustomerFindProductActivity.class);
+        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
+        startActivity(intent);
     }
 }

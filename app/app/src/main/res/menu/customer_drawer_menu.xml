@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/btnCustomerHomePageFindProduct"
+            android:icon="@drawable/outline_category_search_24"
+            android:title="Αναζήτηση Προϊόντων" />
+
+        <item
+            android:id="@+id/btnCustomerHomePageEditData"
+            android:icon="@drawable/outline_box_edit_24"
+            android:title="Επεξεργασία Προφίλ" />
+
+        <item
+            android:id="@+id/btnCustomerHomePageMessages"
+            android:icon="@drawable/outline_attach_email_24"
+            android:title="Μηνύματα(Inbox)" />
+
+        <item
+            android:id="@+id/btnCustomerHomePageΟrderΗistory"
+            android:icon="@android:drawable/btn_star"
+            android:title="Ιστορικό Παραγγελιών" />
+    </group>
+
+    <item android:title="Διαχείριση Λογαριασμού">
+        <menu>
+            <item
+                android:id="@+id/btnCustomerHomePageDeleteaccount"
+                android:icon="@drawable/baseline_delete_24"
+                android:title="Διαγραφή Λογαριασμού" />
+
+            <item
+                android:id="@+id/btnCustomerHomePageLogout"
+                android:icon="@drawable/account_logout"
+                android:title="Αποσύνδεση" />
+        </menu>
+    </item>
+
+</menu>
