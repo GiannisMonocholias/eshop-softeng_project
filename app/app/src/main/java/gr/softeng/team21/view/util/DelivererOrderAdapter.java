@@ -81,7 +81,7 @@ public class DelivererOrderAdapter extends RecyclerView.Adapter<DelivererOrderAd
 
         // Format and display total amount
         if (order.getTotal_amount() != null) {
-            holder.txtAmount.setText(order.getTotal_amount().toString() + " €");
+            holder.txtAmount.setText(order.getTotal_amount().toString());
         } else {
             holder.txtAmount.setText("0.0 €");
         }
