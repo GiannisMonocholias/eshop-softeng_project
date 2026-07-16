@@ -16,6 +16,13 @@ public class UpdateCatalogueEmployee extends Employee {
     private int totalCatalogueUpdates;
     private HashMap<Integer, CatalogueUpdateRequest> assignedRequests;
 
+
+    /**
+     * Default constructor
+     * */
+    public UpdateCatalogueEmployee() {
+    }
+
     /**
      * Constructs a new UpdateCatalogueEmployee with the specified details.
      * Initializes the catalogue update counter and the assigned requests map.

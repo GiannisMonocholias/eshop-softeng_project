@@ -15,8 +15,12 @@ public class EmailMessage {
 
     private Date dateSent;
 
+    /**
+     * Default constructor
+     * */
+    public EmailMessage(){
 
-    public EmailMessage(){}
+    }
 
 
     public EmailMessage(EmailAddress from, EmailAddress to, String subject, String body, Date dateSent) {

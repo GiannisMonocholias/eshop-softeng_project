@@ -27,6 +27,14 @@ public class Customer extends User {
      */
     private ShoppingCart shoppingCart;
 
+
+    /**
+     * Default constructor
+     * */
+    public Customer(){
+
+    }
+
     /**
      * Creates a new Customer with the specified details.
      *

@@ -21,6 +21,13 @@ public class ProductType {
     /** The unique code identifying the product */
     private String productcode;
 
+
+    /**
+     * Default constructor
+     * */
+    public ProductType() {
+    }
+
     /**
      * Creates a new ProductType with the specified details.
      * @param productname the name of the product

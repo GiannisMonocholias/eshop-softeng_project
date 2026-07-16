@@ -17,6 +17,13 @@ public class Employee extends User {
     private int salary;
     private int bonus;
 
+
+    /**
+     * Default constructor
+     * */
+    public Employee() {
+    }
+
     /**
      * Constructs a new Employee with the provided personal and professional details.
      * @param username      The unique account username.

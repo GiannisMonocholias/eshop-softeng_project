@@ -23,6 +23,13 @@ public class OrderPreparationEmployee extends Employee {
     private ProductsWareHouseDAOMemory wareHouse;
     private ArrayList<Order> assignedOrders;
 
+
+    /**
+     * Default constructor
+     * */
+    public OrderPreparationEmployee() {
+    }
+
     /**
      * Constructs a new OrderPreparationEmployee with the specified details.
      * Initializes the warehouse reference and assigned orders list.

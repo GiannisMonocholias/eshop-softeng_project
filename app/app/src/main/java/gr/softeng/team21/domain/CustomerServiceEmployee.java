@@ -15,6 +15,13 @@ public class CustomerServiceEmployee extends Employee {
     private int totalResponses;
     private ArrayList<Order> orders;
 
+
+    /**
+     * Default constructor
+     * */
+    public CustomerServiceEmployee() {
+    }
+
     /**
      * Constructs a new CustomerServiceEmployee with full details.
      * * @param username      The unique account username.

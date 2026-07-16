@@ -27,6 +27,13 @@ public class Deliverer extends Employee {
     private boolean available;
     private ArrayList<Order> orders;
 
+
+    /**
+     * Default constructor
+     * */
+    public Deliverer() {
+    }
+
     /**
      * Constructs a new Deliverer with personal, professional, and delivery-specific details.
      * * @param username      The unique account username.
@@ -75,6 +82,22 @@ public class Deliverer extends Employee {
     public boolean getAvailability() {
         return orders.size() < max_quantity;
     }
+
+    /**
+     * @return the availability state of the deliverer
+     */
+    public boolean isAvailable() {
+        return available;
+    }
+
+    /**
+     * Updatesthe availability state of the deliverer
+     * @param available the new availability state of the deliverer.
+     */
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
 
     /**
      * @return the list of orders currently assigned to this deliverer.

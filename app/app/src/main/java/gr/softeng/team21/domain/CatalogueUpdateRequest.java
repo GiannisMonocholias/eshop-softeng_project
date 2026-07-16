@@ -18,6 +18,14 @@ public class CatalogueUpdateRequest {
     private boolean executed = false;
     private RequestStatusType status = RequestStatusType.NEW;
 
+
+    /**
+     * Default constructor
+     * */
+    public CatalogueUpdateRequest() {
+        submissionDate = null;
+    }
+
     /**
      * Constructs a new CatalogueUpdateRequest with the initial submission details.
      * @param submissionDate The date the request was submitted.

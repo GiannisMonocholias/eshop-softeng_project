@@ -49,6 +49,13 @@ public class Order {
      */
     private Money total_amount;
 
+
+    /**
+     * Default constructor
+     * */
+    public Order() {
+    }
+
     /**
      * Creates a new Order with the specified details.
      * A copy  shopping cart is created and assigned to the order.
