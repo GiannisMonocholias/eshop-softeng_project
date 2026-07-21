@@ -1,6 +1,5 @@
 package gr.softeng.team21.view.employee.deliverer.delivererOrdersList;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +16,7 @@ import gr.softeng.team21.memorydao.OrderDAOMemory;
 /**
  * Unit tests for {@link DelivererOrdersListPresenter}.
  * This suite verifies the core workflow of a deliverer: viewing assigned shipped orders
- * and confirming successful delivery, which involves state changes and task list updates.
+ * asynchronously and confirming successful delivery, which involves state changes and task list updates.
  * @author Γιάννης Μονοχολιάς
  */
 public class DelivererOrdersListPresenterTest {
@@ -32,7 +31,8 @@ public class DelivererOrdersListPresenterTest {
 
     /**
      * Sets up the testing environment before each test.
-     * Populates memory repositories and adds a sample shipped order to the deliverer's list.
+     * Populates memory repositories, injects dependencies, and adds a sample
+     * shipped order to the deliverer's list asynchronously.
      */
     @Before
     public void setUp() throws Exception {
@@ -45,7 +45,8 @@ public class DelivererOrdersListPresenterTest {
                 EmployeeDAOMemory.getInstance()
         );
 
-        deliverer = (Deliverer) EmployeeDAOMemory.getInstance().getEmployee(DELIVERER_ID);
+        deliverer = (Deliverer) EmployeeDAOMemory.getInstance().getEmployee(DELIVERER_ID).join();
+
         shippedOrder = OrderDAOMemory.getInstance().getOrder(ORDER_CODE);
 
         deliverer.addOrder(shippedOrder);
@@ -53,11 +54,12 @@ public class DelivererOrdersListPresenterTest {
 
     /**
      * Verifies that the presenter correctly retrieves the list of assigned orders
-     * when a valid deliverer ID is provided.
+     * and updates the view when a valid deliverer ID is provided.
      */
     @Test
     public void loadShippedOrdersValidDelivererReturnsOrders() {
-        ArrayList<Order> orders = presenter.loadShippedOrders(DELIVERER_ID);
+        presenter.loadShippedOrders(DELIVERER_ID);
+        ArrayList<Order> orders = viewStub.getLoadedOrders();
 
         Assert.assertNotNull(orders);
         Assert.assertEquals(1, orders.size());
@@ -66,21 +68,21 @@ public class DelivererOrdersListPresenterTest {
 
     /**
      * Verifies that attempting to load orders for an invalid deliverer ID
-     * results in a null return and an appropriate UI error message.
+     * results in an appropriate UI error message.
      */
     @Test
     public void loadShippedOrdersInvalidDeliverer_ShowsError() {
-        ArrayList<Order> orders = presenter.loadShippedOrders("INVALID_ID");
+        presenter.loadShippedOrders("INVALID_ID");
 
-        Assert.assertNull(orders);
+        Assert.assertNull(viewStub.getLoadedOrders());
         Assert.assertEquals("Σφάλμα: Ο διανομέας δεν βρέθηκε.", viewStub.getErrorShown());
     }
 
     /**
      * Verifies the delivery confirmation workflow:
-     * 1. The order status transitions from SHIPPED to DELIVERED.
-     * 2. The order is removed from the deliverer's internal assigned list.
-     * 3. The UI is requested to remove the order and display a success message.
+     * The order status transitions from SHIPPED to DELIVERED.
+     * The order is removed from the deliverer's internal assigned list.
+     * The UI is requested to remove the order and display a success message.
      */
     @Test
     public void onOrderConfirmedSetsStatusDeliveredAndRemovesFromList() {

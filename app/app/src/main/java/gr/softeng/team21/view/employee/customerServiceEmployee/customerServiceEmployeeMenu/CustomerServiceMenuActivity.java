@@ -13,6 +13,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
@@ -123,7 +125,7 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
     @Override
     public void showDeleteAccountConfirmation() {
         runOnUiThread(() -> {
-            new AlertDialog.Builder(this)
+            new MaterialAlertDialogBuilder(this)
                     .setTitle("Διαγραφή Λογαριασμού")
                     .setMessage("Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.")
                     .setIcon(android.R.drawable.ic_dialog_alert)

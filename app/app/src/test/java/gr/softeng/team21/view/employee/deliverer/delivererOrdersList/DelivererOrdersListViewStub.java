@@ -1,22 +1,31 @@
 package gr.softeng.team21.view.employee.deliverer.delivererOrdersList;
 
+import java.util.ArrayList;
 import gr.softeng.team21.domain.Order;
 
 /**
  * A stub implementation of the {@link DelivererOrdersListView} interface for unit testing.
- * It captures UI updates requested by the presenter, such as order removal from
- * the visible list and display of feedback or error messages.
+ * It captures asynchronous UI updates requested by the presenter, such as order loading,
+ * removal from the visible list, and display of feedback or error messages.
  * @author Γιάννης Μονοχολιάς
  */
 public class DelivererOrdersListViewStub implements DelivererOrdersListView {
 
+    private ArrayList<Order> loadedOrders;
     private Order removedOrder;
     private String messageShown = "";
     private String errorShown = "";
 
     /**
-     * Captures the request to remove a specific order from the UI list.
-     * @param order The order to be removed.
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateOrdersList(ArrayList<Order> orders) {
+        this.loadedOrders = orders;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void removeOrderFromList(Order order) {
@@ -24,8 +33,7 @@ public class DelivererOrdersListViewStub implements DelivererOrdersListView {
     }
 
     /**
-     * Captures success or feedback messages sent to the UI.
-     * @param message The message content.
+     * {@inheritDoc}
      */
     @Override
     public void showMessage(String message) {
@@ -33,8 +41,7 @@ public class DelivererOrdersListViewStub implements DelivererOrdersListView {
     }
 
     /**
-     * Captures error messages sent to the UI.
-     * @param message The error message content.
+     * {@inheritDoc}
      */
     @Override
     public void showError(String message) {
@@ -42,6 +49,10 @@ public class DelivererOrdersListViewStub implements DelivererOrdersListView {
     }
 
     // --- Accessor methods for verification during assertions ---
+
+    public ArrayList<Order> getLoadedOrders() {
+        return loadedOrders;
+    }
 
     public Order getRemovedOrder() {
         return removedOrder;

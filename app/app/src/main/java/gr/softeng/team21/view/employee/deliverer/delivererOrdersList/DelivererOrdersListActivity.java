@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -12,11 +11,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
 import gr.softeng.team21.view.util.DelivererOrderAdapter;
 
@@ -24,7 +27,8 @@ import gr.softeng.team21.view.util.DelivererOrderAdapter;
  * Activity that displays a list of orders assigned to a Deliverer.
  * Uses a {@link RecyclerView} with a {@link DelivererOrderAdapter} to handle
  * user interaction for order's delivery confirmation.
- * implements the {@link DelivererOrdersListView} inteface
+ * Implements the {@link DelivererOrdersListView} interface and safely updates the UI
+ * via runOnUiThread.
  * @author Γιάννης Μονοχολιάς
  */
 public class DelivererOrdersListActivity extends AppCompatActivity implements DelivererOrdersListView {
@@ -36,8 +40,8 @@ public class DelivererOrdersListActivity extends AppCompatActivity implements De
     private static final String EMP_ID_EXTRA = "DELIVERER_ID";
 
     /**
-     * Sets up the UI, initializes the presenter, and populates the
-     * RecyclerView with orders assigned to the current Deliverer.
+     * Sets up the UI, injects the required DAOs into the presenter, and initiates
+     * the asynchronous loading of orders assigned to the current Deliverer.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +58,31 @@ public class DelivererOrdersListActivity extends AppCompatActivity implements De
         recyclerView = findViewById(R.id.rvDelivererOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        presenter = new DelivererOrdersListPresenter(this, OrderDAOMemory.getInstance(), EmployeeDAOMemory.getInstance());
+        // DEPENDENCY INJECTION: EmployeeDAO via Firebase, OrderDAO via Firebase
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+        OrderDAO orderDAO = OrderDAOMemory.getInstance();
+
+        presenter = new DelivererOrdersListPresenter(this, orderDAO, employeeDAO);
 
         String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
-        ArrayList<Order> assignedOrders = presenter.loadShippedOrders(employeeId);
 
-        adapter = new DelivererOrderAdapter(assignedOrders, order ->
-                presenter.onOrderConfirmed(order)
-        );
+        // Trigger asynchronous load
+        presenter.loadShippedOrders(employeeId);
+    }
 
-        recyclerView.setAdapter(adapter);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateOrdersList(ArrayList<Order> orders) {
+        runOnUiThread(() -> {
+            if (orders != null) {
+                adapter = new DelivererOrderAdapter(orders, order ->
+                        presenter.onOrderConfirmed(order)
+                );
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     /**
@@ -72,9 +91,11 @@ public class DelivererOrdersListActivity extends AppCompatActivity implements De
      */
     @Override
     public void removeOrderFromList(Order order) {
-        if (adapter != null) {
-            adapter.removeOrder(order);
-        }
+        runOnUiThread(() -> {
+            if (adapter != null) {
+                adapter.removeOrder(order);
+            }
+        });
     }
 
     /**
@@ -82,19 +103,23 @@ public class DelivererOrdersListActivity extends AppCompatActivity implements De
      */
     @Override
     public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Displays a native Android {@link AlertDialog} for error communication.
+     * Displays a modern {@link MaterialAlertDialogBuilder} for error communication.
      */
     @Override
     public void showError(String message) {
-        new AlertDialog.Builder(this)
-                .setTitle("Σφάλμα")
-                .setMessage(message)
-                .setPositiveButton("OK", null)
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Σφάλμα")
+                    .setMessage(message)
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
     }
 }

@@ -1,20 +1,23 @@
 package gr.softeng.team21.view.employee.deliverer.delivererMenu;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.CompletionException;
+
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 /**
  * Unit tests for {@link DelivererMenuPresenter}.
- * This suite ensures that the Deliverer's main menu logic functions correctly,
- * including loading profile data, navigating to task lists, and managing
- * sensitive account-related operations.
+ * This suite ensures that the Deliverer's main menu logic functions correctly
+ * in an asynchronous architecture, including loading profile data, navigating
+ * to task lists, and managing sensitive account-related operations using Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class DelivererMenuPresenterTest {
@@ -22,12 +25,13 @@ public class DelivererMenuPresenterTest {
     private DelivererMenuPresenter presenter;
     private DelivererMenuViewStub viewStub;
     private EmployeeDAO employeeDAO;
+    private UserCredentialsDAO userCredentialsDAO;
 
     private static final String EMPLOYEE_ID = "DEL-401";
 
     /**
      * Sets up the testing environment before each test.
-     * Populates memory DAOs and instantiates the presenter with its dependencies.
+     * Populates memory DAOs asynchronously and instantiates the presenter with its dependencies.
      */
     @Before
     public void setUp() throws Exception {
@@ -35,12 +39,14 @@ public class DelivererMenuPresenterTest {
 
         viewStub = new DelivererMenuViewStub();
         employeeDAO = EmployeeDAOMemory.getInstance();
-        presenter = new DelivererMenuPresenter(viewStub, employeeDAO);
+        userCredentialsDAO = UserCredentialsDAOMemory.getInstance();
+
+        presenter = new DelivererMenuPresenter(viewStub, employeeDAO, userCredentialsDAO);
     }
 
     /**
      * Verifies that the presenter correctly retrieves and displays
-     * the Deliverer's name upon view creation.
+     * the Deliverer's name upon view creation asynchronously.
      */
     @Test
     public void onViewCreatedShowsCorrectName() {
@@ -87,28 +93,28 @@ public class DelivererMenuPresenterTest {
     }
 
     /**
-     * Verifies the successful account deletion process:
-     * 1. Confirms existence of the employee in memory.
+     * Verifies the successful asynchronous account deletion process:
+     * 1. Confirms existence of the employee in memory using .join().
      * 2. Executes deletion and verifies UI feedback and navigation.
      * 3. Ensures the employee is removed from EmployeeDAO.
-     * 4. Ensures the employee's credentials are wiped (throwing SecurityException).
-     * @throws SecurityException when trying to validate a deleted user (expected).
+     * 4. Ensures the employee's credentials are wiped (throwing CompletionException wrapping a SecurityException).
+     * @throws CompletionException when trying to validate a deleted user (expected).
      */
-    @Test(expected = SecurityException.class)
+    @Test(expected = CompletionException.class)
     public void onDeleteAccountConfirmedSuccessRemovesUserAndNavigates() {
-        Assert.assertNotNull(employeeDAO.getEmployee(EMPLOYEE_ID));
-        Assert.assertSame(employeeDAO.getEmployee(EMPLOYEE_ID),UserCredentialsDAOMemory.getInstance().validateAndGetUser("n_stamos","pass1246"));
+        Employee currentEmployee = employeeDAO.getEmployee(EMPLOYEE_ID).join();
+        Assert.assertNotNull(currentEmployee);
+        Assert.assertSame(currentEmployee, userCredentialsDAO.validateAndGetUser("n_stamos", "pass1246").join());
 
         presenter.onDeleteAccountConfirmed(EMPLOYEE_ID);
 
         Assert.assertEquals("Ο λογαριασμός διαγράφηκε επιτυχώς.", viewStub.getMessageShown());
         Assert.assertTrue(viewStub.isNavigateToLoginCalled());
 
-
-        Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID));
+        Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID).join());
 
         // Attempting to validate should now fail as credentials are removed
-        UserCredentialsDAOMemory.getInstance().validateAndGetUser("n_stamos", "pass1246");
+        userCredentialsDAO.validateAndGetUser("n_stamos", "pass1246").join();
     }
 
     /**

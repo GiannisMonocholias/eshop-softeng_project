@@ -1,13 +1,16 @@
 package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Order;
 
 /**
  * In-memory implementation of the {@link OrderDAO} interface.
  * This class serves as a centralized repository for tracking and managing
- * customer orders throughout their lifecycle, from submission to delivery.
+ * customer orders throughout their lifecycle, wrapped in CompletableFutures
+ * to match the asynchronous architectural pattern.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderDAOMemory implements OrderDAO {
@@ -35,48 +38,57 @@ public class OrderDAOMemory implements OrderDAO {
     }
 
     /**
-     * Retrieves an order based on its unique order code.
-     * @param orderCode The unique alphanumeric identifier of the order.
-     * @return The {@link Order} object if found, otherwise null.
-     * @throws IllegalArgumentException if the provided orderCode is null.
+     * {@inheritDoc}
+     * <p>This memory implementation synchronously checks the map and returns a completed future.</p>
      */
-    public Order getOrder(String orderCode){
-        if(orderCode == null)
-            throw new IllegalArgumentException("The orderCode must not be null");
-
-        return orders.get(orderCode);
+    @Override
+    public CompletableFuture<Order> getOrder(String orderCode){
+        CompletableFuture<Order> future = new CompletableFuture<>();
+        if(orderCode == null) {
+            future.completeExceptionally(new IllegalArgumentException("The orderCode must not be null"));
+        } else {
+            future.complete(orders.get(orderCode));
+        }
+        return future;
     }
 
     /**
-     * Registers a new order in the repository.
-     * @param order The order object to be added.
-     * @throws IllegalArgumentException if the order is null or already exists in the system.
+     * {@inheritDoc}
+     * <p>Validates memory constraints before adding. Completes exceptionally if the order already exists.</p>
      */
-    public void addOrder(Order order){
+    @Override
+    public CompletableFuture<Void> addOrder(Order order){
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if(order != null){
             if(!orders.containsKey(order.getOrdercode())){
                 orders.put(order.getOrdercode(), order);
+                future.complete(null);
             }
             else {
-                throw new IllegalArgumentException("The given order is already in the repository");
+                future.completeExceptionally(new IllegalArgumentException("The given order is already in the repository"));
             }
         }
-        else
-            throw new IllegalArgumentException("The Order order argument must not be null");
+        else {
+            future.completeExceptionally(new IllegalArgumentException("The Order argument must not be null"));
+        }
+        return future;
     }
 
     /**
-     * Returns a map containing all orders currently stored in memory.
-     * @return A HashMap of all registered orders.
+     * {@inheritDoc}
+     * <p>This implementation returns an immediately completed future containing the memory map.</p>
      */
-    public HashMap<String, Order> getOrders(){
-        return orders;
+    @Override
+    public CompletableFuture<HashMap<String, Order>> getOrders(){
+        return CompletableFuture.completedFuture(orders);
     }
 
     /**
-     * Clears all order records from the repository.
+     * {@inheritDoc}
      */
-    public void clear(){
+    @Override
+    public CompletableFuture<Void> clear(){
         orders.clear();
+        return CompletableFuture.completedFuture(null);
     }
 }

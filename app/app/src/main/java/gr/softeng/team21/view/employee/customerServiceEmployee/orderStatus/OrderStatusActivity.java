@@ -13,11 +13,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 import gr.softeng.team21.view.util.OrderAdapter;
 import gr.softeng.team21.view.util.OrderAdapterType;
 
@@ -25,7 +28,8 @@ import gr.softeng.team21.view.util.OrderAdapterType;
  * Android Activity for notifying customers about their orders status.
  * Uses a RecyclerView to display orders assigned to the employee and provides
  * interaction via dialogs for sending automated updates.
- * Implements {@link OrderStatusView} to update the interface based on Presenter logic.
+ * Implements {@link OrderStatusView} and uses runOnUiThread to safely update the UI
+ * based on asynchronous Presenter logic. Incorporates Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderStatusActivity extends AppCompatActivity implements OrderStatusView {
@@ -35,8 +39,9 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
     private OrderAdapter adapter;
 
     /**
-     * Configures the layout, initializes the presenter, and populates the
-     * order list using a specialized RecyclerView adapter.
+     * Configures the layout, injects the Firebase DAO into the presenter,
+     * and initiates the asynchronous loading of the order list.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,16 +58,29 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
         recyclerView = findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        presenter = new OrderStatusPresenter(this, EmployeeDAOMemory.getInstance());
+        // DEPENDENCY INJECTION: Use Firebase DAO for production
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+        presenter = new OrderStatusPresenter(this, employeeDAO);
 
         String employeeId = getIntent().getStringExtra("CUSTOMER_SERVICE_EMPLOYEE_ID");
-        ArrayList<Order> orders = presenter.loadOrders(employeeId);
 
-        adapter = new OrderAdapter(orders, OrderAdapterType.NOTIFY_ORDER_ADAPTER , order -> {
-            presenter.onOrderClicked(order);
+        // Trigger the asynchronous order loading
+        presenter.loadOrders(employeeId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateOrders(ArrayList<Order> orders) {
+        runOnUiThread(() -> {
+            if (orders != null) {
+                adapter = new OrderAdapter(orders, OrderAdapterType.NOTIFY_ORDER_ADAPTER, order -> {
+                    presenter.onOrderClicked(order);
+                });
+                recyclerView.setAdapter(adapter);
+            }
         });
-
-        recyclerView.setAdapter(adapter);
     }
 
     /**
@@ -70,7 +88,9 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
      */
     @Override
     public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        });
     }
 
     /**
@@ -78,7 +98,9 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
      */
     @Override
     public void onOrderSelected(Order order) {
-        Toast.makeText(this, "Επιλέχθηκε η παραγγελία: " + order.getOrdercode(), Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> {
+            Toast.makeText(this, "Επιλέχθηκε η παραγγελία: " + order.getOrdercode(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     /**
@@ -86,7 +108,9 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
      */
     @Override
     public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        });
     }
 
     /**
@@ -95,27 +119,27 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
      */
     @Override
     public void updateList() {
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        runOnUiThread(() -> {
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     /**
+     * {@inheritDoc}
      * Displays an Android AlertDialog to confirm the intent to send
      * a customer notification.
      */
     @Override
     public void showConfirmationDialog(Order order, String message) {
-        new AlertDialog.Builder(this)
-                .setTitle("Επιβεβαίωση Ενημέρωσης")
-                .setMessage(message)
-                .setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        presenter.onOrderConfirmed(order);
-                    }
-                })
-                .setNegativeButton("ΟΧΙ", null)
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Επιβεβαίωση Ενημέρωσης")
+                    .setMessage(message)
+                    .setPositiveButton("ΝΑΙ", (dialog, which) -> presenter.onOrderConfirmed(order))
+                    .setNegativeButton("ΟΧΙ", null)
+                    .show();
+        });
     }
 }

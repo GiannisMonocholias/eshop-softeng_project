@@ -72,8 +72,8 @@ public class MemoryInitializer {
 
         // OrderDAO erase data
         try {
-            getOrderDAO().clear();
-            if (!getOrderDAO().getOrders().isEmpty()) {
+            getOrderDAO().clear().join();
+            if (!getOrderDAO().getOrders().join().isEmpty()) {
                 throw new IllegalStateException("Orders repository was not cleared");
             }
         } catch (IllegalStateException e) {
@@ -92,8 +92,8 @@ public class MemoryInitializer {
 
         // UserCredentialsDAO erase data
         try {
-            getUserCredentialsDAO().clear();
-            if (!getUserCredentialsDAO().getUsersCredentials().isEmpty()) {
+            getUserCredentialsDAO().clear().join();
+            if (!getUserCredentialsDAO().getUsersCredentials().join().isEmpty()) {
                 throw new IllegalStateException("Users credentials repository was not cleared");
             }
         } catch (IllegalStateException e) {
@@ -107,7 +107,7 @@ public class MemoryInitializer {
         //=====================================================
         //START: INITIALIZE CUSTOMERS
         //=====================================================
-        CustomerDAO customers = CustomerDAOMemory.getInstance();
+        CustomerDAO customers = getCustomerDAO();
 
         Address addr1 = new Address("Ερμού", "15", "Αθήνα", "Ελλάδα", "10563");
         Address addr2 = new Address("Τσιμισκή", "42", "Θεσσαλονίκη", "Ελλάδα", "54623");
@@ -119,19 +119,19 @@ public class MemoryInitializer {
                 "6987654321", new EmailAddress("nickgeorg@team21.gr"), "CUST-500", new Date(10, 5, 2022));
         cust1.setAddress(addr1);
         customers.addCustomer(cust1).join();
-        getUserCredentialsDAO().addUser(cust1);
+        getUserCredentialsDAO().addUser(cust1).join();
 
         Customer cust2 = new Customer("georgepap", "Γιώργος", "pass1235", "Παπαδόπουλος",
                 "6987659483", new EmailAddress("georgepap@team21.gr"), "CUST-501", new Date(19, 3, 2021));
         cust2.setAddress(addr2);
         customers.addCustomer(cust2).join();
-        getUserCredentialsDAO().addUser(cust2);
+        getUserCredentialsDAO().addUser(cust2).join();
 
         Customer cust3 = new Customer("giannismonoh", "Γιάννης", "pass1236", "Μονοχολιάς",
                 "6987651456", new EmailAddress("giannismonoh@team21.gr"), "CUST-502", new Date(22, 6, 2021));
         cust3.setAddress(addr3);
         customers.addCustomer(cust3).join();
-        getUserCredentialsDAO().addUser(cust3);
+        getUserCredentialsDAO().addUser(cust3).join();
 
         Customer cust4 = new Customer(
                 "giannis_oik", "Γιάννης", "pass3210", "Οικονόμου", "6944556677",
@@ -139,7 +139,7 @@ public class MemoryInitializer {
         );
         cust4.setAddress(addr4);
         customers.addCustomer(cust4).join();
-        getUserCredentialsDAO().addUser(cust4);
+        getUserCredentialsDAO().addUser(cust4).join();
         //=====================================================
         //END: INITIALIZE CUSTOMERS
         //=====================================================
@@ -148,7 +148,7 @@ public class MemoryInitializer {
         //=====================================================
         //START: INITIALIZE EMPLOYEES
         //=====================================================
-        EmployeeDAO employees = (EmployeeDAO) EmployeeDAOMemory.getInstance();
+        EmployeeDAO employees = getEmployeeDAO();
 
         //=====================================================
         //CUSTOMER SERVICE EMPLOYEES INITIALIZATION
@@ -159,7 +159,7 @@ public class MemoryInitializer {
                 "6971234567", emailCs1, "CSR-101", 200, 1100, 40, EmployeeState.ACTIVE, new Date(19, 1, 2018)
         );
         employees.addEmployee(csr1).join();
-        getUserCredentialsDAO().addUser(csr1);
+        getUserCredentialsDAO().addUser(csr1).join();
 
         EmailAddress emailCs2 = new EmailAddress("p.dimitriou@team21.gr");
         CustomerServiceEmployee csr2 = new CustomerServiceEmployee(
@@ -167,7 +167,7 @@ public class MemoryInitializer {
                 "6972345678", emailCs2, "CSR-102", 180, 1050, 40, EmployeeState.ACTIVE, new Date(15, 2, 2024)
         );
         employees.addEmployee(csr2).join();
-        getUserCredentialsDAO().addUser(csr2);
+        getUserCredentialsDAO().addUser(csr2).join();
 
 
         EmailAddress emailCs3 = new EmailAddress("s.konst@team21.gr");
@@ -176,7 +176,7 @@ public class MemoryInitializer {
                 "6973456789", emailCs3, "CSR-103", 220, 1150, 40, EmployeeState.ACTIVE, new Date(13, 9, 2019)
         );
         employees.addEmployee(csr3).join();
-        getUserCredentialsDAO().addUser(csr3);
+        getUserCredentialsDAO().addUser(csr3).join();
 
 
         //=====================================================
@@ -188,7 +188,7 @@ public class MemoryInitializer {
                 "6981122334", emailPrep1, "PREP-201", 100, 1200, 40, EmployeeState.ACTIVE, new Date(25, 7, 2023)
         );
         employees.addEmployee(prep1).join();
-        getUserCredentialsDAO().addUser(prep1);
+        getUserCredentialsDAO().addUser(prep1).join();
 
 
         EmailAddress emailPrep2 = new EmailAddress("a.vasiliou@team21.gr");
@@ -197,7 +197,7 @@ public class MemoryInitializer {
                 "6982233445", emailPrep2, "PREP-202", 120, 1250, 40, EmployeeState.ACTIVE, new Date(22, 1, 2020)
         );
         employees.addEmployee(prep2).join();
-        getUserCredentialsDAO().addUser(prep2);
+        getUserCredentialsDAO().addUser(prep2).join();
 
 
         EmailAddress emailPrep3 = new EmailAddress("k.papadakis@team21.gr");
@@ -206,7 +206,7 @@ public class MemoryInitializer {
                 "6983344556", emailPrep3, "PREP-203", 100, 1180, 40, EmployeeState.ACTIVE, new Date(27, 8, 2021)
         );
         employees.addEmployee(prep3);
-        getUserCredentialsDAO().addUser(prep3);
+        getUserCredentialsDAO().addUser(prep3).join();
 
 
         //=====================================================
@@ -218,7 +218,7 @@ public class MemoryInitializer {
                 "6941112223", emailCat1, "CAT-301", 150, 1300, 40, EmployeeState.ACTIVE, new Date(18, 9, 2022)
         );
         employees.addEmployee(cat1).join();
-        getUserCredentialsDAO().addUser(cat1);
+        getUserCredentialsDAO().addUser(cat1).join();
 
 
         EmailAddress emailCat2 = new EmailAddress("th.ioannou@team21.gr");
@@ -227,7 +227,7 @@ public class MemoryInitializer {
                 "6942223334", emailCat2, "CAT-302", 150, 1300, 40, EmployeeState.ACTIVE, new Date(15, 3, 2018)
         );
         employees.addEmployee(cat2).join();
-        getUserCredentialsDAO().addUser(cat2);
+        getUserCredentialsDAO().addUser(cat2).join();
 
 
         EmailAddress emailCat3 = new EmailAddress("e.rizos@team21.gr");
@@ -236,7 +236,7 @@ public class MemoryInitializer {
                 "6943334445", emailCat3, "CAT-303", 160, 1350, 40, EmployeeState.ACTIVE, new Date(25, 10, 2022)
         );
         employees.addEmployee(cat3).join();
-        getUserCredentialsDAO().addUser(cat3);
+        getUserCredentialsDAO().addUser(cat3).join();
 
 
         //=====================================================
@@ -249,7 +249,7 @@ public class MemoryInitializer {
                 15, true
         );
         getEmployeeDAO().addEmployee(del1).join();
-        getUserCredentialsDAO().addUser(del1);
+        getUserCredentialsDAO().addUser(del1).join();
 
 
         EmailAddress emailDel2 = new EmailAddress("x.panou@team21.gr");
@@ -259,7 +259,7 @@ public class MemoryInitializer {
                 12, true
         );
         getEmployeeDAO().addEmployee(del2).join();
-        getUserCredentialsDAO().addUser(del2);
+        getUserCredentialsDAO().addUser(del2).join();
 
 
         EmailAddress emailDel3 = new EmailAddress("m.lazarou@team21.gr");
@@ -269,7 +269,7 @@ public class MemoryInitializer {
                 20, false
         );
         getEmployeeDAO().addEmployee(del3).join();
-        getUserCredentialsDAO().addUser(del3);
+        getUserCredentialsDAO().addUser(del3).join();
         //=====================================================
         //END: INITIALIZE EMPLOYEES
         //=====================================================
@@ -281,7 +281,7 @@ public class MemoryInitializer {
 
         EmailAddress email_Admin = new EmailAddress("geopap@team21.gr");
         Admin ad = Admin.getInstance("g_papadakis" , "Γεώργιος" , "ppd246" , "Παπαδάκης" , "6908381070" , email_Admin , 2000);
-        getUserCredentialsDAO().addUser(ad);
+        getUserCredentialsDAO().addUser(ad).join();
 
         //=====================================================
         //END: INITIALIZE ADMIN
@@ -292,7 +292,7 @@ public class MemoryInitializer {
         //START: INITIALIZE PRODUCT TYPES
         //=====================================================
 
-        ProductTypeDAO products = ProductTypeDAOMemory.getInstance();
+        ProductTypeDAO products = getProductTypeDAO();
 
         // --- 1. Laptops ---
         ProductType laptop1 = new ProductType("Dell XPS 15", "Φορητός υπολογιστής υψηλών επιδόσεων με οθόνη αφής 4K.", new Money(BigDecimal.valueOf(1850.00), "€"), "TECH-001");
@@ -430,7 +430,7 @@ public class MemoryInitializer {
         //=====================================================
         //START: INITIALIZE ORDERS
         //=====================================================
-        OrderDAO orders = (OrderDAO) OrderDAOMemory.getInstance();
+        OrderDAO orders = getOrderDAO();
 
 
         //ORDER 1

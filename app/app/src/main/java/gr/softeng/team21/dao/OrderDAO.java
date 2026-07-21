@@ -1,34 +1,42 @@
 package gr.softeng.team21.dao;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.domain.Order;
 
+/**
+ * Interface for the Order Data Access Object.
+ * Defines asynchronous operations for managing customer orders throughout their lifecycle.
+ * @author Γιάννης Μονοχολιάς
+ */
 public interface OrderDAO {
 
      /**
-      * Retrieves an order based on its unique order code.
+      * Retrieves an order asynchronously based on its unique order code.
       * @param orderCode The unique alphanumeric identifier of the order.
-      * @return The {@link Order} object if found, otherwise null.
-      * @throws IllegalArgumentException if the provided orderCode is null.
+      * @return A CompletableFuture containing the {@link Order} object if found, otherwise null.
+      * Completes exceptionally with an IllegalArgumentException if the provided orderCode is null.
       */
-     Order getOrder(String orderCode);
+     CompletableFuture<Order> getOrder(String orderCode);
 
      /**
-      * Registers a new order in the repository.
+      * Registers a new order in the repository asynchronously.
       * @param order The order object to be added.
-      * @throws IllegalArgumentException if the order is null or already exists in the system.
+      * @return A CompletableFuture representing the completion of the insertion.
+      * Completes exceptionally with an IllegalArgumentException if the order is null or already exists.
       */
-     void addOrder(Order order);
+     CompletableFuture<Void> addOrder(Order order);
 
      /**
-      * Returns a map containing all orders currently stored in memory.
-      * @return A HashMap of all registered orders.
+      * Returns a map containing all orders currently stored in the system asynchronously.
+      * @return A CompletableFuture containing a HashMap of all registered orders.
       */
-     HashMap<String,Order> getOrders();
+     CompletableFuture<HashMap<String,Order>> getOrders();
 
      /**
-      * Clears all order records from the repository.
+      * Clears all order records from the repository asynchronously.
+      * @return A CompletableFuture representing the completion of the clearing operation.
       */
-     void clear();
+     CompletableFuture<Void> clear();
 }

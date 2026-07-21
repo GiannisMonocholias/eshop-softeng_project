@@ -9,8 +9,9 @@ import gr.softeng.team21.domain.OrderStatusType;
 
 /**
  * Presenter for the Deliverer's Orders List.
- * Coordinates the retrieval of orders specifically assigned to a deliverer
+ * Coordinates the asynchronous retrieval of orders specifically assigned to a deliverer
  * and handles the logic for completing a delivery.
+ * Utilizes Dependency Injection to decouple the data sources from the presentation logic.
  * @author Γιάννης Μονοχολιάς
  */
 public class DelivererOrdersListPresenter {
@@ -20,8 +21,8 @@ public class DelivererOrdersListPresenter {
     private Deliverer loggedInEmployee;
 
     /**
-     * Initializes the presenter with required DAOs and the view interface.
-     * @param view The view implementation.
+     * Initializes the presenter with required injected DAOs and the view interface.
+     * @param view The view implementation (Activity or Stub).
      * @param orderDAO The data source for orders.
      * @param employeeDAO The data source for employee/deliverer records.
      */
@@ -32,24 +33,29 @@ public class DelivererOrdersListPresenter {
     }
 
     /**
-     * Loads the orders currently assigned to the deliverer.
+     * Asynchronously loads the orders currently assigned to the deliverer and updates the view.
      * @param employeeId The unique identifier of the deliverer.
-     * @return A list of orders to be delivered, or null if the deliverer is not found.
      */
-    public ArrayList<Order> loadShippedOrders(String employeeId) {
-        this.loggedInEmployee = (Deliverer) employeeDAO.getEmployee(employeeId);
+    public void loadShippedOrders(String employeeId) {
+        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+            this.loggedInEmployee = (Deliverer) employee;
 
-        if (loggedInEmployee == null) {
-            view.showError("Σφάλμα: Ο διανομέας δεν βρέθηκε.");
+            if (loggedInEmployee == null) {
+                view.showError("Σφάλμα: Ο διανομέας δεν βρέθηκε.");
+                return;
+            }
+
+            ArrayList<Order> shippedOrders = new ArrayList<>();
+            if (loggedInEmployee.getOrders() != null) {
+                shippedOrders.addAll(loggedInEmployee.getOrders());
+            }
+
+            view.updateOrdersList(shippedOrders);
+
+        }).exceptionally(e -> {
+            view.showError("Σφάλμα ανάκτησης δεδομένων: " + e.getMessage());
             return null;
-        }
-
-        ArrayList<Order> shippedOrders = new ArrayList<>();
-        if (loggedInEmployee.getOrders() != null) {
-            shippedOrders.addAll(loggedInEmployee.getOrders());
-        }
-
-        return shippedOrders;
+        });
     }
 
     /**

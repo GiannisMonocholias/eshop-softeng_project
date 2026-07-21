@@ -1,14 +1,21 @@
 package gr.softeng.team21.view.employee.deliverer.delivererOrdersList;
 
+import java.util.ArrayList;
 import gr.softeng.team21.domain.Order;
 
 /**
  * View contract for the screen displaying a Deliverer's assigned orders.
- * Defines methods for updating the order list dynamically and handling
+ * Defines methods for updating the order list dynamically asynchronously and handling
  * user feedback via messages or alerts.
  * @author Γιάννης Μονοχολιάς
  */
 public interface DelivererOrdersListView {
+
+    /**
+     * Updates the UI with the retrieved list of assigned orders asynchronously.
+     * @param orders An ArrayList of Order objects to be displayed.
+     */
+    void updateOrdersList(ArrayList<Order> orders);
 
     /**
      * Removes a specific order from the UI list, typically after delivery completion.

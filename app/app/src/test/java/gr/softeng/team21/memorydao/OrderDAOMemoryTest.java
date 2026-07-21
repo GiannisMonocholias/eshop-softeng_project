@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.concurrent.CompletionException;
+
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.domain.Order;
@@ -15,9 +17,9 @@ import gr.softeng.team21.domain.TestHelper;
 
 /**
  * Unit tests for the {@link OrderDAOMemory} class.
- * This suite verifies the in-memory management of customer orders, ensuring
+ * This suite verifies the asynchronous in-memory management of customer orders, ensuring
  * that the repository correctly handles the storage, retrieval, and
- * uniqueness of order entities.
+ * uniqueness of order entities using CompletableFuture.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderDAOMemoryTest {
@@ -26,16 +28,15 @@ public class OrderDAOMemoryTest {
 
     /**
      * Initializes the testing environment before each test.
-     * Clears the singleton repository and prepares a sample order with
+     * Clears the singleton repository asynchronously and prepares a sample order with
      * items in its shopping cart to be used in assertions.
      */
-    @Before // Αντικατάσταση του @BeforeEach
+    @Before
     public void setUp(){
         orderDAOMemory = OrderDAOMemory.getInstance();
-        orderDAOMemory.clear(); // Καθαρισμός για απομόνωση των tests
+        orderDAOMemory.clear().join(); // Καθαρισμός για απομόνωση των tests
 
         order1 = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH,new Date () ,new ShoppingCart());
-        // Υποθέτουμε ότι η TestHelper.getLaptop() επιστρέφει ProductType/WholesaleProduct
         order1.getShoppingCart().addItem(new CartItem(TestHelper.getLaptop(), 2));
     }
 
@@ -54,31 +55,27 @@ public class OrderDAOMemoryTest {
      */
     @Test
     public void testGetOrdersInitiallyEmpty() {
-        assertTrue(orderDAOMemory.getOrders().isEmpty());
+        assertTrue(orderDAOMemory.getOrders().join().isEmpty());
     }
-
-    // -------------------------------------------------------------------
-    // ΔΙΑΧΩΡΙΣΜΟΣ getOrderNonValidArgumentsTest
-    // -------------------------------------------------------------------
 
     /**
      * Verifies that providing a null argument to {@code getOrder}
-     * throws an {@link IllegalArgumentException}.
+     * throws an IllegalArgumentException wrapped in a {@link CompletionException}.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = CompletionException.class)
     public void getOrder_NullArgumentTest() {
         // pass null argument in getOrder()
-        orderDAOMemory.getOrder(null);
+        orderDAOMemory.getOrder(null).join();
     }
 
     /**
      * Verifies that requesting an order ID that does not exist
-     * correctly returns null.
+     * correctly returns null asynchronously.
      */
     @Test
     public void getOrder_NonExistingOrderTest() {
         // Request a non existing order
-        assertNull(orderDAOMemory.getOrder("order1245"));
+        assertNull(orderDAOMemory.getOrder("order1245").join());
     }
 
     /**
@@ -86,10 +83,10 @@ public class OrderDAOMemoryTest {
      */
     @Test
     public void getOrderTestSuccess(){
-        orderDAOMemory.addOrder(order1);
-        Order returnedOrder = orderDAOMemory.getOrder("order1246");
-        assertTrue(orderDAOMemory.getOrders().containsKey("order1246"));
-        assertSame(returnedOrder, orderDAOMemory.getOrder("order1246"));
+        orderDAOMemory.addOrder(order1).join();
+        Order returnedOrder = orderDAOMemory.getOrder("order1246").join();
+        assertTrue(orderDAOMemory.getOrders().join().containsKey("order1246"));
+        assertSame(returnedOrder, orderDAOMemory.getOrder("order1246").join());
     }
 
     /**
@@ -97,34 +94,30 @@ public class OrderDAOMemoryTest {
      */
     @Test
     public void addOrderTestSuccess() {
-        orderDAOMemory.addOrder(order1);
+        orderDAOMemory.addOrder(order1).join();
 
-        assertEquals(order1, orderDAOMemory.getOrder("order1246"));
+        assertEquals(order1, orderDAOMemory.getOrder("order1246").join());
     }
-
-    // -------------------------------------------------------------------
-    // ΔΙΑΧΩΡΙΣΜΟΣ addOrderNonValidArgumentTest
-    // -------------------------------------------------------------------
 
     /**
      * Verifies that attempting to add a null order to the repository
-     * throws an {@link IllegalArgumentException}.
+     * throws an exception wrapped in a {@link CompletionException}.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = CompletionException.class)
     public void addOrder_NullArgumentTest(){
         // null argument passed
-        orderDAOMemory.addOrder(null);
+        orderDAOMemory.addOrder(null).join();
     }
 
     /**
      * Verifies that adding an order with an ID that is already registered
-     * throws an {@link IllegalArgumentException} to prevent data duplication.
+     * throws an exception wrapped in a {@link CompletionException} to prevent data duplication.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = CompletionException.class)
     public void addOrder_AlreadyRegisteredOrderTest(){
         // Already registered Order
-        orderDAOMemory.addOrder(order1);
-        orderDAOMemory.addOrder(order1);
+        orderDAOMemory.addOrder(order1).join();
+        orderDAOMemory.addOrder(order1).join(); // This will fail
     }
 
     /**
@@ -134,27 +127,28 @@ public class OrderDAOMemoryTest {
     @Test
     public void getOrders() {
         //Initially Empty ordersRepository
-        assertEquals(0, orderDAOMemory.getOrders().size());
+        assertEquals(0, orderDAOMemory.getOrders().join().size());
 
         //order1 Order is constructed in the setUp method
-        orderDAOMemory.addOrder(order1);
-        assertEquals(1, orderDAOMemory.getOrders().size());
-
+        orderDAOMemory.addOrder(order1).join();
+        assertEquals(1, orderDAOMemory.getOrders().join().size());
 
         Order order2 = new Order("order1245", new Date(), OrderStatusType.NEW, false, PaymentType.CASH,new Date () ,new ShoppingCart());
         order2.getShoppingCart().addItem(new CartItem(TestHelper.getLaptop (),2));
-        orderDAOMemory.addOrder(order2);
-        assertEquals(2, orderDAOMemory.getOrders().size());
+
+        orderDAOMemory.addOrder(order2).join();
+        assertEquals(2, orderDAOMemory.getOrders().join().size());
     }
 
     /**
      * Verifies that the {@code clear} method successfully removes all
-     * orders from the memory storage.
+     * orders from the memory storage asynchronously.
      */
     @Test
     public void clear() {
-        orderDAOMemory.clear();
-        assertEquals(0, orderDAOMemory.getOrders().size());
+        orderDAOMemory.addOrder(order1).join(); // Προσθήκη για να μην είναι ήδη άδειο
+        orderDAOMemory.clear().join();
+        assertEquals(0, orderDAOMemory.getOrders().join().size());
     }
 
     /**
@@ -163,6 +157,6 @@ public class OrderDAOMemoryTest {
      */
     @After
     public void tearDownTest(){
-        orderDAOMemory.clear();
+        orderDAOMemory.clear().join();
     }
 }

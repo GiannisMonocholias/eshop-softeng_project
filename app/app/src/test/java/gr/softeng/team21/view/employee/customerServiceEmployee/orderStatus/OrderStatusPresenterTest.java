@@ -9,16 +9,15 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.domain.CustomerServiceEmployee;
 import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
 
 /**
  * Unit tests for {@link OrderStatusPresenter}.
- * Verifies the logic for handling order notifications, including loading orders,
+ * Verifies the logic for handling order notifications, including asynchronous loading of orders,
  * triggering role-specific confirmation dialogs, and processing email notifications
- * for delayed or ready orders.
+ * for delayed or ready orders using Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderStatusPresenterTest {
@@ -31,27 +30,29 @@ public class OrderStatusPresenterTest {
 
     /**
      * Initializes the testing environment before each test.
-     * Prepares memory data and instantiates the presenter with its dependencies.
+     * Prepares memory data asynchronously, sets up dependencies, and instantiates the presenter.
      */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         viewStub = new OrderStatusViewStub();
         presenter = new OrderStatusPresenter(viewStub, EmployeeDAOMemory.getInstance());
-        csr1 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
+        csr1 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
     }
 
     /**
      * Verifies that the presenter correctly retrieves the list of orders
-     * assigned to a specific Customer Service Employee.
+     * assigned to a specific Customer Service Employee asynchronously.
      */
     @Test
     public void loadOrdersReturnsCorrectList() {
         Order delayedOrder = OrderDAOMemory.getInstance().getOrder("ORD-2024-004");
         csr1.addOrder(delayedOrder);
 
-        ArrayList<Order> orders = presenter.loadOrders(EMPLOYEE_ID);
+        presenter.loadOrders(EMPLOYEE_ID);
+        ArrayList<Order> orders = viewStub.getLoadedOrders();
 
+        Assert.assertNotNull(orders);
         Assert.assertEquals(1, orders.size());
         Assert.assertEquals("ORD-2024-004", orders.get(0).getOrdercode());
     }
@@ -121,7 +122,8 @@ public class OrderStatusPresenterTest {
     }
 
     /**
-     * Verifies that interaction fails if no valid employee session is established.
+     * Verifies that interaction fails if no valid employee session is established
+     * (e.g., if loadOrders was never called successfully).
      */
     @Test
     public void onOrderClickedNoLoggedInEmployee() {
