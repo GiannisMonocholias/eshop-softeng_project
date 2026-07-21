@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView; // <--- Χρειάζεται αυτό το import
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -16,7 +16,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import gr.softeng.team21.R;
 import gr.softeng.team21.contact.EmailMessage;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 import gr.softeng.team21.view.user.emailComposition.EmailCompositionActivity;
 import gr.softeng.team21.view.contact.emailDetails.EmailDetailsActivity;
 import gr.softeng.team21.view.util.EmailAdapter;
@@ -25,20 +26,17 @@ import gr.softeng.team21.view.util.EmailAdapter;
  * Activity responsible for displaying the list of emails for a Customer Service Employee.
  * Implements the {@link CustomerServiceEmployeeEmailListView} and manages UI components
  * like RecyclerView, SearchView, and FloatingActionButton.
+ * Employs Dependency Injection and runOnUiThread for safe asynchronous operations.
  * @author Γιάννης Μονοχολιάς
  */
 public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity implements CustomerServiceEmployeeEmailListView {
 
     private CustomerServiceEmployeeEmailListPresenter presenter;
     private static final String EMP_ID_EXTRA = "CUSTOMER_SERVICE_EMPLOYEE_ID";
-
     private EmailAdapter adapter;
+    private String employeeId;
 
-    /**
-     * Initializes the UI components, sets up the RecyclerView with an EmailAdapter,
-     * and configures the search and creation actions.
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
-     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,21 +49,19 @@ public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity 
             return insets;
         });
 
-        presenter = new CustomerServiceEmployeeEmailListPresenter(this, EmployeeDAOMemory.getInstance());
+        employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
+
+        // Firebase DAO for storing employees
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+
+        presenter = new CustomerServiceEmployeeEmailListPresenter(this, employeeDAO);
+
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewEmails);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
-        ArrayList<EmailMessage> emailList = presenter.getInbox(employeeId);
-        emailList.sort((e1,e2) -> e2.getDateSent().compareTo(e1.getDateSent()));
-
         adapter = new EmailAdapter(new ArrayList<>(), email -> presenter.onEmailSelected(email, employeeId));
         recyclerView.setAdapter(adapter);
-
-        if (emailList != null) {
-            adapter.updateData(emailList);
-        }
 
         SearchView searchView = findViewById(R.id.searchViewEmails);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -85,51 +81,71 @@ public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity 
 
         FloatingActionButton emailMsgComposition = findViewById(R.id.fabNewEmail);
         emailMsgComposition.setOnClickListener(v -> presenter.onCreateNewMsgSelected(employeeId));
+
+        // Trigger async load
+        presenter.loadInbox(employeeId);
     }
 
     /**
-     * Refreshes the email list from the presenter whenever the activity comes to the foreground.
+     * Refreshes the email list asynchronously whenever the activity comes to the foreground.
      */
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (presenter != null && adapter != null) {
-            String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
-            ArrayList<EmailMessage> emailList = presenter.getInbox(employeeId);
-
-            emailList.sort((e1, e2) -> e2.getDateSent().compareTo(e1.getDateSent()));
-
-            adapter.updateData(emailList);
+        if (presenter != null && employeeId != null) {
+            presenter.loadInbox(employeeId);
         }
     }
 
     /**
      * {@inheritDoc}
-     * Starts the EmailCompositionActivity via an Intent, passing the employee's id as Intent extra.
      */
     @Override
-    public void navigateToCreateNewMsg(String employeeId){
-        Toast.makeText(this, "Δημιουργία Νέου Μηνύματος...", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(CustomerServiceEmployeeEmailListActivity.this, EmailCompositionActivity.class);
-        intent.putExtra(EMP_ID_EXTRA, employeeId);
-        startActivity(intent);
+    public void updateEmailList(ArrayList<EmailMessage> emails) {
+        runOnUiThread(() -> {
+            if (emails != null && adapter != null) {
+                emails.sort((e1, e2) -> e2.getDateSent().compareTo(e1.getDateSent()));
+                adapter.updateData(emails);
+            }
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Starts the EmailDetailsActivity, passing all necessary email data via Intent extras.
      */
     @Override
-    public void navigateToEmailDetails(String subject, String body, String sender, String receiver, String employeeId){
-        Intent intent = new Intent(this, EmailDetailsActivity.class);
+    public void showError(String message) {
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        });
+    }
 
-        intent.putExtra("SUBJECT_EXTRA", subject); // Σιγουρέψου ότι τα keys ταιριάζουν με το EmailDetailsActivity
-        intent.putExtra("BODY_EXTRA", body);
-        intent.putExtra("SENDER_EXTRA", sender);
-        intent.putExtra("RECEIVER_EXTRA", receiver);
-        intent.putExtra("user_id", employeeId);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void navigateToCreateNewMsg(String employeeId) {
+        runOnUiThread(() -> {
+            Toast.makeText(this, "Δημιουργία Νέου Μηνύματος...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CustomerServiceEmployeeEmailListActivity.this, EmailCompositionActivity.class);
+            intent.putExtra(EMP_ID_EXTRA, employeeId);
+            startActivity(intent);
+        });
+    }
 
-        startActivity(intent);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void navigateToEmailDetails(String subject, String body, String sender, String receiver, String employeeId) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, EmailDetailsActivity.class);
+            intent.putExtra("SUBJECT_EXTRA", subject);
+            intent.putExtra("BODY_EXTRA", body);
+            intent.putExtra("SENDER_EXTRA", sender);
+            intent.putExtra("RECEIVER_EXTRA", receiver);
+            intent.putExtra("user_id", employeeId);
+            startActivity(intent);
+        });
     }
 }

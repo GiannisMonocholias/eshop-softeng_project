@@ -1,20 +1,35 @@
 package gr.softeng.team21.view.employee.customerServiceEmployee.CustomerServiceEmployeeEmailList;
 
+import java.util.ArrayList;
+import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListView;
 
 /**
  * A stub implementation of the {@link CustomerServiceEmployeeEmailListView} interface for unit testing.
- * It provides a way to verify navigation calls and the correctness of the data
- * passed from the presenter to the view.
+ * It provides a way to verify navigation calls, asynchronous data loading, and the correctness
+ * of the data passed from the presenter to the view.
  * @author Γιάννης Μονοχολιάς
  */
 public class CustomerServiceEmployeeEmailListViewStub implements CustomerServiceEmployeeEmailListView {
+
+    private ArrayList<EmailMessage> loadedEmails;
+    private String errorMessage;
 
     private int navigateToCreateNewMsgCount = 0;
     private String passedEmployeeId = "";
 
     private int navigateToEmailDetailsCount = 0;
     private String detailsSubject, detailsBody, detailsSender, detailsReceiver, detailsId;
+
+    @Override
+    public void updateEmailList(ArrayList<EmailMessage> emails) {
+        this.loadedEmails = emails;
+    }
+
+    @Override
+    public void showError(String message) {
+        this.errorMessage = message;
+    }
 
     /**
      * Captures navigation to the message composition screen.
@@ -45,6 +60,14 @@ public class CustomerServiceEmployeeEmailListViewStub implements CustomerService
     }
 
     // --- Accessor methods for verification during assertions ---
+
+    public ArrayList<EmailMessage> getLoadedEmails() {
+        return loadedEmails;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
     public int getNavigateToCreateNewMsgCount() {
         return navigateToCreateNewMsgCount;

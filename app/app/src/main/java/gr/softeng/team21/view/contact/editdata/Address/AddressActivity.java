@@ -15,6 +15,7 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
 /**
@@ -55,9 +56,9 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
         etCountry = findViewById(R.id.edittxtAddressActivityCountry);
         btnSave = findViewById(R.id.btnAddressActivitySave);
 
-        // DEPENDENCY INJECTION: Σύνδεση με το Firebase για τους πελάτες
+        // Firebase DAOs
         CustomerDAO customerDAO = new CustomerDAOFirebase();
-        EmployeeDAO employeeDAO = (EmployeeDAO) EmployeeDAOMemory.getInstance();
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
 
         presenter = new AddressPresenter(this, userId, customerDAO, employeeDAO);
 

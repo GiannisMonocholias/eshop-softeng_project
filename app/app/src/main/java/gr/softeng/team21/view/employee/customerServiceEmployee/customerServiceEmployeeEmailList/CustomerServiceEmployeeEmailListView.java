@@ -1,11 +1,27 @@
 package gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeEmailList;
 
+import java.util.ArrayList;
+import gr.softeng.team21.contact.EmailMessage;
+
 /**
  * The view interface for the email list screen of a Customer Service Employee.
- * Defines the methods that the email list activity must implement.
+ * Defines the methods that the email list activity must implement to handle
+ * asynchronous data retrieval, navigation, and error displaying.
  * @author Γιάννης Μονοχολιάς
  */
 public interface CustomerServiceEmployeeEmailListView {
+
+    /**
+     * Updates the UI with the retrieved list of emails.
+     * @param emails An ArrayList of EmailMessage objects to be displayed.
+     */
+    void updateEmailList(ArrayList<EmailMessage> emails);
+
+    /**
+     * Displays an error message to the user, usually triggered by failed async operations.
+     * @param message The error message to display.
+     */
+    void showError(String message);
 
     /**
      * Navigates to the email composition screen.

@@ -2,6 +2,7 @@ package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.User;
@@ -9,7 +10,7 @@ import gr.softeng.team21.domain.User;
 /**
  * In-memory implementation of the {@link UserCredentialsDAO} interface.
  * This class uses a Singleton pattern to provide a centralized point of access
- * for user credentials stored in memory.
+ * for user credentials stored in memory, wrapped in CompletableFutures to match the async architecture.
  * @author Γιάννης Μονοχολιάς
  */
 public class UserCredentialsDAOMemory implements UserCredentialsDAO {
@@ -17,19 +18,17 @@ public class UserCredentialsDAOMemory implements UserCredentialsDAO {
     private static HashMap<String, User> credentialsMap;
 
     /**
-     * Private default constructor.
-     * it is used to avoid external initialization.
-     * initializes the credentialsMap variable which stores user credentials
+     * Private default constructor to enforce the Singleton pattern.
+     * Initializes the credentialsMap variable which stores user credentials.
      */
     private UserCredentialsDAOMemory() {
         credentialsMap = new HashMap<>();
     }
 
-
     /**
      * Returns the singleton instance of the UserCredentialsDAOMemory.
-     * Initializes the instance it it has not been initialized
-     * @return the unique instance of UserCredentialsDAOMemory
+     * Initializes the instance if it has not been initialized.
+     * @return the unique instance of UserCredentialsDAOMemory.
      */
     public static UserCredentialsDAOMemory getInstance() {
         if (instance == null) {
@@ -39,66 +38,71 @@ public class UserCredentialsDAOMemory implements UserCredentialsDAO {
     }
 
     /**
-     * Returns a copy of the current user credentials map.
-     * @return A new HashMap containing all registered users.
+     * {@inheritDoc}
+     * <p>This implementation returns an immediately completed future containing a copy of the memory map.</p>
      */
-    public HashMap<String, User> getUsersCredentials(){return  new HashMap<>(credentialsMap);}
-
+    @Override
+    public CompletableFuture<HashMap<String, User>> getUsersCredentials() {
+        return CompletableFuture.completedFuture(new HashMap<>(credentialsMap));
+    }
 
     /**
-     * Adds a new user to the memory storage.
-     * @param user The User object to be registered.
-     * @throws IllegalArgumentException if the username is already occupied from another account
+     * {@inheritDoc}
+     * <p>Validates memory constraints before adding. Completes exceptionally if the user already exists.</p>
      */
-    public void addUser(User user) {
-
+    @Override
+    public CompletableFuture<Void> addUser(User user) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (credentialsMap.containsKey(user.getUsername())) {
-            throw new IllegalArgumentException("Username already exists");
+            future.completeExceptionally(new IllegalArgumentException("Username already exists"));
+        } else {
+            credentialsMap.put(user.getUsername(), user);
+            future.complete(null);
         }
-
-        credentialsMap.put(user.getUsername(), user);
+        return future;
     }
 
-
     /**
-     * Removes the user associated with the specified username.
-     * @param username The unique identifier of the user to remove.
-     * @throws NoSuchElementException if the username is not found in the storage.
+     * {@inheritDoc}
+     * <p>Validates existence in memory before removal. Completes exceptionally if the username is not found.</p>
      */
-    public void removeUser(String username){
-
+    @Override
+    public CompletableFuture<Void> removeUser(String username) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (!credentialsMap.containsKey(username)) {
-            throw new NoSuchElementException("Username does not exists");
+            future.completeExceptionally(new NoSuchElementException("Username does not exist"));
+        } else {
+            credentialsMap.remove(username);
+            future.complete(null);
         }
-
-        credentialsMap.remove(username);
+        return future;
     }
 
-
     /**
-     * Validates user credentials and retrieves the corresponding User object.
-     * @param username The username to check.
-     * @param password The password to validate.
-     * @return The authenticated User object.
-     * @throws SecurityException if the username is not found or the password is incorrect.
+     * {@inheritDoc}
+     * <p>Performs synchronous memory validation and returns a completed future upon success,
+     * or completes exceptionally if credentials do not match.</p>
      */
-    public User validateAndGetUser(String username, String password){
-
+    @Override
+    public CompletableFuture<User> validateAndGetUser(String username, String password) {
+        CompletableFuture<User> future = new CompletableFuture<>();
         User user = credentialsMap.get(username);
 
-        if(user == null){
-            throw new SecurityException("Invalid credentials");
+        if (user == null || !user.getPassword().equals(password)) {
+            future.completeExceptionally(new SecurityException("Invalid credentials"));
+        } else {
+            future.complete(user);
         }
-        if(!user.getPassword().equals(password)){
-            throw new SecurityException("Invalid credentials");
-        }
-        return user;
+
+        return future;
     }
 
     /**
-     * Clears all user credentials from the memory storage.
+     * {@inheritDoc}
      */
-    public void clear(){
+    @Override
+    public CompletableFuture<Void> clear() {
         credentialsMap.clear();
+        return CompletableFuture.completedFuture(null);
     }
 }

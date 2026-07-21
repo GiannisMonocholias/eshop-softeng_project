@@ -14,7 +14,7 @@ import gr.softeng.team21.domain.Customer;
 public class CustomerDAOFirebase implements CustomerDAO {
 
     private final FirebaseFirestore db;
-    private static final String COLLECTION = "Customers";
+    private static final String COLLECTION = "customers";
 
 
     public CustomerDAOFirebase() {

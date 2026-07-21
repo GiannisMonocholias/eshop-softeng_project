@@ -7,19 +7,17 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.util.Date;
-import gr.softeng.team21.view.employee.customerServiceEmployee.CustomerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListViewStub;
 import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeEmailList.CustomerServiceEmployeeEmailListPresenter;
 
 /**
  * Unit tests for {@link CustomerServiceEmployeeEmailListPresenter}.
  * This suite ensures that the inbox logic for customer service employees functions correctly,
- * covering message retrieval, marking emails as read, and navigating to message details.
+ * covering asynchronous message retrieval, marking emails as read, and navigating to message details.
  * @author Γιάννης Μονοχολιάς
  */
 public class CustomerServiceEmployeeEmailListPresenterTest {
@@ -38,26 +36,27 @@ public class CustomerServiceEmployeeEmailListPresenterTest {
         MemoryInitializer.prepareData();
         viewStub = new CustomerServiceEmployeeEmailListViewStub();
 
+        csr1 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee("CSR-101").join();
+        csr2 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee("CSR-102").join();
 
-        csr1 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee("CSR-101");
-        csr2 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee("CSR-102");
-        EmailMessage testMsg = new EmailMessage(csr2.getEmailAddress(),csr1.getEmailAddress(),
+        EmailMessage testMsg = new EmailMessage(csr2.getEmailAddress(), csr1.getEmailAddress(),
                 "Test Subject", "Test Body", new Date()
         );
         csr1.getEmailProvider().saveInboxEmails(testMsg);
 
+        // Inject the memory DAO into the presenter for testing
         presenter = new CustomerServiceEmployeeEmailListPresenter(viewStub, EmployeeDAOMemory.getInstance());
     }
 
     /**
      * Verifies that the presenter correctly retrieves the list of inbox emails
-     * for a specific employee ID.
+     * for a specific employee ID and updates the view asynchronously.
      */
     @Test
-    public void getInboxReturnsCorrectEmails() {
-        ArrayList<EmailMessage> result = presenter.getInbox("CSR-101");
+    public void loadInboxUpdatesViewWithCorrectEmails() {
+        presenter.loadInbox("CSR-101");
 
-
+        ArrayList<EmailMessage> result = viewStub.getLoadedEmails();
         Assert.assertNotNull(result);
 
         // 1 message added from the setup method
@@ -84,13 +83,11 @@ public class CustomerServiceEmployeeEmailListPresenterTest {
      */
     @Test
     public void onEmailSelectedMarksAsReadAndNavigates() {
-
         EmailMessage email = csr1.getEmailProvider().getInboxEmails().get(0);
 
         presenter.onEmailSelected(email, csr1.getEmployeeId());
 
         Assert.assertTrue(email.isRead());
-
         Assert.assertEquals(1, viewStub.getNavigateToEmailDetailsCount());
         Assert.assertEquals("Test Subject", viewStub.getDetailsSubject());
         Assert.assertEquals("Test Body", viewStub.getDetailsBody());

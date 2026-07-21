@@ -3,9 +3,11 @@ package gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceE
 /**
  * Defines methods to be implemented for displaying profile information, handling navigation
  * to various functional modules, and managing account-related alerts.
+ * Defines the contract between the Presenter and the UI.
  * @author Γιάννης Μονοχολιάς
  */
 public interface CustomerServiceMenuView {
+
     /**
      * Displays the full name of the employee on the header section of the menu.
      * @param fullName The concatenated first and last name to be displayed.

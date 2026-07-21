@@ -1,11 +1,11 @@
 package gr.softeng.team21.view.employee.customerServiceEmployee.CustomerServiceEmployeeMenu;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
@@ -15,7 +15,8 @@ import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEm
 /**
  * Unit tests for {@link CustomerServiceMenuPresenter}.
  * This suite ensures the main menu logic for customer service employees functions correctly,
- * including data display, navigation triggers, and sensitive operations like account deletion.
+ * including data display, navigation triggers, and asynchronous operations like account deletion
+ * employing Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class CustomerServiceMenuPresenterTest {
@@ -23,6 +24,7 @@ public class CustomerServiceMenuPresenterTest {
     private CustomerServiceMenuPresenter presenter;
     private CustomerServiceEmployeeMenuViewStub viewStub;
     private EmployeeDAO employeeDAO;
+    private UserCredentialsDAO userCredentialsDAO;
     private static final String EMPLOYEE_ID = "CSR-101";
 
     /**
@@ -34,7 +36,9 @@ public class CustomerServiceMenuPresenterTest {
 
         viewStub = new CustomerServiceEmployeeMenuViewStub();
         employeeDAO = EmployeeDAOMemory.getInstance();
-        presenter = new CustomerServiceMenuPresenter(viewStub, employeeDAO);
+        userCredentialsDAO = UserCredentialsDAOMemory.getInstance();
+
+        presenter = new CustomerServiceMenuPresenter(viewStub, employeeDAO, userCredentialsDAO);
     }
 
     /**
@@ -95,8 +99,8 @@ public class CustomerServiceMenuPresenterTest {
     }
 
     /**
-     * Verifies the full account deletion workflow:
-     * 1. Confirms the employee exists initially.
+     * Verifies the full asynchronous account deletion workflow:
+     * 1. Confirms the employee exists initially using join().
      * 2. Executes deletion via presenter.
      * 3. Checks for success message and redirection.
      * 4. Ensures employee is removed from both EmployeeDAO and CredentialsDAO.
@@ -104,22 +108,20 @@ public class CustomerServiceMenuPresenterTest {
      */
     @Test(expected = SecurityException.class)
     public void onDeleteAccountConfirmedDeletesEmployeeAndCredentialsSuccess() {
-        Employee empBefore = employeeDAO.getEmployee(EMPLOYEE_ID);
+        Employee empBefore = employeeDAO.getEmployee(EMPLOYEE_ID).join();
         Assert.assertNotNull(empBefore);
-        Assert.assertSame(empBefore,UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(),empBefore.getPassword()));
+        Assert.assertSame(empBefore, UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(), empBefore.getPassword()));
 
-        // existing employeeId
+        // Confirm deletion for existing employeeId
         presenter.onDeleteAccountConfirmed(EMPLOYEE_ID);
-
 
         Assert.assertEquals("Ο λογαριασμός διαγράφηκε επιτυχώς.", viewStub.getMessageShown());
         Assert.assertTrue(viewStub.isNavigateToLoginCalled());
 
-
-        Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID));
+        Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID).join());
 
         // This call should throw SecurityException because credentials were deleted
-        UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(),empBefore.getPassword());
+        UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(), empBefore.getPassword());
     }
 
     /**
@@ -130,7 +132,6 @@ public class CustomerServiceMenuPresenterTest {
     public void onDeleteAccountConfirmedDeletesEmployeeAndCredentialsFailure() {
         // Non existing employeeId
         presenter.onDeleteAccountConfirmed("Non_existing_id");
-        Assert.assertEquals("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.",viewStub.getMessageShown());
-
+        Assert.assertEquals("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.", viewStub.getMessageShown());
     }
 }

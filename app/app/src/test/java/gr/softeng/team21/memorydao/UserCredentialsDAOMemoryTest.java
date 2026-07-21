@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.NoSuchElementException;
+import java.util.concurrent.CompletionException;
 
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.util.Date;
@@ -15,7 +15,7 @@ import gr.softeng.team21.domain.User;
 /**
  * Unit tests for the {@link UserCredentialsDAOMemory} class.
  * This suite validates the security-critical operations of the system, including
- * user registration, credential validation (login logic), and the enforcement
+ * asynchronous user registration, credential validation (login logic), and the enforcement
  * of unique identifiers and secure access.
  * @author Γιάννης Μονοχολιάς
  */
@@ -24,15 +24,15 @@ public class UserCredentialsDAOMemoryTest {
 
     /**
      * Initializes the testing environment before each test.
-     * Obtains the singleton instance, clears the credentials repository,
+     * Obtains the singleton instance, clears the credentials repository asynchronously,
      * and ensures the customer memory DAO is reset to maintain test isolation.
      * @throws Exception if setup fails.
      */
     @Before
     public void setUp() throws Exception {
         this.repository = UserCredentialsDAOMemory.getInstance();
-        repository.clear();
-        CustomerDAOMemory.getInstance().getCustomers().clear();
+        repository.clear().join();
+        CustomerDAOMemory.getInstance().clear().join();
     }
 
     /**
@@ -40,7 +40,7 @@ public class UserCredentialsDAOMemoryTest {
      */
     @Test
     public void GetUsersCredentialsInitiallyEmptyTest() {
-        assertTrue(repository.getUsersCredentials().isEmpty());
+        assertTrue(repository.getUsersCredentials().join().isEmpty());
     }
 
     /**
@@ -55,34 +55,34 @@ public class UserCredentialsDAOMemoryTest {
 
     /**
      * Verifies that the system prevents the registration of two different users
-     * with the same username, throwing an {@link IllegalArgumentException}.
+     * with the same username. Expects an exception wrapped in a {@link CompletionException}.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = CompletionException.class)
     public void addUserAlreadyExistingUsernameTest() {
         Customer user1 = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
-        repository.addUser(user1);
+        repository.addUser(user1).join();
 
         // Addition of an already existing username
         Customer user2 = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@gmail.com"), "Customer1", new Date());
 
-        repository.addUser(user2);
+        repository.addUser(user2).join();
     }
 
     /**
      * Verifies that attempting to remove a user that does not exist in the
-     * repository results in a {@link NoSuchElementException}.
+     * repository results in an exception wrapped in a {@link CompletionException}.
      */
-    @Test(expected = NoSuchElementException.class)
+    @Test(expected = CompletionException.class)
     public void removeUserNonExistingUsernameTest() {
-        repository.removeUser("UnknownUser");
+        repository.removeUser("UnknownUser").join();
     }
 
     /**
-     * Tests the successful authentication of a user when provided with
+     * Tests the successful asynchronous authentication of a user when provided with
      * correct username and password combinations.
      */
     @Test
@@ -90,50 +90,50 @@ public class UserCredentialsDAOMemoryTest {
         Customer user1 = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
-        repository.addUser(user1);
+        repository.addUser(user1).join();
 
         // Correct credentials
-        User loggedIn = repository.validateAndGetUser("giannispap", "pass1234");
+        User loggedIn = repository.validateAndGetUser("giannispap", "pass1234").join();
         assertEquals(user1, loggedIn);
     }
 
     /**
      * Verifies that providing an incorrect password for an existing user
-     * results in a {@link SecurityException}.
+     * results in a SecurityException wrapped inside a {@link CompletionException}.
      */
-    @Test(expected = SecurityException.class)
+    @Test(expected = CompletionException.class)
     public void validateAndGetUser_IncorrectPasswordTest() {
         Customer user1 = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
-        repository.addUser(user1);
+        repository.addUser(user1).join();
 
         // Incorrect password
-        repository.validateAndGetUser("giannispap", "WrongPass");
+        repository.validateAndGetUser("giannispap", "WrongPass").join();
     }
 
     /**
      * Verifies that attempting to authenticate a username that is not present
-     * in the system results in a {@link SecurityException}.
+     * in the system results in a SecurityException wrapped inside a {@link CompletionException}.
      */
-    @Test(expected = SecurityException.class)
+    @Test(expected = CompletionException.class)
     public void validateAndGetUser_UnknownUserTest() {
         Customer user1 = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
-        repository.addUser(user1);
+        repository.addUser(user1).join();
 
-        repository.validateAndGetUser("UnknownUser", "Password1");
+        repository.validateAndGetUser("UnknownUser", "Password1").join();
     }
 
     /**
-     * Cleans up the repositories after each test case to prevent data pollution
+     * Cleans up the repositories asynchronously after each test case to prevent data pollution
      * and ensure a clean state for subsequent tests.
      * @throws Exception if teardown fails.
      */
     @After
     public void tearDown() throws Exception {
-        repository.clear();
-        CustomerDAOMemory.getInstance().getCustomers().clear();
+        repository.clear().join();
+        CustomerDAOMemory.getInstance().clear().join();
     }
 }

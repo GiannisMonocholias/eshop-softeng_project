@@ -5,7 +5,7 @@ import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEm
 /**
  * A stub implementation of the {@link CustomerServiceMenuView} interface for unit testing.
  * It simulates the main menu interface for a Customer Service Employee, capturing
- * navigation events and UI state changes for verification.
+ * asynchronous navigation events and UI state changes for verification.
  * @author Γιάννης Μονοχολιάς
  */
 public class CustomerServiceEmployeeMenuViewStub implements CustomerServiceMenuView {
@@ -19,8 +19,7 @@ public class CustomerServiceEmployeeMenuViewStub implements CustomerServiceMenuV
     private String messageShown = "";
 
     /**
-     * Captures the employee name display request.
-     * @param fullName The name to be displayed.
+     * {@inheritDoc}
      */
     @Override
     public void showEmployeeName(String fullName) {
@@ -28,8 +27,7 @@ public class CustomerServiceEmployeeMenuViewStub implements CustomerServiceMenuV
     }
 
     /**
-     * Captures the navigation event to the order status screen.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToOrderStatus(String employeeId) {
@@ -37,8 +35,7 @@ public class CustomerServiceEmployeeMenuViewStub implements CustomerServiceMenuV
     }
 
     /**
-     * Captures the navigation event to the email inbox.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToEmailInbox(String employeeId) {
@@ -46,7 +43,7 @@ public class CustomerServiceEmployeeMenuViewStub implements CustomerServiceMenuV
     }
 
     /**
-     * Marks that the delete account confirmation dialog was requested.
+     * {@inheritDoc}
      */
     @Override
     public void showDeleteAccountConfirmation() {
@@ -54,7 +51,7 @@ public class CustomerServiceEmployeeMenuViewStub implements CustomerServiceMenuV
     }
 
     /**
-     * Marks that the navigation to the login screen was called (e.g., after deletion).
+     * {@inheritDoc}
      */
     @Override
     public void navigateToLogin() {
@@ -62,8 +59,7 @@ public class CustomerServiceEmployeeMenuViewStub implements CustomerServiceMenuV
     }
 
     /**
-     * Captures the navigation event to the account processing/edit screen.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToProcessAccount(String employeeId) {
@@ -71,8 +67,7 @@ public class CustomerServiceEmployeeMenuViewStub implements CustomerServiceMenuV
     }
 
     /**
-     * Captures generic feedback messages sent to the UI.
-     * @param message The message content.
+     * {@inheritDoc}
      */
     @Override
     public void showMessage(String message) {
