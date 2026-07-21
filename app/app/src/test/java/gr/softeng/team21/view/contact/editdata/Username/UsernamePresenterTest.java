@@ -28,7 +28,7 @@ public class UsernamePresenterTest {
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         view = new UsernameViewStub();
-        customer = MemoryInitializer.getCustomerDAO().getCustomer("CUST-500");
+        customer = MemoryInitializer.getCustomerDAO().getCustomer("CUST-500").join();
         presenter = new UsernamePresenter(view, customer.getCustomer_id());
     }
 
@@ -96,14 +96,14 @@ public class UsernamePresenterTest {
         UsernameViewStub viewForNullName = new UsernameViewStub();
         Customer customer1 = new Customer(null, "firstname", "pass", "lastname", "69999",
                 new EmailAddress("@"), "CUST-NULL", new Date());
-        CustomerDAOMemory.getInstance().addCustomer(customer1);
+        CustomerDAOMemory.getInstance().addCustomer(customer1).join();
         UsernamePresenter presenter1 = new UsernamePresenter(viewForNullName, customer1.getCustomer_id());
         Assert.assertNull(viewForNullName.getCurrentUsername());
 
         UsernameViewStub viewForEmptyName = new UsernameViewStub();
         Customer customer2 = new Customer("", "firstname", "pass", "lastname", "69999",
                 new EmailAddress("@"), "CUST-EMPTY", new Date());
-        CustomerDAOMemory.getInstance().addCustomer(customer2);
+        CustomerDAOMemory.getInstance().addCustomer(customer2).join();
         UsernamePresenter presenter2 = new UsernamePresenter(viewForEmptyName, customer2.getCustomer_id());
         Assert.assertNull(viewForEmptyName.getCurrentUsername());
     }

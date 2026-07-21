@@ -1,13 +1,15 @@
 package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Employee;
 
 /**
  * In-memory implementation of the {@link EmployeeDAO} interface.
- * Provides a centralized repository for managing employee records, allowing
- * retrieval by ID or email address.
+ * Provides a centralized repository for managing employee records, returning them
+ * wrapped in CompletableFutures to match the asynchronous architectural pattern.
  * @author Γιάννης Μονοχολιάς
  */
 public class EmployeeDAOMemory implements EmployeeDAO {
@@ -16,16 +18,17 @@ public class EmployeeDAOMemory implements EmployeeDAO {
     private static EmployeeDAOMemory instance;
 
     /**
-     * Private constructor for the Singleton pattern.
-     * Initializes the map used to store employee records.
+     * Private constructor to enforce the Singleton pattern.
+     * Initializes the internal HashMap used to store employee records in memory.
      */
-    public EmployeeDAOMemory() {
+    private EmployeeDAOMemory() {
         employees = new HashMap<>();
     }
 
     /**
-     * Returns the singleton instance of EmployeeDAOMemory.
-     * @return The unique instance of this DAO.
+     * Retrieves the singleton instance of the EmployeeDAOMemory repository.
+     * If the instance does not exist, it is created.
+     * @return The unique instance of the EmployeeDAOMemory.
      */
     public static EmployeeDAOMemory getInstance() {
         if (instance == null) {
@@ -35,73 +38,82 @@ public class EmployeeDAOMemory implements EmployeeDAO {
     }
 
     /**
-     * @return a map containing all registered employees, where the key is the employee ID.
+     * {@inheritDoc}
+     * <p>This in-memory implementation returns a completed future containing the internal map.</p>
      */
-    public HashMap<String, Employee> getEmployees() {
-        return employees;
+    @Override
+    public CompletableFuture<HashMap<String, Employee>> getEmployees() {
+        return CompletableFuture.completedFuture(employees);
     }
 
     /**
-     * Searches and retrieves an employee based on their email address.
-     * @param emailAddress the email address to search for.
-     * @return the Employee object if found, otherwise null.
+     * {@inheritDoc}
+     * <p>This in-memory implementation iterates through the map to find a matching email string.</p>
      */
-    public Employee getEmployeeByEmail(String emailAddress) {
+    @Override
+    public CompletableFuture<Employee> getEmployeeByEmail(String emailAddress) {
         for (String id : employees.keySet()) {
             if (employees.get(id).getEmailAddress().toString().equals(emailAddress)) {
-                return employees.get(id);
+                return CompletableFuture.completedFuture(employees.get(id));
             }
         }
-        return null;
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
-     * Retrieves an employee using their unique ID.
-     * @param id the unique business identifier of the employee.
-     * @return the Employee object, or null if no such ID exists.
+     * {@inheritDoc}
      */
-    public Employee getEmployee(String id) {
-        return employees.get(id);
+    @Override
+    public CompletableFuture<Employee> getEmployee(String id) {
+        return CompletableFuture.completedFuture(employees.get(id));
     }
 
     /**
-     * Adds a new employee to the repository.
-     * @param employee the Employee object to be added.
-     * @throws IllegalArgumentException if the employee is null or already exists in the repository.
+     * {@inheritDoc}
+     * <p>If the employee already exists or is null, the future completes exceptionally with an {@link IllegalArgumentException}.</p>
      */
-    public void addEmployee(Employee employee) {
+    @Override
+    public CompletableFuture<Void> addEmployee(Employee employee) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (employee != null) {
             if (!employees.containsKey(employee.getEmployeeId())) {
                 employees.put(employee.getEmployeeId(), employee);
+                future.complete(null);
             } else {
-                throw new IllegalArgumentException("The given employee is already in the repository");
+                future.completeExceptionally(new IllegalArgumentException("The given employee is already in the repository"));
             }
         } else {
-            throw new IllegalArgumentException("The Employee argument must not be null");
+            future.completeExceptionally(new IllegalArgumentException("The Employee argument must not be null"));
         }
+        return future;
     }
 
     /**
-     * Removes an employee from the repository.
-     * @param employee the Employee object to be removed.
-     * @throws IllegalArgumentException if the employee is null or not found in the repository.
+     * {@inheritDoc}
+     * <p>If the employee does not exist or is null, the future completes exceptionally with an {@link IllegalArgumentException}.</p>
      */
-    public void removeEmployee(Employee employee) {
+    @Override
+    public CompletableFuture<Void> removeEmployee(Employee employee) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (employee != null) {
             if (employees.containsKey(employee.getEmployeeId())) {
                 employees.remove(employee.getEmployeeId());
+                future.complete(null);
             } else {
-                throw new IllegalArgumentException("The employee is not included ine the employees' list");
+                future.completeExceptionally(new IllegalArgumentException("The employee is not included in the employees' list"));
             }
         } else {
-            throw new IllegalArgumentException("The employee argument must not be null");
+            future.completeExceptionally(new IllegalArgumentException("The employee argument must not be null"));
         }
+        return future;
     }
 
     /**
-     * Resets the repository by clearing all employee data.
+     * {@inheritDoc}
      */
-    public void clear() {
+    @Override
+    public CompletableFuture<Void> clear() {
         employees.clear();
+        return CompletableFuture.completedFuture(null);
     }
 }

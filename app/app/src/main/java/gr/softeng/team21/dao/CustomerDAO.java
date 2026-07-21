@@ -1,48 +1,52 @@
 package gr.softeng.team21.dao;
 
 import java.util.HashMap;
-
+import java.util.concurrent.CompletableFuture;
 import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
 
+/**
+ * Data Access Object (DAO) interface for managing {@link Customer} entities.
+ * Uses CompletableFuture for non-blocking, asynchronous operations.
+ */
 public interface CustomerDAO {
 
      /**
-      * Returns the entire map of registered customers.
-      * @return A HashMap where the key is the customer ID and the value is the Customer object.
+      * Retrieves all registered customers from the database.
+      * @return A CompletableFuture containing the map of customers or an error.
       */
-     HashMap<String, Customer> getCustomers();
+     CompletableFuture<HashMap<String, Customer>> getCustomers();
 
      /**
       * Retrieves a specific customer by their unique identifier.
       * @param id The unique customer ID.
-      * @return The Customer object associated with the given ID, or null if not found.
+      * @return A CompletableFuture containing the Customer object, or null if not found.
       */
-     Customer getCustomer(String id);
+     CompletableFuture<Customer> getCustomer(String id);
 
      /**
       * Searches for a customer based on their email address.
-      * @param emailAddress The email address to search for.
-      * @return The Customer object if a match is found, or null otherwise.
+      * @param emailAddress The email address string to search for.
+      * @return A CompletableFuture containing the found Customer object, or null.
       */
-     Customer getCustomerByEmail(String emailAddress);
+     CompletableFuture<Customer> getCustomerByEmail(String emailAddress);
 
      /**
-      * Adds a new customer to the repository.
-      * @param customer The Customer object to be added.
-      * @throws IllegalArgumentException if the customer is null or if a customer with the same ID already exists.
+      * Adds a new customer to the database.
+      * @param customer The Customer object to persist.
+      * @return A CompletableFuture representing the completion of the operation.
       */
-     void addCustomer(Customer customer);
+     CompletableFuture<Void> addCustomer(Customer customer);
 
      /**
-      * Removes a customer from the repository.
-      * @param customer The Customer object to be removed.
-      * @throws IllegalArgumentException if the customer is null or if the customer does not exist in the repository.
+      * Removes an existing customer from the database.
+      * @param customer The Customer object to delete.
+      * @return A CompletableFuture representing the completion of the deletion.
       */
-     void removeCustomer(Customer customer);
+     CompletableFuture<Void> removeCustomer(Customer customer);
 
      /**
-      * Clears all customer records from the memory.
+      * Clears all customer records from the database.
+      * @return A CompletableFuture representing the completion of the bulk deletion.
       */
-     public void clear();
+     CompletableFuture<Void> clear();
 }

@@ -12,10 +12,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
 /**
  * Activity responsible for editing the user's email address.
  * Implements {@link EmailView} and manages the UI elements for email input, such as button and editText.
+ * Handles UI updates on the main thread for asynchronous DAO compatibility.
  * @author PAVLOS GRATSANIS
  */
 public class EmailActivity extends AppCompatActivity implements EmailView {
@@ -26,7 +31,7 @@ public class EmailActivity extends AppCompatActivity implements EmailView {
 
     /**
      * Initializes the activity, sets the UI layout, retrieves the user ID,
-     * and initializes the presenter and associated editText and save button.
+     * injects the DAOs, and initializes the presenter.
      * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
      */
     @Override
@@ -46,7 +51,11 @@ public class EmailActivity extends AppCompatActivity implements EmailView {
         etEmail = findViewById(R.id.edittxtEmailActivity);
         btnSave = findViewById(R.id.btnEmailActivitySave);
 
-        presenter = new EmailPresenter(this, userId);
+        // DEPENDENCY INJECTION: Σύνδεση με το Firebase για τους πελάτες
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+        EmployeeDAO employeeDAO = (EmployeeDAO) EmployeeDAOMemory.getInstance();
+
+        presenter = new EmailPresenter(this, userId, customerDAO, employeeDAO);
 
         btnSave.setOnClickListener(v -> saveEmail());
     }
@@ -61,38 +70,40 @@ public class EmailActivity extends AppCompatActivity implements EmailView {
 
     /**
      * {@inheritDoc}
-     * Completes the input field with the existing email address.
      */
     @Override
     public void setEmail(String email) {
-        etEmail.setText(email);
+        runOnUiThread(() -> {
+            etEmail.setText(email);
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Shows a success message via Toast and finishes the activity.
      */
     @Override
     public void SaveSuccess(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        finish();
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            finish();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Shows an error message via Toast.
      */
     @Override
     public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Closes the current activity.
      */
     @Override
     public void finishView() {
-        finish();
+        runOnUiThread(this::finish);
     }
 }

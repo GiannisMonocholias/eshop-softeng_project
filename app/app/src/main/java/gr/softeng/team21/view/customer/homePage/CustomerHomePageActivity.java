@@ -19,8 +19,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;
 import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.user.login.LoginActivity;
@@ -28,13 +30,12 @@ import gr.softeng.team21.view.user.login.LoginActivity;
 /**
  * Activity that represents the Customer’s Home Page using a Navigation Drawer.
  * Implements the {@link CustomerHomePageView} to provide navigation within the user interface.
- * It manages the DrawerLayout and NavigationView to handle user actions.
+ * UI updates and navigation are executed on the main thread for async compatibility.
  * @author PAVLOS GRATSANIS
  */
 public class CustomerHomePageActivity extends AppCompatActivity implements CustomerHomePageView {
 
     private CustomerHomePagePresenter presenter;
-    private Customer customer;
 
     // UI Components για το Menu
     private DrawerLayout drawerLayout;
@@ -43,7 +44,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
 
     /**
      * Initializes the activity, sets up the Drawer layout, retrieves the customer ID,
-     * and initializes the presenter.
+     * and initializes the presenter with the required DAOs.
      * @param savedInstanceState If the activity is being re-initialized.
      */
     @Override
@@ -61,21 +62,22 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         String customerId = getIntent().getStringExtra("CUSTOMER_ID");
         if (customerId == null) {
             showMessage("Προσοχή: Ο πελάτης δεν βρέθηκε!");
-            finish();
+            goToLogin();
             return;
         }
 
-        customer = CustomerDAOMemory.getInstance().getCustomer(customerId);
-        presenter = new CustomerHomePagePresenter(this, customer);
+        // Connection to Firebase
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+        UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOMemory.getInstance();
+
+        presenter = new CustomerHomePagePresenter(this, customerId, customerDAO, userCredentialsDAO);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         btnMenu = findViewById(R.id.btnMenu);
 
-        // 4. Λειτουργία Κουμπιού Μενού -> Ανοίγει το Συρτάρι
         btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
-        // 5. Λειτουργία Επιλογών Μενού (Listeners)
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -87,13 +89,13 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
                 } else if (id == R.id.btnCustomerHomePageMessages) {
                     presenter.InboxClicked();
                 } else if (id == R.id.btnCustomerHomePageΟrderΗistory) {
+                    // Προσθήκη λογικής αργότερα
                 } else if (id == R.id.btnCustomerHomePageDeleteaccount) {
                     presenter.DeleteClicked();
                 } else if (id == R.id.btnCustomerHomePageLogout) {
                     presenter.LogoutClicked();
                 }
 
-                // Κλείνουμε το συρτάρι μετά την επιλογή
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
@@ -102,70 +104,76 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
 
     /**
      * {@inheritDoc}
-     * Starts the LoginActivity and clears the activity stack.
      */
     @Override
     public void goToLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Starts the UserEditDataActivity.
      */
     @Override
-    public void goToEditData() {
-        Intent intent = new Intent(this, UserEditDataActivity.class);
-        intent.putExtra("user_id", customer.getCustomer_id());
-        startActivity(intent);
+    public void goToEditData(String customerId) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, UserEditDataActivity.class);
+            intent.putExtra("user_id", customerId);
+            startActivity(intent);
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Starts the CustomerFindProductActivity.
      */
     @Override
-    public void goToFindProduct() {
-        Intent intent = new Intent(this, CustomerFindProductActivity.class);
-        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
-        startActivity(intent);
+    public void goToFindProduct(String customerId) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, CustomerFindProductActivity.class);
+            intent.putExtra("CUSTOMER_ID", customerId);
+            startActivity(intent);
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Starts the CustomerEmailListActivity.
      */
     @Override
-    public void goToInbox() {
-        Intent intent = new Intent(this, gr.softeng.team21.view.customer.EmailList.CustomerEmailListActivity.class);
-        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
-        startActivity(intent);
+    public void goToInbox(String customerId) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, gr.softeng.team21.view.customer.EmailList.CustomerEmailListActivity.class);
+            intent.putExtra("CUSTOMER_ID", customerId);
+            startActivity(intent);
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Displays an AlertDialog asking the user to confirm the account deletion.
      */
     @Override
     public void showDeleteConfirmation() {
-        new AlertDialog.Builder(this)
-                .setTitle("Διαγραφή Λογαριασμού")
-                .setMessage("Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Η ενέργεια δεν αναιρείται.")
-                .setPositiveButton("Ναι", (dialog, which) -> presenter.DeleteConfirm())
-                .setNegativeButton("Όχι", (dialog, which) -> dialog.dismiss())
-                .setCancelable(false)
-                .show();
+        runOnUiThread(() -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Διαγραφή Λογαριασμού")
+                    .setMessage("Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Η ενέργεια δεν αναιρείται.")
+                    .setPositiveButton("Ναι", (dialog, which) -> presenter.DeleteConfirm())
+                    .setNegativeButton("Όχι", (dialog, which) -> dialog.dismiss())
+                    .setCancelable(false)
+                    .show();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Shows a short Toast message.
      */
     @Override
     public void showMessage(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        });
     }
 }

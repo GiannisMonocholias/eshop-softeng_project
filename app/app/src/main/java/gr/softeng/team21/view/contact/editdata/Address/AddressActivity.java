@@ -12,10 +12,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
 /**
  * Activity responsible for editing the user's address.
- * Implements {@link AddressView} and manages the UI elements for address input, sush as button and editText.
+ * Implements {@link AddressView} and manages the UI elements for address input, such as button and editText.
+ * Handles UI updates on the main thread for asynchronous DAO compatibility.
  * @author PAVLOS GRATSANIS
  */
 public class AddressActivity extends AppCompatActivity implements AddressView {
@@ -26,7 +31,7 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
 
     /**
      * Initializes the activity, sets the UI layout, retrieves the user ID,
-     * * and initializes the presenter and associated editText and save button.
+     * injects the DAOs, and initializes the presenter.
      * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
      */
     @Override
@@ -49,7 +54,12 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
         etCity = findViewById(R.id.edittxtAddressActivityCity);
         etCountry = findViewById(R.id.edittxtAddressActivityCountry);
         btnSave = findViewById(R.id.btnAddressActivitySave);
-        presenter = new AddressPresenter(this, userId);
+
+        // DEPENDENCY INJECTION: Σύνδεση με το Firebase για τους πελάτες
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+        EmployeeDAO employeeDAO = (EmployeeDAO) EmployeeDAOMemory.getInstance();
+
+        presenter = new AddressPresenter(this, userId, customerDAO, employeeDAO);
 
         btnSave.setOnClickListener(v -> saveAddress());
     }
@@ -64,47 +74,49 @@ public class AddressActivity extends AppCompatActivity implements AddressView {
         String city = etCity.getText().toString().trim();
         String country = etCountry.getText().toString().trim();
 
-        presenter.saveAddressClicked(street, number, zip, city, country);
+        presenter.saveAddressClicked(street, number, city, country, zip);
     }
 
     /**
      * {@inheritDoc}
-     * Shows a success message via Toast and finishes the activity.
      */
     @Override
     public void SaveSuccess(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        finish();
+        runOnUiThread(() -> {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            finish();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Shows an error message via Toast.
      */
     @Override
     public void showError(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Populates the input fields with the existing address details.
      */
     @Override
     public void setAddressDetails(String street, String number, String city, String country, String zip) {
-        etStreet.setText(street);
-        etNumber.setText(number);
-        etZip.setText(zip);
-        etCity.setText(city);
-        etCountry.setText(country);
+        runOnUiThread(() -> {
+            etStreet.setText(street);
+            etNumber.setText(number);
+            etCity.setText(city);
+            etCountry.setText(country);
+            etZip.setText(zip);
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Closes the current activity.
      */
     @Override
     public void finishView() {
-        finish();
+        runOnUiThread(this::finish);
     }
 }

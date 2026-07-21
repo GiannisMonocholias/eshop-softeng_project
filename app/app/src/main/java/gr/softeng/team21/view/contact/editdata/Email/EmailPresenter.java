@@ -3,18 +3,21 @@ package gr.softeng.team21.view.contact.editdata.Email;
 import java.util.regex.Pattern;
 
 import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.User;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 
 /**
  * Presenter for the Email Edit activity.
  * Handles interactions between the {@link EmailView} and the User domain model.
+ * Handles asynchronous data retrieval.
  * @author PAVLOS GRATSANIS
  */
 public class EmailPresenter {
     private EmailView view;
     private User user;
+    private CustomerDAO customerDAO;
+    private EmployeeDAO employeeDAO;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
             "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
@@ -27,34 +30,56 @@ public class EmailPresenter {
     );
 
     /**
-     * Initializes the presenter with the view and attempts to find the user by ID.
+     * Initializes the presenter with the view and required DAOs, then attempts to find the user by ID asynchronously.
      * @param view The view interface.
      * @param userId The ID of the user to edit.
+     * @param customerDAO The DAO for accessing customer data.
+     * @param employeeDAO The DAO for accessing employee data.
      */
-    public EmailPresenter(EmailView view, String userId) {
+    public EmailPresenter(EmailView view, String userId, CustomerDAO customerDAO, EmployeeDAO employeeDAO) {
         this.view = view;
+        this.customerDAO = customerDAO;
+        this.employeeDAO = employeeDAO;
         findUser(userId);
     }
 
     /**
-     * Searches for the user in both Customer and Employee repositories.
-     * If found, it completes the view with the existing email address.
+     * Searches for the user asynchronously in the Customer repository.
+     * If not found, it falls back to the Employee repository.
      * @param userId The ID of the user.
      */
     private void findUser(String userId) {
-        user = CustomerDAOMemory.getInstance().getCustomer(userId);
+        customerDAO.getCustomer(userId).thenAccept(customer -> {
 
-        if (user == null) {
-            user = EmployeeDAOMemory.getInstance().getEmployee(userId);
-        }
+            if (customer != null) {
+                this.user = customer;
+                populateEmailDetails();
+            } else {
+                employeeDAO.getEmployee(userId).thenAccept(employee -> {
+                    if (employee != null) {
+                        this.user = employee;
+                        populateEmailDetails();
+                    } else {
+                        view.showError("Ο χρήστης δεν βρέθηκε.");
+                        view.finishView();
+                    }
+                }).exceptionally(e -> {
+                    view.showError("Σφάλμα κατά την ανάκτηση υπαλλήλου: " + e.getMessage());
+                    return null;
+                });
+            }
 
-        if (user == null) {
-            view.showError("Ο χρήστης δεν βρέθηκε.");
-            view.finishView();
-            return;
-        }
+        }).exceptionally(e -> {
+            view.showError("Σφάλμα κατά την ανάκτηση πελάτη: " + e.getMessage());
+            return null;
+        });
+    }
 
-        if (user.getEmailAddress() != null && !user.getEmailAddress().toString().isEmpty()) {
+    /**
+     * Helper method to populate the view with the user's email address details.
+     */
+    private void populateEmailDetails() {
+        if (user != null && user.getEmailAddress() != null && !user.getEmailAddress().toString().isEmpty()) {
             view.setEmail(user.getEmailAddress().toString());
         }
     }
@@ -65,7 +90,11 @@ public class EmailPresenter {
      * @param mailtxt The new email address to save.
      */
     public void saveEmailClicked(String mailtxt) {
-        if (user == null) return;
+        if (user == null) {
+            view.showError("Δεν έχει φορτωθεί ο χρήστης.");
+            return;
+        }
+
         if (mailtxt.isEmpty()) {
             view.showError("Παρακαλώ εισάγετε Email");
             return;
@@ -75,6 +104,7 @@ public class EmailPresenter {
             view.showError("Μη έγκυρη μορφή email");
             return;
         }
+
         user.editData("4", mailtxt, null, new EmailAddress(mailtxt));
         view.SaveSuccess("Το email ενημερώθηκε επιτυχώς!");
     }

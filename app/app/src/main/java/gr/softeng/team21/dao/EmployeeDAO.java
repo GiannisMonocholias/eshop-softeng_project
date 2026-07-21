@@ -1,46 +1,54 @@
 package gr.softeng.team21.dao;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.domain.Employee;
 
+/**
+ * Interface for Employee Data Access Object.
+ * Defines asynchronous CRUD operations for managing Employee entities.
+ * @author Γιάννης Μονοχολιάς
+ */
 public interface EmployeeDAO {
 
      /**
-      * @return a map containing all registered employees, where the key is the employee ID.
+      * Retrieves all registered employees asynchronously.
+      * @return A CompletableFuture containing a map of all employees, where the key is the employee ID.
       */
-     HashMap<String, Employee> getEmployees();
+     CompletableFuture<HashMap<String, Employee>> getEmployees();
 
      /**
-      * Searches and retrieves an employee based on their email address.
-      * @param emailAddress the email address to search for.
-      * @return the Employee object if found, otherwise null.
+      * Searches and retrieves an employee asynchronously based on their email address.
+      * @param emailAddress The email address to search for.
+      * @return A CompletableFuture containing the Employee object if found, otherwise null.
       */
-     Employee getEmployeeByEmail(String emailAddress);
+     CompletableFuture<Employee> getEmployeeByEmail(String emailAddress);
 
      /**
-      * Retrieves an employee using their unique ID.
-      * @param id the unique business identifier of the employee.
-      * @return the Employee object, or null if no such ID exists.
+      * Retrieves an employee asynchronously using their unique ID.
+      * @param id The unique business identifier of the employee.
+      * @return A CompletableFuture containing the Employee object, or null if no such ID exists.
       */
-     Employee getEmployee(String id);
+     CompletableFuture<Employee> getEmployee(String id);
 
      /**
-      * Adds a new employee to the repository.
-      * @param employee the Employee object to be added.
-      * @throws IllegalArgumentException if the employee is null or already exists in the repository.
+      * Adds a new employee to the repository asynchronously.
+      * @param employee The Employee object to be added.
+      * @return A CompletableFuture representing the completion of the operation.
       */
-     void addEmployee(Employee employee);
+     CompletableFuture<Void> addEmployee(Employee employee);
 
      /**
-      * Removes an employee from the repository.
-      * @param employee the Employee object to be removed.
-      * @throws IllegalArgumentException if the employee is null or not found in the repository.
+      * Removes an employee from the repository asynchronously.
+      * @param employee The Employee object to be removed.
+      * @return A CompletableFuture representing the completion of the operation.
       */
-     void removeEmployee(Employee employee);
+     CompletableFuture<Void> removeEmployee(Employee employee);
 
      /**
-      * Resets the repository by clearing all employee data.
+      * Resets the repository by clearing all employee data asynchronously.
+      * @return A CompletableFuture representing the completion of the operation.
       */
-     void clear();
+     CompletableFuture<Void> clear();
 }

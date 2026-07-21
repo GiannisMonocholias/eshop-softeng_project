@@ -42,8 +42,8 @@ public class MemoryInitializer {
 
         // CustomerDAO erase data
         try {
-            getCustomerDAO().clear();
-            if (!getCustomerDAO().getCustomers().isEmpty()) {
+            getCustomerDAO().clear().join();
+            if (!getCustomerDAO().getCustomers().join().isEmpty()) {
                 throw new IllegalStateException("Customers repository was not cleared");
             }
         } catch (IllegalStateException e) {
@@ -52,8 +52,8 @@ public class MemoryInitializer {
 
         // EmployeeDAO erase data
         try {
-            getEmployeeDAO().clear();
-            if (!getEmployeeDAO().getEmployees().isEmpty()) {
+            getEmployeeDAO().clear().join();
+            if (!getEmployeeDAO().getEmployees().join().isEmpty()) {
                 throw new IllegalStateException("Employee repository was not cleared");
             }
         } catch (IllegalStateException e) {
@@ -118,19 +118,19 @@ public class MemoryInitializer {
         Customer cust1 = new Customer("nickgeorg", "Νίκος", "pass1234", "Γεωργίου",
                 "6987654321", new EmailAddress("nickgeorg@team21.gr"), "CUST-500", new Date(10, 5, 2022));
         cust1.setAddress(addr1);
-        customers.addCustomer(cust1);
+        customers.addCustomer(cust1).join();
         getUserCredentialsDAO().addUser(cust1);
 
         Customer cust2 = new Customer("georgepap", "Γιώργος", "pass1235", "Παπαδόπουλος",
                 "6987659483", new EmailAddress("georgepap@team21.gr"), "CUST-501", new Date(19, 3, 2021));
         cust2.setAddress(addr2);
-        customers.addCustomer(cust2);
+        customers.addCustomer(cust2).join();
         getUserCredentialsDAO().addUser(cust2);
 
         Customer cust3 = new Customer("giannismonoh", "Γιάννης", "pass1236", "Μονοχολιάς",
                 "6987651456", new EmailAddress("giannismonoh@team21.gr"), "CUST-502", new Date(22, 6, 2021));
         cust3.setAddress(addr3);
-        customers.addCustomer(cust3);
+        customers.addCustomer(cust3).join();
         getUserCredentialsDAO().addUser(cust3);
 
         Customer cust4 = new Customer(
@@ -138,7 +138,7 @@ public class MemoryInitializer {
                 new EmailAddress("giannis.oik@team21.gr"), "CUST-503",new Date(22, 3, 2024)
         );
         cust4.setAddress(addr4);
-        customers.addCustomer(cust4);
+        customers.addCustomer(cust4).join();
         getUserCredentialsDAO().addUser(cust4);
         //=====================================================
         //END: INITIALIZE CUSTOMERS
@@ -158,7 +158,7 @@ public class MemoryInitializer {
                 "m_alexandrou", "Μαρία", "pass1237", "Αλεξάνδρου",
                 "6971234567", emailCs1, "CSR-101", 200, 1100, 40, EmployeeState.ACTIVE, new Date(19, 1, 2018)
         );
-        employees.addEmployee(csr1);
+        employees.addEmployee(csr1).join();
         getUserCredentialsDAO().addUser(csr1);
 
         EmailAddress emailCs2 = new EmailAddress("p.dimitriou@team21.gr");
@@ -166,7 +166,7 @@ public class MemoryInitializer {
                 "p_dimitriou", "Πέτρος", "pass1238", "Δημητρίου",
                 "6972345678", emailCs2, "CSR-102", 180, 1050, 40, EmployeeState.ACTIVE, new Date(15, 2, 2024)
         );
-        employees.addEmployee(csr2);
+        employees.addEmployee(csr2).join();
         getUserCredentialsDAO().addUser(csr2);
 
 
@@ -175,7 +175,7 @@ public class MemoryInitializer {
                 "s_konstantinou", "Σοφία", "pass1239", "Κωνσταντίνου",
                 "6973456789", emailCs3, "CSR-103", 220, 1150, 40, EmployeeState.ACTIVE, new Date(13, 9, 2019)
         );
-        employees.addEmployee(csr3);
+        employees.addEmployee(csr3).join();
         getUserCredentialsDAO().addUser(csr3);
 
 
@@ -187,7 +187,7 @@ public class MemoryInitializer {
                 "g_nikolaou", "Γιώργος", "pass1240", "Νικολάου",
                 "6981122334", emailPrep1, "PREP-201", 100, 1200, 40, EmployeeState.ACTIVE, new Date(25, 7, 2023)
         );
-        employees.addEmployee(prep1);
+        employees.addEmployee(prep1).join();
         getUserCredentialsDAO().addUser(prep1);
 
 
@@ -196,7 +196,7 @@ public class MemoryInitializer {
                 "a_vasiliou", "Άννα", "pass1241", "Βασιλείου",
                 "6982233445", emailPrep2, "PREP-202", 120, 1250, 40, EmployeeState.ACTIVE, new Date(22, 1, 2020)
         );
-        employees.addEmployee(prep2);
+        employees.addEmployee(prep2).join();
         getUserCredentialsDAO().addUser(prep2);
 
 
@@ -217,7 +217,7 @@ public class MemoryInitializer {
                 "d_georgiou", "Δήμητρα", "pass1243", "Γεωργίου",
                 "6941112223", emailCat1, "CAT-301", 150, 1300, 40, EmployeeState.ACTIVE, new Date(18, 9, 2022)
         );
-        employees.addEmployee(cat1);
+        employees.addEmployee(cat1).join();
         getUserCredentialsDAO().addUser(cat1);
 
 
@@ -226,7 +226,7 @@ public class MemoryInitializer {
                 "th_ioannou", "Θάνος", "pass1244", "Ιωάννου",
                 "6942223334", emailCat2, "CAT-302", 150, 1300, 40, EmployeeState.ACTIVE, new Date(15, 3, 2018)
         );
-        employees.addEmployee(cat2);
+        employees.addEmployee(cat2).join();
         getUserCredentialsDAO().addUser(cat2);
 
 
@@ -235,7 +235,7 @@ public class MemoryInitializer {
                 "e_rizos", "Ελένη", "pass1245", "Ρίζου",
                 "6943334445", emailCat3, "CAT-303", 160, 1350, 40, EmployeeState.ACTIVE, new Date(25, 10, 2022)
         );
-        employees.addEmployee(cat3);
+        employees.addEmployee(cat3).join();
         getUserCredentialsDAO().addUser(cat3);
 
 
@@ -248,7 +248,7 @@ public class MemoryInitializer {
                 "6955556661", emailDel1, "DEL-401", 300, 900, 40, EmployeeState.ACTIVE, new Date(12, 11, 2024),
                 15, true
         );
-        getEmployeeDAO().addEmployee(del1);
+        getEmployeeDAO().addEmployee(del1).join();
         getUserCredentialsDAO().addUser(del1);
 
 
@@ -258,7 +258,7 @@ public class MemoryInitializer {
                 "6955556662", emailDel2, "DEL-402", 280, 900, 40, EmployeeState.ACTIVE, new Date(7, 10, 2023),
                 12, true
         );
-        getEmployeeDAO().addEmployee(del2);
+        getEmployeeDAO().addEmployee(del2).join();
         getUserCredentialsDAO().addUser(del2);
 
 
@@ -268,7 +268,7 @@ public class MemoryInitializer {
                 "6955556663", emailDel3, "DEL-403", 320, 950, 40, EmployeeState.ACTIVE, new Date(10, 9, 2021),
                 20, false
         );
-        getEmployeeDAO().addEmployee(del3);
+        getEmployeeDAO().addEmployee(del3).join();
         getUserCredentialsDAO().addUser(del3);
         //=====================================================
         //END: INITIALIZE EMPLOYEES

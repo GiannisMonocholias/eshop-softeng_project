@@ -1,7 +1,7 @@
 package gr.softeng.team21.view.contact.editdata.Address;
 
 /**
- * Interface for the Address Edit .
+ * Interface for the Address Edit View.
  * Defines the methods for displaying messages and updating the address form.
  * @author PAVLOS GRATSANIS
  */
@@ -19,7 +19,7 @@ public interface AddressView {
     void showError(String msg);
 
     /**
-     * Completes  the view with the user's current address details.
+     * Completes the view with the user's current address details.
      * @param street The street name.
      * @param number The street number.
      * @param city The city name.

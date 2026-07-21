@@ -14,18 +14,21 @@ public interface CustomerHomePageView {
 
     /**
      * Navigates to the user data editing screen.
+     * @param customerId The ID of the current customer.
      */
-    void goToEditData();
+    void goToEditData(String customerId);
 
     /**
      * Navigates to the product search screen.
+     * @param customerId The ID of the current customer.
      */
-    void goToFindProduct();
+    void goToFindProduct(String customerId);
 
     /**
      * Navigates to the customer's email inbox.
+     * @param customerId The ID of the current customer.
      */
-    void goToInbox();
+    void goToInbox(String customerId);
 
     /**
      * Displays a confirmation dialog for account deletion.
