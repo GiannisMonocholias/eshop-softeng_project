@@ -2,12 +2,13 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates
 
 /**
  * Defines methods for displaying target product metadata and handling
- * confirmation and feedback dialogs.
+ * confirmation and asynchronous feedback dialogs.
  * @author Γιάννης Μονοχολιάς
  */
 public interface ExecuteDeleteProductView {
+
     /**
-     * Populates the UI with details of the product intended for deletion.
+     * Populates the UI with details of the product intended for deletion asynchronously.
      * @param name The name of the product.
      * @param code The unique product code.
      * @param description The product description.

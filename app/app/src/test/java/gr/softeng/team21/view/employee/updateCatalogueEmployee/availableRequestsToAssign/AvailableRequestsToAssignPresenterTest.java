@@ -1,6 +1,5 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +15,8 @@ import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
 /**
  * Unit tests for {@link AvailableRequestsToAssignPresenter}.
- * This suite verifies the logic for filtering available catalogue update requests,
- * assigning them to specific employees, and handling errors for non-existent requests.
+ * This suite verifies the asynchronous logic for filtering available catalogue update requests,
+ * assigning them to specific employees via Dependency Injection, and handling errors.
  * @author Γιάννης Μονοχολιάς
  */
 public class AvailableRequestsToAssignPresenterTest {
@@ -43,7 +42,8 @@ public class AvailableRequestsToAssignPresenterTest {
                 UpdateRequestDAOMemory.getInstance()
         );
 
-        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
+        // Uses .join() due to CompletableFuture architecture
+        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
     }
 
     /**
@@ -52,10 +52,11 @@ public class AvailableRequestsToAssignPresenterTest {
      */
     @Test
     public void loadAvailableRequestsReturnsOnlyNewRequests() {
-        CatalogueUpdateRequest assignedRequest = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(1);
+        CatalogueUpdateRequest assignedRequest = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(1);
         assignedRequest.setStatus(RequestStatusType.ASSIGNED);
 
-        ArrayList<CatalogueUpdateRequest> result = presenter.loadAvailableRequests(EMPLOYEE_ID);
+        presenter.loadAvailableRequests(EMPLOYEE_ID);
+        ArrayList<CatalogueUpdateRequest> result = viewStub.getLoadedRequests();
 
         Assert.assertNotNull(result);
         Assert.assertEquals(4, result.size());
@@ -72,8 +73,10 @@ public class AvailableRequestsToAssignPresenterTest {
      */
     @Test
     public void onRequestClickedShowsConfirmationDialog() {
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(2);
+        // Init presenter state
+        presenter.loadAvailableRequests(EMPLOYEE_ID);
 
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(2);
         presenter.onRequestClicked(request);
 
         Assert.assertTrue(viewStub.isConfirmationDialogShown());
@@ -82,7 +85,7 @@ public class AvailableRequestsToAssignPresenterTest {
     }
 
     /**
-     * Verifies the full request assignment workflow:
+     * Verifies the full request assignment workflow asynchronously:
      * 1. Request status transitions from NEW to ASSIGNED.
      * 2. The request is correctly added to the employee's personal map.
      * 3. The UI receives a success message and refreshes the list.
@@ -91,7 +94,7 @@ public class AvailableRequestsToAssignPresenterTest {
     public void onRequestConfirmedSuccessAssignsRequestAndUpdatesView() {
         presenter.loadAvailableRequests(EMPLOYEE_ID);
 
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(3);
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(3);
         Assert.assertEquals(RequestStatusType.NEW, request.getStatus());
 
         presenter.onRequestConfirmed(request);
@@ -111,36 +114,36 @@ public class AvailableRequestsToAssignPresenterTest {
      */
     @Test
     public void onRequestClickedShowsCorrectConfirmationMessage() {
-        CatalogueUpdateRequest request = gr.softeng.team21.memorydao.UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(2);
+        presenter.loadAvailableRequests(EMPLOYEE_ID);
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(2);
 
         presenter.onRequestClicked(request);
 
         Assert.assertTrue(viewStub.isConfirmationDialogShown());
-
         Assert.assertEquals("Θέλετε να αναλάβετε αυτή την παραγγελία;", viewStub.getConfirmationMessage());
-
         Assert.assertEquals(request, viewStub.getLastInteractedRequest());
     }
 
     /**
      * Verifies that attempting to confirm an assignment for a non-existing request
-     * (e.g., negative ID) fails gracefully with an error message.
+     * (e.g., negative ID) fails gracefully with an error message without crashing.
      */
     @Test
     public void onRequestConfirmedAssignmentFailedShowsErrorMessage() {
         presenter.loadAvailableRequests(EMPLOYEE_ID);
 
-
-        CatalogueUpdateRequest nonExistingRequest = new CatalogueUpdateRequest(new gr.softeng.team21.util.Date(), "Fake Request",
-                null, gr.softeng.team21.domain.AllowedRequest.DELETE_PRODUCT, -1
+        CatalogueUpdateRequest nonExistingRequest = new CatalogueUpdateRequest(
+                new gr.softeng.team21.util.Date(),
+                "Fake Request",
+                null,
+                gr.softeng.team21.domain.AllowedRequest.DELETE_PRODUCT,
+                -1
         );
-
 
         presenter.onRequestConfirmed(nonExistingRequest);
 
         Assert.assertTrue(viewStub.getErrorShown().contains("δεν υπάρχει ή δεν σας έχει ανατεθεί"));
         Assert.assertTrue(viewStub.getErrorShown().contains("-1"));
-
         Assert.assertNull(viewStub.getRemovedRequest());
     }
 }

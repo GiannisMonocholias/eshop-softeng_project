@@ -1,13 +1,20 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign;
 
+import java.util.ArrayList;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
 /**
  * Defines methods for managing the assignment workflow, refreshing the request list,
- * and providing feedback to the Catalogue Employee.
+ * and providing asynchronous feedback to the Catalogue Employee.
  * @author Γιάννης  Μονοχολιάς
  */
 public interface AvailableRequestsToAssignView {
+
+    /**
+     * Updates the UI with the retrieved list of available requests asynchronously.
+     * @param requests An ArrayList of catalogue update requests that have the "NEW" status.
+     */
+    void updateAvailableRequestsList(ArrayList<CatalogueUpdateRequest> requests);
 
     /**
      * Displays an informative message to the user.

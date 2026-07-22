@@ -1,6 +1,5 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -12,29 +11,37 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
-import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
 import gr.softeng.team21.view.util.UpdateRequestAdapterTypes;
 import gr.softeng.team21.view.util.UpdateRequestsAdapter;
 
 /**
  * Activity that displays a list of unassigned catalogue update requests.
  * Provides the UI for Catalogue Employees to pick up new tasks.
- * Implements {@link AvailableRequestsToAssignView}.
+ * Implements {@link AvailableRequestsToAssignView} and securely updates the interface
+ * using runOnUiThread. Integrates Material Components and Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
-public class AvailableRequestsToAssignActivity extends AppCompatActivity implements AvailableRequestsToAssignView{
+public class AvailableRequestsToAssignActivity extends AppCompatActivity implements AvailableRequestsToAssignView {
 
     private AvailableRequestsToAssignPresenter presenter;
-    UpdateRequestsAdapter adapter;
+    private UpdateRequestsAdapter adapter;
+    private RecyclerView recyclerView;
+
     private static final String EMP_ID_EXTRA = "UPDATE_CATALOGUE_EMPLOYEE_ID";
 
     /**
-     * Initializes the UI, sets up the RecyclerView, and loads data via the presenter.
+     * Initializes the UI, sets up the RecyclerView, injects DAOs into the Presenter,
+     * and triggers asynchronous data loading.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,58 +55,78 @@ public class AvailableRequestsToAssignActivity extends AppCompatActivity impleme
             return insets;
         });
 
-        presenter = new AvailableRequestsToAssignPresenter(this, EmployeeDAOMemory.getInstance(), UpdateRequestDAOMemory.getInstance());
-
-
-        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
-        ArrayList<CatalogueUpdateRequest> availableRequests = presenter.loadAvailableRequests(employeeId);
-
-        RecyclerView recyclerView = findViewById(R.id.rvRequestsAvailableToAssign);
+        recyclerView = findViewById(R.id.rvRequestsAvailableToAssign);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // DEPENDENCY INJECTION: Connect Presenter to Firebase DAOs
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+        UpdateRequestDAO updateRequestDAO = new UpdateRequestDAOFirebase();
 
-        adapter = new UpdateRequestsAdapter(availableRequests, UpdateRequestAdapterTypes.ASSIGN_REQUEST, request -> {
-            presenter.onRequestClicked(request);
-        });
+        presenter = new AvailableRequestsToAssignPresenter(this, employeeDAO, updateRequestDAO);
 
-        recyclerView.setAdapter(adapter);
+        String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
+
+        // Trigger asynchronous load
+        presenter.loadAvailableRequests(employeeId);
     }
 
     /**
      * {@inheritDoc}
+     */
+    @Override
+    public void updateAvailableRequestsList(ArrayList<CatalogueUpdateRequest> requests) {
+        runOnUiThread(() -> {
+            if (requests != null) {
+                adapter = new UpdateRequestsAdapter(requests, UpdateRequestAdapterTypes.ASSIGN_REQUEST, request -> {
+                    presenter.onRequestClicked(request);
+                });
+                recyclerView.setAdapter(adapter);
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     * Displays a modern {@link MaterialAlertDialogBuilder}.
      */
     @Override
     public void showMessage(String message) {
-        new AlertDialog.Builder(this)
-                .setTitle("Ενημέρωση")
-                .setMessage(message)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setPositiveButton("OK", null) // Κλείνει απλά το κουτάκι
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Ενημέρωση")
+                    .setMessage(message)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
     }
 
     /**
      * {@inheritDoc}
+     * Displays an error {@link MaterialAlertDialogBuilder}.
      */
     @Override
     public void showError(String message) {
-        new AlertDialog.Builder(this)
-                .setTitle("Σφάλμα")
-                .setMessage(message)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton("OK", null)
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Σφάλμα")
+                    .setMessage(message)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Visually removes the request from the list after successful assignment.
      */
     @Override
     public void onRequestAssignedSuccess(CatalogueUpdateRequest request) {
-        if (adapter != null) {
-            adapter.removeRequest(request);
-        }
+        runOnUiThread(() -> {
+            if (adapter != null) {
+                adapter.removeRequest(request);
+            }
+        });
     }
 
     /**
@@ -107,28 +134,26 @@ public class AvailableRequestsToAssignActivity extends AppCompatActivity impleme
      */
     @Override
     public void updateList() {
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        runOnUiThread(() -> {
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Displays an Android {@link AlertDialog} to confirm the assignment transaction.
+     * Displays a {@link MaterialAlertDialogBuilder} to confirm the assignment transaction.
      */
     @Override
     public void showConfirmationDialog(CatalogueUpdateRequest request, String confirmationMessage) {
-        new AlertDialog.Builder(this)
-                .setTitle("Επιβεβαίωση Ανάληψης αιτήματος")
-                .setMessage(confirmationMessage)
-                .setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        presenter.onRequestConfirmed(request);
-                    }
-                })
-                .setNegativeButton("ΟΧΙ", null)
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Επιβεβαίωση Ανάληψης αιτήματος")
+                    .setMessage(confirmationMessage)
+                    .setPositiveButton("ΝΑΙ", (dialog, which) -> presenter.onRequestConfirmed(request))
+                    .setNegativeButton("ΟΧΙ", null)
+                    .show();
+        });
     }
-
 }

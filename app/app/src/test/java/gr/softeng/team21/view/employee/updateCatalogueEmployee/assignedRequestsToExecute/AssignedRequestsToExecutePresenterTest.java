@@ -16,7 +16,8 @@ import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 /**
  * Unit tests for {@link AssignedRequestsToExecutePresenter}.
  * This suite ensures that the list of catalogue update requests already assigned to an employee
- * is correctly retrieved and that user interaction with a request triggers the proper navigation.
+ * is correctly retrieved asynchronously via Dependency Injection and that user interaction
+ * triggers the proper navigation.
  * @author Γιάννης Μονοχολιάς
  */
 public class AssignedRequestsToExecutePresenterTest {
@@ -30,8 +31,8 @@ public class AssignedRequestsToExecutePresenterTest {
 
     /**
      * Initializes the testing environment before each test.
-     * Prepares memory data, sets up the presenter, and assigns a specific request
-     * to the test employee to simulate an active workload.
+     * Prepares memory data, sets up the presenter with injected dependencies, and assigns
+     * a specific request to the test employee to simulate an active workload.
      */
     @Before
     public void setUp() throws Exception {
@@ -40,8 +41,10 @@ public class AssignedRequestsToExecutePresenterTest {
         viewStub = new AssignedRequestsToExecuteViewStub();
         presenter = new AssignedRequestsToExecutePresenter(viewStub, EmployeeDAOMemory.getInstance());
 
-        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
+        // Retrieve Employee using .join() due to CompletableFuture architecture
+        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
 
+        // UpdateRequestDAOMemory map retrieval
         CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(REQUEST_ID);
 
         // Simulate the assignment of the request to the employee
@@ -50,16 +53,26 @@ public class AssignedRequestsToExecutePresenterTest {
 
     /**
      * Verifies that the presenter retrieves only the requests assigned to the specific employee
-     * and that the list contains the expected request ID.
+     * asynchronously and correctly pushes them to the view.
      */
     @Test
     public void loadAssignedRequestsReturnsCorrectList() {
-        ArrayList<CatalogueUpdateRequest> result = presenter.loadAssignedRequests(EMPLOYEE_ID);
+        presenter.loadAssignedRequests(EMPLOYEE_ID);
+
+        ArrayList<CatalogueUpdateRequest> result = viewStub.getLoadedRequests();
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-
         Assert.assertEquals(REQUEST_ID, result.get(0).getId());
+    }
+
+    /**
+     * Verifies the presenter gracefully handles an invalid employee ID.
+     */
+    @Test
+    public void loadAssignedRequestsInvalidEmployeeShowsError() {
+        presenter.loadAssignedRequests("INVALID_ID");
+        Assert.assertTrue(viewStub.getErrorMessage().contains("δεν βρέθηκε"));
     }
 
     /**
@@ -68,6 +81,7 @@ public class AssignedRequestsToExecutePresenterTest {
      */
     @Test
     public void onClickRequestNavigatesToDetails() {
+        // Load requests first to initialize the internal loggedInEmployee in the presenter
         presenter.loadAssignedRequests(EMPLOYEE_ID);
 
         CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(REQUEST_ID);
@@ -78,7 +92,6 @@ public class AssignedRequestsToExecutePresenterTest {
         Assert.assertTrue(viewStub.isNavigationCalled());
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigatedEmployeeId());
         Assert.assertEquals(request, viewStub.getNavigatedRequest());
-
         Assert.assertEquals(REQUEST_ID, viewStub.getNavigatedRequest().getId());
     }
 }

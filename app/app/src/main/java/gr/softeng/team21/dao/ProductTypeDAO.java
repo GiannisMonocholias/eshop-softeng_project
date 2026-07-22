@@ -1,49 +1,59 @@
 package gr.softeng.team21.dao;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.domain.ProductType;
-import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 
+/**
+ * Interface for the Product Type Data Access Object.
+ * Defines asynchronous operations for managing product definitions within the catalogue.
+ * @author PAVLOS GRATSANIS
+ */
 public interface ProductTypeDAO {
 
      /**
-      * Retrieves a specific product type based on its unique product code.
+      * Retrieves a specific product type asynchronously based on its unique product code.
       * @param productCode the unique code of the product type to retrieve.
-      * @return the ProductType object, or null if no such product code is registered.
-      * @throws IllegalArgumentException if the productCode is null.
+      * @return A CompletableFuture containing the ProductType object, or null if no such product code is registered.
+      * Completes exceptionally with an IllegalArgumentException if the productCode is null.
       */
-     ProductType getProduct(String productCode);
+     CompletableFuture<ProductType> getProduct(String productCode);
 
      /**
-      * Registers a new product type in the repository and initializes it in the warehouse.
+      * Registers a new product type in the repository asynchronously and initializes it in the warehouse.
       * @param product the ProductType object to add.
-      * @throws IllegalArgumentException if the product is null or already exists in the repository.
+      * @return A CompletableFuture representing the completion of the insertion.
+      * Completes exceptionally with an IllegalArgumentException if the product is null or already exists.
       */
-     void addProductType(ProductType product);
+     CompletableFuture<Void> addProductType(ProductType product);
 
      /**
-      * Removes a product type from the repository and also deletes it from the warehouse.
+      * Removes a product type from the repository asynchronously and also deletes it from the warehouse.
       * @param product the ProductType object to remove.
-      * @throws IllegalArgumentException if the product is null or not found in the repository.
+      * @return A CompletableFuture representing the completion of the deletion.
+      * Completes exceptionally with an IllegalArgumentException if the product is null or not found.
       */
-     void deleteProductType(ProductType product);
+     CompletableFuture<Void> deleteProductType(ProductType product);
 
      /**
-      * Updates the details of an existing product type (name, price, description).
+      * Updates the details of an existing product type asynchronously (name, price, description).
       * @param updatedProduct the ProductType object containing the updated information.
-      * @throws IllegalArgumentException if the updatedProduct is null.
-      * @throws IllegalStateException if the product code is not found in the repository.
+      * @return A CompletableFuture representing the completion of the update.
+      * Completes exceptionally with an IllegalArgumentException if updatedProduct is null,
+      * or an IllegalStateException if the product code is not found.
       */
-     void processProduct(ProductType updatedProduct);
+     CompletableFuture<Void> processProduct(ProductType updatedProduct);
 
      /**
-      * @return a map containing all registered product types.
+      * Retrieves all registered product types asynchronously.
+      * @return A CompletableFuture containing a map of all registered product types.
       */
-     HashMap<String, ProductType> getProducts ();
+     CompletableFuture<HashMap<String, ProductType>> getProducts();
 
      /**
-      * Clears all registered product types from the repository.
+      * Clears all registered product types from the repository asynchronously.
+      * @return A CompletableFuture representing the completion of the clearing operation.
       */
-     void clear();
+     CompletableFuture<Void> clear();
 }

@@ -1,40 +1,50 @@
 package gr.softeng.team21.dao;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
+/**
+ * Interface for the Update Request Data Access Object.
+ * Defines asynchronous operations for managing catalogue update requests
+ * throughout their lifecycle.
+ * @author Γιάννης Μονοχολιάς
+ */
 public interface UpdateRequestDAO {
 
      /**
-      * Retrieves a specific update request based on its ID.
+      * Retrieves a specific update request asynchronously based on its ID.
       * @param requestId The unique identifier of the catalogue update request.
-      * @return The {@link CatalogueUpdateRequest} object, or null if no request is found with that ID.
+      * @return A CompletableFuture containing the {@link CatalogueUpdateRequest} object, or null if no request is found.
       */
-     CatalogueUpdateRequest getUpdateRequest(int requestId);
+     CompletableFuture<CatalogueUpdateRequest> getUpdateRequest(int requestId);
 
      /**
-      * Adds a new catalogue update request to the repository.
+      * Adds a new catalogue update request to the repository asynchronously.
       * @param request The request object to be stored.
-      * @throws IllegalArgumentException if the request is null or if a request with the same ID already exists.
+      * @return A CompletableFuture representing the completion of the insertion.
+      *         Completes exceptionally with an IllegalArgumentException if the request is null or already exists.
       */
-     void addUpdateRequest(CatalogueUpdateRequest request);
+     CompletableFuture<Void> addUpdateRequest(CatalogueUpdateRequest request);
 
      /**
-      * Removes a specific catalogue update request from the repository.
+      * Removes a specific catalogue update request from the repository asynchronously.
       * @param request The request object to be removed.
-      * @throws IllegalArgumentException if the request is null or if the request is not found in the repository.
+      * @return A CompletableFuture representing the completion of the deletion.
+      *         Completes exceptionally with an IllegalArgumentException if the request is null or not found.
       */
-     void deleteUpdateRequest(CatalogueUpdateRequest request);
+     CompletableFuture<Void> deleteUpdateRequest(CatalogueUpdateRequest request);
 
      /**
-      * Returns a copy of all currently stored update requests.
-      * @return A new HashMap containing all catalogue update requests.
+      * Returns a copy of all currently stored update requests asynchronously.
+      * @return A CompletableFuture containing a HashMap of all catalogue update requests.
       */
-     HashMap<Integer,CatalogueUpdateRequest> getUpdateRequests();
+     CompletableFuture<HashMap<Integer,CatalogueUpdateRequest>> getUpdateRequests();
 
      /**
-      * Clears all stored update requests from the memory.
+      * Clears all stored update requests from the memory asynchronously.
+      * @return A CompletableFuture representing the completion of the clearing operation.
       */
-     void clear();
+     CompletableFuture<Void> clear();
 }

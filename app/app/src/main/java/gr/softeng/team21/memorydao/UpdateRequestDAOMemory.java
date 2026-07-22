@@ -1,12 +1,16 @@
 package gr.softeng.team21.memorydao;
+
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
 /**
  * In-memory implementation of the {@link UpdateRequestDAO} interface.
  * This class acts as a central repository for all catalogue update requests,
- * providing global access via the Singleton pattern.
+ * providing global access via the Singleton pattern and wrapped in CompletableFutures
+ * for an asynchronous architecture.
  * @author Γιάννης Μονοχολιάς
  */
 public class UpdateRequestDAOMemory implements UpdateRequestDAO {
@@ -34,63 +38,71 @@ public class UpdateRequestDAOMemory implements UpdateRequestDAO {
     }
 
     /**
-     * Retrieves a specific update request based on its ID.
-     * @param requestId The unique identifier of the catalogue update request.
-     * @return The {@link CatalogueUpdateRequest} object, or null if no request is found with that ID.
+     * {@inheritDoc}
      */
-    public CatalogueUpdateRequest getUpdateRequest(int requestId) {
-        if (requests.containsKey(requestId))
-            return requests.get(requestId);
-        else
-            return null;
+    @Override
+    public CompletableFuture<CatalogueUpdateRequest> getUpdateRequest(int requestId) {
+        CompletableFuture<CatalogueUpdateRequest> future = new CompletableFuture<>();
+        if (requests.containsKey(requestId)) {
+            future.complete(requests.get(requestId));
+        } else {
+            future.complete(null);
+        }
+        return future;
     }
 
     /**
-     * Adds a new catalogue update request to the repository.
-     * @param request The request object to be stored.
-     * @throws IllegalArgumentException if the request is null or if a request with the same ID already exists.
+     * {@inheritDoc}
      */
-    public void addUpdateRequest(CatalogueUpdateRequest request) {
+    @Override
+    public CompletableFuture<Void> addUpdateRequest(CatalogueUpdateRequest request) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (request != null) {
             if (!requests.containsKey(request.getId())) {
                 requests.put(request.getId(), request);
+                future.complete(null);
             } else {
-                throw new IllegalArgumentException("Request already in repository");
+                future.completeExceptionally(new IllegalArgumentException("Request already in repository"));
             }
         } else {
-            throw new IllegalArgumentException("Request argument must not be null");
+            future.completeExceptionally(new IllegalArgumentException("Request argument must not be null"));
         }
+        return future;
     }
 
     /**
-     * Removes a specific catalogue update request from the repository.
-     * @param request The request object to be removed.
-     * @throws IllegalArgumentException if the request is null or if the request is not found in the repository.
+     * {@inheritDoc}
      */
-    public void deleteUpdateRequest(CatalogueUpdateRequest request) {
+    @Override
+    public CompletableFuture<Void> deleteUpdateRequest(CatalogueUpdateRequest request) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (request != null) {
             if (requests.containsKey(request.getId())) {
                 requests.remove(request.getId());
+                future.complete(null);
             } else {
-                throw new IllegalArgumentException("Request is not in repository");
+                future.completeExceptionally(new IllegalArgumentException("Request is not in repository"));
             }
         } else {
-            throw new IllegalArgumentException("Request argument must not be null");
+            future.completeExceptionally(new IllegalArgumentException("Request argument must not be null"));
         }
+        return future;
     }
 
     /**
-     * Returns a copy of all currently stored update requests.
-     * @return A new HashMap containing all catalogue update requests.
+     * {@inheritDoc}
      */
-    public HashMap<Integer, CatalogueUpdateRequest> getUpdateRequests() {
-        return new HashMap<>(requests);
+    @Override
+    public CompletableFuture<HashMap<Integer, CatalogueUpdateRequest>> getUpdateRequests() {
+        return CompletableFuture.completedFuture(new HashMap<>(requests));
     }
 
     /**
-     * Clears all stored update requests from the memory.
+     * {@inheritDoc}
      */
-    public void clear() {
+    @Override
+    public CompletableFuture<Void> clear() {
         requests.clear();
+        return CompletableFuture.completedFuture(null);
     }
 }

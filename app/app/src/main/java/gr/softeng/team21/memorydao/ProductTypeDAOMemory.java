@@ -1,13 +1,15 @@
 package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.domain.ProductType;
 
 /**
  * In-memory implementation of the {@link ProductTypeDAO} interface.
- * Provides a centralized repository for managing product types and ensures
- * synchronization with the warehouse stock levels.
+ * Provides a centralized, asynchronous repository for managing product types
+ * and ensures synchronization with the warehouse stock levels using CompletableFuture.
  * @author PAVLOS GRATSANIS
  */
 public class ProductTypeDAOMemory implements ProductTypeDAO {
@@ -34,86 +36,91 @@ public class ProductTypeDAOMemory implements ProductTypeDAO {
     }
 
     /**
-     * Retrieves a specific product type based on its unique product code.
-     * @param productCode the unique code of the product type to retrieve.
-     * @return the ProductType object, or null if no such product code is registered.
-     * @throws IllegalArgumentException if the productCode is null.
+     * {@inheritDoc}
      */
-    public ProductType getProduct(String productCode) {
-        if (productCode == null)
-            throw new IllegalArgumentException("Product code cannot be null");
-
-        return products.get(productCode);
+    @Override
+    public CompletableFuture<ProductType> getProduct(String productCode) {
+        CompletableFuture<ProductType> future = new CompletableFuture<>();
+        if (productCode == null) {
+            future.completeExceptionally(new IllegalArgumentException("Product code cannot be null"));
+        } else {
+            future.complete(products.get(productCode));
+        }
+        return future;
     }
 
     /**
-     * Registers a new product type in the repository and initializes it in the warehouse.
-     * @param product the ProductType object to add.
-     * @throws IllegalArgumentException if the product is null or already exists in the repository.
+     * {@inheritDoc}
      */
-    public void addProductType(ProductType product) {
+    @Override
+    public CompletableFuture<Void> addProductType(ProductType product) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (product == null) {
-            throw new IllegalArgumentException("Product cannot be null");
-        }
-
-        if (!products.containsKey(product.getProductCode())) {
+            future.completeExceptionally(new IllegalArgumentException("Product cannot be null"));
+        } else if (!products.containsKey(product.getProductCode())) {
             products.put(product.getProductCode(), product);
+            // Synchronous call to Warehouse (can be refactored to async if needed later)
             ProductsWareHouseDAOMemory.getInstance().insertProduct(product);
+            future.complete(null);
         } else {
-            throw new IllegalArgumentException("The given product type is already in the repository");
+            future.completeExceptionally(new IllegalArgumentException("The given product type is already in the repository"));
         }
+        return future;
     }
 
     /**
-     * Removes a product type from the repository and also deletes it from the warehouse.
-     * @param product the ProductType object to remove.
-     * @throws IllegalArgumentException if the product is null or not found in the repository.
+     * {@inheritDoc}
      */
-    public void deleteProductType(ProductType product) {
+    @Override
+    public CompletableFuture<Void> deleteProductType(ProductType product) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (product == null) {
-            throw new IllegalArgumentException("Product cannot be null");
-        }
-
-        if (products.containsKey(product.getProductCode())) {
+            future.completeExceptionally(new IllegalArgumentException("Product cannot be null"));
+        } else if (products.containsKey(product.getProductCode())) {
             products.remove(product.getProductCode());
+            // Synchronous call to Warehouse
             ProductsWareHouseDAOMemory.getInstance().deleteProduct(product);
+            future.complete(null);
         } else {
-            throw new IllegalArgumentException("The given product type is not registered in the repository");
+            future.completeExceptionally(new IllegalArgumentException("The given product type is not registered in the repository"));
         }
+        return future;
     }
 
     /**
-     * Updates the details of an existing product type (name, price, description).
-     * @param updatedProduct the ProductType object containing the updated information.
-     * @throws IllegalArgumentException if the updatedProduct is null.
-     * @throws IllegalStateException if the product code is not found in the repository.
+     * {@inheritDoc}
      */
-    public void processProduct(ProductType updatedProduct) {
+    @Override
+    public CompletableFuture<Void> processProduct(ProductType updatedProduct) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         if (updatedProduct == null) {
-            throw new IllegalArgumentException("Product cannot be null");
-        }
-
-        if (products.containsKey(updatedProduct.getProductCode())) {
+            future.completeExceptionally(new IllegalArgumentException("Product cannot be null"));
+        } else if (products.containsKey(updatedProduct.getProductCode())) {
             ProductType existingProduct = products.get(updatedProduct.getProductCode());
             existingProduct.setProductname(updatedProduct.getProductname());
             existingProduct.setPrice(updatedProduct.getPrice());
             existingProduct.setDescription(updatedProduct.getDescription());
+            future.complete(null);
         } else {
-            throw new IllegalStateException("Product type with id " + updatedProduct.getProductCode() + " is not a registerd product type.");
+            future.completeExceptionally(new IllegalStateException("Product type with id " + updatedProduct.getProductCode() + " is not a registered product type."));
         }
+        return future;
     }
 
     /**
-     * @return a map containing all registered product types.
+     * {@inheritDoc}
      */
-    public HashMap<String, ProductType> getProducts() {
-        return products;
+    @Override
+    public CompletableFuture<HashMap<String, ProductType>> getProducts() {
+        return CompletableFuture.completedFuture(new HashMap<>(products));
     }
 
     /**
-     * Clears all registered product types from the repository.
+     * {@inheritDoc}
      */
-    public void clear() {
+    @Override
+    public CompletableFuture<Void> clear() {
         products.clear();
+        return CompletableFuture.completedFuture(null);
     }
 }

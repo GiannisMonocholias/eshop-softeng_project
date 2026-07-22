@@ -1,15 +1,17 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign;
 
+import java.util.ArrayList;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
 /**
  * A stub implementation of the {@link AvailableRequestsToAssignView} interface for unit testing.
  * It simulates the UI for an employee viewing available catalogue update requests,
- * capturing feedback messages, list update triggers, and confirmation dialog data.
+ * capturing asynchronous feedback messages, list updates, and confirmation dialog data.
  * @author Γιάννης Μονοχολιάς
  */
 public class AvailableRequestsToAssignViewStub implements AvailableRequestsToAssignView {
 
+    private ArrayList<CatalogueUpdateRequest> loadedRequests;
     private String messageShown = "";
     private String errorShown = "";
     private boolean listUpdated = false;
@@ -17,23 +19,34 @@ public class AvailableRequestsToAssignViewStub implements AvailableRequestsToAss
     private boolean confirmationDialogShown = false;
     private String confirmationMessage = "";
     private CatalogueUpdateRequest lastInteractedRequest;
-
-    // Success callback tracking
     private CatalogueUpdateRequest removedRequest;
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateAvailableRequestsList(ArrayList<CatalogueUpdateRequest> requests) {
+        this.loadedRequests = requests;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMessage(String message) {
         this.messageShown = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         this.errorShown = message;
     }
 
     /**
-     * Records the request that was successfully assigned to the employee.
-     * @param request The update request that should be removed from the available list.
+     * {@inheritDoc}
      */
     @Override
     public void onRequestAssignedSuccess(CatalogueUpdateRequest request) {
@@ -41,7 +54,7 @@ public class AvailableRequestsToAssignViewStub implements AvailableRequestsToAss
     }
 
     /**
-     * Marks that a request to refresh the UI list was triggered.
+     * {@inheritDoc}
      */
     @Override
     public void updateList() {
@@ -49,9 +62,7 @@ public class AvailableRequestsToAssignViewStub implements AvailableRequestsToAss
     }
 
     /**
-     * Captures the state and content of the confirmation dialog shown to the user.
-     * @param request The request the user clicked on.
-     * @param confirmationMessage The message displayed in the dialog.
+     * {@inheritDoc}
      */
     @Override
     public void showConfirmationDialog(CatalogueUpdateRequest request, String confirmationMessage) {
@@ -61,6 +72,10 @@ public class AvailableRequestsToAssignViewStub implements AvailableRequestsToAss
     }
 
     // --- Accessor methods for verification during assertions ---
+
+    public ArrayList<CatalogueUpdateRequest> getLoadedRequests() {
+        return loadedRequests;
+    }
 
     public String getMessageShown() {
         return messageShown;

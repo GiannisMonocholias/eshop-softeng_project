@@ -1,11 +1,12 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.assignedRequestsToExecute;
 
+import java.util.ArrayList;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
 /**
  * A stub implementation of the {@link AssignedRequestsToExecuteView} interface for unit testing.
- * It provides a way to verify that navigation to the detailed request execution screen
- * is triggered with the correct parameters (employee ID and the request object).
+ * It provides a way to verify that asynchronous list updates and navigation to the
+ * detailed request execution screen are triggered with the correct parameters.
  * @author Γιάννης Μονοχολιάς
  */
 public class AssignedRequestsToExecuteViewStub implements AssignedRequestsToExecuteView {
@@ -14,10 +15,27 @@ public class AssignedRequestsToExecuteViewStub implements AssignedRequestsToExec
     private CatalogueUpdateRequest navigatedRequest = null;
     private boolean navigationCalled = false;
 
+    private ArrayList<CatalogueUpdateRequest> loadedRequests;
+    private String errorMessage = "";
+
     /**
-     * Captures navigation data when the presenter requests to show the details of a specific request.
-     * @param employeeId The ID of the employee who will execute the request.
-     * @param request The catalogue update request object to be displayed.
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateAssignedRequestsList(ArrayList<CatalogueUpdateRequest> requests) {
+        this.loadedRequests = requests;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showError(String message) {
+        this.errorMessage = message;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void navigateToRequestDetails(String employeeId, CatalogueUpdateRequest request) {
@@ -38,5 +56,13 @@ public class AssignedRequestsToExecuteViewStub implements AssignedRequestsToExec
 
     public boolean isNavigationCalled() {
         return navigationCalled;
+    }
+
+    public ArrayList<CatalogueUpdateRequest> getLoadedRequests() {
+        return loadedRequests;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

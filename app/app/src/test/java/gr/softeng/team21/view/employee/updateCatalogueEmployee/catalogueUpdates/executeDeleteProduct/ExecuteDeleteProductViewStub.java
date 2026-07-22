@@ -2,7 +2,7 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates
 
 /**
  * A stub implementation of the {@link ExecuteDeleteProductView} interface for unit testing.
- * It simulates the UI for deleting a product, allowing verification of the displayed
+ * It simulates the UI for deleting a product asynchronously, allowing verification of the displayed
  * product metadata and the state of confirmation dialogs and feedback messages.
  * @author Γιάννης Μονοχολιάς
  */
@@ -14,7 +14,7 @@ public class ExecuteDeleteProductViewStub implements ExecuteDeleteProductView {
     private String errorMessage = "";
 
     /**
-     * Captures product details passed by the presenter for display verification.
+     * {@inheritDoc}
      */
     @Override
     public void setProductDetails(String name, String code, String description, String price) {
@@ -25,18 +25,24 @@ public class ExecuteDeleteProductViewStub implements ExecuteDeleteProductView {
     }
 
     /**
-     * Marks that the deletion confirmation dialog was requested to be shown.
+     * {@inheritDoc}
      */
     @Override
     public void showConfirmationDialog() {
         this.confirmationDialogShown = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) {
         this.successMessage = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         this.errorMessage = message;

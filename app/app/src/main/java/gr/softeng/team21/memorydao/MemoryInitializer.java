@@ -63,7 +63,7 @@ public class MemoryInitializer {
         // ProductTypeDAO erase data
         try {
             getProductTypeDAO().clear();
-            if (!getProductTypeDAO().getProducts().isEmpty()) {
+            if (!getProductTypeDAO().getProducts().join().isEmpty()) {
                 throw new IllegalStateException("Product types repository was not cleared");
             }
         } catch (IllegalStateException e) {
@@ -82,8 +82,8 @@ public class MemoryInitializer {
 
         // UpdateRequestDAO erase data
         try {
-            getUpdateRequestDAO().clear();
-            if (!getUpdateRequestDAO().getUpdateRequests().isEmpty()) {
+            getUpdateRequestDAO().clear().join();
+            if (!getUpdateRequestDAO().getUpdateRequests().join().isEmpty()) {
                 throw new IllegalStateException("Update requests repository was not cleared");
             }
         } catch (IllegalStateException e) {

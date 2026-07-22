@@ -16,9 +16,9 @@ import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
 /**
  * Unit tests for {@link ExecuteDeleteProductPresenter}.
- * This suite verifies the full workflow of deleting a product based on an approved request,
+ * This suite verifies the full workflow of deleting a product based on an approved request asynchronously,
  * ensuring proper data loading, user confirmation, and synchronized updates across
- * product and request repositories.
+ * product and request repositories using Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteDeleteProductPresenterTest {
@@ -28,14 +28,13 @@ public class ExecuteDeleteProductPresenterTest {
     private UpdateCatalogueEmployee catEmployee;
 
     private static final String EMPLOYEE_ID = "CAT-301";
-
     private static final int DELETE_REQUEST_ID = 4;
     private static final String PRODUCT_CODE = "TECH-015";
 
     /**
      * Initializes the testing environment before each test.
-     * Prepares memory data, sets up the presenter, and assigns a specific
-     * delete request to the test employee.
+     * Prepares memory data asynchronously, sets up the presenter with injected dependencies,
+     * and assigns a specific delete request to the test employee.
      */
     @Before
     public void setUp() throws Exception {
@@ -49,15 +48,16 @@ public class ExecuteDeleteProductPresenterTest {
                 ProductTypeDAOMemory.getInstance()
         );
 
-        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
+        // Fetch objects using .join() due to the CompletableFuture architecture
+        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(DELETE_REQUEST_ID);
 
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(DELETE_REQUEST_ID);
         catEmployee.assignRequest(request.getId());
     }
 
     /**
      * Verifies that the product details associated with the delete request
-     * are correctly loaded and passed to the view for display.
+     * are correctly loaded asynchronously and passed to the view for display.
      */
     @Test
     public void loadRequestDetailsValidDataSetsViewDetails() {
@@ -70,7 +70,7 @@ public class ExecuteDeleteProductPresenterTest {
 
     /**
      * Verifies that attempting to load a non-existing request results in
-     * an error message in the view.
+     * an error message in the view asynchronously.
      */
     @Test
     public void loadRequestDetailsInvalidIdShowsError() {
@@ -83,13 +83,15 @@ public class ExecuteDeleteProductPresenterTest {
      */
     @Test
     public void onDeleteButtonClickedShowsConfirmationDialog() {
+        presenter.loadRequestDetails(EMPLOYEE_ID, DELETE_REQUEST_ID);
         presenter.onDeleteButtonClicked();
+
         Assert.assertTrue(viewStub.isConfirmationDialogShown());
     }
 
     /**
-     * Verifies the successful execution of the product deletion:
-     * 1. Confirms the product exists before deletion.
+     * Verifies the successful asynchronous execution of the product deletion:
+     * 1. Confirms the product exists before deletion using .join().
      * 2. Executes deletion and verifies the product is removed from the catalogue.
      * 3. Checks if the request status transitions to SERVED.
      * 4. Ensures the request is removed from the employee's active assigned tasks.
@@ -99,17 +101,17 @@ public class ExecuteDeleteProductPresenterTest {
     public void onDeleteConfirmedSuccessDeletesProductAndUpdatesRequest() {
         presenter.loadRequestDetails(EMPLOYEE_ID, DELETE_REQUEST_ID);
 
-        // Pre-condition check
-        Assert.assertNotNull(ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE));
+        // Pre-condition check (assuming ProductTypeDAOMemory has been adapted to CompletableFuture)
+        Assert.assertNotNull(ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE).join());
 
         presenter.onDeleteConfirmed();
 
         // Verification of product removal
-        ProductType deletedProduct = ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE);
+        ProductType deletedProduct = ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE).join();
         Assert.assertNull("Το προϊόν έπρεπε να έχει διαγραφεί", deletedProduct);
 
         // Request lifecycle verification
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(DELETE_REQUEST_ID);
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(DELETE_REQUEST_ID);
         Assert.assertEquals(RequestStatusType.SERVED, request.getStatus());
 
         // Employee task list cleanup verification
