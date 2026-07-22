@@ -98,7 +98,6 @@ public class DelivererMenuPresenterTest {
      * 2. Executes deletion and verifies UI feedback and navigation.
      * 3. Ensures the employee is removed from EmployeeDAO.
      * 4. Ensures the employee's credentials are wiped (throwing CompletionException wrapping a SecurityException).
-     * @throws CompletionException when trying to validate a deleted user (expected).
      */
     @Test(expected = CompletionException.class)
     public void onDeleteAccountConfirmedSuccessRemovesUserAndNavigates() {

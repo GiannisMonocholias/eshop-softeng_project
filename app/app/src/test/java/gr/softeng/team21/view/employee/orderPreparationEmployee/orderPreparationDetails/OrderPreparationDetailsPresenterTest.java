@@ -1,6 +1,5 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,9 +17,9 @@ import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 
 /**
  * Unit tests for {@link OrderPreparationDetailsPresenter}.
- * This suite validates the detailed order preparation process, focusing on stock checking
- * logic, status transitions (SHIPPED vs DELAYED), and error handling for unassigned
- * or missing orders.
+ * This suite validates the detailed order preparation process asynchronously, focusing on
+ * stock checking logic, status transitions (SHIPPED vs DELAYED), and error handling
+ * utilizing Dependency Injection for data sources.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderPreparationDetailsPresenterTest {
@@ -34,7 +33,7 @@ public class OrderPreparationDetailsPresenterTest {
     private static final String ORDER_CODE = "ORD-2023-001";
 
     /**
-     * Initializes data and sets up the presenter and target domain objects before each test.
+     * Initializes data asynchronously and sets up the presenter and target domain objects before each test.
      */
     @Before
     public void setUp() throws Exception {
@@ -47,18 +46,21 @@ public class OrderPreparationDetailsPresenterTest {
                 OrderDAOMemory.getInstance()
         );
 
-        prepEmployee = (OrderPreparationEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
-        order = OrderDAOMemory.getInstance().getOrder(ORDER_CODE);
+        // Retrieve domain models using .join() due to async architecture
+        prepEmployee = (OrderPreparationEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
+        order = OrderDAOMemory.getInstance().getOrder(ORDER_CODE).join();
 
         prepEmployee.addOrder(order);
     }
 
     /**
-     * Verifies that order details are correctly loaded and mapped to the view.
+     * Verifies that order details are correctly loaded asynchronously and mapped to the view.
      */
     @Test
     public void loadOrderDisplaysCorrectDetails() {
-        ArrayList<CartItem> items = presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
+        presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
+
+        ArrayList<CartItem> items = viewStub.getLoadedItems();
 
         Assert.assertEquals(ORDER_CODE, viewStub.getDisplayedOrderCode());
         Assert.assertNotNull(items);
@@ -101,7 +103,6 @@ public class OrderPreparationDetailsPresenterTest {
         presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
 
         presenter.setOrderToPrepare(null);
-
         presenter.checkStockOrder();
 
         Assert.assertEquals("Σφάλμα: Δεν δόθηκε παραγγελία (null Order pointer)", viewStub.getErrorMessage());
@@ -115,7 +116,6 @@ public class OrderPreparationDetailsPresenterTest {
         presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
 
         prepEmployee.removeOrder(order);
-
         presenter.checkStockOrder();
 
         Assert.assertEquals("Σφάλμα: Δεν σας έχει ανατεθεί η συγκεκριμένη παραγγελία", viewStub.getErrorMessage());
@@ -123,16 +123,16 @@ public class OrderPreparationDetailsPresenterTest {
 
     /**
      * Verifies that if no deliverers exist in the system, an {@link IllegalStateException} is thrown
-     * during the order shipping phase.
+     * during the order shipping phase natively by the domain logic.
      */
     @Test(expected = IllegalStateException.class)
     public void checkStockOrderNoDeliverersAvailableThrowsIllegalStateException() {
         presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
 
         EmployeeDAOMemory memoryDAO = (EmployeeDAOMemory) EmployeeDAOMemory.getInstance();
-        memoryDAO.getEmployees().remove("DEL-401");
-        memoryDAO.getEmployees().remove("DEL-402");
-        memoryDAO.getEmployees().remove("DEL-403");
+        memoryDAO.getEmployees().join().remove("DEL-401");
+        memoryDAO.getEmployees().join().remove("DEL-402");
+        memoryDAO.getEmployees().join().remove("DEL-403");
 
         presenter.checkStockOrder();
     }

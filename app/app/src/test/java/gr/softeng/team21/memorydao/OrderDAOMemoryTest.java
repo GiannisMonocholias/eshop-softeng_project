@@ -34,7 +34,7 @@ public class OrderDAOMemoryTest {
     @Before
     public void setUp(){
         orderDAOMemory = OrderDAOMemory.getInstance();
-        orderDAOMemory.clear().join(); // Καθαρισμός για απομόνωση των tests
+        orderDAOMemory.clear().join();
 
         order1 = new Order("order1246", new Date(), OrderStatusType.NEW, false, PaymentType.CASH,new Date () ,new ShoppingCart());
         order1.getShoppingCart().addItem(new CartItem(TestHelper.getLaptop(), 2));
@@ -64,7 +64,6 @@ public class OrderDAOMemoryTest {
      */
     @Test(expected = CompletionException.class)
     public void getOrder_NullArgumentTest() {
-        // pass null argument in getOrder()
         orderDAOMemory.getOrder(null).join();
     }
 
@@ -74,7 +73,6 @@ public class OrderDAOMemoryTest {
      */
     @Test
     public void getOrder_NonExistingOrderTest() {
-        // Request a non existing order
         assertNull(orderDAOMemory.getOrder("order1245").join());
     }
 
@@ -95,7 +93,6 @@ public class OrderDAOMemoryTest {
     @Test
     public void addOrderTestSuccess() {
         orderDAOMemory.addOrder(order1).join();
-
         assertEquals(order1, orderDAOMemory.getOrder("order1246").join());
     }
 
@@ -105,7 +102,6 @@ public class OrderDAOMemoryTest {
      */
     @Test(expected = CompletionException.class)
     public void addOrder_NullArgumentTest(){
-        // null argument passed
         orderDAOMemory.addOrder(null).join();
     }
 
@@ -115,7 +111,6 @@ public class OrderDAOMemoryTest {
      */
     @Test(expected = CompletionException.class)
     public void addOrder_AlreadyRegisteredOrderTest(){
-        // Already registered Order
         orderDAOMemory.addOrder(order1).join();
         orderDAOMemory.addOrder(order1).join(); // This will fail
     }
@@ -126,10 +121,8 @@ public class OrderDAOMemoryTest {
      */
     @Test
     public void getOrders() {
-        //Initially Empty ordersRepository
         assertEquals(0, orderDAOMemory.getOrders().join().size());
 
-        //order1 Order is constructed in the setUp method
         orderDAOMemory.addOrder(order1).join();
         assertEquals(1, orderDAOMemory.getOrders().join().size());
 
@@ -146,7 +139,7 @@ public class OrderDAOMemoryTest {
      */
     @Test
     public void clear() {
-        orderDAOMemory.addOrder(order1).join(); // Προσθήκη για να μην είναι ήδη άδειο
+        orderDAOMemory.addOrder(order1).join();
         orderDAOMemory.clear().join();
         assertEquals(0, orderDAOMemory.getOrders().join().size());
     }

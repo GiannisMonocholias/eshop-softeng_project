@@ -1,14 +1,17 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails;
 
+import java.util.ArrayList;
+import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.OrderStatusType;
 
 /**
  * View contract for the Order Preparation Details screen.
- * Defines methods for displaying specific order data, handling success/error
- * feedback, and managing the activity lifecycle.
+ * Defines methods for asynchronously displaying specific order data, handling success/error
+ * feedback, updating the cart items, and managing the activity lifecycle.
  * @author Γιάννης Μονοχολιάς
  */
 public interface OrderPreparationDetailsView {
+
     /**
      * Updates the UI with the detailed information of the order.
      * @param ordercode The unique identifier of the order.
@@ -18,6 +21,12 @@ public interface OrderPreparationDetailsView {
      * @param status The current status of the order.
      */
     void setOrderDetails(String ordercode, String customerName, String submissionDate, String price, OrderStatusType status);
+
+    /**
+     * Updates the UI list with the items present in the order's cart.
+     * @param items An ArrayList of CartItems to be displayed.
+     */
+    void updateCartItems(ArrayList<CartItem> items);
 
     /**
      * Displays an error alert, typically for stock shortages or invalid access.

@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.CompletionException;
+
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Employee;
@@ -104,13 +106,12 @@ public class CustomerServiceMenuPresenterTest {
      * 2. Executes deletion via presenter.
      * 3. Checks for success message and redirection.
      * 4. Ensures employee is removed from both EmployeeDAO and CredentialsDAO.
-     * @throws SecurityException when credentials validation fails after deletion (expected).
      */
-    @Test(expected = SecurityException.class)
+    @Test(expected = CompletionException.class)
     public void onDeleteAccountConfirmedDeletesEmployeeAndCredentialsSuccess() {
         Employee empBefore = employeeDAO.getEmployee(EMPLOYEE_ID).join();
         Assert.assertNotNull(empBefore);
-        Assert.assertSame(empBefore, UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(), empBefore.getPassword()));
+        Assert.assertSame(empBefore, UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(), empBefore.getPassword()).join());
 
         // Confirm deletion for existing employeeId
         presenter.onDeleteAccountConfirmed(EMPLOYEE_ID);
@@ -120,8 +121,8 @@ public class CustomerServiceMenuPresenterTest {
 
         Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID).join());
 
-        // This call should throw SecurityException because credentials were deleted
-        UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(), empBefore.getPassword());
+        // This call should throw CompletionException because credentials were deleted
+        UserCredentialsDAOMemory.getInstance().validateAndGetUser(empBefore.getUsername(), empBefore.getPassword()).join();
     }
 
     /**

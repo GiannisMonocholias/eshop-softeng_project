@@ -9,8 +9,9 @@ import gr.softeng.team21.domain.OrderStatusType;
 
 /**
  * Presenter for the Available Orders to Assign screen.
- * Handles the logic of filtering unassigned orders and manages the
- * transactional logic of assigning an order to the currently logged in employee.
+ * Handles the asynchronous logic of filtering unassigned orders and manages the
+ * transactional logic of assigning an order to the currently logged-in employee.
+ * Utilizes Dependency Injection to decouple data sources from the presentation logic.
  * @author Γιάννης Μονοχολιάς
  */
 public class AvailableOrdersToAssignPresenter {
@@ -21,8 +22,8 @@ public class AvailableOrdersToAssignPresenter {
     private OrderPreparationEmployee loggedInEmployee;
 
     /**
-     * Initializes the presenter with required DAOs and the view interface.
-     * @param view The view implementation.
+     * Initializes the presenter with injected DAOs and the view interface.
+     * @param view The view implementation (Activity or Stub).
      * @param employeeDAO The data source for employee records.
      * @param orderDAO The data source for all system orders.
      */
@@ -33,21 +34,36 @@ public class AvailableOrdersToAssignPresenter {
     }
 
     /**
-     * Filters and loads all orders that have a status of NEW.
+     * Asynchronously loads the employee data and then fetches all orders,
+     * filtering for those that have a status of NEW, before updating the view.
      * @param employeeId The unique ID of the employee browsing the list.
-     * @return An ArrayList of orders available for assignment.
      */
-    public ArrayList<Order> loadAvailableOrders(String employeeId){
-        this.loggedInEmployee = (OrderPreparationEmployee) employeeDAO.getEmployee(employeeId);
+    public void loadAvailableOrders(String employeeId) {
+        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+            if (employee instanceof OrderPreparationEmployee) {
+                this.loggedInEmployee = (OrderPreparationEmployee) employee;
 
-        ArrayList<Order> newOrders = new ArrayList<>();
-        for(String ordId: orderDAO.getOrders().keySet()){
-            Order cur_order = orderDAO.getOrders().get(ordId);
-            if(cur_order != null && cur_order.getOrderstatus() == OrderStatusType.NEW){
-                newOrders.add(cur_order);
+                // Fetch orders asynchronously
+                orderDAO.getOrders().thenAccept(ordersMap -> {
+                    ArrayList<Order> newOrders = new ArrayList<>();
+                    for (Order cur_order : ordersMap.values()) {
+                        if (cur_order != null && cur_order.getOrderstatus() == OrderStatusType.NEW) {
+                            newOrders.add(cur_order);
+                        }
+                    }
+                    view.updateAvailableOrdersList(newOrders);
+                }).exceptionally(e -> {
+                    view.showError("Σφάλμα ανάκτησης παραγγελιών: " + e.getMessage());
+                    return null;
+                });
+
+            } else {
+                view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
-        }
-        return newOrders;
+        }).exceptionally(e -> {
+            view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
+            return null;
+        });
     }
 
     /**
@@ -56,6 +72,10 @@ public class AvailableOrdersToAssignPresenter {
      * @param order The selected order.
      */
     public void onOrderClicked(Order order) {
+        if (loggedInEmployee == null) {
+            view.showError("Δεν υπάρχει ενεργή συνεδρία υπαλλήλου.");
+            return;
+        }
         String confirmationMessage = "Θέλετε να αναλάβετε αυτή την παραγγελία;";
         view.showConfirmationDialog(order, confirmationMessage);
     }
@@ -67,11 +87,19 @@ public class AvailableOrdersToAssignPresenter {
      * @param order The order confirmed for assignment.
      */
     public void onOrderConfirmed(Order order) {
+        if (loggedInEmployee == null) return;
+
         loggedInEmployee.addOrder(order);
         order.setOrderstatus(OrderStatusType.PROCESSING);
 
-        view.showMessage("Η παραγγελία ανατέθηκε επιτυχώς!");
-        view.onOrderAssignedSuccess(order);
-        view.updateList();
+        // Update the order in the database asynchronously if required
+        orderDAO.addOrder(order).thenAccept(v -> {
+            view.showMessage("Η παραγγελία ανατέθηκε επιτυχώς!");
+            view.onOrderAssignedSuccess(order);
+            view.updateList();
+        }).exceptionally(e -> {
+            view.showError("Σφάλμα κατά την ενημέρωση της παραγγελίας: " + e.getMessage());
+            return null;
+        });
     }
 }

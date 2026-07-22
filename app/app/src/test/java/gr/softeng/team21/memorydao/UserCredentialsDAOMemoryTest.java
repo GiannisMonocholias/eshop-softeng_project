@@ -64,7 +64,6 @@ public class UserCredentialsDAOMemoryTest {
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
         repository.addUser(user1).join();
 
-        // Addition of an already existing username
         Customer user2 = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", new EmailAddress("giannis@gmail.com"), "Customer1", new Date());
@@ -92,7 +91,6 @@ public class UserCredentialsDAOMemoryTest {
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
         repository.addUser(user1).join();
 
-        // Correct credentials
         User loggedIn = repository.validateAndGetUser("giannispap", "pass1234").join();
         assertEquals(user1, loggedIn);
     }
@@ -108,7 +106,6 @@ public class UserCredentialsDAOMemoryTest {
                 "697123456", new EmailAddress("giannis@gmail.com"), "CUST-001", new Date());
         repository.addUser(user1).join();
 
-        // Incorrect password
         repository.validateAndGetUser("giannispap", "WrongPass").join();
     }
 

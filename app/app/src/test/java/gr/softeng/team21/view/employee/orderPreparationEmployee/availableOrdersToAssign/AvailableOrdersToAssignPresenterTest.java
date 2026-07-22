@@ -1,6 +1,5 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +15,9 @@ import gr.softeng.team21.memorydao.OrderDAOMemory;
 
 /**
  * Unit tests for {@link AvailableOrdersToAssignPresenter}.
- * This suite verifies the logic for filtering available orders, displaying
- * confirmation prompts, and the atomic process of assigning an order to an employee.
+ * This suite verifies the logic for filtering available orders asynchronously, displaying
+ * confirmation prompts, and the atomic process of assigning an order to an employee
+ * using Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class AvailableOrdersToAssignPresenterTest {
@@ -29,7 +29,8 @@ public class AvailableOrdersToAssignPresenterTest {
     private static final String EMPLOYEE_ID = "PREP-201";
 
     /**
-     * Prepares memory repositories and initializes the presenter before each test case.
+     * Prepares memory repositories asynchronously, injects dependencies,
+     * and initializes the presenter before each test case.
      */
     @Before
     public void setUp() throws Exception {
@@ -39,7 +40,8 @@ public class AvailableOrdersToAssignPresenterTest {
         presenter = new AvailableOrdersToAssignPresenter(viewStub, EmployeeDAOMemory.getInstance(),
                 OrderDAOMemory.getInstance());
 
-        prepEmployee = (OrderPreparationEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
+        // Using .join() since the DAOs now return CompletableFuture
+        prepEmployee = (OrderPreparationEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
     }
 
     /**
@@ -48,8 +50,8 @@ public class AvailableOrdersToAssignPresenterTest {
      */
     @Test
     public void loadAvailableOrdersReturnsOnlyNewOrders() {
-
-        ArrayList<Order> result = presenter.loadAvailableOrders(EMPLOYEE_ID);
+        presenter.loadAvailableOrders(EMPLOYEE_ID);
+        ArrayList<Order> result = viewStub.getLoadedOrders();
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
@@ -63,7 +65,10 @@ public class AvailableOrdersToAssignPresenterTest {
      */
     @Test
     public void onOrderClickedShowsConfirmationDialog() {
-        Order order = OrderDAOMemory.getInstance().getOrders().get("ORD-2024-002");
+        // Load orders first to initialize loggedInEmployee within the presenter
+        presenter.loadAvailableOrders(EMPLOYEE_ID);
+
+        Order order = OrderDAOMemory.getInstance().getOrder("ORD-2024-002").join();
 
         presenter.onOrderClicked(order);
 
@@ -73,17 +78,16 @@ public class AvailableOrdersToAssignPresenterTest {
     }
 
     /**
-     * Verifies the full order assignment workflow:
+     * Verifies the full asynchronous order assignment workflow:
      * 1. Order status changes from NEW to PROCESSING.
      * 2. The order is added to the employee's assigned list.
      * 3. The UI receives a success message and refreshes the list.
      */
     @Test
     public void onOrderConfirmedAssignsOrderAndUpdatesStatus() {
-
         presenter.loadAvailableOrders(EMPLOYEE_ID);
 
-        Order orderToAssign = OrderDAOMemory.getInstance().getOrders().get("ORD-2024-002");
+        Order orderToAssign = OrderDAOMemory.getInstance().getOrder("ORD-2024-002").join();
         Assert.assertEquals(OrderStatusType.NEW, orderToAssign.getOrderstatus());
 
         presenter.onOrderConfirmed(orderToAssign);
@@ -92,7 +96,7 @@ public class AvailableOrdersToAssignPresenterTest {
         Assert.assertEquals(OrderStatusType.PROCESSING, orderToAssign.getOrderstatus());
         Assert.assertTrue(prepEmployee.getAssignedOrders().contains(orderToAssign));
 
-        // View feedback verification
+        // View feedback verification via stub
         Assert.assertTrue(viewStub.getMessageShown().contains("επιτυχώς"));
         Assert.assertTrue(viewStub.isListUpdated());
         Assert.assertEquals(orderToAssign, viewStub.getRemovedOrder());

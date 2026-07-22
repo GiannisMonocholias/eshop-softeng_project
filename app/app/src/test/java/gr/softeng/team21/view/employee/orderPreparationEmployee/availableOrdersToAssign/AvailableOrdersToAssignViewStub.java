@@ -1,15 +1,17 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign;
 
+import java.util.ArrayList;
 import gr.softeng.team21.domain.Order;
 
 /**
  * A stub implementation of the {@link AvailableOrdersToAssignView} interface for unit testing.
  * It provides a simulated UI environment to capture messages, confirmation dialogs,
- * and list update events during the order assignment process.
+ * and asynchronous list update events during the order assignment process.
  * @author Γιάννης Μονοχολιάς
  */
 public class AvailableOrdersToAssignViewStub implements AvailableOrdersToAssignView {
 
+    private ArrayList<Order> loadedOrders;
     private String messageShown = "";
     private String errorShown = "";
     private boolean listUpdated = false;
@@ -19,19 +21,32 @@ public class AvailableOrdersToAssignViewStub implements AvailableOrdersToAssignV
     private Order lastInteractedOrder;
     private Order removedOrder;
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateAvailableOrdersList(ArrayList<Order> orders) {
+        this.loadedOrders = orders;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showMessage(String message) {
         this.messageShown = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         this.errorShown = message;
     }
 
     /**
-     * Records the order that was successfully assigned and should be removed from the available list.
-     * @param order The assigned order.
+     * {@inheritDoc}
      */
     @Override
     public void onOrderAssignedSuccess(Order order) {
@@ -39,9 +54,7 @@ public class AvailableOrdersToAssignViewStub implements AvailableOrdersToAssignV
     }
 
     /**
-     * Captures the state and message of the confirmation dialog shown to the user.
-     * @param order The order to be assigned.
-     * @param message The confirmation message text.
+     * {@inheritDoc}
      */
     @Override
     public void showConfirmationDialog(Order order, String message) {
@@ -51,7 +64,7 @@ public class AvailableOrdersToAssignViewStub implements AvailableOrdersToAssignV
     }
 
     /**
-     * Marks that the UI list was requested to be refreshed.
+     * {@inheritDoc}
      */
     @Override
     public void updateList() {
@@ -59,6 +72,10 @@ public class AvailableOrdersToAssignViewStub implements AvailableOrdersToAssignV
     }
 
     // --- Getters for Testing verification ---
+
+    public ArrayList<Order> getLoadedOrders() {
+        return loadedOrders;
+    }
 
     public String getMessageShown() {
         return messageShown;

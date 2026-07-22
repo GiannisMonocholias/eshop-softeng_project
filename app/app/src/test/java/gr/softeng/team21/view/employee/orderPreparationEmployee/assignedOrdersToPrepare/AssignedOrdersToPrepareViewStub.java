@@ -1,9 +1,12 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare;
 
+import java.util.ArrayList;
+import gr.softeng.team21.domain.Order;
+
 /**
  * A stub implementation of the {@link AssignedOrdersToPrepareView} interface for unit testing.
- * It provides a way to verify that the navigation to the detailed order preparation
- * screen is triggered with the correct parameters (employee ID and order code).
+ * It provides a way to verify that navigation and asynchronous data updates
+ * are triggered with the correct parameters.
  * @author Γιάννης Μονοχολιάς
  */
 public class AssignedOrdersToPrepareViewStub implements AssignedOrdersToPrepareView {
@@ -12,10 +15,27 @@ public class AssignedOrdersToPrepareViewStub implements AssignedOrdersToPrepareV
     private String navigatedOrderCode = "";
     private boolean navigationCalled = false;
 
+    private ArrayList<Order> loadedOrders;
+    private String errorMessage = "";
+
     /**
-     * Captures navigation data when the presenter requests to show order details.
-     * @param employeeId The ID of the employee currently preparing the order.
-     * @param ordercode The unique code of the order to be displayed.
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateAssignedOrdersList(ArrayList<Order> orders) {
+        this.loadedOrders = orders;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showError(String message) {
+        this.errorMessage = message;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void navigateToOrderPreparationDetails(String employeeId, String ordercode) {
@@ -36,5 +56,13 @@ public class AssignedOrdersToPrepareViewStub implements AssignedOrdersToPrepareV
 
     public boolean isNavigationCalled() {
         return navigationCalled;
+    }
+
+    public ArrayList<Order> getLoadedOrders() {
+        return loadedOrders;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

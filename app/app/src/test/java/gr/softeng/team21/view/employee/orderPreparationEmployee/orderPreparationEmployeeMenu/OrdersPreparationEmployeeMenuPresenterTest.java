@@ -5,7 +5,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.CompletionException;
+
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
@@ -13,7 +17,7 @@ import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 /**
  * Unit tests for {@link OrdersPreparationEmployeeMenuPresenter}.
  * This suite verifies the core functionality of the Order Preparation Employee menu,
- * including data initialization, navigation logic, and secure account deletion.
+ * including data initialization, navigation logic, and secure account deletion handling asynchronously.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrdersPreparationEmployeeMenuPresenterTest {
@@ -21,6 +25,7 @@ public class OrdersPreparationEmployeeMenuPresenterTest {
     private OrdersPreparationEmployeeMenuPresenter presenter;
     private OrderPreparationEmployeeMenuViewStub viewStub;
     private EmployeeDAO employeeDAO;
+    private UserCredentialsDAO userCredentialsDAO;
 
     private static final String EMPLOYEE_ID = "PREP-201";
 
@@ -34,7 +39,9 @@ public class OrdersPreparationEmployeeMenuPresenterTest {
 
         viewStub = new OrderPreparationEmployeeMenuViewStub();
         employeeDAO = EmployeeDAOMemory.getInstance();
-        presenter = new OrdersPreparationEmployeeMenuPresenter(viewStub, employeeDAO);
+        userCredentialsDAO = UserCredentialsDAOMemory.getInstance();
+
+        presenter = new OrdersPreparationEmployeeMenuPresenter(viewStub, employeeDAO, userCredentialsDAO);
     }
 
     /**
@@ -88,23 +95,23 @@ public class OrdersPreparationEmployeeMenuPresenterTest {
      * 1. Confirms the employee exists in memory and credentials are valid.
      * 2. Executes deletion.
      * 3. Ensures the employee is removed from the DAO and navigation to login occurs.
-     * 4. Confirms credentials are wiped by expecting a SecurityException.
-     * @throws SecurityException when validating credentials after deletion (Expected).
+     * 4. Confirms credentials are wiped by expecting a CompletionException.
      */
-    @Test(expected = SecurityException.class)
+    @Test(expected = CompletionException.class)
     public void onDeleteAccountConfirmedRemovesEmployeeAndNavigates() {
-        Assert.assertNotNull(employeeDAO.getEmployee(EMPLOYEE_ID));
-        Assert.assertSame(employeeDAO.getEmployee(EMPLOYEE_ID), UserCredentialsDAOMemory.getInstance().validateAndGetUser("g_nikolaou","pass1240"));
+        Employee employee = employeeDAO.getEmployee(EMPLOYEE_ID).join();
+        Assert.assertNotNull(employee);
+        Assert.assertSame(employee, UserCredentialsDAOMemory.getInstance().validateAndGetUser("g_nikolaou","pass1240").join());
 
         presenter.onDeleteAccountConfirmed(EMPLOYEE_ID);
 
         Assert.assertEquals("Ο λογαριασμός διαγράφηκε επιτυχώς.", viewStub.getMessageShown());
         Assert.assertTrue(viewStub.isNavigateToLoginCalled());
 
-        Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID));
+        Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID).join());
 
-        // This should trigger the expected SecurityException
-        UserCredentialsDAOMemory.getInstance().validateAndGetUser("g_nikolaou", "pass1240");
+        // This should trigger the expected CompletionException wrapping the SecurityException
+        UserCredentialsDAOMemory.getInstance().validateAndGetUser("g_nikolaou", "pass1240").join();
     }
 
     /**

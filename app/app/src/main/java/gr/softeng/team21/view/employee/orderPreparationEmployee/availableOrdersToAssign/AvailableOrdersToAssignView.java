@@ -1,13 +1,21 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign;
 
+import java.util.ArrayList;
 import gr.softeng.team21.domain.Order;
 
 /**
  * Defines the UI operations for listing unassigned orders and managing
  * the manual assignment workflow via dialogs.
+ * Acts as the contract between the Presenter and the Activity for asynchronous operations.
  * @author Γιάννης Μονοχολιάς
  */
 public interface AvailableOrdersToAssignView {
+
+    /**
+     * Updates the UI with the retrieved list of available orders asynchronously.
+     * @param orders An ArrayList of orders that have the "NEW" status.
+     */
+    void updateAvailableOrdersList(ArrayList<Order> orders);
 
     /**
      * Displays an informative message to the user.

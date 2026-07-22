@@ -11,19 +11,23 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity;
 import gr.softeng.team21.view.util.OrderAdapter;
 import gr.softeng.team21.view.util.OrderAdapterType;
 
 /**
  * Activity that displays a list of orders currently assigned to an Order Preparation Employee.
- * It uses a {@link RecyclerView} to display the assigned orders of the employee and refreshes the data
- * during the onResume lifecycle event.
+ * It uses a {@link RecyclerView} to display the assigned orders of the employee and fetches data
+ * asynchronously during the onResume lifecycle event.
+ * Implements Dependency Injection and uses runOnUiThread for safe UI rendering.
  * @author Γιάννης Μονοχολιάς
  */
 public class AssignedOrdersToPrepareActivity extends AppCompatActivity implements AssignedOrdersToPrepareView {
@@ -33,10 +37,10 @@ public class AssignedOrdersToPrepareActivity extends AppCompatActivity implement
     private static final String ORD_CODE_EXTRA = "ORDER_CODE";
     private RecyclerView recyclerView;
 
-
     /**
-     * Sets up the UI layout and initializes the presenter.
-     * Configuration of the RecyclerView's LayoutManager is performed here.
+     * Sets up the UI layout, initializes the presenter with Firebase DAO injection,
+     * and configures the RecyclerView's LayoutManager.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,44 +54,67 @@ public class AssignedOrdersToPrepareActivity extends AppCompatActivity implement
             return insets;
         });
 
-        presenter = new AssignedOrdersToPreparePresenter(this, EmployeeDAOMemory.getInstance());
+        // DEPENDENCY INJECTION: Connect Presenter to Firebase
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+        presenter = new AssignedOrdersToPreparePresenter(this, employeeDAO);
 
         recyclerView = findViewById(R.id.OrdPrepEmprecyclerViewAssignedOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     /**
-     * Refreshes the assigned orders list every time the Activity becomes visible.
-     * This ensures that any processed or newly assigned orders are updated in the UI.
+     * Triggers an asynchronous refresh of the assigned orders list every time the Activity
+     * becomes visible, ensuring processed or newly assigned orders are updated.
      */
     @Override
     public void onResume() {
         super.onResume();
-
-
         String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
+        presenter.loadAssignedOrders(employeeId);
+    }
 
-        ArrayList<Order> assignedOrders = presenter.loadAssignedOrders(employeeId);
-
-        OrderAdapter adapter = new OrderAdapter(assignedOrders, OrderAdapterType.ASSIGNED_ORDERS_ADAPTER, order -> {
-            presenter.onClickOrder(order);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateAssignedOrdersList(ArrayList<Order> orders) {
+        runOnUiThread(() -> {
+            if (orders != null) {
+                OrderAdapter adapter = new OrderAdapter(orders, OrderAdapterType.ASSIGNED_ORDERS_ADAPTER, order -> {
+                    presenter.onClickOrder(order);
+                });
+                recyclerView.setAdapter(adapter);
+            }
         });
+    }
 
-        recyclerView.setAdapter(adapter);
+    /**
+     * {@inheritDoc}
+     * Displays a modern {@link MaterialAlertDialogBuilder} for error communication.
+     */
+    @Override
+    public void showError(String message) {
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Σφάλμα")
+                    .setMessage(message)
+                    .setPositiveButton("ΟΚ", null)
+                    .show();
+        });
     }
 
     /**
      * {@inheritDoc}
      * Starts the {@link OrderPreparationDetailsActivity} using Intent extras
      * for employee and order identification.
-     *
      */
     @Override
     public void navigateToOrderPreparationDetails(String employeeId, String orderId) {
-        Intent intent = new Intent(AssignedOrdersToPrepareActivity.this, OrderPreparationDetailsActivity.class);
-        intent.putExtra(EMP_ID_EXTRA, employeeId);
-        intent.putExtra(ORD_CODE_EXTRA, orderId);
-        startActivity(intent);
+        runOnUiThread(() -> {
+            Intent intent = new Intent(AssignedOrdersToPrepareActivity.this, OrderPreparationDetailsActivity.class);
+            intent.putExtra(EMP_ID_EXTRA, employeeId);
+            intent.putExtra(ORD_CODE_EXTRA, orderId);
+            startActivity(intent);
+        });
     }
 }

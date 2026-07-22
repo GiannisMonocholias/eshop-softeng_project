@@ -7,34 +7,40 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import gr.softeng.team21.R;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
-import gr.softeng.team21.view.user.login.LoginActivity; // Βεβαιώσου για το σωστό import
+import gr.softeng.team21.view.user.login.LoginActivity;
 import gr.softeng.team21.view.employee.orderPreparationEmployee.assignedOrdersToPrepare.AssignedOrdersToPrepareActivity;
 import gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign.AvailableOrdersToAssignActivity;
 
 /**
  * Android Activity serving as the dashboard for Order Preparation Employee.
  * Manages UI components and implements the {@link OrdersPreparationEmployeeMenuView} interface
- * to handle navigation and user feedback as directed by the Presenter.
+ * to handle navigation and user feedback via runOnUiThread.
+ * Uses Material Design components and incorporates Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity implements OrdersPreparationEmployeeMenuView {
 
-    OrdersPreparationEmployeeMenuPresenter presenter;
+    private OrdersPreparationEmployeeMenuPresenter presenter;
     private static final String EMP_ID = "ORDER_PREPARATION_EMPLOYEE_ID";
     private String employeeId;
 
     /**
-     * Sets up the activity layout, initializes the presenter, and
+     * Sets up the activity layout, injects DAOs into the presenter, and
      * attaches click listeners to all menu buttons.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +54,11 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
             return insets;
         });
 
-        presenter = new OrdersPreparationEmployeeMenuPresenter(this, EmployeeDAOMemory.getInstance());
+        // DEPENDENCY INJECTION
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+        UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOMemory.getInstance(); // Replace with Firebase equivalent later
+
+        presenter = new OrdersPreparationEmployeeMenuPresenter(this, employeeDAO, userCredentialsDAO);
 
         employeeId = getIntent().getStringExtra(EMP_ID);
 
@@ -64,7 +74,7 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         );
 
         findViewById(R.id.btnOrdPrepEmpProcessAccount).setOnClickListener(v ->
-            presenter.onProcessAccountSelected(employeeId)
+                presenter.onProcessAccountSelected(employeeId)
         );
 
         findViewById(R.id.btnOrdPrepEmpDeleteAccount).setOnClickListener(v ->
@@ -72,7 +82,70 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         );
 
         // Logout
-        findViewById(R.id.btnCustomerServiceEmployeeMenuLogout).setOnClickListener(v -> {
+        findViewById(R.id.btnCustomerServiceEmployeeMenuLogout).setOnClickListener(v -> finish());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showEmployeeName(String fullName) {
+        runOnUiThread(() -> {
+            ((TextView) findViewById(R.id.txtCustomerServiceEmployeeMenuName)).setText(fullName);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void navigateToAssignedOrders(String employeeId) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(OrderPreparationEmployeeMenuActivity.this, AssignedOrdersToPrepareActivity.class);
+            intent.putExtra(EMP_ID, employeeId);
+            startActivity(intent);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void navigateToAvailableOrdersToAssign(String employeeId) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(OrderPreparationEmployeeMenuActivity.this, AvailableOrdersToAssignActivity.class);
+            intent.putExtra(EMP_ID, employeeId);
+            startActivity(intent);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     * Displays a modernized {@link MaterialAlertDialogBuilder} to confirm the
+     * action of deleting an account.
+     */
+    @Override
+    public void showDeleteAccountConfirmation() {
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Διαγραφή Λογαριασμού")
+                    .setMessage("Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("ΝΑΙ", (dialog, which) -> presenter.onDeleteAccountConfirmed(employeeId))
+                    .setNegativeButton("ΟΧΙ", null)
+                    .show();
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void navigateToLogin() {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             finish();
         });
     }
@@ -81,76 +154,12 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
      * {@inheritDoc}
      */
     @Override
-    public void showEmployeeName(String fullName){
-        ((TextView)findViewById(R.id.txtCustomerServiceEmployeeMenuName)).setText(fullName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void navigateToAssignedOrders(String employeeId) {
-        Intent intent = new Intent(OrderPreparationEmployeeMenuActivity.this, AssignedOrdersToPrepareActivity.class);
-        intent.putExtra(EMP_ID, employeeId);
-        startActivity(intent);
-    }
-
-    /**
-     * {@inheritDoc}
-     * The navigation is executed via Intent object, passing the employee id as extra
-     */
-    @Override
-    public void navigateToAvailableOrdersToAssign(String employeeId) {
-        Intent intent = new Intent(OrderPreparationEmployeeMenuActivity.this, AvailableOrdersToAssignActivity.class);
-        intent.putExtra(EMP_ID, employeeId);
-        startActivity(intent);
-    }
-
-    /**
-     * Displays a native Android {@link AlertDialog} to confirm the
-     * action of deleting an account.
-     */
-    @Override
-    public void showDeleteAccountConfirmation() {
-        new AlertDialog.Builder(this)
-                .setTitle("Διαγραφή Λογαριασμού")
-                .setMessage("Είστε σίγουροι ότι θέλετε να διαγράψετε τον λογαριασμό σας; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        presenter.onDeleteAccountConfirmed(employeeId);
-                    }
-                })
-                .setNegativeButton("ΟΧΙ", null)
-                .show();
-    }
-
-    /**
-     * {@inheritDoc}
-     * Clears the activity stack using Intent flags to ensure the user cannot
-     * navigate back to the menu after a logout or account deletion.
-     */
-    @Override
-    public void navigateToLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        finish();
-    }
-
-    /**
-     * {@inheritDoc}
-     * The navigation is executed via Intent object, passing the employee id (user id) as extra
-     */
-    @Override
-    public void navigateToProcessAccount(String employeeId){
-        Intent intent = new Intent(this, UserEditDataActivity.class);
-
-        intent.putExtra("user_id",employeeId);
-
-        startActivity(intent);
+    public void navigateToProcessAccount(String employeeId) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, UserEditDataActivity.class);
+            intent.putExtra("user_id", employeeId);
+            startActivity(intent);
+        });
     }
 
     /**
@@ -158,6 +167,8 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
      */
     @Override
     public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        });
     }
 }

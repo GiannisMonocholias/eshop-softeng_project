@@ -1,11 +1,13 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails;
 
+import java.util.ArrayList;
+import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.OrderStatusType;
 
 /**
  * A stub implementation of the {@link OrderPreparationDetailsView} interface for unit testing.
- * It captures and stores order data and feedback messages passed by the presenter,
- * allowing for verification of the UI logic during order fulfillment tests.
+ * It captures and stores order data, item lists, and feedback messages passed by the presenter,
+ * allowing for verification of asynchronous UI logic during tests.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderPreparationDetailsViewStub implements OrderPreparationDetailsView {
@@ -15,12 +17,14 @@ public class OrderPreparationDetailsViewStub implements OrderPreparationDetailsV
     private String displayedPrice = "";
     private OrderStatusType displayedStatus;
 
+    private ArrayList<CartItem> loadedItems;
+
     private String errorMessage = "";
     private String successMessage = "";
     private boolean finishActivityCalled = false;
 
     /**
-     * Captures order metadata for display verification.
+     * {@inheritDoc}
      */
     @Override
     public void setOrderDetails(String ordercode, String customerName, String submissionDate, String price, OrderStatusType status) {
@@ -30,18 +34,32 @@ public class OrderPreparationDetailsViewStub implements OrderPreparationDetailsV
         this.displayedStatus = status;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateCartItems(ArrayList<CartItem> items) {
+        this.loadedItems = items;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showErrorMessage(String message) {
         this.errorMessage = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) {
         this.successMessage = message;
     }
 
     /**
-     * Marks that the activity finish request was triggered.
+     * {@inheritDoc}
      */
     @Override
     public void finishActivity() {
@@ -58,11 +76,19 @@ public class OrderPreparationDetailsViewStub implements OrderPreparationDetailsV
         return displayedCustomerName;
     }
 
+    public ArrayList<CartItem> getLoadedItems() {
+        return loadedItems;
+    }
+
     public String getErrorMessage() {
         return errorMessage;
     }
 
     public String getSuccessMessage() {
         return successMessage;
+    }
+
+    public boolean isFinishActivityCalled() {
+        return finishActivityCalled;
     }
 }

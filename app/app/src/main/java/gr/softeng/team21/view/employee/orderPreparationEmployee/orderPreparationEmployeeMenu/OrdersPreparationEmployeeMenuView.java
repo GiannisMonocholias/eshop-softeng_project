@@ -3,6 +3,7 @@ package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparatio
 /**
  * View contract for the Order Preparation Employee main menu.
  * Defines the navigation methods and UI interactions available from the dashboard.
+ * Acts as the contract between the Presenter and the Activity for asynchronous operations.
  * @author Γιάννης Μονοχολιάς
  */
 public interface OrdersPreparationEmployeeMenuView {

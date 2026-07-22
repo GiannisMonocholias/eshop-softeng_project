@@ -3,7 +3,7 @@ package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparatio
 /**
  * A stub implementation of the {@link OrdersPreparationEmployeeMenuView} interface for unit testing.
  * It simulates the main menu interface for an Order Preparation Employee, capturing
- * navigation requests and UI feedback state for assertion purposes.
+ * navigation requests and UI feedback state for assertion purposes asynchronously.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderPreparationEmployeeMenuViewStub implements OrdersPreparationEmployeeMenuView {
@@ -17,8 +17,7 @@ public class OrderPreparationEmployeeMenuViewStub implements OrdersPreparationEm
     private String messageShown = "";
 
     /**
-     * Captures the employee name display request.
-     * @param fullName The full name to be shown on the menu.
+     * {@inheritDoc}
      */
     @Override
     public void showEmployeeName(String fullName) {
@@ -26,8 +25,7 @@ public class OrderPreparationEmployeeMenuViewStub implements OrdersPreparationEm
     }
 
     /**
-     * Captures navigation to the screen displaying orders already assigned to the employee.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToAssignedOrders(String employeeId) {
@@ -35,8 +33,7 @@ public class OrderPreparationEmployeeMenuViewStub implements OrdersPreparationEm
     }
 
     /**
-     * Captures navigation to the screen where new available orders can be assigned.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToAvailableOrdersToAssign(String employeeId) {
@@ -44,8 +41,7 @@ public class OrderPreparationEmployeeMenuViewStub implements OrdersPreparationEm
     }
 
     /**
-     * Captures navigation to the account editing screen.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToProcessAccount(String employeeId) {
@@ -53,7 +49,7 @@ public class OrderPreparationEmployeeMenuViewStub implements OrdersPreparationEm
     }
 
     /**
-     * Marks that the account deletion confirmation dialog was requested to be shown.
+     * {@inheritDoc}
      */
     @Override
     public void showDeleteAccountConfirmation() {
@@ -61,7 +57,7 @@ public class OrderPreparationEmployeeMenuViewStub implements OrdersPreparationEm
     }
 
     /**
-     * Marks that the navigation back to the login screen was triggered.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToLogin() {
@@ -69,8 +65,7 @@ public class OrderPreparationEmployeeMenuViewStub implements OrdersPreparationEm
     }
 
     /**
-     * Captures generic feedback or error messages sent to the view.
-     * @param message The message content.
+     * {@inheritDoc}
      */
     @Override
     public void showMessage(String message) {
