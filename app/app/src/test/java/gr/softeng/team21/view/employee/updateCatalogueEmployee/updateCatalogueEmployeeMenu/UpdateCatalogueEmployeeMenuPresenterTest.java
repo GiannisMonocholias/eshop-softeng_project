@@ -1,18 +1,21 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueEmployeeMenu;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.CompletionException;
+
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 /**
  * Unit tests for {@link UpdateCatalogueEmployeeMenuPresenter}.
- * This suite verifies the core functionality of the Update Catalogue Employee menu,
+ * This suite verifies the core functionality of the Update Catalogue Employee menu asynchronously,
  * ensuring proper navigation to request management and secure handling of account operations.
  * @author Γιάννης Μονοχολιάς
  */
@@ -21,12 +24,13 @@ public class UpdateCatalogueEmployeeMenuPresenterTest {
     private UpdateCatalogueEmployeeMenuPresenter presenter;
     private UpdateCatalogueEmployeeMenuViewStub viewStub;
     private EmployeeDAO employeeDAO;
+    private UserCredentialsDAO userCredentialsDAO;
 
     private static final String EMPLOYEE_ID = "CAT-301";
 
     /**
      * Sets up the testing environment before each test case.
-     * Prepares memory data and instantiates the presenter with its dependencies.
+     * Prepares memory data asynchronously and instantiates the presenter with its dependencies.
      */
     @Before
     public void setUp() throws Exception {
@@ -34,12 +38,14 @@ public class UpdateCatalogueEmployeeMenuPresenterTest {
 
         viewStub = new UpdateCatalogueEmployeeMenuViewStub();
         employeeDAO = EmployeeDAOMemory.getInstance();
-        presenter = new UpdateCatalogueEmployeeMenuPresenter(viewStub, employeeDAO);
+        userCredentialsDAO = UserCredentialsDAOMemory.getInstance();
+
+        presenter = new UpdateCatalogueEmployeeMenuPresenter(viewStub, employeeDAO, userCredentialsDAO);
     }
 
     /**
      * Verifies that the correct employee name is retrieved and displayed
-     * upon view creation.
+     * upon view creation asynchronously.
      */
     @Test
     public void onViewCreatedShowsCorrectName() {
@@ -84,27 +90,27 @@ public class UpdateCatalogueEmployeeMenuPresenterTest {
     }
 
     /**
-     * Verifies the successful account deletion workflow:
-     * 1. Confirms the employee exists in memory and credentials are valid.
+     * Verifies the successful asynchronous account deletion workflow:
+     * 1. Confirms the employee exists in memory and credentials are valid using .join().
      * 2. Executes deletion.
      * 3. Ensures the employee is removed from the DAO and navigation to login occurs.
-     * 4. Confirms credentials are wiped by expecting a SecurityException.
-     * @throws SecurityException when validating credentials after deletion (Expected).
+     * 4. Confirms credentials are wiped by expecting a CompletionException.
      */
-    @Test(expected = SecurityException.class)
+    @Test(expected = CompletionException.class)
     public void onDeleteAccountConfirmedRemovesEmployeeAndNavigates() {
-        Assert.assertNotNull(employeeDAO.getEmployee(EMPLOYEE_ID));
-        Assert.assertSame(employeeDAO.getEmployee(EMPLOYEE_ID), UserCredentialsDAOMemory.getInstance().validateAndGetUser("d_georgiou", "pass1243"));
+        Employee currentEmployee = employeeDAO.getEmployee(EMPLOYEE_ID).join();
+        Assert.assertNotNull(currentEmployee);
+        Assert.assertSame(currentEmployee, userCredentialsDAO.validateAndGetUser("d_georgiou", "pass1243").join());
 
         presenter.onDeleteAccountConfirmed(EMPLOYEE_ID);
 
         Assert.assertEquals("Ο λογαριασμός διαγράφηκε επιτυχώς.", viewStub.getMessageShown());
         Assert.assertTrue(viewStub.isNavigateToLoginCalled());
 
-        Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID));
+        Assert.assertNull(employeeDAO.getEmployee(EMPLOYEE_ID).join());
 
-        // This should trigger the expected SecurityException
-        UserCredentialsDAOMemory.getInstance().validateAndGetUser("d_georgiou", "pass1243");
+        // This should trigger the expected CompletionException mapping to the SecurityException
+        userCredentialsDAO.validateAndGetUser("d_georgiou", "pass1243").join();
     }
 
     /**

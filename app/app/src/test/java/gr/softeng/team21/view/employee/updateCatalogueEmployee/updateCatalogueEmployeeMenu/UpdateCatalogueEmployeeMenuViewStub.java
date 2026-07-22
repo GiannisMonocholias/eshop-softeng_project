@@ -3,7 +3,7 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueE
 /**
  * A stub implementation of the {@link UpdateCatalogueEmployeeMenuView} interface for unit testing.
  * It simulates the main menu interface for an Update Catalogue Employee, capturing
- * navigation requests and UI feedback state for assertion purposes.
+ * asynchronous navigation requests and UI feedback state for assertion purposes.
  * @author Γιάννης Μονοχολιάς
  */
 public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmployeeMenuView {
@@ -17,8 +17,7 @@ public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmplo
     private String messageShown = "";
 
     /**
-     * Captures the employee name display request.
-     * @param fullName The full name to be shown on the menu.
+     * {@inheritDoc}
      */
     @Override
     public void showEmployeeName(String fullName) {
@@ -26,8 +25,7 @@ public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmplo
     }
 
     /**
-     * Captures navigation to the screen displaying requests already assigned to the employee.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToAssignedRequests(String employeeId) {
@@ -35,8 +33,7 @@ public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmplo
     }
 
     /**
-     * Captures navigation to the screen where new catalogue update requests can be assigned.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToAvailableRequestsToAssign(String employeeId) {
@@ -44,7 +41,7 @@ public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmplo
     }
 
     /**
-     * Marks that the account deletion confirmation dialog was requested.
+     * {@inheritDoc}
      */
     @Override
     public void showDeleteAccountConfirmation() {
@@ -52,7 +49,7 @@ public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmplo
     }
 
     /**
-     * Marks that the navigation back to the login screen was triggered.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToLogin() {
@@ -60,8 +57,7 @@ public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmplo
     }
 
     /**
-     * Captures navigation to the account editing screen.
-     * @param employeeId The ID of the employee navigating.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToProcessAccount(String employeeId) {
@@ -69,8 +65,7 @@ public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmplo
     }
 
     /**
-     * Captures generic feedback or error messages sent to the view.
-     * @param message The message content.
+     * {@inheritDoc}
      */
     @Override
     public void showMessage(String message) {
@@ -79,31 +74,11 @@ public class UpdateCatalogueEmployeeMenuViewStub implements UpdateCatalogueEmplo
 
     // --- Getters for Testing verification ---
 
-    public String getShownName() {
-        return shownName;
-    }
-
-    public String getNavigatedAssignedRequestsId() {
-        return navigatedAssignedRequestsId;
-    }
-
-    public String getNavigatedAvailableRequestsId() {
-        return navigatedAvailableRequestsId;
-    }
-
-    public String getNavigatedProcessAccountId() {
-        return navigatedProcessAccountId;
-    }
-
-    public boolean isDeleteConfirmationShown() {
-        return deleteConfirmationShown;
-    }
-
-    public boolean isNavigateToLoginCalled() {
-        return navigateToLoginCalled;
-    }
-
-    public String getMessageShown() {
-        return messageShown;
-    }
+    public String getShownName() { return shownName; }
+    public String getNavigatedAssignedRequestsId() { return navigatedAssignedRequestsId; }
+    public String getNavigatedAvailableRequestsId() { return navigatedAvailableRequestsId; }
+    public String getNavigatedProcessAccountId() { return navigatedProcessAccountId; }
+    public boolean isDeleteConfirmationShown() { return deleteConfirmationShown; }
+    public boolean isNavigateToLoginCalled() { return navigateToLoginCalled; }
+    public String getMessageShown() { return messageShown; }
 }

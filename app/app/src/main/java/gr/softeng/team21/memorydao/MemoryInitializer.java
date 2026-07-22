@@ -296,72 +296,72 @@ public class MemoryInitializer {
 
         // --- 1. Laptops ---
         ProductType laptop1 = new ProductType("Dell XPS 15", "Φορητός υπολογιστής υψηλών επιδόσεων με οθόνη αφής 4K.", new Money(BigDecimal.valueOf(1850.00), "€"), "TECH-001");
-        products.addProductType(laptop1);
+        products.addProductType(laptop1).join();
 
         ProductType laptop2 = new ProductType("MacBook Air M2", "Ελαφρύ και κομψό laptop της Apple με κορυφαία αυτονομία.", new Money(BigDecimal.valueOf(1299.90), "€"), "TECH-002");
-        products.addProductType(laptop2);
+        products.addProductType(laptop2).join();
 
         // --- 2. Mice ---
         ProductType mouse1 = new ProductType("Logitech MX Master 3S", "Ασύρματο ποντίκι εργονομικής σχεδίασης με αθόρυβα κλικ.", new Money(BigDecimal.valueOf(99.90), "€"), "TECH-003");
-        products.addProductType(mouse1);
+        products.addProductType(mouse1).join();
 
         ProductType mouse2 = new ProductType("Razer DeathAdder V3", "Ενσύρματο ποντίκι gaming με εξαιρετικά ελαφρύ σχεδιασμό.", new Money(BigDecimal.valueOf(79.90), "€"), "TECH-004");
-        products.addProductType(mouse2);
+        products.addProductType(mouse2).join();
 
         // --- 3. Keyboards ---
         ProductType keyboard1 = new ProductType("Corsair K70 RGB", "Μηχανικό πληκτρολόγιο gaming με διακόπτες Cherry MX.", new Money(BigDecimal.valueOf(169.90), "€"), "TECH-005");
-        products.addProductType(keyboard1);
+        products.addProductType(keyboard1).join();
 
         ProductType keyboard2 = new ProductType("Logitech MX Keys", "Ασύρματο πληκτρολόγιο χαμηλού προφίλ με έξυπνο φωτισμό.", new Money(BigDecimal.valueOf(119.00), "€"), "TECH-006");
-        products.addProductType(keyboard2);
+        products.addProductType(keyboard2).join();
 
         // --- 4. Monitors ---
         ProductType monitor1 = new ProductType("LG UltraGear 27\"", "Gaming οθόνη 27 ιντσών με ρυθμό ανανέωσης 144Hz.", new Money(BigDecimal.valueOf(349.00), "€"), "TECH-007");
-        products.addProductType(monitor1);
+        products.addProductType(monitor1).join();
 
         ProductType monitor2 = new ProductType("Dell UltraSharp 32\"", "Επαγγελματική οθόνη 4K με εξαιρετική πιστότητα χρωμάτων.", new Money(BigDecimal.valueOf(750.00), "€"), "TECH-008");
-        products.addProductType(monitor2);
+        products.addProductType(monitor2).join();
 
         // --- 5. CPUs ---
         ProductType cpu1 = new ProductType("Intel Core i9-14900K", "Κορυφαίος επεξεργαστής desktop με 24 πυρήνες.", new Money(BigDecimal.valueOf(680.00), "€"), "TECH-009");
-        products.addProductType(cpu1);
+        products.addProductType(cpu1).join();
 
         ProductType cpu2 = new ProductType("AMD Ryzen 7 7800X3D", "Ο καλύτερος επεξεργαστής για gaming με τεχνολογία 3D V-Cache.", new Money(BigDecimal.valueOf(420.00), "€"), "TECH-010");
-        products.addProductType(cpu2);
+        products.addProductType(cpu2).join();
 
         // --- 6. RAM ---
         ProductType ram1 = new ProductType("Corsair Vengeance 32GB", "Σετ μνήμης RAM DDR5 υψηλής ταχύτητας με RGB.", new Money(BigDecimal.valueOf(145.00), "€"), "TECH-011");
-        products.addProductType(ram1);
+        products.addProductType(ram1).join();
 
         ProductType ram2 = new ProductType("G.Skill Trident Z5", "Μνήμη RAM εξαιρετικά χαμηλής καθυστέρησης για overclocking.", new Money(BigDecimal.valueOf(180.00), "€"), "TECH-012");
-        products.addProductType(ram2);
+        products.addProductType(ram2).join();
 
         // --- 7. GPUs ---
         ProductType gpu1 = new ProductType("Nvidia RTX 4070", "Κάρτα γραφικών νέας γενιάς με υποστήριξη DLSS 3.", new Money(BigDecimal.valueOf(650.00), "€"), "TECH-013");
-        products.addProductType(gpu1);
+        products.addProductType(gpu1).join();
 
         ProductType gpu2 = new ProductType("AMD Radeon RX 7800 XT", "Ισχυρή κάρτα γραφικών με 16GB μνήμης VRAM.", new Money(BigDecimal.valueOf(540.00), "€"), "TECH-014");
-        products.addProductType(gpu2);
+        products.addProductType(gpu2).join();
 
         // --- 8. Storage ---
         ProductType storage1 = new ProductType("Samsung 990 Pro 1TB", "Δίσκος SSD NVMe M.2 με απίστευτες ταχύτητες.", new Money(BigDecimal.valueOf(109.90), "€"), "TECH-015");
-        products.addProductType(storage1);
+        products.addProductType(storage1).join();
 
         ProductType storage2 = new ProductType("WD Blue 4TB HDD", "Κλασικός σκληρός δίσκος μεγάλης χωρητικότητας.", new Money(BigDecimal.valueOf(85.00), "€"), "TECH-016");
-        products.addProductType(storage2);
+        products.addProductType(storage2).join();
 
         // --- 9. Accessories ---
         ProductType accessory1 = new ProductType("Sony WH-1000XM5", "Ασύρματα ακουστικά με κορυφαία ακύρωση θορύβου.", new Money(BigDecimal.valueOf(329.00), "€"), "TECH-017");
-        products.addProductType(accessory1);
+        products.addProductType(accessory1).join();
 
         ProductType accessory2 = new ProductType("Razer Kraken", "Ενσύρματα gaming ακουστικά με ήχο 7.1 Surround, οδηγούς 50mm και μαξιλαράκια Cooling Gel για μέγιστη άνεση.", new Money(BigDecimal.valueOf(79.90), "€"), "TECH-018");
-        products.addProductType(accessory2);
+        products.addProductType(accessory2).join();
 
         ProductType accessory3 = new ProductType("Logitech C920 HD Pro", "Web κάμερα υψηλής ευκρίνειας 1080p.", new Money(BigDecimal.valueOf(65.50), "€"), "TECH-019");
-        products.addProductType(accessory3);
+        products.addProductType(accessory3).join();
 
         ProductType accessory4 = new ProductType("iPad Air 5th Gen", "Tablet με επεξεργαστή M1 και οθόνη Liquid Retina.", new Money(BigDecimal.valueOf(679.00), "€"), "TECH-020");
-        products.addProductType(accessory4);
+        products.addProductType(accessory4).join();
 
         ProductType applewatch = new ProductType("AppleWatch SE 44mm" , "Έξυπνο ρολοι με λειτουργικό iOS" , new Money(BigDecimal.valueOf(299.00) , "€") , "TECH-021");
 
@@ -378,46 +378,46 @@ public class MemoryInitializer {
         ProductsWareHouseDAO warehouse = getProductsWareHouseDAO();
 
         try {
-            if (warehouse.getProductStocks().size() != products.getProducts().size()) {
+            if (warehouse.getProductStocks().size() != products.getProducts().join().size()) {
                 throw new IllegalStateException("Products warehouse does not have all productTypes");
             }
             // --- Laptops (Ακριβά είδη - Λίγο απόθεμα) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-001"), 10); // Dell XPS
-            warehouse.increaseProductStock(products.getProduct("TECH-002"), 8);  // MacBook Air
+            warehouse.increaseProductStock(products.getProduct("TECH-001").join(), 10); // Dell XPS
+            warehouse.increaseProductStock(products.getProduct("TECH-002").join(), 8);  // MacBook Air
 
             // --- Mice (Περιφερειακά - Αρκετό απόθεμα) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-003"), 45); // Logitech MX
-            warehouse.increaseProductStock(products.getProduct("TECH-004"), 30); // Razer Mouse
+            warehouse.increaseProductStock(products.getProduct("TECH-003").join(), 45); // Logitech MX
+            warehouse.increaseProductStock(products.getProduct("TECH-004").join(), 30); // Razer Mouse
 
             // --- Keyboards ---
-            warehouse.increaseProductStock(products.getProduct("TECH-005"), 25); // Corsair
-            warehouse.increaseProductStock(products.getProduct("TECH-006"), 35); // Logitech Keys
+            warehouse.increaseProductStock(products.getProduct("TECH-005").join(), 25); // Corsair
+            warehouse.increaseProductStock(products.getProduct("TECH-006").join(), 35); // Logitech Keys
 
             // --- Monitors (Ογκώδη είδη) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-007"), 15); // LG Monitor
-            warehouse.increaseProductStock(products.getProduct("TECH-008"), 10); // Dell Monitor
+            warehouse.increaseProductStock(products.getProduct("TECH-007").join(), 15); // LG Monitor
+            warehouse.increaseProductStock(products.getProduct("TECH-008").join(), 10); // Dell Monitor
 
             // --- CPUs (Υψηλή ζήτηση) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-009"), 12); // Intel i9
-            warehouse.increaseProductStock(products.getProduct("TECH-010"), 12); // Ryzen 7
+            warehouse.increaseProductStock(products.getProduct("TECH-009").join(), 12); // Intel i9
+            warehouse.increaseProductStock(products.getProduct("TECH-010").join(), 12); // Ryzen 7
 
             // --- RAM (Συχνή αγορά) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-011"), 50); // Corsair RAM
-            warehouse.increaseProductStock(products.getProduct("TECH-012"), 40); // G.Skill RAM
+            warehouse.increaseProductStock(products.getProduct("TECH-011").join(), 50); // Corsair RAM
+            warehouse.increaseProductStock(products.getProduct("TECH-012").join(), 40); // G.Skill RAM
 
             // --- GPUs (Πολύ ακριβά - Περιορισμένο απόθεμα) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-013"), 6);  // Nvidia 4070
-            warehouse.increaseProductStock(products.getProduct("TECH-014"), 8);  // AMD 7800 XT
+            warehouse.increaseProductStock(products.getProduct("TECH-013").join(), 6);  // Nvidia 4070
+            warehouse.increaseProductStock(products.getProduct("TECH-014").join(), 8);  // AMD 7800 XT
 
             // --- Storage ---
-            warehouse.increaseProductStock(products.getProduct("TECH-015"), 60); // Samsung SSD
-            warehouse.increaseProductStock(products.getProduct("TECH-016"), 40); // WD HDD
+            warehouse.increaseProductStock(products.getProduct("TECH-015").join(), 60); // Samsung SSD
+            warehouse.increaseProductStock(products.getProduct("TECH-016").join(), 40); // WD HDD
 
             // --- Accessories ---
-            warehouse.increaseProductStock(products.getProduct("TECH-017"), 20); // Sony Headphones
-            warehouse.increaseProductStock(products.getProduct("TECH-018"), 25); // Razer Headset
-            warehouse.increaseProductStock(products.getProduct("TECH-019"), 30); // Webcam
-            warehouse.increaseProductStock(products.getProduct("TECH-020"), 15); // iPad Air
+            warehouse.increaseProductStock(products.getProduct("TECH-017").join(), 20); // Sony Headphones
+            warehouse.increaseProductStock(products.getProduct("TECH-018").join(), 25); // Razer Headset
+            warehouse.increaseProductStock(products.getProduct("TECH-019").join(), 30); // Webcam
+            warehouse.increaseProductStock(products.getProduct("TECH-020").join(), 15); // iPad Air
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -435,8 +435,8 @@ public class MemoryInitializer {
 
         //ORDER 1
         ShoppingCart cart1 = new ShoppingCart(cust1);
-        cart1.addItem(new CartItem(products.getProduct("TECH-001"), 1));
-        cart1.addItem(new CartItem(products.getProduct("TECH-003"), 1));
+        cart1.addItem(new CartItem(products.getProduct("TECH-001").join(), 1));
+        cart1.addItem(new CartItem(products.getProduct("TECH-003").join(), 1));
 
         Order order1 = new Order("ORD-2023-001", new Date(10, 11, 2023), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, new Date(14, 11, 2023), cart1
@@ -450,9 +450,9 @@ public class MemoryInitializer {
         //ORDER 2
         ShoppingCart cart2 = new ShoppingCart(cust2);
         // CPU (1), GPU (1), RAM (2)
-        cart2.addItem(new CartItem(products.getProduct("TECH-009"), 1));
-        cart2.addItem(new CartItem(products.getProduct("TECH-013"), 1));
-        cart2.addItem(new CartItem(products.getProduct("TECH-011"), 2));
+        cart2.addItem(new CartItem(products.getProduct("TECH-009").join(), 1));
+        cart2.addItem(new CartItem(products.getProduct("TECH-013").join(), 1));
+        cart2.addItem(new CartItem(products.getProduct("TECH-011").join(), 2));
 
         Order order2 = new Order("ORD-2024-002", new Date(5, 1, 2024), OrderStatusType.NEW,
                 false, PaymentType.CASH, null, cart2
@@ -465,8 +465,8 @@ public class MemoryInitializer {
         //ORDER 3
         ShoppingCart cart3 = new ShoppingCart(cust3);
         // Headphones (1) + Webcam (1)
-        cart3.addItem(new CartItem(products.getProduct("TECH-017"), 1));
-        cart3.addItem(new CartItem(products.getProduct("TECH-019"), 1));
+        cart3.addItem(new CartItem(products.getProduct("TECH-017").join(), 1));
+        cart3.addItem(new CartItem(products.getProduct("TECH-019").join(), 1));
 
         Order order3 = new Order("ORD-2024-003", new Date(12, 1, 2024), OrderStatusType.SHIPPED,
                 false, PaymentType.CASH, null, cart3
@@ -478,7 +478,7 @@ public class MemoryInitializer {
 
         //ORDER 4
         ShoppingCart cart4 = new ShoppingCart(cust1);
-        cart4.addItem(new CartItem(products.getProduct("TECH-007"), 2));
+        cart4.addItem(new CartItem(products.getProduct("TECH-007").join(), 2));
 
         Order order4 = new Order("ORD-2024-004", new Date(15, 1, 2024), OrderStatusType.DELAYED,
                 false, PaymentType.CASH, null, cart4
@@ -491,7 +491,7 @@ public class MemoryInitializer {
 
         //ORDER 5
         ShoppingCart cart5 = new ShoppingCart(cust2);
-        cart5.addItem(new CartItem(products.getProduct("TECH-020"), 1));
+        cart5.addItem(new CartItem(products.getProduct("TECH-020").join(), 1));
 
         Order order5 = new Order("ORD-2024-005", new Date(20, 1, 2024), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, null, cart5
@@ -515,28 +515,28 @@ public class MemoryInitializer {
 
         // Request 1
         CatalogueUpdateRequest req1 = new CatalogueUpdateRequest(new Date(15, 1, 2024), "Αύξηση τιμής κατά 50€ λόγω νέας παρτίδας.",
-                products.getProduct("TECH-001"), AllowedRequest.PROCESS_PRODUCT, 1
+                products.getProduct("TECH-001").join(), AllowedRequest.PROCESS_PRODUCT, 1
         );
         requests.addUpdateRequest(req1); // Ή requests.save(req1)
 
 
         // Request 2
         CatalogueUpdateRequest req2 = new CatalogueUpdateRequest(new Date(16, 1, 2024), "Διόρθωση τυπογραφικού λάθους στα DPI του αισθητήρα.",
-                products.getProduct("TECH-004"), AllowedRequest.PROCESS_PRODUCT, 2
+                products.getProduct("TECH-004").join(), AllowedRequest.PROCESS_PRODUCT, 2
         );
         requests.addUpdateRequest(req2);
 
 
         // Request 3
         CatalogueUpdateRequest req3 = new CatalogueUpdateRequest(new Date(18, 1, 2024), "Εφαρμογή έκπτωσης 10% για προωθητική ενέργεια.",
-                products.getProduct("TECH-017"), AllowedRequest.PROCESS_PRODUCT, 3
+                products.getProduct("TECH-017").join(), AllowedRequest.PROCESS_PRODUCT, 3
         );
         requests.addUpdateRequest(req3);
 
 
         // Request 4
         CatalogueUpdateRequest req4 = new CatalogueUpdateRequest(new Date(20, 1, 2024), "Το προϊόν καταργήθηκε από τον προμηθευτή, παρακαλώ να αφαιρεθεί.",
-                products.getProduct("TECH-015"), AllowedRequest.DELETE_PRODUCT, 4
+                products.getProduct("TECH-015").join(), AllowedRequest.DELETE_PRODUCT, 4
         );
         requests.addUpdateRequest(req4);
 
@@ -556,7 +556,7 @@ public class MemoryInitializer {
         //=====================================================
 
         //Initialize Authentication System
-        AuthenticationSystem.getInstance();
+        AuthenticationSystem authSystem = new AuthenticationSystem(getUserCredentialsDAO());
 
     }
 

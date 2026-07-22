@@ -6,18 +6,20 @@ import gr.softeng.team21.view.util.UserType;
 /**
  * View contract for the login screen.
  * Defines the requirements for credential input, field management,
- * and role-based navigation.
+ * and role-based navigation asynchronously.
  * @author Γιάννης Μονοχολιάς
  */
 public interface LoginView {
 
     /**
-     * @return username input.
+     * Retrieves the username input from the user.
+     * @return The username string.
      */
     String getUsername();
 
     /**
-     * @return password input.
+     * Retrieves the password input from the user.
+     * @return The password string.
      */
     String getPassword();
 
@@ -27,14 +29,14 @@ public interface LoginView {
     void resetFields();
 
     /**
-     * Displays an error alert dialog.
+     * Displays an error alert dialog asynchronously.
      * @param title   The title of the error.
      * @param message The detailed error description.
      */
     void showErrorMessage(String title, String message);
 
     /**
-     * Displays a success feedback message.
+     * Displays a success feedback message asynchronously.
      * @param message The success description.
      */
     void showSuccessMessage(String message);
@@ -46,6 +48,8 @@ public interface LoginView {
      */
     void navigateUserToHomePage(UserType userType, User user);
 
-    /** Navigates to the user registration screen. */
+    /**
+     * Navigates to the user registration screen.
+     */
     void navigateToRegister();
 }

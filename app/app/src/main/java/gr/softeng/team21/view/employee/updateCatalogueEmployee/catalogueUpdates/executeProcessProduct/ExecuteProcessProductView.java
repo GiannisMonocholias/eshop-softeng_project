@@ -2,33 +2,37 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates
 
 /**
  * Defines methods for data binding, retrieving user input from form fields,
- * and managing validation/confirmation workflows.
+ * and managing asynchronous validation and confirmation workflows.
  * @author Γιάννης Μονοχολιάς
  */
 public interface ExecuteProcessProductView {
 
     /**
-     * @return product code input
+     * Retrieves the product code input.
+     * @return The current product code string.
      */
     String getProductCode();
 
     /**
-     * @return product name input
+     * Retrieves the product name input.
+     * @return The current product name string.
      */
     String getProductName();
 
     /**
-     * @return product price input
+     * Retrieves the product price input.
+     * @return The current product price string.
      */
     String getProductPrice();
 
     /**
-     * @return product description input
+     * Retrieves the product description input.
+     * @return The current product description string.
      */
     String getProductDescription();
 
     /**
-     * Fills the form fields with the current product data.
+     * Fills the form fields with the current product data asynchronously.
      * @param code The existing product code.
      * @param name The existing product name.
      * @param price The existing price value.

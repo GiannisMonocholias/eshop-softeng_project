@@ -1,18 +1,19 @@
 package gr.softeng.team21.view.user.login;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.memorydao.MemoryInitializer;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.view.util.UserType;
 
 /**
  * Unit tests for {@link LoginPresenter}.
- * This suite verifies the authentication flow, ensuring that users are
+ * This suite verifies the asynchronous authentication flow, ensuring that users are
  * correctly validated and navigated to their respective home pages based
- * on their roles (Customer, Deliverer, Order Preparation, etc.).
+ * on their roles (Customer, Deliverer, Order Preparation, etc.) using Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class LoginPresenterTest {
@@ -22,13 +23,19 @@ public class LoginPresenterTest {
 
     /**
      * Initializes the testing environment before each test case.
-     * Prepares memory data and instantiates the presenter with its view stub.
+     * Prepares memory data, initiates the domain service with DAOs,
+     * and instantiates the presenter with its dependencies.
      */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
+
         viewStub = new LoginViewStub();
-        presenter = new LoginPresenter(viewStub);
+
+        // Inject Memory DAO into the Domain Service
+        AuthenticationSystem authSystem = new AuthenticationSystem(UserCredentialsDAOMemory.getInstance());
+
+        presenter = new LoginPresenter(viewStub, authSystem);
     }
 
     /**
@@ -40,41 +47,49 @@ public class LoginPresenterTest {
         viewStub.setUsername("");
         viewStub.setPassword("");
         presenter.onLogin();
+
         Assert.assertEquals("Παρακαλώ συμπληρώστε όλα τα πεδία.", viewStub.getErrorMessage());
     }
 
     /**
-     * Verifies that an error message is shown when providing
-     * incorrect username or password.
+     * Verifies that an error message is safely caught via exceptionally()
+     * and shown in the view when providing an incorrect username or password.
      */
     @Test
     public void onLoginWrongCredentialsShowsError() {
         viewStub.setUsername("wrong");
         viewStub.setPassword("wrong");
+
         presenter.onLogin();
+
+        // The exception is handled internally by the Presenter, so we just check the View's state.
         Assert.assertEquals("Λάθος όνομα χρήστη ή κωδικός.", viewStub.getErrorMessage());
     }
 
     /**
-     * Verifies successful login and navigation for a Customer user.
+     * Verifies successful asynchronous login and navigation for a Customer user.
      */
     @Test
     public void onLoginSuccessCustomer() {
         viewStub.setUsername("nickgeorg");
         viewStub.setPassword("pass1234");
+
         presenter.onLogin();
+
         Assert.assertEquals(UserType.CUSTOMER, viewStub.getNavigatedUserType());
         Assert.assertEquals("Επιτυχής σύνδεση!", viewStub.getSuccessMessage());
     }
 
     /**
-     * Verifies successful login and navigation for a Deliverer user.
+     * Verifies successful asynchronous login and navigation for a Deliverer user.
      */
     @Test
     public void onLoginSuccessDeliverer() {
         viewStub.setUsername("n_stamos");
         viewStub.setPassword("pass1246");
+
         presenter.onLogin();
+
         Assert.assertEquals(UserType.DELIVERER, viewStub.getNavigatedUserType());
     }
 
@@ -103,7 +118,7 @@ public class LoginPresenterTest {
     }
 
     /**
-     * Verifies successful login and navigation for an Order Preparation Employee.
+     * Verifies successful asynchronous login and navigation for an Order Preparation Employee.
      */
     @Test
     public void onLoginOrderPreparationSuccess() {
@@ -117,7 +132,7 @@ public class LoginPresenterTest {
     }
 
     /**
-     * Verifies successful login and navigation for an Update Catalogue Employee.
+     * Verifies successful asynchronous login and navigation for an Update Catalogue Employee.
      */
     @Test
     public void onLoginUpdateCatalogueSuccess() {

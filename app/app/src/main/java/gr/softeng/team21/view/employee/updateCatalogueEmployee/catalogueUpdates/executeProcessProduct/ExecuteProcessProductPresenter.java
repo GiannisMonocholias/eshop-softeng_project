@@ -12,8 +12,8 @@ import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
 /**
  * Presenter for the product modification screen.
- * Handles the logic for validating new inputs, updating the domain object,
- * and marking the administrative request as served.
+ * Handles the asynchronous logic for validating new inputs, updating the domain object,
+ * and marking the administrative request as served using Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteProcessProductPresenter {
@@ -26,7 +26,11 @@ public class ExecuteProcessProductPresenter {
     private ProductType productToEdit;
 
     /**
-     * Initializes the presenter with required DAOs and view interface.
+     * Initializes the presenter with injected DAOs and the view interface.
+     * @param view The view implementation (Activity or Stub).
+     * @param employeeDAO Data access for employee records.
+     * @param updateRequestDAO Data access for update requests.
+     * @param productTypeDAO Data access for the product catalogue.
      */
     public ExecuteProcessProductPresenter(ExecuteProcessProductView view, EmployeeDAO employeeDAO, UpdateRequestDAO updateRequestDAO, ProductTypeDAO productTypeDAO) {
         this.view = view;
@@ -36,29 +40,43 @@ public class ExecuteProcessProductPresenter {
     }
 
     /**
-     * Loads the request context and the specific product to be edited.
+     * Asynchronously loads the request context and the specific product to be edited.
      * @param employeeId The ID of the employee executing the process.
      * @param requestId  The ID of the process request.
      */
     public void loadRequestDetails(String employeeId, int requestId) {
-        this.loggedInEmployee = (UpdateCatalogueEmployee) employeeDAO.getEmployee(employeeId);
-        if (updateRequestDAO.getUpdateRequests() != null) {
-            this.currentRequest = updateRequestDAO.getUpdateRequests().get(requestId);
-        }
+        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+            if (employee instanceof UpdateCatalogueEmployee) {
+                this.loggedInEmployee = (UpdateCatalogueEmployee) employee;
 
-        if (currentRequest == null || loggedInEmployee == null || currentRequest.getProduct() == null) {
-            view.showError("Σφάλμα: Τα στοιχεία του υπαλλήλου ή του αιτήματος ή του επηρεαζόμενου προϊόντος δεν βρέθηκαν.");
-            return;
-        }
+                updateRequestDAO.getUpdateRequests().thenAccept(requestsMap -> {
+                    this.currentRequest = requestsMap.get(requestId);
 
-        this.productToEdit = currentRequest.getProduct();
-        view.setRequestDescription(currentRequest.getUpdateDescription());
+                    if (currentRequest == null || currentRequest.getProduct() == null) {
+                        view.showError("Σφάλμα: Τα στοιχεία του αιτήματος ή του επηρεαζόμενου προϊόντος δεν βρέθηκαν.");
+                        return;
+                    }
 
-        String priceStr = (productToEdit.getPrice() != null) ?
-                String.valueOf(productToEdit.getPrice().getAmount()) : "";
+                    this.productToEdit = currentRequest.getProduct();
+                    view.setRequestDescription(currentRequest.getUpdateDescription());
 
-        view.setProductData(productToEdit.getProductCode(), productToEdit.getProductname(),
-                priceStr, productToEdit.getDescription());
+                    String priceStr = (productToEdit.getPrice() != null) ?
+                            String.valueOf(productToEdit.getPrice().getAmount()) : "";
+
+                    view.setProductData(productToEdit.getProductCode(), productToEdit.getProductname(),
+                            priceStr, productToEdit.getDescription());
+
+                }).exceptionally(e -> {
+                    view.showError("Σφάλμα ανάκτησης αιτήματος: " + e.getMessage());
+                    return null;
+                });
+            } else {
+                view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
+            }
+        }).exceptionally(e -> {
+            view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
+            return null;
+        });
     }
 
     /**
@@ -72,15 +90,18 @@ public class ExecuteProcessProductPresenter {
 
             view.showConfirmationDialog();
         } catch (NumberFormatException e) {
-            view.showInputError("price", "Please enter a valid price value.");
+            view.showInputError("price", "Please enter a valid numeric price value.");
         }
     }
 
     /**
-     * Applies the validated changes to the domain object and updates the request status.
+     * Asynchronously applies the validated changes to the domain object, updates the
+     * product repository, and marks the request status as SERVED.
      * Cleans up the employee's assigned task queue upon success.
      */
     public void onSaveConfirmed() {
+        if (currentRequest == null || loggedInEmployee == null || productToEdit == null) return;
+
         String newCode = view.getProductCode();
         String newName = view.getProductName();
         String newPriceStr = view.getProductPrice();
@@ -88,18 +109,30 @@ public class ExecuteProcessProductPresenter {
 
         Money newMoney = new Money(BigDecimal.valueOf(Double.parseDouble(newPriceStr)), "€");
 
-        // Domain updates
+        // Apply domain updates
         productToEdit.setProductcode(newCode);
         productToEdit.setProductname(newName);
         productToEdit.setDescription(newDesc);
         productToEdit.setPrice(newMoney);
 
-        currentRequest.setStatus(RequestStatusType.SERVED);
+        // Persist product updates asynchronously
+        productTypeDAO.processProduct(productToEdit).thenAccept(v1 -> {
+            currentRequest.setStatus(RequestStatusType.SERVED);
 
-        if (loggedInEmployee.getAssignedRequests() != null) {
-            loggedInEmployee.getAssignedRequests().remove(currentRequest.getId());
-        }
+            // Persist the request state change
+            updateRequestDAO.addUpdateRequest(currentRequest).thenAccept(v2 -> {
+                if (loggedInEmployee.getAssignedRequests() != null) {
+                    loggedInEmployee.getAssignedRequests().remove(currentRequest.getId());
+                }
+                view.showSuccessMessage("Οι αλλαγές αποθηκεύτηκαν επιτυχώς!");
+            }).exceptionally(e -> {
+                view.showError("Σφάλμα κατά την ενημέρωση του αιτήματος: " + e.getMessage());
+                return null;
+            });
 
-        view.showSuccessMessage("Οι αλλαγές αποθηκεύτηκαν επιτυχώς!");
+        }).exceptionally(e -> {
+            view.showError("Σφάλμα κατά την αποθήκευση του προϊόντος: " + e.getMessage());
+            return null;
+        });
     }
 }

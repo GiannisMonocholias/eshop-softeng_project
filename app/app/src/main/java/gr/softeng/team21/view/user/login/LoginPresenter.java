@@ -7,13 +7,13 @@ import gr.softeng.team21.domain.CustomerServiceEmployee;
 import gr.softeng.team21.domain.Deliverer;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
-import gr.softeng.team21.domain.User;
 import gr.softeng.team21.view.util.UserType;
 
 /**
  * Presenter for the Login screen.
- * Coordinates with the {@link AuthenticationSystem} to validate credentials
+ * Coordinates with the {@link AuthenticationSystem} to asynchronously validate credentials
  * and determines the user's role to trigger appropriate navigation.
+ * Uses Dependency Injection for the AuthenticationSystem.
  * @author Γιάννης Μονοχολιάς
  */
 public class LoginPresenter {
@@ -21,16 +21,17 @@ public class LoginPresenter {
     private AuthenticationSystem authenticationSystem;
 
     /**
-     * Initializes the presenter and connects to the singleton AuthenticationSystem.
-     * @param view The login view implementation.
+     * Initializes the presenter with the view and the authentication domain service.
+     * @param view The login view implementation (Activity or Stub).
+     * @param authenticationSystem The domain service handling authentication.
      */
-    public LoginPresenter(LoginView view) {
+    public LoginPresenter(LoginView view, AuthenticationSystem authenticationSystem) {
         this.view = view;
-        authenticationSystem = AuthenticationSystem.getInstance();
+        this.authenticationSystem = authenticationSystem;
     }
 
     /**
-     * Handles the login logic. Validates input, attempts authentication,
+     * Handles the login logic asynchronously. Validates input, attempts authentication,
      * and maps the resulting User object to a role-specific UserType for navigation.
      */
     public void onLogin() {
@@ -42,11 +43,9 @@ public class LoginPresenter {
             return;
         }
 
-        try {
-            User user = authenticationSystem.login(username, password);
+        authenticationSystem.login(username, password).thenAccept(user -> {
             view.showSuccessMessage("Επιτυχής σύνδεση!");
 
-            // Identify user role through instance checking
             UserType usertype = null;
             if (user instanceof Customer) {
                 usertype = UserType.CUSTOMER;
@@ -62,17 +61,15 @@ public class LoginPresenter {
                 usertype = UserType.ADMIN;
             }
 
-
-
             if (usertype != null) {
                 view.navigateUserToHomePage(usertype, user);
             } else {
-                view.showErrorMessage("Unsupported User", "This user type is not supported by the system.");
+                view.showErrorMessage("Σφάλμα", "Ο τύπος του χρήστη δεν υποστηρίζεται από το σύστημα.");
             }
-
-        } catch (SecurityException e) {
+        }).exceptionally(e -> {
             view.showErrorMessage("Αποτυχία σύνδεσης", "Λάθος όνομα χρήστη ή κωδικός.");
-        }
+            return null;
+        });
     }
 
     /**

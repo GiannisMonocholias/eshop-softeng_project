@@ -1,28 +1,31 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
-import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
-import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.ProductTypeDAO;
+import gr.softeng.team21.dao.UpdateRequestDAO;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
+import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
 
 /**
  * Activity for processing a product modification request.
  * Provides a form-based UI for updating product attributes and implements
  * {@link ExecuteProcessProductView} for communication with the presenter.
+ * Secures UI updates via runOnUiThread and uses Material Components.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteProcessProductActivity extends AppCompatActivity implements ExecuteProcessProductView {
@@ -38,8 +41,9 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
     private static final String REQ_ID_EXTRA = "REQUEST_ID";
 
     /**
-     * Initializes UI components, sets up window insets, and triggers
-     * the loading of request details via the presenter.
+     * Initializes UI components, sets up window insets, injects DAOs, and triggers
+     * the asynchronous loading of request details via the presenter.
+     * @param savedInstanceState If the activity is being re-initialized.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +59,17 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
 
         initializeViews();
 
-        presenter = new ExecuteProcessProductPresenter(this, EmployeeDAOMemory.getInstance(), UpdateRequestDAOMemory.getInstance(), ProductTypeDAOMemory.getInstance());
+        // DEPENDENCY INJECTION: Connect Presenter to Firebase DAOs
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+        UpdateRequestDAO updateRequestDAO = new UpdateRequestDAOFirebase();
+        ProductTypeDAO productTypeDAO = new ProductTypeDAOFirebase();
+
+        presenter = new ExecuteProcessProductPresenter(this, employeeDAO, updateRequestDAO, productTypeDAO);
 
         String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
         int requestId = getIntent().getIntExtra(REQ_ID_EXTRA, -1);
 
+        // Fetch data asynchronously
         presenter.loadRequestDetails(employeeId, requestId);
 
         btnSaveChanges.setOnClickListener(v -> presenter.onSaveClicked());
@@ -70,23 +80,19 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
      */
     private void initializeViews() {
         txtDescription = findViewById(R.id.txtexecuteProcessProductRequestDescription);
-
         edtCode = findViewById(R.id.edtexecuteProcessProductDataCodeInput);
         edtName = findViewById(R.id.edtexecuteProcessProductDataNameInput);
         edtPrice = findViewById(R.id.edtexecuteProcessProductDataPriceInput);
         edtDesc = findViewById(R.id.edtexecuteProcessProductDataDescriptionInput);
-
         btnSaveChanges = findViewById(R.id.btnexecuteProcessProductSave);
     }
-
-    // Input retrieval methods
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String getProductCode() {
-        return edtCode.getText().toString();
+        return edtCode.getText() != null ? edtCode.getText().toString() : "";
     }
 
     /**
@@ -94,7 +100,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
      */
     @Override
     public String getProductName() {
-        return edtName.getText().toString();
+        return edtName.getText() != null ? edtName.getText().toString() : "";
     }
 
     /**
@@ -102,7 +108,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
      */
     @Override
     public String getProductPrice() {
-        return edtPrice.getText().toString();
+        return edtPrice.getText() != null ? edtPrice.getText().toString() : "";
     }
 
     /**
@@ -110,7 +116,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
      */
     @Override
     public String getProductDescription() {
-        return edtDesc.getText().toString();
+        return edtDesc.getText() != null ? edtDesc.getText().toString() : "";
     }
 
     /**
@@ -118,10 +124,12 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
      */
     @Override
     public void setProductData(String code, String name, String price, String description) {
-        edtCode.setText(code);
-        edtName.setText(name);
-        edtPrice.setText(price);
-        edtDesc.setText(description);
+        runOnUiThread(() -> {
+            edtCode.setText(code);
+            edtName.setText(name);
+            edtPrice.setText(price);
+            edtDesc.setText(description);
+        });
     }
 
     /**
@@ -129,7 +137,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
      */
     @Override
     public void setRequestDescription(String description) {
-        txtDescription.setText(description);
+        runOnUiThread(() -> txtDescription.setText(description));
     }
 
     /**
@@ -137,52 +145,48 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
      */
     @Override
     public void showInputError(String field, String message) {
-        switch (field) {
-            case "code": edtCode.setError(message); edtCode.requestFocus(); break;
-            case "name": edtName.setError(message); edtName.requestFocus(); break;
-            case "price": edtPrice.setError(message); edtPrice.requestFocus(); break;
-        }
+        runOnUiThread(() -> {
+            switch (field) {
+                case "code": edtCode.setError(message); edtCode.requestFocus(); break;
+                case "name": edtName.setError(message); edtName.requestFocus(); break;
+                case "price": edtPrice.setError(message); edtPrice.requestFocus(); break;
+            }
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Shows a success Android dialog and returns the user to the previous screen.
+     * Shows a success {@link MaterialAlertDialogBuilder} and returns the user to the previous screen.
      */
     @Override
     public void showSuccessMessage(String message) {
-        new AlertDialog.Builder(this)
-                .setTitle("Επιτυχία")
-                .setMessage(message)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setCancelable(false)
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Επιτυχία")
+                    .setMessage(message)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setPositiveButton("OK", (dialog, which) -> finish())
+                    .setCancelable(false)
+                    .show();
+        });
     }
 
     /**
      * {@inheritDoc}
-     * Displays a confirmation Android {@link AlertDialog} to ensure the user
+     * Displays a confirmation {@link MaterialAlertDialogBuilder} to ensure the user
      * wants to overwrite catalogue data.
      */
     @Override
     public void showConfirmationDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("Επιβεβαίωση Αποθήκευσης")
-                .setMessage("Είστε σίγουροι ότι θέλετε να αποθηκεύσετε τις αλλαγές;")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        presenter.onSaveConfirmed();
-                    }
-                })
-                .setNegativeButton("ΟΧΙ", null)
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Επιβεβαίωση Αποθήκευσης")
+                    .setMessage("Είστε σίγουροι ότι θέλετε να αποθηκεύσετε τις αλλαγές;")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("ΝΑΙ", (dialog, which) -> presenter.onSaveConfirmed())
+                    .setNegativeButton("ΟΧΙ", null)
+                    .show();
+        });
     }
 
     /**
@@ -190,12 +194,13 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
      */
     @Override
     public void showError(String message) {
-        new AlertDialog.Builder(this)
-                .setTitle("Σφάλμα")
-                .setMessage(message)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton("OK", null)
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Σφάλμα")
+                    .setMessage(message)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
     }
-
 }

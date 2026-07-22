@@ -6,21 +6,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import gr.softeng.team21.R;
+import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Admin;
+import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
 import gr.softeng.team21.domain.Deliverer;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.domain.User;
-import gr.softeng.team21.memorydao.MemoryInitializer;
+import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.view.admin.AdminPanelActivity;
 import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
 import gr.softeng.team21.view.customer.register.RegisterActivity;
@@ -33,7 +38,8 @@ import gr.softeng.team21.view.util.UserType;
 /**
  * Activity providing the primary Login UI.
  * Implements {@link LoginView} and routes users to role-specific activities
- * based on their authentication status.
+ * based on their authentication status. Incorporates Dependency Injection
+ * and secures UI updates with runOnUiThread.
  * @author Γιάννης Μονοχολιάς
  */
 public class LoginActivity extends AppCompatActivity implements LoginView {
@@ -45,8 +51,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private LoginPresenter presenter;
 
     /**
-     * Initializes the layout, binds UI components, and connects the presenter.
-     * Configures click listeners for login and registration actions.
+     * Initializes the layout, binds UI components, injects dependencies,
+     * and connects the presenter.
+     * @param savedInstanceState If the activity is being re-initialized.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +66,19 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         usernameEditText = findViewById(R.id.edtloginUsername);
         passwordEditText = findViewById(R.id.edtloginPassword);
         loginButton = findViewById(R.id.loginButton);
         registerTextView = findViewById(R.id.loginregisterTxtView);
 
+        // DEPENDENCY INJECTION
+        UserCredentialsDAO credentialsDAO = UserCredentialsDAOMemory.getInstance(); // Will be UserCredentialsDAOFirebase() later
+        AuthenticationSystem authSystem = new AuthenticationSystem(credentialsDAO);
 
-        presenter = new LoginPresenter(this);
+        presenter = new LoginPresenter(this, authSystem);
 
         loginButton.setOnClickListener(v -> presenter.onLogin());
-
         registerTextView.setOnClickListener(v -> presenter.onRegister());
     }
 
@@ -93,11 +103,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
      */
     @Override
     public void showErrorMessage(String title, String message) {
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", null)
-                .show();
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
     }
 
     /**
@@ -105,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
      */
     @Override
     public void showSuccessMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -115,37 +128,39 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
      */
     @Override
     public void navigateUserToHomePage(UserType userType, User user) {
-        Intent intent = null;
+        runOnUiThread(() -> {
+            Intent intent = null;
 
-        switch (userType){
-            case CUSTOMER_SERVICE_EMPLOYEE:
-                intent = new Intent(LoginActivity.this, CustomerServiceMenuActivity.class);
-                intent.putExtra("CUSTOMER_SERVICE_EMPLOYEE_ID", ((CustomerServiceEmployee)user).getEmployeeId());
-                break;
-            case DELIVERER:
-                intent = new Intent(LoginActivity.this, DelivererMenuActivity.class);
-                intent.putExtra("DELIVERER_ID", ((Deliverer)user).getEmployeeId());
-                break;
-            case ORDER_PREPARATION_EMPLOYEE:
-                intent = new Intent(LoginActivity.this, OrderPreparationEmployeeMenuActivity.class);
-                intent.putExtra("ORDER_PREPARATION_EMPLOYEE_ID", ((OrderPreparationEmployee)user).getEmployeeId());
-                break;
-            case UPDATE_CATALOGUE_EMPLOYEE:
-                intent = new Intent(LoginActivity.this, UpdateCatalogueEmployeeMenuActivity.class);
-                intent.putExtra("UPDATE_CATALOGUE_EMPLOYEE_ID", ((UpdateCatalogueEmployee)user).getEmployeeId());
-                break;
-            case CUSTOMER:
-                intent = new Intent(LoginActivity.this, CustomerHomePageActivity.class);
-                intent.putExtra("CUSTOMER_ID", ((Customer)user).getCustomer_id());
-                break;
-            case ADMIN:
-                intent = new Intent(LoginActivity.this, AdminPanelActivity.class);
-                break;
-        }
+            switch (userType){
+                case CUSTOMER_SERVICE_EMPLOYEE:
+                    intent = new Intent(LoginActivity.this, CustomerServiceMenuActivity.class);
+                    intent.putExtra("CUSTOMER_SERVICE_EMPLOYEE_ID", ((CustomerServiceEmployee)user).getEmployeeId());
+                    break;
+                case DELIVERER:
+                    intent = new Intent(LoginActivity.this, DelivererMenuActivity.class);
+                    intent.putExtra("DELIVERER_ID", ((Deliverer)user).getEmployeeId());
+                    break;
+                case ORDER_PREPARATION_EMPLOYEE:
+                    intent = new Intent(LoginActivity.this, OrderPreparationEmployeeMenuActivity.class);
+                    intent.putExtra("ORDER_PREPARATION_EMPLOYEE_ID", ((OrderPreparationEmployee)user).getEmployeeId());
+                    break;
+                case UPDATE_CATALOGUE_EMPLOYEE:
+                    intent = new Intent(LoginActivity.this, UpdateCatalogueEmployeeMenuActivity.class);
+                    intent.putExtra("UPDATE_CATALOGUE_EMPLOYEE_ID", ((UpdateCatalogueEmployee)user).getEmployeeId());
+                    break;
+                case CUSTOMER:
+                    intent = new Intent(LoginActivity.this, CustomerHomePageActivity.class);
+                    intent.putExtra("CUSTOMER_ID", ((Customer)user).getCustomer_id());
+                    break;
+                case ADMIN:
+                    intent = new Intent(LoginActivity.this, AdminPanelActivity.class);
+                    break;
+            }
 
-        if(intent != null){
-            startActivity(intent);
-        }
+            if (intent != null) {
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -153,8 +168,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
      */
     @Override
     public void navigateToRegister() {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        startActivity(intent);
+        runOnUiThread(() -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
     }
 
     /**
@@ -172,7 +189,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
      */
     @Override
     public void resetFields() {
-        usernameEditText.setText("");
-        passwordEditText.setText("");
+        runOnUiThread(() -> {
+            usernameEditText.setText("");
+            passwordEditText.setText("");
+        });
     }
 }

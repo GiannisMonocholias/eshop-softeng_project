@@ -2,13 +2,13 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueE
 
 /**
  * Defines the navigation methods for managing catalogue update requests
- * and user account operations.
+ * and user account operations asynchronously.
  * @author Γιάννης Μονοχολιάς
  */
 public interface UpdateCatalogueEmployeeMenuView {
 
     /**
-     * Updates the UI header with the employee's full name.
+     * Updates the UI header with the employee's full name asynchronously.
      * @param fullName The employee's concatenated first and last name.
      */
     void showEmployeeName(String fullName);

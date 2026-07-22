@@ -3,7 +3,7 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates
 /**
  * A stub implementation of the {@link ExecuteProcessProductView} interface for unit testing.
  * It simulates the product update form, capturing data input and verifying the
- * display of product details, error messages, and confirmation dialogs.
+ * asynchronous display of product details, error messages, and confirmation dialogs.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteProcessProductViewStub implements ExecuteProcessProductView {
@@ -19,10 +19,28 @@ public class ExecuteProcessProductViewStub implements ExecuteProcessProductView 
     private String errorField = "";
     private boolean confirmationDialogShown = false;
 
-
+    /**
+     * Simulates the user entering a product code into the text field.
+     * @param codeInput The product code string.
+     */
     public void setCodeInput(String codeInput) { this.codeInput = codeInput; }
+
+    /**
+     * Simulates the user entering a product name.
+     * @param nameInput The product name string.
+     */
     public void setNameInput(String nameInput) { this.nameInput = nameInput; }
+
+    /**
+     * Simulates the user entering a price.
+     * @param priceInput The product price string.
+     */
     public void setPriceInput(String priceInput) { this.priceInput = priceInput; }
+
+    /**
+     * Simulates the user entering a description.
+     * @param descInput The product description string.
+     */
     public void setDescInput(String descInput) { this.descInput = descInput; }
 
     @Override
@@ -38,7 +56,7 @@ public class ExecuteProcessProductViewStub implements ExecuteProcessProductView 
     public String getProductDescription() { return descInput; }
 
     /**
-     * Populates the view fields with existing product data for editing.
+     * {@inheritDoc}
      */
     @Override
     public void setProductData(String code, String name, String price, String description) {
@@ -49,7 +67,7 @@ public class ExecuteProcessProductViewStub implements ExecuteProcessProductView 
     }
 
     /**
-     * Captures the administrative request description.
+     * {@inheritDoc}
      */
     @Override
     public void setRequestDescription(String description) {
@@ -57,26 +75,31 @@ public class ExecuteProcessProductViewStub implements ExecuteProcessProductView 
     }
 
     /**
-     * Records which input field caused a validation error.
-     * @param field The field name (e.g., "price").
+     * {@inheritDoc}
      */
     @Override
     public void showInputError(String field, String message) {
         this.errorField = field;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) {
         this.successMessage = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         this.errorMessage = message;
     }
 
     /**
-     * Marks that the final confirmation dialog was triggered.
+     * {@inheritDoc}
      */
     @Override
     public void showConfirmationDialog() {

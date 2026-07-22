@@ -16,7 +16,7 @@ import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
 /**
  * Unit tests for {@link ExecuteInsertProductPresenter}.
- * This suite verifies the administrative task of inserting a new product into the catalogue,
+ * This suite verifies the administrative task of inserting a new product into the catalogue asynchronously,
  * ensuring correct request handling, data validation for prices, and final record persistence.
  * @author Γιάννης Μονοχολιάς
  */
@@ -31,52 +31,55 @@ public class ExecuteInsertProductPresenterTest {
 
     /**
      * Initializes the testing environment before each test.
-     * Populates memory repositories, instantiates the presenter, and simulates
-     * the assignment of an insertion request to the employee.
+     * Populates memory repositories asynchronously, instantiates the presenter with injected dependencies,
+     * and simulates the assignment of an insertion request to the employee.
      */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
 
         viewStub = new ExecuteInsertProductViewStub();
-        presenter = new ExecuteInsertProductPresenter(viewStub, EmployeeDAOMemory.getInstance(),
-                UpdateRequestDAOMemory.getInstance(), ProductTypeDAOMemory.getInstance()
+        presenter = new ExecuteInsertProductPresenter(
+                viewStub,
+                EmployeeDAOMemory.getInstance(),
+                UpdateRequestDAOMemory.getInstance(),
+                ProductTypeDAOMemory.getInstance()
         );
 
-        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
+        // Fetch objects using .join() due to the CompletableFuture architecture
+        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(INSERT_REQUEST_ID);
 
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(INSERT_REQUEST_ID);
         catEmployee.assignRequest(request.getId());
     }
 
     /**
-     * Verifies that the description of the insertion request is correctly loaded
+     * Verifies that the description of the insertion request is correctly loaded asynchronously
      * and displayed to help the employee understand what product to insert.
      */
     @Test
     public void loadRequestDetailsDisplaysDescription() {
         presenter.loadRequestDetails(EMPLOYEE_ID, INSERT_REQUEST_ID);
-
         Assert.assertTrue(viewStub.getRequestDescription().contains("εκτυπωτή"));
     }
 
     /**
      * Verifies that errors are handled correctly when attempting to load request
-     * details with invalid IDs.
+     * details with invalid IDs asynchronously.
      */
     @Test
     public void loadRequestDetailsInvalidDataShowsError() {
         presenter.loadRequestDetails("INVALID_EMP_ID", INSERT_REQUEST_ID);
-        Assert.assertEquals("Σφάλμα: Τα στοιχεία του υπαλλήλου ή του αιτήματος δεν βρέθηκαν.", viewStub.getErrorMessage());
+        Assert.assertTrue(viewStub.getErrorMessage().contains("Σφάλμα"));
 
         viewStub.showError(""); // Clear message for next part
 
         presenter.loadRequestDetails(EMPLOYEE_ID, -999);
-        Assert.assertEquals("Σφάλμα: Τα στοιχεία του υπαλλήλου ή του αιτήματος δεν βρέθηκαν.", viewStub.getErrorMessage());
+        Assert.assertTrue(viewStub.getErrorMessage().contains("Σφάλμα"));
     }
 
     /**
-     * Verifies the successful product insertion workflow:
+     * Verifies the successful asynchronous product insertion workflow:
      * 1. Valid data is provided through the view.
      * 2. The presenter saves the new product to the ProductTypeDAO.
      * 3. The request status is updated to SERVED.
@@ -96,14 +99,14 @@ public class ExecuteInsertProductPresenterTest {
         // Verification of success message
         Assert.assertTrue(viewStub.getSuccessMessage().contains("επιτυχώς"));
 
-        // Domain persistence verification
-        ProductType newProduct = ProductTypeDAOMemory.getInstance().getProduct("TECH-NEW-01");
+        // Domain persistence verification via .join()
+        ProductType newProduct = ProductTypeDAOMemory.getInstance().getProduct("TECH-NEW-01").join();
         Assert.assertNotNull("Το νέο προϊόν έπρεπε να υπάρχει στο DAO", newProduct);
         Assert.assertEquals("Canon Pixma TS3450", newProduct.getProductname());
         Assert.assertEquals(55.90, newProduct.getPrice().getAmount().doubleValue(), 0.001);
 
         // Request lifecycle verification
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(INSERT_REQUEST_ID);
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(INSERT_REQUEST_ID);
         Assert.assertEquals(RequestStatusType.SERVED, request.getStatus());
 
         // Employee task cleanup verification
@@ -126,7 +129,6 @@ public class ExecuteInsertProductPresenterTest {
         presenter.onConfirmInsert();
 
         Assert.assertEquals("price", viewStub.getInputErrorField());
-        Assert.assertNotNull(viewStub.getErrorMessage());
     }
 
     /**

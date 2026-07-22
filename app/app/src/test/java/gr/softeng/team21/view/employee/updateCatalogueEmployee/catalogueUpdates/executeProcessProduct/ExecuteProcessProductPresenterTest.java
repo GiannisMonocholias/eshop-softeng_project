@@ -16,9 +16,9 @@ import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
 /**
  * Unit tests for {@link ExecuteProcessProductPresenter}.
- * This suite verifies the update workflow for existing products, ensuring data integrity,
+ * This suite verifies the asynchronous update workflow for existing products, ensuring data integrity,
  * correct price validation, and synchronized status updates between products
- * and administrative requests.
+ * and administrative requests without using try-catch blocks.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteProcessProductPresenterTest {
@@ -32,27 +32,31 @@ public class ExecuteProcessProductPresenterTest {
     private static final String PRODUCT_CODE = "TECH-004";
 
     /**
-     * Initializes the test environment, prepares memory data, and simulates
-     * a request assignment before each test case.
+     * Initializes the test environment, prepares memory data asynchronously, and simulates
+     * a request assignment before each test case using Dependency Injection.
      */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
 
         viewStub = new ExecuteProcessProductViewStub();
-        presenter = new ExecuteProcessProductPresenter(viewStub, EmployeeDAOMemory.getInstance(),
-                UpdateRequestDAOMemory.getInstance(), ProductTypeDAOMemory.getInstance()
+        presenter = new ExecuteProcessProductPresenter(
+                viewStub,
+                EmployeeDAOMemory.getInstance(),
+                UpdateRequestDAOMemory.getInstance(),
+                ProductTypeDAOMemory.getInstance()
         );
 
-        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
+        // Uses .join() to safely fetch data from CompletableFuture DAOs
+        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(PROCESS_REQUEST_ID);
 
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(PROCESS_REQUEST_ID);
         catEmployee.assignRequest(request.getId());
     }
 
     /**
      * Verifies that existing product details and request descriptions are
-     * correctly loaded into the edit form.
+     * correctly loaded asynchronously into the edit form.
      */
     @Test
     public void loadRequestDetailsValidDataDisplaysDetails() {
@@ -65,7 +69,7 @@ public class ExecuteProcessProductPresenterTest {
     }
 
     /**
-     * Verifies that error handling works for non-existent request IDs.
+     * Verifies that error handling works for non-existent request IDs without crashing.
      */
     @Test
     public void loadRequestDetailsInvalidDataShowsError() {
@@ -80,7 +84,6 @@ public class ExecuteProcessProductPresenterTest {
     @Test
     public void onSaveClickedValidPriceShowsConfirmation() {
         presenter.loadRequestDetails(EMPLOYEE_ID, PROCESS_REQUEST_ID);
-
         viewStub.setPriceInput("1150.50");
 
         presenter.onSaveClicked();
@@ -95,7 +98,6 @@ public class ExecuteProcessProductPresenterTest {
     @Test
     public void onSaveClickedInvalidPriceShowsInputError() {
         presenter.loadRequestDetails(EMPLOYEE_ID, PROCESS_REQUEST_ID);
-
         viewStub.setPriceInput("invalid_price");
 
         presenter.onSaveClicked();
@@ -110,7 +112,6 @@ public class ExecuteProcessProductPresenterTest {
     @Test
     public void onSaveClickedNegativePriceShowsInputError() {
         presenter.loadRequestDetails(EMPLOYEE_ID, PROCESS_REQUEST_ID);
-
         viewStub.setPriceInput("-100");
 
         presenter.onSaveClicked();
@@ -120,7 +121,7 @@ public class ExecuteProcessProductPresenterTest {
     }
 
     /**
-     * Verifies the complete update workflow:
+     * Verifies the complete asynchronous update workflow:
      * 1. Updates the product details in the catalogue.
      * 2. Sets the request status to SERVED.
      * 3. Removes the task from the employee's assigned list.
@@ -141,14 +142,14 @@ public class ExecuteProcessProductPresenterTest {
 
         Assert.assertTrue(viewStub.getSuccessMessage().contains("επιτυχώς"));
 
-        // Verify catalogue persistence
-        ProductType updatedProduct = ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE);
+        // Verify catalogue persistence asynchronously with .join()
+        ProductType updatedProduct = ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE).join();
         Assert.assertEquals(newName, updatedProduct.getProductname());
         Assert.assertEquals(newDesc, updatedProduct.getDescription());
         Assert.assertEquals(1100.0, updatedProduct.getPrice().getAmount().doubleValue(), 0.001);
 
         // Verify request state
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(PROCESS_REQUEST_ID);
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(PROCESS_REQUEST_ID);
         Assert.assertEquals(RequestStatusType.SERVED, request.getStatus());
 
         // Verify employee task cleanup

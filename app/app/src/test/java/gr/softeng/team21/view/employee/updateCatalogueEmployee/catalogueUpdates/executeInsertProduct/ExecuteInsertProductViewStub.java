@@ -3,7 +3,7 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates
 /**
  * A stub implementation of the {@link ExecuteInsertProductView} interface for unit testing.
  * It simulates the product insertion form, capturing input values and providing
- * mechanisms to verify success, general error messages, and field-specific validation errors.
+ * mechanisms to verify success, general asynchronous error messages, and field-specific validation errors.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteInsertProductViewStub implements ExecuteInsertProductView {
@@ -27,16 +27,19 @@ public class ExecuteInsertProductViewStub implements ExecuteInsertProductView {
 
     /**
      * Simulates the user entering a product name.
+     * @param nameInput The product name string.
      */
     public void setNameInput(String nameInput) { this.nameInput = nameInput; }
 
     /**
      * Simulates the user entering a price.
+     * @param priceInput The product price string.
      */
     public void setPriceInput(String priceInput) { this.priceInput = priceInput; }
 
     /**
      * Simulates the user entering a description.
+     * @param descInput The product description string.
      */
     public void setDescInput(String descInput) { this.descInput = descInput; }
 
@@ -53,7 +56,7 @@ public class ExecuteInsertProductViewStub implements ExecuteInsertProductView {
     public String getProductDescription() { return descInput; }
 
     /**
-     * Captures the description of the original update request to show on the UI.
+     * {@inheritDoc}
      */
     @Override
     public void setRequestDescription(String description) {
@@ -61,9 +64,7 @@ public class ExecuteInsertProductViewStub implements ExecuteInsertProductView {
     }
 
     /**
-     * Captures validation errors related to specific input fields.
-     * @param field The name of the field (e.g., "price").
-     * @param message The specific error message.
+     * {@inheritDoc}
      */
     @Override
     public void showInputError(String field, String message) {
@@ -71,11 +72,17 @@ public class ExecuteInsertProductViewStub implements ExecuteInsertProductView {
         this.inputErrorMessage = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) {
         this.successMessage = message;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showError(String message) {
         this.errorMessage = message;

@@ -6,7 +6,7 @@ import gr.softeng.team21.view.util.UserType;
 /**
  * A stub implementation of the {@link LoginView} interface for unit testing.
  * It provides the necessary setters and getters to simulate user input and
- * verify the navigation logic and message reporting during the authentication process.
+ * verify the asynchronous navigation logic and message reporting during the authentication process.
  * @author Γιάννης Μονοχολιάς
  */
 public class LoginViewStub implements LoginView {
@@ -39,7 +39,7 @@ public class LoginViewStub implements LoginView {
     public String getPassword() { return passwordInput; }
 
     /**
-     * Resets the input fields and marks the reset action as performed.
+     * {@inheritDoc}
      */
     @Override
     public void resetFields() {
@@ -48,16 +48,20 @@ public class LoginViewStub implements LoginView {
         this.fieldsReset = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showErrorMessage(String title, String message) { this.errorMessage = message; }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showSuccessMessage(String message) { this.successMessage = message; }
 
     /**
-     * Captures the user type for navigation verification after a successful login.
-     * @param userType The type of user (e.g., Customer, Deliverer).
-     * @param user The user object.
+     * {@inheritDoc}
      */
     @Override
     public void navigateUserToHomePage(UserType userType, User user) {
@@ -65,7 +69,7 @@ public class LoginViewStub implements LoginView {
     }
 
     /**
-     * Marks the navigation to the registration screen as called.
+     * {@inheritDoc}
      */
     @Override
     public void navigateToRegister() { this.registerCalled = true; }
