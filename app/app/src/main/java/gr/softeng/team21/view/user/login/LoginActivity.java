@@ -17,7 +17,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.UserCredentialsDAO;
-import gr.softeng.team21.domain.Admin;
 import gr.softeng.team21.domain.AuthenticationSystem;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
@@ -26,7 +25,7 @@ import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.domain.User;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
-import gr.softeng.team21.view.admin.AdminPanelActivity;
+import gr.softeng.team21.view.admin.adminMenu.AdminMenuActivity;
 import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
 import gr.softeng.team21.view.customer.register.RegisterActivity;
 import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu.CustomerServiceMenuActivity;
@@ -153,7 +152,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                     intent.putExtra("CUSTOMER_ID", ((Customer)user).getCustomer_id());
                     break;
                 case ADMIN:
-                    intent = new Intent(LoginActivity.this, AdminPanelActivity.class);
+                    intent = new Intent(LoginActivity.this, AdminMenuActivity.class);
                     break;
             }
 

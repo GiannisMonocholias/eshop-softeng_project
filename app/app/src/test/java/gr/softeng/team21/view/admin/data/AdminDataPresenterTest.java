@@ -1,56 +1,100 @@
 package gr.softeng.team21.view.admin.data;
 
-import static org.junit.Assert.*;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.Admin;
 
 /**
- * Test for correct save of admin data.
+ * Unit tests for {@link AdminDataPresenter}.
+ * Verifies data loading from the Singleton, saving logic, and the critical detection of
+ * unsaved changes upon pressing the back button.
+ * @author Γιάννης Μονοχολιάς
  */
-
 public class AdminDataPresenterTest {
 
     private AdminDataPresenter presenter;
+    private AdminDataViewStub viewStub;
     private Admin admin;
 
-    /**
-     * Initializes presenter and gets the current instance of admin
-     * in order to have access to his latest info.
-     */
     @Before
     public void setUp() {
+        viewStub = new AdminDataViewStub();
+        presenter = new AdminDataPresenter(viewStub);
 
-        presenter = new AdminDataPresenter();
+        // Αρχικοποίηση Singleton με default τιμές για το Test
         admin = Admin.getInstance();
-
+        admin.setUsername("admin21");
+        admin.setPassword("pass123");
+        admin.setFirstname("John");
+        admin.setLastname("Doe");
     }
 
-    /**
-     * Ensures that the new admin's info are correct saved.
-     */
     @Test
-    public void saveData() {
+    public void loadAdminDataPopulatesView() {
+        presenter.loadAdminData();
 
-        String username = "admin21";
-        String email = "admin@test.com";
-        String firstName = "John";
-        String lastName = "Doe";
-        String phone = "6900000000";
-        String address = "Athens";
+        Assert.assertEquals("admin21", viewStub.getUsername());
+        Assert.assertEquals("pass123", viewStub.getPassword());
+        Assert.assertEquals("John", viewStub.getFirstName());
+        Assert.assertEquals("Doe", viewStub.getLastName());
+    }
 
-        EmailAddress emailAddress = new EmailAddress(email);
+    @Test
+    public void onSaveClickedUpdatesDataAndShowsSuccess() {
+        presenter.loadAdminData();
 
-        presenter.saveData(username, email, firstName, lastName, phone, address);
+        viewStub.setUsername("super_admin");
+        viewStub.setFirstName("George");
 
-        assertEquals(username, admin.getUsername());
-        assertEquals(emailAddress , admin.getEmailAddress());
-        assertEquals(firstName, admin.getFirstname());
-        assertEquals(lastName, admin.getLastname());
-        assertEquals(phone, admin.getPhonenumber());
-        assertNotNull(admin.getAddress());
+        presenter.onSaveClicked();
+
+        Assert.assertTrue(viewStub.getSuccessMessage().contains("επιτυχώς"));
+
+        // Επαλήθευση απευθείας στο Domain Singleton
+        Assert.assertEquals("super_admin", admin.getUsername());
+        Assert.assertEquals("George", admin.getFirstname());
+    }
+
+    @Test
+    public void onBackPressedWithNoChangesFinishesActivity() {
+        presenter.loadAdminData();
+
+        presenter.onBackPressed();
+
+        Assert.assertFalse(viewStub.isUnsavedDialogShown());
+        Assert.assertTrue(viewStub.isFinished());
+    }
+
+    @Test
+    public void onBackPressedWithChangesShowsWarningDialog() {
+        presenter.loadAdminData();
+
+        viewStub.setFirstName("ChangedName");
+
+        presenter.onBackPressed();
+
+        Assert.assertTrue(viewStub.isUnsavedDialogShown());
+        Assert.assertFalse(viewStub.isFinished());
+    }
+
+    @Test
+    public void onBackPressedAfterSaveDoesNotShowWarning() {
+        presenter.loadAdminData();
+
+        viewStub.setFirstName("ChangedName");
+        presenter.onSaveClicked();
+
+        presenter.onBackPressed();
+
+        Assert.assertFalse(viewStub.isUnsavedDialogShown());
+        Assert.assertTrue(viewStub.isFinished());
+    }
+
+    @Test
+    public void onDiscardChangesConfirmedFinishesActivity() {
+        presenter.onDiscardChangesConfirmed();
+        Assert.assertTrue(viewStub.isFinished());
     }
 }

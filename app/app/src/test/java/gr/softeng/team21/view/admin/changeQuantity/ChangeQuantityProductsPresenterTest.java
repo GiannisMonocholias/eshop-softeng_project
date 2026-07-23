@@ -12,48 +12,45 @@ import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 
 /**
- *
- * This test class verifies the behavior of the presenter responsible
+ * This test class verifies the asynchronous behavior of the presenter responsible
  * for loading product types to be displayed in the Change Quantity UI.
- *
+ * @author Αλέξανδρος Δρακάκης, Γιάννης Μονοχολιάς
  */
-
 public class ChangeQuantityProductsPresenterTest {
 
-    ChangeQuantityProductsPresenter presenter;
-    ChangeQuantityProductsViewStub view;
-    ProductTypeDAOMemory productTypeDAOMemory;
-
+    private ChangeQuantityProductsPresenter presenter;
+    private ChangeQuantityProductsViewStub viewStub;
+    private ProductTypeDAOMemory productTypeDAOMemory;
 
     /**
      * Sets up the test environment before each test method.
-     *
      * Initializes in-memory data, creates a stub view, and instantiates
-     * the presenter with the DAO and view.
+     * the presenter with the MemoryDAO and view stub via Dependency Injection.
      */
-
     @Before
     public void setUp() {
-
-        //Prepares initial test data
         MemoryInitializer.prepareData();
 
         productTypeDAOMemory = ProductTypeDAOMemory.getInstance();
-        view = new ChangeQuantityProductsViewStub();
-        presenter = new ChangeQuantityProductsPresenter(view, productTypeDAOMemory);
+        viewStub = new ChangeQuantityProductsViewStub();
+
+        presenter = new ChangeQuantityProductsPresenter(viewStub, productTypeDAOMemory);
     }
 
     /**
-     * Tests that the presenter correctly loads all available products.
-     *
-     * Verifies that the number of products returned by the presenter
+     * Tests that the presenter correctly loads all available products asynchronously.
+     * Verifies that the number of products returned to the ViewStub
      * matches the expected size of the in-memory DAO (20 in this case).
      */
-
     @Test
-    public void loadProducts() {
-        ArrayList<ProductType> products = presenter.loadProducts();
-        assertEquals(20 , products.size());
+    public void loadProductsSuccessfullyPopulatesView() {
+        // Η κλήση ολοκληρώνεται ακαριαία χάρη στο completedFuture του MemoryDAO
+        presenter.loadProducts();
 
+        ArrayList<ProductType> products = viewStub.getLoadedProducts();
+
+        assertNotNull("Products list should not be null", products);
+        assertEquals(20, products.size());
+        assertNull("There should be no error message", viewStub.getErrorMessage());
     }
 }

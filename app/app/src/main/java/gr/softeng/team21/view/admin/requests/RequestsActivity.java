@@ -10,10 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import gr.softeng.team21.R;
-import gr.softeng.team21.view.admin.AdminPanelActivity;
 
 /**
  * This activty gives to the admin the choice to check the submitted requests or to create a new request.

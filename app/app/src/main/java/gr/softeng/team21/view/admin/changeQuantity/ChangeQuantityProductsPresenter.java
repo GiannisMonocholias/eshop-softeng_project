@@ -1,38 +1,39 @@
 package gr.softeng.team21.view.admin.changeQuantity;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.domain.ProductType;
 
 /**
- * Ο ChangeQuantityProductsPresenter συμβάλλει στην υλοποίηση τησ λειτουργίας που είναι υπεύθυνη για
- * να φορτώνονται τα προϊόντα που είναι διαθέσιμα στο κατάστημα.
- *
- * Χρησιμοποιεί ένα αντικείμενο του ProductTypeDAO για να έχει πρόσβαση στα δεδομένα που έχουν να κάνουν
- * με τα διαθέσιμα προϊόντα του καταστήματος
+ * Presenter for loading available products for quantity management.
+ * Uses CompletableFuture for asynchronous data retrieval via Dependency Injection.
+ * @author Αλέξανδρος Δρακάκης, Γιάννης Μονοχολιάς
  */
-
 public class ChangeQuantityProductsPresenter {
 
     private ChangeQuantityProductsView view;
     private ProductTypeDAO productTypeDAO;
 
-    public ChangeQuantityProductsPresenter(ChangeQuantityProductsView view , ProductTypeDAO productTypeDAO){
+    /**
+     * Initializes the presenter with the injected view and DAO.
+     * @param view The view implementation (Activity or Stub).
+     * @param productTypeDAO The Data Access Object for products.
+     */
+    public ChangeQuantityProductsPresenter(ChangeQuantityProductsView view, ProductTypeDAO productTypeDAO) {
         this.view = view;
         this.productTypeDAO = productTypeDAO;
     }
 
-    public ArrayList<ProductType> loadProducts() {
-
-        ArrayList<ProductType> products = new ArrayList<>();
-        for (ProductType pd : productTypeDAO.getProducts().values()){
-            products.add(pd);
-        }
-
-
-        return products;
+    /**
+     * Asynchronously fetches all products from the DAO and forwards them to the view.
+     */
+    public void loadProducts() {
+        productTypeDAO.getProducts().thenAccept(productsMap -> {
+            ArrayList<ProductType> products = new ArrayList<>(productsMap.values());
+            view.showProducts(products);
+        }).exceptionally(e -> {
+            view.showError("Σφάλμα κατά τη φόρτωση των προϊόντων: " + e.getMessage());
+            return null;
+        });
     }
 }
