@@ -21,8 +21,10 @@ import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
 import gr.softeng.team21.view.util.ChangeQuantityProductsAdapter;
 
 /**
- * Activity that shows a list of products in which the admin is able to change the available quantities.
- * Implements MVP and handles UI updates safely via runOnUiThread using FirebaseDAO.
+ * Activity that displays a list of products, enabling the administrator
+ * to dynamically change the available quantities in the warehouse.
+ * Implements the MVP pattern and handles UI updates safely via runOnUiThread.
+ *
  * @author Αλέξανδρος Δρακάκης, Γιάννης Μονοχολιάς
  */
 public class ChangeQuantityProductsActivity extends AppCompatActivity implements ChangeQuantityProductsView {
@@ -31,6 +33,11 @@ public class ChangeQuantityProductsActivity extends AppCompatActivity implements
     private ChangeQuantityProductsAdapter adapter;
     private RecyclerView recyclerView;
 
+    /**
+     * Prepares the layout, initializes the RecyclerView, applies window insets for
+     * edge-to-edge display, and commands the presenter to load the products.
+     * @param savedInstanceState The previously saved instance state bundle.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +53,6 @@ public class ChangeQuantityProductsActivity extends AppCompatActivity implements
         recyclerView = findViewById(R.id.rvProducts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Dependency Injection: Ενσωμάτωση του FirebaseDAO
         ProductTypeDAO productTypeDAO = new ProductTypeDAOFirebase();
         presenter = new ChangeQuantityProductsPresenter(this, productTypeDAO);
 

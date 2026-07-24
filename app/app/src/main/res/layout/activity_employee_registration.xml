@@ -62,7 +62,7 @@
                         android:src="@drawable/ic_person"
                         app:strokeColor="?attr/colorSecondary"
                         app:strokeWidth="2dp"
-                        app:shapeAppearanceOverlay="@drawable/shape_circle_avatar" />
+                        app:shapeAppearanceOverlay="@style/CircleImage" />
 
                     <TextView
                         android:id="@+id/btnChangePhoto"

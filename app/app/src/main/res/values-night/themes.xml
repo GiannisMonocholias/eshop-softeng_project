@@ -1,7 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Team21" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+        <!-- Backgrounds & Surfaces (Dark) -->
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <item name="colorSurface">@color/card_dark</item>
+        <item name="colorSurfaceVariant">@color/input_bg_dark</item>
+
+        <!-- Typography (Light text on Dark bg) -->
+        <item name="colorOnSurface">@color/text_light</item>
+        <item name="colorOnSurfaceVariant">@color/text_muted_dark</item>
+
+        <!-- Brand Colors (Lighter variants for better contrast in dark mode) -->
+        <item name="colorPrimary">@color/eshop_primary_variant</item>
+        <item name="colorSecondary">@color/eshop_accent_light</item>
+
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Custom Attributes -->
+        <item name="colorFilterActive">@color/filter_active_dark</item>
+        <item name="colorFilterUnselected">@color/filter_bg_unselected_dark</item>
     </style>
+
+    <style name="Theme.Team21" parent="Base.Theme.Team21" />
 </resources>

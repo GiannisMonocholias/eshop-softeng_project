@@ -1,8 +1,32 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Βάλε το όνομα του δικού σου App στο Theme -->
     <style name="Base.Theme.Team21" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Backgrounds & Surfaces -->
+        <item name="android:windowBackground">@color/bg_light</item>
+        <item name="colorSurface">@color/card_light</item>
+        <item name="colorSurfaceVariant">@color/input_bg_light</item>
+
+        <!-- Typography -->
+        <item name="colorOnSurface">@color/text_dark</item>
+        <item name="colorOnSurfaceVariant">@color/text_muted_light</item>
+
+        <!-- Brand Colors -->
+        <item name="colorPrimary">@color/eshop_primary</item>
+        <item name="colorSecondary">@color/eshop_accent</item>
+
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/bg_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Custom Attributes -->
+        <item name="colorFilterActive">@color/filter_active_light</item>
+        <item name="colorFilterUnselected">@color/filter_bg_unselected_light</item>
+    </style>
+
+    <style name="CircleImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="Theme.Team21" parent="Base.Theme.Team21" />

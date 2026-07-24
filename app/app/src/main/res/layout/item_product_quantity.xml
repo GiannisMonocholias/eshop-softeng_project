@@ -1,50 +1,149 @@
-<androidx.cardview.widget.CardView
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="6dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <!-- Όνομα προϊόντος -->
-        <TextView
-            android:id="@+id/txtProductName"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#009688"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <!-- Κωδικός -->
-        <TextView
-            android:id="@+id/txtProductCode"
-            android:textSize="14sp"
-            android:textColor="#666"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <!-- Διαθέσιμη ποσότητα -->
-        <TextView
-            android:layout_marginTop="12dp"
-            android:text="Διαθέσιμη ποσότητα"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/edtAvailableQuantity"
+        <!-- ΠΑΝΩ ΜΕΡΟΣ: Πληροφορίες & Τρέχον Απόθεμα -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Πληκτρολόγησε ποσότητα"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="#1A009688"
+                android:padding="10dp"
+                android:src="@drawable/ic_inventory"
+                app:shapeAppearanceOverlay="@style/CircleImage"
+                app:tint="#009688" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtProductName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Όνομα Προϊόντος"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtProductCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Κωδ.: PRD-123"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- ΕΔΩ ΦΑΙΝΕΤΑΙ ΞΕΚΑΘΑΡΑ ΤΟ ΤΡΕΧΟΝ ΑΠΟΘΕΜΑ -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Διαθέσιμα:"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/txtCurrentStock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15 τεμ."
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ΚΑΤΩ ΜΕΡΟΣ: 2 Χρωματιστά Κουμπιά & Πεδίο Γραφής -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F8F9FA"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Μεταβολή:"
+                android:textColor="#555555"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- ΚΟΥΜΠΙ ΑΦΑΙΡΕΣΗΣ (ΚΟΚΚΙΝΟ) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnApplyRemove"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:icon="@drawable/ic_remove"
+                app:iconPadding="0dp"
+                app:iconGravity="textStart"
+                app:iconTint="#D32F2F"
+                app:strokeColor="#D32F2F"
+                app:cornerRadius="8dp" />
+
+            <!-- ΠΟΣΟΤΗΤΑ ΠΟΥ ΘΕΛΕΙ ΝΑ ΠΡΟΣΘΕΣΕΙ/ΑΦΑΙΡΕΣΕΙ (Editable) -->
+            <EditText
+                android:id="@+id/edtChangeAmount"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:gravity="center"
+                android:text="1"
+                android:inputType="number"
+                android:background="@null"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- ΚΟΥΜΠΙ ΠΡΟΣΘΗΚΗΣ (ΠΡΑΣΙΝΟ) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnApplyAdd"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:icon="@drawable/ic_add"
+                app:iconPadding="0dp"
+                app:iconGravity="textStart"
+                app:backgroundTint="#388E3C"
+                app:cornerRadius="8dp" />
+        </LinearLayout>
     </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

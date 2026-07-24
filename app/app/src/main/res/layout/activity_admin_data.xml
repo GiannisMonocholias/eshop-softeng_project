@@ -32,7 +32,7 @@
                 android:scaleType="centerCrop"
                 app:strokeWidth="3dp"
                 app:strokeColor="?attr/colorSecondary"
-                app:shapeAppearanceOverlay="@drawable/shape_circle_avatar" />
+                app:shapeAppearanceOverlay="@style/CircleImage" />
 
             <TextView
                 android:id="@+id/tvChangePhoto"

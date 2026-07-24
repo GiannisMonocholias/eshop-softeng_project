@@ -12,8 +12,9 @@ import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 
 /**
- * This test class verifies the asynchronous behavior of the presenter responsible
- * for loading product types to be displayed in the Change Quantity UI.
+ * Unit testing class that verifies the asynchronous behavior of the
+ * {@link ChangeQuantityProductsPresenter} responsible for loading product
+ * types to be displayed in the Change Quantity UI.
  * @author Αλέξανδρος Δρακάκης, Γιάννης Μονοχολιάς
  */
 public class ChangeQuantityProductsPresenterTest {
@@ -23,9 +24,9 @@ public class ChangeQuantityProductsPresenterTest {
     private ProductTypeDAOMemory productTypeDAOMemory;
 
     /**
-     * Sets up the test environment before each test method.
-     * Initializes in-memory data, creates a stub view, and instantiates
-     * the presenter with the MemoryDAO and view stub via Dependency Injection.
+     * Sets up the test environment before each test method execution.
+     * Initializes in-memory mock data, creates a view stub, and instantiates
+     * the presenter with the required MemoryDAO Dependency Injection.
      */
     @Before
     public void setUp() {
@@ -40,17 +41,17 @@ public class ChangeQuantityProductsPresenterTest {
     /**
      * Tests that the presenter correctly loads all available products asynchronously.
      * Verifies that the number of products returned to the ViewStub
-     * matches the expected size of the in-memory DAO (20 in this case).
+     * matches the expected predefined size of the in-memory DAO (e.g., 20 items).
      */
     @Test
     public void loadProductsSuccessfullyPopulatesView() {
-        // Η κλήση ολοκληρώνεται ακαριαία χάρη στο completedFuture του MemoryDAO
+        // Asynchronous call, executes instantly using MemoryDAO CompletableFutures
         presenter.loadProducts();
 
         ArrayList<ProductType> products = viewStub.getLoadedProducts();
 
         assertNotNull("Products list should not be null", products);
         assertEquals(20, products.size());
-        assertNull("There should be no error message", viewStub.getErrorMessage());
+        assertNull("There should be no error message during successful fetch", viewStub.getErrorMessage());
     }
 }
