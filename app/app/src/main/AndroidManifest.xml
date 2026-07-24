@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
         <activity
+            android:name=".view.admin.selectEmployeeType.SelectEmployeeTypeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.admin.employeeRegistration.EmployeeRegistrationActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.customer.Reviews.CustomerReviewsActivity"
             android:exported="false" />
         <activity

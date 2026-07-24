@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.view.admin.changeQuantity.ChangeQuantityProductsActivity;
-import gr.softeng.team21.view.admin.createEmp.CreateEmplyeeActivity;
+import gr.softeng.team21.view.admin.createEmp.selectEmployeeType.SelectEmployeeTypeActivity;
 import gr.softeng.team21.view.admin.data.AdminDataActivity;
 import gr.softeng.team21.view.admin.deleteEmp.DeleteEmployeeActivity;
 import gr.softeng.team21.view.admin.requests.RequestsActivity;
@@ -88,7 +88,7 @@ public class AdminMenuActivity extends AppCompatActivity implements AdminMenuVie
     @Override
     public void navigateToCreateEmployee() {
         runOnUiThread(() -> {
-            Intent intent = new Intent(AdminMenuActivity.this, CreateEmplyeeActivity.class);
+            Intent intent = new Intent(AdminMenuActivity.this, SelectEmployeeTypeActivity.class);
             startActivity(intent);
         });
     }

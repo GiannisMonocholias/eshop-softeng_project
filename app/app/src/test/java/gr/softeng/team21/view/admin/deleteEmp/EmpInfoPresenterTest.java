@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
-import gr.softeng.team21.view.admin.createEmp.CreateEmployeeViewStub;
 
 /**
  * In this test we check that the employee the admin is going

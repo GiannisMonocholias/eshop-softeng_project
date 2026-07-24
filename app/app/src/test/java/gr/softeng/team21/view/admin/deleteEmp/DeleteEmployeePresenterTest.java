@@ -8,8 +8,6 @@ import org.junit.Test;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
-import gr.softeng.team21.view.admin.createEmp.CreateEmployeePresenter;
-import gr.softeng.team21.view.admin.createEmp.CreateEmployeeViewStub;
 
 /**
  * Here we check that each employee that admin wants to delete
