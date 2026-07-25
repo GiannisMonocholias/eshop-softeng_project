@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
         <activity
+            android:name=".view.admin.requests.requestDetails.RequestDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.admin.createEmp.selectEmployeeType.SelectEmployeeTypeActivity"
             android:exported="false" />
         <activity
@@ -42,19 +45,19 @@
             android:name=".view.admin.data.AdminDataActivity"
             android:exported="true" />
         <activity
-            android:name=".view.admin.deleteEmp.DeleteEmployeeActivity"
+            android:name=".view.admin.deleteEmp.deleteEmployee.DeleteEmployeeActivity"
             android:exported="true" />
         <activity
-            android:name=".view.admin.deleteEmp.EmpInfoActivity"
+            android:name=".view.admin.deleteEmp.empInfo.EmpInfoActivity"
             android:exported="true" />
         <activity
             android:name=".view.admin.requests.RequestsActivity"
             android:exported="true" />
         <activity
-            android:name=".view.admin.requests.AdminRequestsActivity"
+            android:name=".view.admin.requests.adminRequestsActivity.AdminRequestsActivity"
             android:exported="true" />
         <activity
-            android:name=".view.admin.requests.NewRequestActivity"
+            android:name=".view.admin.requests.newRequest.NewRequestActivity"
             android:exported="true" />
         <activity
             android:name=".view.admin.changeQuantity.ChangeQuantityProductsActivity"

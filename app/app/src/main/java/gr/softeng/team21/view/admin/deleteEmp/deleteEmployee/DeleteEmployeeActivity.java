@@ -1,4 +1,4 @@
-package gr.softeng.team21.view.admin.deleteEmp;
+package gr.softeng.team21.view.admin.deleteEmp.deleteEmployee;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.view.admin.deleteEmp.empInfo.EmpInfoActivity;
 import gr.softeng.team21.view.util.DeleteEmployeeAdapter;
 
 /**

@@ -1,4 +1,4 @@
-package gr.softeng.team21.view.admin.deleteEmp;
+package gr.softeng.team21.view.admin.deleteEmp.deleteEmployee;
 
 import java.util.List;
 import gr.softeng.team21.domain.Employee;

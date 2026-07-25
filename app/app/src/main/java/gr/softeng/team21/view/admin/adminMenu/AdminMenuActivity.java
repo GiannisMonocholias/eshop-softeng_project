@@ -14,7 +14,7 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.view.admin.changeQuantity.ChangeQuantityProductsActivity;
 import gr.softeng.team21.view.admin.createEmp.selectEmployeeType.SelectEmployeeTypeActivity;
 import gr.softeng.team21.view.admin.data.AdminDataActivity;
-import gr.softeng.team21.view.admin.deleteEmp.DeleteEmployeeActivity;
+import gr.softeng.team21.view.admin.deleteEmp.deleteEmployee.DeleteEmployeeActivity;
 import gr.softeng.team21.view.admin.requests.RequestsActivity;
 
 /**

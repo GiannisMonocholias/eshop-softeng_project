@@ -11,20 +11,25 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
+import gr.softeng.team21.view.admin.requests.adminRequestsActivity.AdminRequestsActivity;
+import gr.softeng.team21.view.admin.requests.newRequest.NewRequestActivity;
 
 /**
- * This activty gives to the admin the choice to check the submitted requests or to create a new request.
+ * Main menu activity that provides the administrator with the options to either
+ * create a new catalogue update request or view the history of submitted requests.
+ * @author Γιάννης Μονοχολιάς, Αλέξανδρος Δρακάκης
  */
-
 public class RequestsActivity extends AppCompatActivity {
 
-
+    /**
+     * Initializes the layout and sets up navigation listeners for the menu buttons.
+     * @param savedInstanceState The previously saved instance state bundle.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_requests);
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -34,13 +39,13 @@ public class RequestsActivity extends AppCompatActivity {
 
         Button btnAddRequests = findViewById(R.id.btnAddRequest);
         btnAddRequests.setOnClickListener(v -> {
-            Intent intent = new Intent(RequestsActivity.this , NewRequestActivity.class);
+            Intent intent = new Intent(RequestsActivity.this, NewRequestActivity.class);
             startActivity(intent);
         });
 
         Button btnAdminReqs = findViewById(R.id.btnAdminReqs);
         btnAdminReqs.setOnClickListener(v -> {
-            Intent intent = new Intent(RequestsActivity.this , AdminRequestsActivity.class);
+            Intent intent = new Intent(RequestsActivity.this, AdminRequestsActivity.class);
             startActivity(intent);
         });
     }

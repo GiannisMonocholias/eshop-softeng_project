@@ -1,4 +1,4 @@
-package gr.softeng.team21.view.admin.deleteEmp;
+package gr.softeng.team21.view.admin.deleteEmp.empInfo;
 
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;

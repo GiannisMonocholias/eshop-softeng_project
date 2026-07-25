@@ -1,4 +1,4 @@
-package gr.softeng.team21.view.admin.deleteEmp;
+package gr.softeng.team21.view.admin.deleteEmp.empInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
