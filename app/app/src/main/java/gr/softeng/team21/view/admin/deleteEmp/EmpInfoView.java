@@ -1,21 +1,27 @@
 package gr.softeng.team21.view.admin.deleteEmp;
 
-import android.widget.EditText;
+import gr.softeng.team21.domain.Employee;
 
-import gr.softeng.team21.R;
-
+/**
+ * Interface defining the UI operations for the Employee Info and Deletion Confirmation screen.
+ * @author Γιάννης Μονοχολιάς, Αλέξανδρος Δρακάκης
+ */
 public interface EmpInfoView {
-    default void deleteEmp() {
 
-//        EditText edtFirstName = findViewById(R.id.txtDeleteFname);
-//        String FnameKeyword = edtFirstName.getText().toString();
-//
-//        EditText edtLastName = findViewById(R.id.txtDeleteLname);
-//        String LnameKeyword = edtLastName.getText().toString();
-//
-//        EditText edtPhone = findViewById(R.id.txtDeletePhone);
-//        String PhoneKeyword = edtPhone.getText().toString();
-//
-//        presenter.deleteEmp(FnameKeyword, LnameKeyword, PhoneKeyword);
-    }
+    /**
+     * Updates the UI with the specific details of the selected employee.
+     * @param employee The Employee object containing the details to display.
+     */
+    void showEmployeeDetails(Employee employee);
+
+    /**
+     * Closes the current screen and returns to the previous menu.
+     */
+    void closeScreen();
+
+    /**
+     * Displays an error message to the user.
+     * @param message The specific error description.
+     */
+    void showError(String message);
 }

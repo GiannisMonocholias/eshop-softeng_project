@@ -1,47 +1,65 @@
 package gr.softeng.team21.view.admin.deleteEmp;
 
-import java.util.HashMap;
-
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Employee;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
-import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 
 /**
- * Η EmpInfoPresenter βρίσκει με βάση τα δεδομένα που παίρνει απο την DeleteEmployeeActivity
- * τον υπάλληλο που αναζητάει ο διαχειριστής και παραθέτει τα στοιχεία του, ώστε να είναι βέβαιος ότι
- * διαγράφει τον σωστό υπάλληλο.
- *
- * Για να γίνει η αναζήτηση χρησιμοποιεί το employeeDAOMemory, το οποίο επιτρέπει πρόσβαση
- * στα δεδομένα των υπαλλήλων, τα αντικείμενα των οποίων αποθηκεύει σε ένα τοπικό hashmap.
+ * Presenter handling the asynchronous retrieval of employee details and the execution
+ * of the final deletion process. Utilizes Dependency Injection for both required DAOs.
+ * @author Γιάννης Μονοχολιάς, Αλέξανδρος Δρακάκης
  */
-
 public class EmpInfoPresenter {
 
-    private EmployeeDAOMemory employeeDAOMemory = EmployeeDAOMemory.getInstance();
-    private HashMap<String , Employee> map = employeeDAOMemory.getEmployees();
-    private Employee toDelete = null;
+    private final EmpInfoView view;
+    private final EmployeeDAO employeeDAO;
+    private final UserCredentialsDAO userCredentialsDAO;
 
     /**
-     *
-     * @param firstname εκφράζει το όνομα του προς διαγραφή υπαλλήλου.
-     * @param lastname εκφράζει το επίθετο του προς διαγραφή υπαλλήλου.
-     * @param phone εκφράζει το τηλέφωνο του προς διαγραφή υπαλλήλου.
-     *
-     * Η deleteEmp(...) βρίσκει τον υπάλληλο που αναζητά ο διαχειριστής και τον αφαιρεί απο την λίστα
-     * των υπαλλήλων του καταστήματος.
+     * Constructs the presenter with the necessary view and DAOs.
+     * @param view The UI contract interface.
+     * @param employeeDAO The injected Data Access Object for employees.
+     * @param userCredentialsDAO The injected Data Access Object for user credentials.
      */
+    public EmpInfoPresenter(EmpInfoView view, EmployeeDAO employeeDAO, UserCredentialsDAO userCredentialsDAO) {
+        this.view = view;
+        this.employeeDAO = employeeDAO;
+        this.userCredentialsDAO = userCredentialsDAO;
+    }
 
-    public void deleteEmp(String firstname , String lastname , String phone){
-        for(Employee emp : map.values()){
-            if((emp.getFirstname().equals(firstname)) && (emp.getLastname().equals(lastname)) && (emp.getPhonenumber().equals(phone))){
-                toDelete = emp;
+    /**
+     * Asynchronously retrieves specific employee details using their unique username.
+     * @param username The unique identifier of the employee to load.
+     */
+    public void loadEmployeeDetails(String username) {
+        employeeDAO.getEmployees().thenAccept(map -> {
+            for (Employee emp : map.values()) {
+                if (emp.getUsername().equals(username)) {
+                    if (view != null) view.showEmployeeDetails(emp);
+                    return;
+                }
             }
-        }
+            if (view != null) view.showError("Ο υπάλληλος δεν βρέθηκε.");
+        }).exceptionally(e -> {
+            if (view != null) view.showError("Σφάλμα: " + e.getMessage());
+            return null;
+        });
+    }
 
-        if(toDelete != null){
-            UserCredentialsDAOMemory.getInstance().removeUser(toDelete.getUsername());
-            employeeDAOMemory.removeEmployee(toDelete);
-        }
+    /**
+     * Permanently removes the employee from both the credentials and employee databases.
+     * Commands the view to close upon successful execution.
+     * @param employee The specific Employee object to delete.
+     */
+    public void executeDeletion(Employee employee) {
+        if (employee == null) return;
 
+        // Execute deletion across all relevant data sources
+        userCredentialsDAO.removeUser(employee.getUsername());
+        employeeDAO.removeEmployee(employee);
+
+        if (view != null) {
+            view.closeScreen();
+        }
     }
 }

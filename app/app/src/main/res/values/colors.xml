@@ -3,11 +3,18 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!-- ΠΡΟΣΘΗΚΗ: Ημιδιάφανο λευκό για κείμενα πάνω στο Primary χρώμα -->
+    <color name="white_alpha_80">#CCFFFFFF</color>
+
     <!-- Brand Colors (E-shop) -->
     <color name="eshop_primary">#2962FF</color>
     <color name="eshop_primary_variant">#0039CB</color>
     <color name="eshop_accent">#FF6D00</color>
     <color name="eshop_accent_light">#FF9E40</color>
+
+    <!-- ΠΡΟΣΘΗΚΗ: Χρώματα για Διαγραφή / Σφάλματα -->
+    <color name="error_red_light">#D32F2F</color>
+    <color name="error_red_dark">#EF5350</color> <!-- Πιο φωτεινό κόκκινο για το Dark Mode -->
 
     <!-- Light Mode Backgrounds & Texts -->
     <color name="bg_light">#F5F5F5</color>

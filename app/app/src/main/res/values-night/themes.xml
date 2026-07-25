@@ -10,9 +10,13 @@
         <item name="colorOnSurface">@color/text_light</item>
         <item name="colorOnSurfaceVariant">@color/text_muted_dark</item>
 
-        <!-- Brand Colors (Lighter variants for better contrast in dark mode) -->
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Brand Colors -->
         <item name="colorPrimary">@color/eshop_primary_variant</item>
         <item name="colorSecondary">@color/eshop_accent_light</item>
+
+        <item name="colorError">@color/error_red_dark</item>
 
         <!-- Status Bar -->
         <item name="android:statusBarColor">@color/bg_dark</item>

@@ -1,5 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Βάλε το όνομα του δικού σου App στο Theme -->
     <style name="Base.Theme.Team21" parent="Theme.Material3.DayNight.NoActionBar">
 
         <!-- Backgrounds & Surfaces -->
@@ -11,9 +10,13 @@
         <item name="colorOnSurface">@color/text_dark</item>
         <item name="colorOnSurfaceVariant">@color/text_muted_light</item>
 
+        <item name="colorOnPrimary">@color/white</item>
+
         <!-- Brand Colors -->
         <item name="colorPrimary">@color/eshop_primary</item>
         <item name="colorSecondary">@color/eshop_accent</item>
+
+        <item name="colorError">@color/error_red_light</item>
 
         <!-- Status Bar -->
         <item name="android:statusBarColor">@color/bg_light</item>

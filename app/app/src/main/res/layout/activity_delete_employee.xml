@@ -2,70 +2,46 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".view.admin.deleteEmp.DeleteEmployeeActivity">
+    android:background="?android:attr/windowBackground">
 
-    <!-- Header -->
-    <TextView
-        android:id="@+id/txtDeleteEmp"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="24dp"
-        android:text="Διαγραφή Υπαλλήλου"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-black"
-        android:textAlignment="center"
-        android:textColor="#009688"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <!-- Username -->
-    <EditText
-        android:id="@+id/txtDeleteEmpUsername"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginHorizontal="32dp"
-        android:hint="Username Υπαλλήλου"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@id/txtDeleteEmp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Διαγραφή Υπαλλήλου"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <!-- ID -->
-    <EditText
-        android:id="@+id/txtDeleteEmpId"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="32dp"
-        android:hint="ID Υπαλλήλου"
-        android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@id/txtDeleteEmpUsername"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Επιλέξτε τον υπάλληλο προς διαγραφή"
+            android:textColor="@color/white_alpha_80"
+            android:textSize="14sp" />
+    </LinearLayout>
 
-    <!-- Search Button -->
-    <Button
-        android:id="@+id/btnSearchEmp"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginHorizontal="32dp"
-        android:text="Αναζήτηση"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:backgroundTint="#009688"
-        app:cornerRadius="12dp"
-        app:layout_constraintTop_toBottomOf="@id/txtDeleteEmpId"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDeleteEmployees"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
