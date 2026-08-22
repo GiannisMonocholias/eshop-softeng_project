@@ -2,7 +2,6 @@ package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
-
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.domain.Customer;
 

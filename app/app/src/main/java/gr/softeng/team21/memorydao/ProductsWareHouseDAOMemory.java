@@ -2,16 +2,11 @@ package gr.softeng.team21.memorydao;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.domain.ProductType;
 
-/**
- * In-memory implementation of the {@link ProductsWareHouseDAO} interface.
- * Manages product stock levels, capacity utilization, and provides methods
- * for increasing or decreasing product inventory.
- * @author Γιάννης Μονοχολιάς
- */
 public class ProductsWareHouseDAOMemory implements ProductsWareHouseDAO {
 
     private static ProductsWareHouseDAOMemory instance;
@@ -19,18 +14,14 @@ public class ProductsWareHouseDAOMemory implements ProductsWareHouseDAO {
     private static double totalProducts;
     private static HashMap<ProductType, Integer> productStocks;
 
-    /**
-     * Private constructor for the Singleton pattern.
-     * Initializes the stock storage map.
-     */
+
     private ProductsWareHouseDAOMemory() {
-        this.totalProducts = 0;
-        this.productStocks = new HashMap<>();
+        totalProducts = 0;
+        productStocks = new HashMap<>();
     }
 
     /**
-     * Returns the singleton instance of the warehouse DAO.
-     * @return The unique ProductsWareHouseDAOMemory instance.
+     * Επιστρέφει τη μοναδική (singleton) παρουσία της κλάσης.
      */
     public static ProductsWareHouseDAOMemory getInstance() {
         if (instance == null) {
@@ -39,142 +30,143 @@ public class ProductsWareHouseDAOMemory implements ProductsWareHouseDAO {
         return instance;
     }
 
-    /**
-     * Retrieves the current stock level for a specific product type.
-     * @param type the product type to query.
-     * @return the stock quantity, or null if the product type is not tracked.
-     * @throws IllegalArgumentException if the type argument is null.
-     */
-    public Integer getProductStock(ProductType type) {
-        if (type == null)
-            throw new IllegalArgumentException("type argument cannot be null");
+    @Override
+    public CompletableFuture<Integer> getProductStock(ProductType type) {
+        // 1. Δημιουργούμε ένα κενό "κουτί" (future) που στο μέλλον θα περιέχει έναν ακέραιο (Integer).
+        CompletableFuture<Integer> future = new CompletableFuture<>();
 
-        return productStocks.get(type);
-    }
-
-    /**
-     * Calculates the percentage of warehouse capacity currently in use.
-     * @return a double representing the utilization ratio (0.0 to 1.0).
-     */
-    public double getCapacityUtilization() {
-        return totalProducts > 0 ? (double) totalProducts / maxCapacity : 0;
-    }
-
-    /**
-     * Adds a new product type to the warehouse tracking system with zero initial stock.
-     * @param type the new product type to insert.
-     * @throws IllegalArgumentException if the type is null or already exists in the system.
-     */
-    public void insertProduct(ProductType type) {
-        if (type == null)
-            throw new IllegalArgumentException("type argument cannot be null");
-
-        if (!productStocks.containsKey(type)) {
-            productStocks.put(type, 0);
+        if (type == null) {
+            // 2α. Αν υπάρχει λάθος, αντί για `throw new Exception`, "πετάμε" το σφάλμα
+            // μέσα από το future χρησιμοποιώντας την completeExceptionally.
+            future.completeExceptionally(new IllegalArgumentException("type argument cannot be null"));
         } else {
-            throw new IllegalArgumentException("The provided type already exists in stock");
+            // 2β. Αν όλα είναι καλά, γεμίζουμε το future με το αποτέλεσμα (το απόθεμα του προϊόντος).
+            future.complete(productStocks.get(type));
         }
+
+        // 3. Επιστρέφουμε το future, το οποίο ο καλών μπορεί να εξετάσει όποτε θέλει.
+        return future;
     }
 
-    /**
-     * Removes a product type from the warehouse tracking system.
-     * @param type the product type to remove.
-     * @throws IllegalArgumentException if the type is null.
-     * @throws NoSuchElementException if the product type is not found in stock.
-     */
-    public void deleteProduct(ProductType type) throws NoSuchElementException {
-        if (type == null)
-            throw new IllegalArgumentException("type argument cannot be null");
+    @Override
+    public CompletableFuture<Double> getCapacityUtilization() {
+        double utilization = totalProducts > 0 ? totalProducts / maxCapacity : 0.0;
 
-        if (!productStocks.containsKey(type))
-            throw new NoSuchElementException("Product not in stock");
-
-        productStocks.remove(type);
+        // Συντόμευση: Επειδή ο υπολογισμός γίνεται ακαριαία στη μνήμη και δεν έχουμε ελέγχους,
+        // μπορούμε να δημιουργήσουμε και να επιστρέψουμε κατευθείαν ένα "ολοκληρωμένο" future
+        // χρησιμοποιώντας την `CompletableFuture.completedFuture(...)`.
+        return CompletableFuture.completedFuture(utilization);
     }
 
-    /**
-     * Increases the stock level for a specific product.
-     * @param type   the product type to update.
-     * @param amount the quantity to add (must be positive).
-     * @return true if the update was successful, false if the type is missing or amount is invalid.
-     */
-    public boolean increaseProductStock(ProductType type, int amount) {
-        if (!productStocks.containsKey(type) || !isValidAmount(amount)) {
-            return false;
+    @Override
+    public CompletableFuture<Void> insertProduct(ProductType type) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        if (type == null) {
+            // Σφάλμα: Το type είναι null.
+            future.completeExceptionally(new IllegalArgumentException("type argument cannot be null"));
+        } else if (!productStocks.containsKey(type)) {
+            // Επιτυχία: Το προϊόν δεν υπήρχε, οπότε το προσθέτουμε με αρχικό απόθεμα 0.
+            productStocks.put(type, 0);
+            // Επειδή η μέθοδος επιστρέφει Void, ολοκληρώνουμε το future περνώντας την τιμή null.
+            future.complete(null);
+        } else {
+            // Σφάλμα: Το προϊόν υπάρχει ήδη.
+            future.completeExceptionally(new IllegalArgumentException("The provided type already exists in stock"));
+        }
+
+        return future;
+    }
+
+    @Override
+    public CompletableFuture<Void> deleteProduct(ProductType type) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        if (type == null) {
+            future.completeExceptionally(new IllegalArgumentException("type argument cannot be null"));
+        } else if (!productStocks.containsKey(type)) {
+            future.completeExceptionally(new NoSuchElementException("Product not in stock"));
+        } else {
+            // Πριν διαγράψουμε το προϊόν, αφαιρούμε το απόθεμά του από το συνολικό (totalProducts)
+            totalProducts -= productStocks.get(type);
+            productStocks.remove(type); // Διαγραφή
+            future.complete(null); // Επιτυχής ολοκλήρωση της ενέργειας
+        }
+
+        return future;
+    }
+
+    @Override
+    public CompletableFuture<Boolean> increaseProductStock(ProductType type, int amount) {
+        if (!productStocks.containsKey(type) || amount <= 0) {
+            // Αν το προϊόν δεν υπάρχει ή το amount είναι άκυρο, επιστρέφουμε κατευθείαν ένα future με τιμή false.
+            return CompletableFuture.completedFuture(false);
         }
 
         int previousValue = productStocks.get(type);
         productStocks.put(type, previousValue + amount);
-        return true;
+        totalProducts += amount; // Ενημερώνουμε και τον μετρητή συνολικών προϊόντων
+
+        // Η λειτουργία πέτυχε, επιστρέφουμε future με τιμή true.
+        return CompletableFuture.completedFuture(true);
     }
 
-    /**
-     * Decreases the stock level for a specific product if sufficient stock exists.
-     * @param type   the product type to update.
-     * @param amount the quantity to subtract (must be positive).
-     * @return true if the update was successful, false if the type is missing or amount is invalid or warehouse stock is
-     * insufficient.
-     */
-    public boolean decreaseProductStock(ProductType type, int amount) {
-        if (!productStocks.containsKey(type) || !isValidAmount(amount)) {
-            return false;
+    @Override
+    public CompletableFuture<Boolean> decreaseProductStock(ProductType type, int amount) {
+        if (!productStocks.containsKey(type) || amount <= 0) {
+            return CompletableFuture.completedFuture(false);
         }
 
         int previousValue = productStocks.get(type);
-        if (sufficientStock(type, amount)) {
+        if (previousValue - amount >= 0) { // Έλεγχος ότι έχουμε επαρκές απόθεμα (δεν γίνεται αρνητικό)
             productStocks.put(type, previousValue - amount);
-            return true;
+            totalProducts -= amount; // Μειώνουμε τον μετρητή συνολικών προϊόντων
+            return CompletableFuture.completedFuture(true);
         }
-        return false;
+
+        // Αν δεν υπήρχε επαρκές απόθεμα (π.χ. πήγαμε να αφαιρέσουμε 10 ενώ είχαμε 5), επιστρέφουμε false.
+        return CompletableFuture.completedFuture(false);
     }
 
-    /**
-     * Checks if there is enough stock available for a specific quantity.
-     * @param type   the product type to check.
-     * @param amount the quantity requested.
-     * @return true if current stock minus amount is greater than zero.
-     */
-    public boolean sufficientStock(ProductType type, int amount) {
+    @Override
+    public CompletableFuture<Boolean> sufficientStock(ProductType type, int amount) {
         Integer previousValue = productStocks.get(type);
-        if (previousValue == null) return false;
-        return (previousValue - amount >= 0);
+        if (previousValue == null) {
+            return CompletableFuture.completedFuture(false); // Το προϊόν δεν υπάρχει
+        }
+        // Ελέγχει αν η αφαίρεση του amount θα αφήσει το απόθεμα σε αριθμό >= 0.
+        return CompletableFuture.completedFuture(previousValue - amount >= 0);
     }
 
-    /**
-     * Validates if the provided quantity is a positive integer.
-     * @param amount the quantity to validate.
-     * @return true if amount > 0.
-     */
-    public boolean isValidAmount(int amount) {
-        return amount > 0;
+    @Override
+    public CompletableFuture<Boolean> isValidAmount(int amount) {
+        // Ελέγχει αν το amount είναι θετικός αριθμός.
+        return CompletableFuture.completedFuture(amount > 0);
     }
 
-    /**
-     * @return the complete map of product types and their respective stock quantities.
-     */
-    public HashMap<ProductType, Integer> getProductStocks() {
-        return productStocks;
+    @Override
+    public CompletableFuture<HashMap<ProductType, Integer>> getProductStocks() {
+        // Επιστρέφει όλο το HashMap τυλιγμένο μέσα σε ένα CompletedFuture.
+        return CompletableFuture.completedFuture(productStocks);
     }
 
-    /**
-     * @return the maximum capacity limit of the warehouse.
-     */
-    public int getMaxCapacity() {
-        return maxCapacity;
+    @Override
+    public CompletableFuture<Integer> getMaxCapacity() {
+        // Επιστρέφει τη μέγιστη χωρητικότητα.
+        return CompletableFuture.completedFuture(maxCapacity);
     }
 
-    /**
-     * Updates the maximum capacity limit of the warehouse.
-     * @param maxCapacity the new capacity limit.
-     */
-    public void setMaxCapacity(int maxCapacity) {
-        this.maxCapacity = maxCapacity;
+    @Override
+    public CompletableFuture<Void> setMaxCapacity(int newMaxCapacity) {
+        maxCapacity = newMaxCapacity;
+        return CompletableFuture.completedFuture(null); // Δεν επιστρέφουμε κάποια τιμή (Void), οπότε βάζουμε null
     }
 
-    /**
-     * Resets the warehouse by clearing all product stock data.
-     */
-    public void clear() {
+    @Override
+    public CompletableFuture<Void> clear() {
+        // Καθαρίζει τα πάντα (Λίστα και Μετρητή)
         productStocks.clear();
+        totalProducts = 0;
+        return CompletableFuture.completedFuture(null);
     }
 }

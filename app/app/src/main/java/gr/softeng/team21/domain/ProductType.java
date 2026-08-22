@@ -115,4 +115,16 @@ public class ProductType {
     public String toString() {
         return productname + "---" + price;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductType that = (ProductType) o;
+        return productname != null ? productname.equals(that.productname) : that.productname == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return productname != null ? productname.hashCode() : 0;
+    }
 }
