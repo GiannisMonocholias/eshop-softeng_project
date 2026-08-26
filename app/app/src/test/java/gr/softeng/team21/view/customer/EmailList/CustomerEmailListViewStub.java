@@ -1,36 +1,42 @@
 package gr.softeng.team21.view.customer.EmailList;
 
+import java.util.ArrayList;
+import gr.softeng.team21.contact.EmailMessage;
+
 /**
  * Stub implementation of {@link CustomerEmailListView} for testing purposes.
- * It provides a mechanism to capture navigation events and the data passed during navigation
- * (such as email details or customer IDs) to verify the presenter's logic.
+ * Captures asynchronous email loads and navigation events.
  * @author PAVLOS GRATSANIS
  */
 public class CustomerEmailListViewStub implements CustomerEmailListView {
 
-    private int CreateNewMsgCount = 0;
+    private int createNewMsgCount = 0;
     private String passedCustomerId = "";
-
-    private int EmailDetailsCount = 0;
+    private int emailDetailsCount = 0;
     private String detailsSubject, detailsBody, detailsSender, detailsReceiver, detailsId;
 
-    /**
-     * {@inheritDoc}
-     * Increments the counter for creating a new message and stores the passed customer ID.
-     */
+    private ArrayList<EmailMessage> loadedEmails;
+    private String errorMessage;
+
+    @Override
+    public void showEmails(ArrayList<EmailMessage> emails) {
+        this.loadedEmails = emails;
+    }
+
+    @Override
+    public void showError(String message) {
+        this.errorMessage = message;
+    }
+
     @Override
     public void goToCreateNewMessge(String customerId) {
-        CreateNewMsgCount++;
+        createNewMsgCount++;
         this.passedCustomerId = customerId;
     }
 
-    /**
-     * {@inheritDoc}
-     * Increments the counter for viewing email details and stores all passed email attributes.
-     */
     @Override
     public void goToEmailDetails(String subject, String body, String sender, String receiver, String customerId) {
-        EmailDetailsCount++;
+        emailDetailsCount++;
         this.detailsSubject = subject;
         this.detailsBody = body;
         this.detailsSender = sender;
@@ -38,68 +44,15 @@ public class CustomerEmailListViewStub implements CustomerEmailListView {
         this.detailsId = customerId;
     }
 
-
-    /**
-     * Returns the number of times navigation to create a new message was triggered.
-     * @return The count.
-     */
-    public int getCreateNewMsgCount() {
-        return CreateNewMsgCount;
-    }
-
-    /**
-     * Returns the customer ID passed when navigating to create a new message.
-     * @return The customer ID string.
-     */
-    public String getPassedCustomerId() {
-        return passedCustomerId;
-    }
-
-    /**
-     * Returns the number of times navigation to email details was triggered.
-     * @return The count.
-     */
-    public int getEmailDetailsCount() {
-        return EmailDetailsCount;
-    }
-
-    /**
-     * Returns the subject passed to the email details.
-     * @return The subject string.
-     */
-    public String getDetailsSubject() {
-        return detailsSubject;
-    }
-
-    /**
-     * Returns the body passed to the email details.
-     * @return The body string.
-     */
-    public String getDetailsBody() {
-        return detailsBody;
-    }
-
-    /**
-     * Returns the sender passed to the email details.
-     * @return The sender string.
-     */
-    public String getDetailsSender() {
-        return detailsSender;
-    }
-
-    /**
-     * Returns the receiver passed to the email details.
-     * @return The receiver string.
-     */
-    public String getDetailsReceiver() {
-        return detailsReceiver;
-    }
-
-    /**
-     * Returns the customer ID passed to the email details.
-     * @return The customer ID string.
-     */
-    public String getDetailsId() {
-        return detailsId;
-    }
+    // --- Getters for Tests ---
+    public ArrayList<EmailMessage> getLoadedEmails() { return loadedEmails; }
+    public String getErrorMessage() { return errorMessage; }
+    public int getCreateNewMsgCount() { return createNewMsgCount; }
+    public String getPassedCustomerId() { return passedCustomerId; }
+    public int getEmailDetailsCount() { return emailDetailsCount; }
+    public String getDetailsSubject() { return detailsSubject; }
+    public String getDetailsBody() { return detailsBody; }
+    public String getDetailsSender() { return detailsSender; }
+    public String getDetailsReceiver() { return detailsReceiver; }
+    public String getDetailsId() { return detailsId; }
 }

@@ -2,92 +2,121 @@ package gr.softeng.team21.view.customer.FindProduct;
 
 import java.util.ArrayList;
 
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
-import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 
 /**
  * Presenter for the FindProductActivity.
- * Handles interactions between the {@link CustomerFindProductView} and the domain logic,
- * including product filtering, selection and cart status updates.
+ * Handles asynchronous interactions with Firebase via DAOs and updates the
+ * {@link CustomerFindProductView}, including product filtering and cart status.
+ *
  * @author PAVLOS GRATSANIS
  */
 public class CustomerFindProductPresenter {
-    private CustomerFindProductView view;
-    private ProductTypeDAOMemory dao;
+    private final CustomerFindProductView view;
+    private final CustomerDAO customerDAO;
+    private final ProductTypeDAO productDAO;
+
     private Customer customer;
     private ArrayList<ProductType> allProducts;
 
     /**
-     * Initializes the presenter with the view and customer.
-     * Loads all available products from the DAO.
+     * Initializes the presenter using Dependency Injection.
      * @param view The view interface.
-     * @param customer The customer domain object.
+     * @param customerDAO The data access object for customers.
+     * @param productDAO The data access object for products.
      */
-    public CustomerFindProductPresenter(CustomerFindProductView view, Customer customer) {
+    public CustomerFindProductPresenter(CustomerFindProductView view, CustomerDAO customerDAO, ProductTypeDAO productDAO) {
         this.view = view;
-        this.customer = customer;
-        this.dao = ProductTypeDAOMemory.getInstance();
-        this.allProducts = new ArrayList<>(dao.getProducts().values());
+        this.customerDAO = customerDAO;
+        this.productDAO = productDAO;
+        this.allProducts = new ArrayList<>();
     }
 
     /**
-     * Loads and displays the full list of products in the view.
+     * Asynchronously loads the customer data and then the available products list.
+     * Updates the UI once data is fully retrieved.
+     * @param customerId The ID of the currently logged-in customer.
      */
-    public void loadList() {
-        view.showProducts(allProducts);
+    public void loadInitialData(String customerId) {
+        customerDAO.getCustomer(customerId).thenAccept(loadedCustomer -> {
+            if (loadedCustomer != null) {
+                this.customer = loadedCustomer;
+                updateShoppingCartStatus(); // Update cart UI immediately
+
+                // Now load the products asynchronously
+                productDAO.getProducts().thenAccept(productsMap -> {
+                    this.allProducts = new ArrayList<>(productsMap.values());
+                    if (view != null) view.showProducts(this.allProducts);
+                }).exceptionally(e -> {
+                    if (view != null) view.showError("Σφάλμα φόρτωσης προϊόντων: " + e.getMessage());
+                    return null;
+                });
+
+            } else {
+                if (view != null) view.showError("Ο πελάτης δεν βρέθηκε.");
+            }
+        }).exceptionally(e -> {
+            if (view != null) view.showError("Σφάλμα σύνδεσης με τη βάση: " + e.getMessage());
+            return null;
+        });
     }
 
     /**
-     * Filters the product list based on the user's search query.
+     * Filters the already loaded product list based on the user's search query.
      * @param txt The search text entered by the customer.
      */
     public void filter(String txt) {
         ArrayList<ProductType> filteredList = new ArrayList<>();
-        if (txt == null || txt.isEmpty()) {
+        if (txt == null || txt.trim().isEmpty()) {
             filteredList.addAll(allProducts);
         } else {
-            String searchText = txt.toLowerCase();
+            String searchText = txt.toLowerCase().trim();
             for (ProductType item : allProducts) {
                 if (item.getProductname().toLowerCase().contains(searchText)) {
                     filteredList.add(item);
                 }
             }
         }
-        view.showProducts(filteredList);
+        if (view != null) view.showProducts(filteredList);
     }
 
     /**
-     * Handles selecting a product from the list and clicking to view the details screen for that product.
+     * Handles selecting a product from the list to view its details.
      * @param selectedProduct The product clicked by the user.
      */
     public void ProductClicked(ProductType selectedProduct) {
-        if (selectedProduct != null) {
+        if (selectedProduct != null && view != null) {
             view.goToProductDetails(selectedProduct.getProductCode());
         }
     }
 
     /**
      * Handles the click on the shopping cart button.
-     * Checks if the cart is not empty or is not exists before navigating.
      */
     public void openShoppingCartClicked() {
-        if (customer.getShoppingCart() == null) {
-            view.showEmptyShoppingCartMessage("To καλάθι είναι άδειο!!");
+        if (customer == null) return;
+
+        if (customer.getShoppingCart() == null || customer.getShoppingCart().getItems().isEmpty()) {
+            if (view != null) view.showEmptyShoppingCartMessage("To καλάθι είναι άδειο!!");
         } else {
-            view.goToShoppingCart();
+            if (view != null) view.goToShoppingCart();
         }
     }
 
     /**
-     * Updates the shopping cart item count in the screen.
+     * Updates the shopping cart item count on the screen.
      */
     public void updateShoppingCartStatus() {
+        if (customer == null) return;
+
         if (customer.getShoppingCart() != null) {
             int quantity = customer.getShoppingCart().getItems().size();
-            view.updateShoppingCartQuantity(quantity);
+            if (view != null) view.updateShoppingCartQuantity(quantity);
         } else {
-            view.updateShoppingCartQuantity(0);
+            if (view != null) view.updateShoppingCartQuantity(0);
         }
     }
 }

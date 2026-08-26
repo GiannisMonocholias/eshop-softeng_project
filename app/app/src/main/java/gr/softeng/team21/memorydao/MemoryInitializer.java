@@ -33,13 +33,12 @@ public class MemoryInitializer {
     public static void eraseData() {
         try {
             getProductsWareHouseDAO().clear();
-            if (!getProductsWareHouseDAO().getProductStocks().isEmpty()) {
+            if (!getProductsWareHouseDAO().getProductStocks().join().isEmpty()) {
                 throw new IllegalStateException("Products warehouse was not cleared");
             }
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-
         // CustomerDAO erase data
         try {
             getCustomerDAO().clear().join();
@@ -378,7 +377,7 @@ public class MemoryInitializer {
         ProductsWareHouseDAO warehouse = getProductsWareHouseDAO();
 
         try {
-            if (warehouse.getProductStocks().size() != products.getProducts().join().size()) {
+            if (warehouse.getProductStocks().join().size() != products.getProducts().join().size()) {
                 throw new IllegalStateException("Products warehouse does not have all productTypes");
             }
             // --- Laptops (Ακριβά είδη - Λίγο απόθεμα) ---

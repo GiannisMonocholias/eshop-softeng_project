@@ -20,31 +20,27 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.contact.EmailMessage;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.view.contact.emailDetails.EmailDetailsActivity;
 import gr.softeng.team21.view.user.emailComposition.EmailCompositionActivity;
 import gr.softeng.team21.view.util.EmailAdapter;
 
 /**
  * Activity responsible for displaying the list of emails for a Customer.
- * Implements the {@link CustomerEmailListView} and manages UI elements such as RecyclerView, SearchView and FloatingActionButton.
+ * Implements the {@link CustomerEmailListView} and handles async updates from the Presenter.
  * @author PAVLOS GRATSANIS
  */
 public class CustomerEmailListActivity extends AppCompatActivity implements CustomerEmailListView {
 
     private CustomerEmailListPresenter presenter;
     private static final String CUSTOMER_ID_EXTRA = "CUSTOMER_ID";
-    private  RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private FloatingActionButton emailMsgComposition;
-    private  SearchView searchView;
-
+    private SearchView searchView;
     private EmailAdapter adapter;
+    private String customerId;
 
-    /**
-     * Initializes the presenter, UI components, sets up the RecyclerView with an EmailAdapter,
-     * and configures the search and creation actions.
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,82 +53,70 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        presenter = new CustomerEmailListPresenter(this, CustomerDAOMemory.getInstance());
+
+        // Dependency Injection for Firebase
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+        presenter = new CustomerEmailListPresenter(this, customerDAO);
 
         recyclerView = findViewById(R.id.recyclerViewEmails);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        String customerId = getIntent().getStringExtra(CUSTOMER_ID_EXTRA);
+        customerId = getIntent().getStringExtra(CUSTOMER_ID_EXTRA);
         adapter = new EmailAdapter(new ArrayList<>(), email -> presenter.onEmailSelected(email, customerId));
         recyclerView.setAdapter(adapter);
 
-        loadEmails(customerId);
+        presenter.loadInbox(customerId);
 
         searchView = findViewById(R.id.searchViewEmails);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+            public boolean onQueryTextSubmit(String query) { return false; }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (adapter != null) {
-                    adapter.filter(newText);
-                }
+                if (adapter != null) adapter.filter(newText);
                 return true;
             }
         });
 
         emailMsgComposition = findViewById(R.id.fabNewEmail);
-        emailMsgComposition.setOnClickListener(v -> onCreateNewMsgSelected(customerId));
+        emailMsgComposition.setOnClickListener(v -> presenter.onCreateNewMsgSelectedClicked(customerId));
     }
 
-    /**
-     *Calls the corresponding presenter method
-    */
-    private void onCreateNewMsgSelected(String customerId) {
-        presenter.onCreateNewMsgSelectedClicked(customerId);
-    }
-
-    /**
-     * Refreshes the email list from the presenter whenever the activity comes to the foreground.
-     */
     @Override
     protected void onResume() {
         super.onResume();
-        String customerId = getIntent().getStringExtra(CUSTOMER_ID_EXTRA);
-        loadEmails(customerId);
-    }
-
-    /**
-     * Helper method to load, sort and display emails for the  customer.
-     * @param customerId The ID of the customer.
-     */
-    private void loadEmails(String customerId) {
-        if (presenter != null && adapter != null && customerId != null) {
-            ArrayList<EmailMessage> emailList = presenter.getInbox(customerId);
-            emailList.sort((e1, e2) -> e2.getDateSent().compareTo(e1.getDateSent()));
-            adapter.updateData(emailList);
+        if (presenter != null && customerId != null) {
+            presenter.loadInbox(customerId);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * Starts the EmailCompositionActivity via an Intent, passing the customer's ID as an extra.
-     */
+    /** {@inheritDoc} */
+    @Override
+    public void showEmails(ArrayList<EmailMessage> emails) {
+        runOnUiThread(() -> {
+            emails.sort((e1, e2) -> e2.getDateSent().compareTo(e1.getDateSent()));
+            if (adapter != null) {
+                adapter.updateData(emails);
+            }
+        });
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void showError(String message) {
+        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
+    }
+
+    /** {@inheritDoc} */
     @Override
     public void goToCreateNewMessge(String customerId) {
-        Toast.makeText(this, "Δημιουργία Νέου Μηνύματος...", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(CustomerEmailListActivity.this, EmailCompositionActivity.class);
         intent.putExtra(CUSTOMER_ID_EXTRA, customerId);
         startActivity(intent);
     }
 
-    /**
-     * {@inheritDoc}
-     * Starts the EmailDetailsActivity, passing all necessary email data via Intent extras.
-     */
+    /** {@inheritDoc} */
     @Override
     public void goToEmailDetails(String subject, String body, String sender, String receiver, String customerId) {
         Intent intent = new Intent(this, EmailDetailsActivity.class);

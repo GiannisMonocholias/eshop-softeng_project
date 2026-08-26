@@ -1,107 +1,96 @@
 package gr.softeng.team21.memorydao;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+
 import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.dao.EmailDAO;
 
 /**
  * In-memory implementation of the {@link EmailDAO} interface.
- * Stores and categorizes incoming and outgoing email messages in local lists.
+ * Stores incoming and outgoing email messages in local lists.
+ * Wraps results in {@link CompletableFuture} to satisfy the asynchronous contract
+ * of the DAO, making it perfect for instantaneous Unit Testing without network delays.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailDAOMemory implements EmailDAO {
-    private ArrayList<EmailMessage> inboxEmails = new ArrayList<EmailMessage>();
-    private ArrayList<EmailMessage> sentEmails = new ArrayList<EmailMessage>();
+    private ArrayList<EmailMessage> inboxEmails = new ArrayList<>();
+    private ArrayList<EmailMessage> sentEmails = new ArrayList<>();
 
-    /**
-     * @return all emails currently in the inbox.
-     */
-    public ArrayList<EmailMessage> getInboxEmails() { return inboxEmails; }
+    /** {@inheritDoc} */
+    @Override
+    public CompletableFuture<ArrayList<EmailMessage>> getInboxEmails() {
+        return CompletableFuture.completedFuture(inboxEmails);
+    }
 
-    /**
-     * @return all emails that have been sent.
-     */
-    public ArrayList<EmailMessage> getSentEmails() { return sentEmails; }
+    /** {@inheritDoc} */
+    @Override
+    public CompletableFuture<ArrayList<EmailMessage>> getSentEmails() {
+        return CompletableFuture.completedFuture(sentEmails);
+    }
 
-    /**
-     * Filters and returns all emails in the inbox that have not been read.
-     * @return a list of unread EmailMessages.
-     */
-    public ArrayList<EmailMessage> getUnreadEmails() {
-        ArrayList<EmailMessage> unread = new ArrayList<EmailMessage>();
+    /** {@inheritDoc} */
+    @Override
+    public CompletableFuture<ArrayList<EmailMessage>> getUnreadEmails() {
+        ArrayList<EmailMessage> unread = new ArrayList<>();
         for(EmailMessage msg : inboxEmails) {
             if(!msg.isRead()) unread.add(msg);
         }
-        return unread;
+        return CompletableFuture.completedFuture(unread);
     }
 
-    /**
-     * Filters and returns all emails in the inbox that have been read.
-     * @return a list of read EmailMessages.
-     */
-    public ArrayList<EmailMessage> getReadEmails() {
-        ArrayList<EmailMessage> read = new ArrayList<EmailMessage>();
+    /** {@inheritDoc} */
+    @Override
+    public CompletableFuture<ArrayList<EmailMessage>> getReadEmails() {
+        ArrayList<EmailMessage> read = new ArrayList<>();
         for (EmailMessage msg : inboxEmails) {
             if (msg.isRead()) read.add(msg);
         }
-        return read;
+        return CompletableFuture.completedFuture(read);
     }
 
-    /**
-     * Filters and returns all emails that have not received a reply yet.
-     * @return a list of unreplied EmailMessages.
-     */
-    public ArrayList<EmailMessage> getUnrepliedEmails() {
-        ArrayList<EmailMessage> unreplied = new ArrayList<EmailMessage>();
+    /** {@inheritDoc} */
+    @Override
+    public CompletableFuture<ArrayList<EmailMessage>> getUnrepliedEmails() {
+        ArrayList<EmailMessage> unreplied = new ArrayList<>();
         for(EmailMessage msg : inboxEmails) {
             if(!msg.isReplied()) unreplied.add(msg);
         }
-        return unreplied;
+        return CompletableFuture.completedFuture(unreplied);
     }
 
-    /**
-     * Filters and returns all emails that have been replied to.
-     * @return a list of replied EmailMessages.
-     */
-    public ArrayList<EmailMessage> getRepliedEmails() {
-        ArrayList<EmailMessage> replied = new ArrayList<EmailMessage>();
+    /** {@inheritDoc} */
+    @Override
+    public CompletableFuture<ArrayList<EmailMessage>> getRepliedEmails() {
+        ArrayList<EmailMessage> replied = new ArrayList<>();
         for (EmailMessage msg : inboxEmails) {
             if (msg.isReplied()) replied.add(msg);
         }
-        return replied;
+        return CompletableFuture.completedFuture(replied);
     }
 
-    /**
-     * Saves a new message to the inbox storage.
-     * @param msg the message to save.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void saveInboxEmails(EmailMessage msg) {
         inboxEmails.add(msg);
     }
 
-    /**
-     * Saves a new message to the sent messages storage.
-     * @param msg the message to save.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void saveSentEmails(EmailMessage msg) {
         sentEmails.add(msg);
     }
 
-    /**
-     * Checks if a specific message exists in the inbox.
-     * @param msg the message to search for.
-     * @return true if found, false otherwise.
-     */
-    public boolean inInbox(EmailMessage msg) {
-        return inboxEmails.contains(msg);
+    /** {@inheritDoc} */
+    @Override
+    public CompletableFuture<Boolean> inInbox(EmailMessage msg) {
+        return CompletableFuture.completedFuture(inboxEmails.contains(msg));
     }
 
-    /**
-     * Checks if a specific message exists in the sent items.
-     * @param msg the message to search for.
-     * @return true if found, false otherwise.
-     */
-    public boolean inSent(EmailMessage msg) {
-        return sentEmails.contains(msg);
+    /** {@inheritDoc} */
+    @Override
+    public CompletableFuture<Boolean> inSent(EmailMessage msg) {
+        return CompletableFuture.completedFuture(sentEmails.contains(msg));
     }
 }

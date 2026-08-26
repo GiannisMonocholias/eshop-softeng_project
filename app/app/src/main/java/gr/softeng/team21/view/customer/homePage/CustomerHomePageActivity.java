@@ -22,6 +22,7 @@ import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.UserCredentialsDAOFirebase;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;
 import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
@@ -68,7 +69,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
 
         // Connection to Firebase
         CustomerDAO customerDAO = new CustomerDAOFirebase();
-        UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOMemory.getInstance();
+        UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAOFirebase();
 
         presenter = new CustomerHomePagePresenter(this, customerId, customerDAO, userCredentialsDAO);
 

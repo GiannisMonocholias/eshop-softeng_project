@@ -25,6 +25,9 @@
         <!-- Custom Attributes -->
         <item name="colorFilterActive">@color/filter_active_dark</item>
         <item name="colorFilterUnselected">@color/filter_bg_unselected_dark</item>
+
+        <!-- Menu buttons colour -->
+        <item name="colorMenuButton">@color/teal_menu_dark</item>
     </style>
 
     <style name="Theme.Team21" parent="Base.Theme.Team21" />

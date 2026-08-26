@@ -149,7 +149,7 @@
         android:background="@null"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Συμπληρώστε το μήνυμα"
+        android:hint="Σύνταξη email"
         android:inputType="textMultiLine"
         android:textColor="#000000"
         android:textSize="16sp"

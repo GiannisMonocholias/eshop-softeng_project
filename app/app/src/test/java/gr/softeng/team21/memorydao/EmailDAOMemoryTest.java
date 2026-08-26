@@ -1,7 +1,7 @@
 package gr.softeng.team21.memorydao;
 
 import org.junit.Test;
-import static org.junit.Assert.*; // Χρησιμοποιούμε μόνο JUnit 4 Assertions
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -12,8 +12,9 @@ import gr.softeng.team21.contact.EmailMessage;
 /**
  * Unit tests for the {@link EmailDAOMemory} class.
  * This suite verifies the functionality of the in-memory email repository,
- * including storing inbox and sent messages, filtering by read/replied status,
- * and searching for specific messages.
+ * accommodating the asynchronous {@link java.util.concurrent.CompletableFuture}
+ * contract by utilizing the {@code .join()} method for test assertions.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailDAOMemoryTest {
@@ -26,17 +27,14 @@ public class EmailDAOMemoryTest {
      */
     @Test
     public void testSaveInboxEmailsAndGetInbox() {
-
         EmailDAOMemory provider = new EmailDAOMemory();
-        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body",new Date());
+        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
-        provider.saveInboxEmails(msg); // Save the msg into provider's inbox email list
+        provider.saveInboxEmails(msg);
 
-        // Check if the new msg was saved into provider's inbox
-        ArrayList<EmailMessage> inbox = provider.getInboxEmails();
+        ArrayList<EmailMessage> inbox = provider.getInboxEmails().join();
         assertEquals(1, inbox.size());
         assertEquals(msg, inbox.get(0));
-
     }
 
     /**
@@ -47,13 +45,11 @@ public class EmailDAOMemoryTest {
         EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
-        provider.saveSentEmails(msg); // Save the msg into provider's sent emails list
+        provider.saveSentEmails(msg);
 
-        // Check if the new msg was saved into provider's sent emails list
-        ArrayList<EmailMessage> sent = provider.getSentEmails();
+        ArrayList<EmailMessage> sent = provider.getSentEmails().join();
         assertEquals(1, sent.size());
         assertEquals(msg, sent.get(0));
-
     }
 
     /**
@@ -63,14 +59,14 @@ public class EmailDAOMemoryTest {
     public void testGetUnreadEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
 
-        EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body",new Date());
-        EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body",new Date());
+        EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body", new Date());
+        EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body", new Date());
         readMsg.setRead(true);
 
         provider.saveInboxEmails(unreadMsg);
         provider.saveInboxEmails(readMsg);
 
-        ArrayList<EmailMessage> unread = provider.getUnreadEmails();
+        ArrayList<EmailMessage> unread = provider.getUnreadEmails().join();
         assertEquals(1, unread.size());
         assertEquals(unreadMsg, unread.get(0));
     }
@@ -82,15 +78,14 @@ public class EmailDAOMemoryTest {
     public void testGetReadEmails() {
         EmailDAOMemory provider = new EmailDAOMemory();
 
-        EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body",new Date());
+        EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body", new Date());
         readMsg.setRead(true);
-
-        EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body",new Date());
+        EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body", new Date());
 
         provider.saveInboxEmails(readMsg);
         provider.saveInboxEmails(unreadMsg);
 
-        ArrayList<EmailMessage> readEmails = provider.getReadEmails();
+        ArrayList<EmailMessage> readEmails = provider.getReadEmails().join();
         assertEquals(1, readEmails.size());
         assertEquals(readMsg, readEmails.get(0));
     }
@@ -109,7 +104,7 @@ public class EmailDAOMemoryTest {
         provider.saveInboxEmails(unrepliedMsg);
         provider.saveInboxEmails(repliedMsg);
 
-        ArrayList<EmailMessage> unreplied = provider.getUnrepliedEmails();
+        ArrayList<EmailMessage> unreplied = provider.getUnrepliedEmails().join();
         assertEquals(1, unreplied.size());
         assertEquals(unrepliedMsg, unreplied.get(0));
     }
@@ -123,13 +118,12 @@ public class EmailDAOMemoryTest {
 
         EmailMessage repliedMsg = new EmailMessage(from, to, "Replied", "Body", new Date());
         repliedMsg.setReplied(true);
-
         EmailMessage unrepliedMsg = new EmailMessage(from, to, "Unreplied", "Body", new Date());
 
         provider.saveInboxEmails(repliedMsg);
         provider.saveInboxEmails(unrepliedMsg);
 
-        ArrayList<EmailMessage> repliedEmails = provider.getRepliedEmails();
+        ArrayList<EmailMessage> repliedEmails = provider.getRepliedEmails().join();
         assertEquals(1, repliedEmails.size());
         assertEquals(repliedMsg, repliedEmails.get(0));
     }
@@ -144,8 +138,8 @@ public class EmailDAOMemoryTest {
 
         provider.saveInboxEmails(msg);
 
-        assertTrue(provider.inInbox(msg));
-        assertFalse(provider.inInbox(new EmailMessage(from, to, "Other", "Body", new Date())));
+        assertTrue(provider.inInbox(msg).join());
+        assertFalse(provider.inInbox(new EmailMessage(from, to, "Other", "Body", new Date())).join());
     }
 
     /**
@@ -158,8 +152,7 @@ public class EmailDAOMemoryTest {
 
         provider.saveSentEmails(msg);
 
-        assertTrue(provider.inSent(msg));
-        assertFalse(provider.inSent(new EmailMessage(from, to, "Other", "Body", new Date())));
+        assertTrue(provider.inSent(msg).join());
+        assertFalse(provider.inSent(new EmailMessage(from, to, "Other", "Body", new Date())).join());
     }
-
 }

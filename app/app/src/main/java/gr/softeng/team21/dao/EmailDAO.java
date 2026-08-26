@@ -1,69 +1,90 @@
 package gr.softeng.team21.dao;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.contact.EmailMessage;
 
+/**
+ * Data Access Object (DAO) interface for managing email messages.
+ * <p>
+ * This interface uses {@link CompletableFuture} for all data retrieval operations
+ * to support asynchronous database implementations (e.g., Firebase) without
+ * blocking the main UI thread.
+ *
+ * @author Γιάννης Μονοχολιάς
+ */
 public interface EmailDAO {
 
     /**
-     * @return all emails currently in the inbox.
+     * Retrieves all emails currently stored in the user's inbox asynchronously.
+     *
+     * @return A CompletableFuture containing a list of inbox EmailMessages.
      */
-    public ArrayList<EmailMessage> getInboxEmails();
+    CompletableFuture<ArrayList<EmailMessage>> getInboxEmails();
 
     /**
-     * @return all emails that have been sent.
+     * Retrieves all emails that have been sent by the user asynchronously.
+     *
+     * @return A CompletableFuture containing a list of sent EmailMessages.
      */
-    ArrayList<EmailMessage> getSentEmails();
+    CompletableFuture<ArrayList<EmailMessage>> getSentEmails();
 
     /**
-     * Filters and returns all emails in the inbox that have not been read.
-     * @return a list of unread EmailMessages.
+     * Filters and returns all emails in the inbox that have not been read yet.
+     *
+     * @return A CompletableFuture containing a list of unread EmailMessages.
      */
-    ArrayList<EmailMessage> getUnreadEmails();
+    CompletableFuture<ArrayList<EmailMessage>> getUnreadEmails();
 
     /**
-     * Filters and returns all emails in the inbox that have been read.
-     * @return a list of read EmailMessages.
+     * Filters and returns all emails in the inbox that have already been read.
+     *
+     * @return A CompletableFuture containing a list of read EmailMessages.
      */
-    ArrayList<EmailMessage> getReadEmails();
+    CompletableFuture<ArrayList<EmailMessage>> getReadEmails();
 
     /**
-     * Filters and returns all emails that have not received a reply yet.
-     * @return a list of unreplied EmailMessages.
+     * Filters and returns all emails in the inbox that have not received a reply yet.
+     *
+     * @return A CompletableFuture containing a list of unreplied EmailMessages.
      */
-    ArrayList<EmailMessage> getUnrepliedEmails();
+    CompletableFuture<ArrayList<EmailMessage>> getUnrepliedEmails();
 
     /**
-     * Filters and returns all emails that have been replied to.
-     * @return a list of replied EmailMessages.
+     * Filters and returns all emails in the inbox that have been replied to.
+     *
+     * @return A CompletableFuture containing a list of replied EmailMessages.
      */
-    ArrayList<EmailMessage> getRepliedEmails();
+    CompletableFuture<ArrayList<EmailMessage>> getRepliedEmails();
 
     /**
-     * Saves a new message to the inbox storage.
-     * @param msg the message to save.
+     * Saves a new message to the inbox storage in the database.
+     *
+     * @param msg The email message to be saved.
      */
     void saveInboxEmails(EmailMessage msg);
 
     /**
-     * Saves a new message to the sent messages storage.
-     * @param msg the message to save.
+     * Saves a new message to the sent messages storage in the database.
+     *
+     * @param msg The email message to be saved.
      */
     void saveSentEmails(EmailMessage msg);
 
     /**
      * Checks if a specific message exists in the inbox.
-     * @param msg the message to search for.
-     * @return true if found, false otherwise.
+     *
+     * @param msg The email message to search for.
+     * @return A CompletableFuture containing true if found, false otherwise.
      */
-    boolean inInbox(EmailMessage msg);
+    CompletableFuture<Boolean> inInbox(EmailMessage msg);
 
     /**
      * Checks if a specific message exists in the sent items.
-     * @param msg the message to search for.
-     * @return true if found, false otherwise.
+     *
+     * @param msg The email message to search for.
+     * @return A CompletableFuture containing true if found, false otherwise.
      */
-    boolean inSent(EmailMessage msg);
-
+    CompletableFuture<Boolean> inSent(EmailMessage msg);
 }

@@ -2,4 +2,5 @@
 <resources>
     <attr name="colorFilterActive" format="color" />
     <attr name="colorFilterUnselected" format="color" />
+    <attr name="colorMenuButton" format="color" />
 </resources>
