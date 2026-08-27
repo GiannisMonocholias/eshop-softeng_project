@@ -8,7 +8,7 @@ package gr.softeng.team21.view.customer.register;
 public interface RegisterView {
 
     /**
-     * Displays a success message to the user upon account creation.
+     * Displays a success message to the user upon successful account creation.
      * @param message The confirmation message.
      */
     void showSuccessMessage(String message);

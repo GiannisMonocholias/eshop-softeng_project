@@ -3,13 +3,15 @@ package gr.softeng.team21.view.customer.Payment;
 import gr.softeng.team21.util.Money;
 
 /**
- * Interface for the Customer Payment.
- * Defines methods for displaying messages, navigation (HomePage and CardPayment), confirmation dialogs and updating UI details.
+ * View interface for the Customer Payment screen.
+ * Defines methods for displaying feedback messages, order totals, shipping information,
+ * confirmation dialogs, and triggering navigation.
  * @author PAVLOS GRATSANIS
  */
 public interface CustomerPaymentView {
+
     /**
-     * Displays a message to the user (error or success).
+     * Displays a feedback message to the user (e.g., success, info, or error).
      * @param msg The message to display.
      */
     void showMessage(String msg);
@@ -25,21 +27,21 @@ public interface CustomerPaymentView {
     void goToToCardPayment();
 
     /**
-     * Shows a confirmation dialog for the order with the specified amount.
-     * @param amount The total amount of the order.
+     * Shows a confirmation dialog for finalizing the cash payment.
+     * @param amount The total order amount.
      */
     void showConfirmation(Money amount);
 
     /**
-     * Displays the total amount on the screen.
-     * @param amount The amount as a formatted string.
+     * Displays the total formatted payment amount on the screen.
+     * @param amount The formatted amount string.
      */
     void showTotalAmount(String amount);
 
     /**
-     * Displays the shipping details on the screen.
-     * @param name The customer's name.
-     * @param address The shipping address.
+     * Displays the customer's shipping details on the screen.
+     * @param name The customer's full name.
+     * @param address The formatted shipping address.
      * @param phone The contact phone number.
      */
     void showShippingDetails(String name, String address, String phone);

@@ -30,19 +30,19 @@ public class UserEditDataPresenterTest {
      */
     @Test
     public void selection() {
-        presenter.Selection(0);
+        presenter.handleSelection(0);
         Assert.assertEquals(1, view.getUsernameCount());
 
-        presenter.Selection(1);
+        presenter.handleSelection(1);
         Assert.assertEquals(1, view.getPasswordCount());
 
-        presenter.Selection(2);
+        presenter.handleSelection(2);
         Assert.assertEquals(1, view.getAddressCount());
 
-        presenter.Selection(3);
+        presenter.handleSelection(3);
         Assert.assertEquals(1, view.getEmailCount());
 
-        presenter.Selection(4);
+        presenter.handleSelection(4);
         Assert.assertEquals(1, view.getPhoneCount());
     }
 }

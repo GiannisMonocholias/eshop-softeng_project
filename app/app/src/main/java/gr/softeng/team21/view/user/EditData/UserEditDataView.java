@@ -6,6 +6,7 @@ package gr.softeng.team21.view.user.EditData;
  * @author PAVLOS GRATSANIS
  */
 public interface UserEditDataView {
+
     /**
      * Navigates to the username editing screen.
      */

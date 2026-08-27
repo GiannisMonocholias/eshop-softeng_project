@@ -15,14 +15,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.Customer;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.ProductTypeDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
 import gr.softeng.team21.view.customer.ShoppingCart.CustomerShoppingCartActivity;
 
 /**
  * Activity responsible for displaying the detailed information of a specific product.
  * Implements {@link ProductDetailsView} and manages the UI elements,such as TextView,button and ImageView for viewing details,
- * adjusting quantity and adding the product to the shopping cart.
+ * adjusting quantity and adding the product to the shopping cart safely on the UI thread.
  * @author PAVLOS GRATSANIS
  */
 public class ProductDetailsActivity extends AppCompatActivity implements ProductDetailsView {
@@ -32,7 +34,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
     private Button btnAddToCart, btnQuantityminus, btnQuantityplus;
 
     private ProductDetailsPresenter presenter;
-    private Customer customer;
+    private String customerId;
 
     /**
      * Initializes the activity, sets the UI layout, retrieves the customer and product IDs from the Intent,
@@ -50,9 +52,15 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        String customerId=getIntent().getStringExtra("CUSTOMER_ID");
-        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);
-        presenter = new ProductDetailsPresenter(this,customer);
+
+        customerId = getIntent().getStringExtra("CUSTOMER_ID");
+        String productCode = getIntent().getStringExtra("PRODUCT_CODE");
+
+        // Dependency Injection for Firebase DAOs
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+        ProductTypeDAO productDAO = new ProductTypeDAOFirebase();
+        presenter = new ProductDetailsPresenter(this, customerDAO, productDAO);
+
         imgProduct = findViewById(R.id.imgDetail);
         tvName = findViewById(R.id.txtProductDetailActivityName);
         tvCode = findViewById(R.id.txtProductDetailActivityCode);
@@ -64,35 +72,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         btnQuantityminus = findViewById(R.id.btnProductDetailActivityQuantityMinus);
         btnQuantityplus = findViewById(R.id.btnProductDetailActivityQuantityPlus);
 
+        // Initiate asynchronous loading sequence
+        presenter.loadInitialData(customerId, productCode);
 
-        String productCode = getIntent().getStringExtra("PRODUCT_CODE");
-        presenter.loadProduct(productCode);
-
-
-        btnAddToCart.setOnClickListener(v -> addToCart());
-        btnQuantityplus.setOnClickListener(v -> plus());
-        btnQuantityminus.setOnClickListener(v -> minus());
-    }
-
-    /**
-     *Calls the corresponding presenter method
-     */
-    private void addToCart() {
-        presenter.addToCartClicked();
-    }
-
-    /**
-     *Calls the corresponding presenter method
-     */
-    private void plus() {
-        presenter.plusClicked();
-    }
-
-    /**
-     *Calls the corresponding presenter method
-     */
-    private void minus() {
-        presenter.minusClicked();
+        btnAddToCart.setOnClickListener(v -> presenter.addToCartClicked());
+        btnQuantityplus.setOnClickListener(v -> presenter.plusClicked());
+        btnQuantityminus.setOnClickListener(v -> presenter.minusClicked());
     }
 
     /**
@@ -101,11 +86,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
      */
     @Override
     public void showProductDetails(String name, String code, String price, String description, String imgCode) {
-        tvName.setText(name);
-        tvCode.setText("Κωδικός: " + code);
-        tvPrice.setText(price);
-        tvDescription.setText(description);
-        imgProduct.setImageResource(getImageResIdByCode(imgCode));
+        runOnUiThread(() -> {
+            tvName.setText(name);
+            tvCode.setText("Κωδικός: " + code);
+            tvPrice.setText(price);
+            tvDescription.setText(description);
+            imgProduct.setImageResource(getImageResIdByCode(imgCode));
+        });
     }
 
     /**
@@ -114,7 +101,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
      */
     @Override
     public void showQuantity(int quantity) {
-        tvQuantity.setText(String.valueOf(quantity));
+        runOnUiThread(() -> tvQuantity.setText(String.valueOf(quantity)));
     }
 
     /**
@@ -123,7 +110,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
      */
     @Override
     public void showMessage(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> Toast.makeText(this, msg, Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -132,13 +119,13 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
      */
     @Override
     public void showAddToCartSuccess() {
-        new AlertDialog.Builder(this)
+        runOnUiThread(() -> new AlertDialog.Builder(this)
                 .setTitle("Επιτυχής Προσθήκη")
                 .setMessage("Το προϊόν προστέθηκε στο καλάθι σας.\nΠώς θέλετε να συνεχίσετε;")
                 .setPositiveButton("Προβολή Καλαθιού", (dialog, which) -> presenter.openShoppingCartClicked())
                 .setNegativeButton("Συνέχεια Αγορών", (dialog, which) -> finish())
                 .setCancelable(false)
-                .show();
+                .show());
     }
 
     /**
@@ -147,10 +134,12 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
      */
     @Override
     public void goToCart() {
-        Intent intent = new Intent(ProductDetailsActivity.this, CustomerShoppingCartActivity.class);
-        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
-        startActivity(intent);
-        showMessage("Μετάβαση στο Καλάθι...");
+        runOnUiThread(() -> {
+            Intent intent = new Intent(ProductDetailsActivity.this, CustomerShoppingCartActivity.class);
+            intent.putExtra("CUSTOMER_ID", customerId);
+            startActivity(intent);
+            // Το μήνυμα καλείται ξεχωριστά από τον presenter μέσω showMessage
+        });
     }
 
     /**

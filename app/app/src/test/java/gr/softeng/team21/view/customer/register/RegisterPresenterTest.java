@@ -1,6 +1,5 @@
 package gr.softeng.team21.view.customer.register;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +7,7 @@ import org.junit.Test;
 import java.util.Map;
 
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
@@ -24,6 +24,7 @@ public class RegisterPresenterTest {
     private RegisterPresenter presenter;
     private RegisterViewStub viewStub;
     private CustomerDAO customerDAO;
+    private UserCredentialsDAO credentialsDAO;
 
     /**
      * Initializes the testing environment before each test.
@@ -34,8 +35,12 @@ public class RegisterPresenterTest {
         MemoryInitializer.prepareData();
 
         viewStub = new RegisterViewStub();
+
+        // Inject In-Memory DAOs for testing
         customerDAO = CustomerDAOMemory.getInstance();
-        presenter = new RegisterPresenter(viewStub, customerDAO);
+        credentialsDAO = UserCredentialsDAOMemory.getInstance();
+
+        presenter = new RegisterPresenter(viewStub, customerDAO, credentialsDAO);
     }
 
     /**
@@ -54,7 +59,8 @@ public class RegisterPresenterTest {
         String phone = "6999999999";
         String email = "georg@example.com";
 
-        int initialCount = customerDAO.getCustomers().size();
+        // Use .join() to safely get the current size from the CompletableFuture
+        int initialCount = customerDAO.getCustomers().join().size();
 
         presenter.register(username, firstname, password, lastname, phone, email);
 
@@ -62,12 +68,13 @@ public class RegisterPresenterTest {
         Assert.assertTrue(viewStub.areInputsCleared());
         Assert.assertEquals("", viewStub.getErrorMessage());
 
-        Assert.assertEquals(initialCount + 1, customerDAO.getCustomers().size());
+        Assert.assertEquals(initialCount + 1, customerDAO.getCustomers().join().size());
 
         boolean customerFound = false;
-        Map<String, Customer> allCustomers = customerDAO.getCustomers();
-        for(Customer c : allCustomers.values()){
-            if(c.getUsername().equals(username)){
+        Map<String, Customer> allCustomers = customerDAO.getCustomers().join();
+
+        for (Customer c : allCustomers.values()) {
+            if (c.getUsername().equals(username)) {
                 customerFound = true;
                 Assert.assertEquals(email, c.getEmailAddress().toString());
                 break;
@@ -75,7 +82,8 @@ public class RegisterPresenterTest {
         }
         Assert.assertTrue("Ο νέος πελάτης δεν βρέθηκε στο CustomerDAO", customerFound);
 
-        Assert.assertNotNull(UserCredentialsDAOMemory.getInstance().validateAndGetUser(username,password));
+        // Validate credentials exist in the Auth DAO
+        Assert.assertNotNull(credentialsDAO.validateAndGetUser(username, password).join());
     }
 
     /**

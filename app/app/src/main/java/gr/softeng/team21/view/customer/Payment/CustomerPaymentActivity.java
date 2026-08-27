@@ -15,30 +15,27 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.OrderDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.OrderDAOFirebase;
 import gr.softeng.team21.util.Money;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
 
 /**
- * Activity responsible for handling the payment process for the customer.
- * Implements {@link CustomerPaymentView} and manages UI elements,such as buttons and textView for payment method selection,
- * shipping details display and final confirmation.
+ * Activity responsible for handling the payment checkout process.
+ * Manages UI controls for payment method selection, displays order summary & shipping details,
+ * and delegates business operations to {@link CustomerPaymentPresenter}.
  * @author PAVLOS GRATSANIS
  */
 public class CustomerPaymentActivity extends AppCompatActivity implements CustomerPaymentView {
 
-    private TextView txtFinalAmount,txtShippingName, txtShippingAddress, txtShippingPhone;
+    private TextView txtFinalAmount, txtShippingName, txtShippingAddress, txtShippingPhone;
     private Button btnPay;
     private RadioButton rbCash, rbCard;
     private CustomerPaymentPresenter presenter;
-    private Customer customer;
+    private String customerId;
 
-    /**
-     * Initializes the activity, sets the UI layout, retrieves the customer ID,
-     * initializes the presenter,customer and sets up UI components like text views for shipping info and buttons for payment.
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +47,9 @@ public class CustomerPaymentActivity extends AppCompatActivity implements Custom
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        String customerId=getIntent().getStringExtra("CUSTOMER_ID");
-        customer= CustomerDAOMemory.getInstance().getCustomer(customerId);
-        presenter = new CustomerPaymentPresenter(this, customer);
+
+        customerId = getIntent().getStringExtra("CUSTOMER_ID");
+
         txtFinalAmount = findViewById(R.id.txtCustomerPaymentActivityFinalAmount);
         txtShippingName = findViewById(R.id.txtCustomerPaymentActivityShippingName);
         txtShippingAddress = findViewById(R.id.txtCustomerPaymentActivityShippingAddress);
@@ -60,110 +57,71 @@ public class CustomerPaymentActivity extends AppCompatActivity implements Custom
         btnPay = findViewById(R.id.btnCustomerPaymentActivityPayment);
         rbCash = findViewById(R.id.rbCustomerPaymentActivityCash);
         rbCard = findViewById(R.id.rbCustomerPaymentActivityCard);
-        btnPay.setOnClickListener(v -> payment(rbCash.isChecked()));
-        setdata();
+
+        // Dependency Injection with Firebase DAOs
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+        OrderDAO orderDAO = new OrderDAOFirebase();
+        presenter = new CustomerPaymentPresenter(this, customerDAO, orderDAO);
+
+        btnPay.setOnClickListener(v -> presenter.paymentClicked(rbCash.isChecked()));
+
+        // Asynchronously load initial data
+        presenter.loadInitialData(customerId);
     }
 
-    /**
-     * Retrieves and sets the initial data for the view (payment amount and shipping details).
-     */
-    private void setdata() {
-        setpayamount();
-        setShippingDetails();
-
-    }
-
-    /**
-     *Calls the corresponding presenter method.
-     */
-    private void setShippingDetails() {
-        presenter.loadShippingDetails();
-    }
-
-    /**
-     * Retrieves the total cost from the cart and calls the corresponding presenter method.
-     */
-    private void setpayamount() {
-        String amount = customer.getShoppingCart().getTotalCost().toString();
-        presenter.setpaymentClicked(amount);
-
-    }
-
-    /**
-     *Calls the corresponding presenter method
-     * @param check True if Cash is selected, false otherwise.
-     */
-    private void payment(boolean check) {
-        presenter.paymentClicked(check);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     * Shows a short Toast message to the user.
-     */
+    /** {@inheritDoc} */
     @Override
     public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-
+        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_LONG).show());
     }
 
-    /**
-     * {@inheritDoc}
-     * Navigates back to the HomePage, clearing the activity stack,via an Intent, passing the customer's ID as an extra.
-     */
+    /** {@inheritDoc} */
     @Override
     public void goToCustomerHomePage() {
-        Intent intent = new Intent(CustomerPaymentActivity.this, CustomerHomePageActivity.class);
-        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+        runOnUiThread(() -> {
+            Intent intent = new Intent(CustomerPaymentActivity.this, CustomerHomePageActivity.class);
+            intent.putExtra("CUSTOMER_ID", customerId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 
-    /**
-     * {@inheritDoc}
-     * Starts the CustomerCardPaymentActivity for card transactions via an Intent, passing the customer's ID as an extra.
-     */
+    /** {@inheritDoc} */
     @Override
     public void goToToCardPayment() {
-        Intent intent = new Intent(CustomerPaymentActivity.this, CustomerCardPaymentActivity.class);
-        intent.putExtra("CUSTOMER_ID", customer.getCustomer_id());
-        startActivity(intent);
+        runOnUiThread(() -> {
+            Intent intent = new Intent(CustomerPaymentActivity.this, CustomerCardPaymentActivity.class);
+            intent.putExtra("CUSTOMER_ID", customerId);
+            startActivity(intent);
+        });
     }
 
-    /**
-     * {@inheritDoc}
-     * Displays an AlertDialog to confirm or cancel the order.
-     */
+    /** {@inheritDoc} */
     @Override
     public void showConfirmation(Money amount) {
-        new AlertDialog.Builder(this)
+        runOnUiThread(() -> new AlertDialog.Builder(this)
                 .setTitle("Επιβεβαίωση ή Ακύρωση")
-                .setMessage("Να καταχωρηθεί η παραγγελία σας αξίας: "+amount+";")
+                .setMessage("Να καταχωρηθεί η παραγγελία σας αξίας: " + amount + ";")
                 .setCancelable(false)
                 .setPositiveButton("Επιβεβαίωση Παραγγελίας", (dialog, which) -> presenter.ConfirmClicked())
                 .setNegativeButton("Ακύρωση", (dialog, which) -> presenter.CancelClicked())
-                .show();
+                .show());
     }
 
-    /**
-     * {@inheritDoc}
-     * Updates the text view with the final total amount.
-     */
+    /** {@inheritDoc} */
     @Override
     public void showTotalAmount(String amount) {
-        txtFinalAmount.setText(amount);
+        runOnUiThread(() -> txtFinalAmount.setText(amount));
     }
 
-    /**
-     * {@inheritDoc}
-     * Updates the UI with the shipping details (name, address, phone).
-     */
+    /** {@inheritDoc} */
     @Override
     public void showShippingDetails(String name, String address, String phone) {
-        txtShippingName.setText(name);
-        txtShippingAddress.setText(address);
-        txtShippingPhone.setText(phone);
+        runOnUiThread(() -> {
+            txtShippingName.setText(name);
+            txtShippingAddress.setText(address);
+            txtShippingPhone.setText(phone);
+        });
     }
 }

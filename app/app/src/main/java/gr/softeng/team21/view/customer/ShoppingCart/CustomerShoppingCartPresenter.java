@@ -2,6 +2,7 @@ package gr.softeng.team21.view.customer.ShoppingCart;
 
 import java.util.ArrayList;
 
+import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.util.Money;
@@ -9,33 +10,51 @@ import gr.softeng.team21.util.Money;
 /**
  * Presenter for the ShoppingCart activity.
  * Handles interactions between the {@link CustomerShoppingCartView} and the domain logic,
- * managing cart updates, calculations, and payment validation.
+ * managing cart updates, calculations, and payment validation using asynchronous DAOs.
  * @author PAVLOS GRATSANIS
  */
 public class CustomerShoppingCartPresenter {
-    private CustomerShoppingCartView view;
+    private final CustomerShoppingCartView view;
+    private final CustomerDAO customerDAO;
     private Customer customer;
 
     /**
-     * Initializes the presenter with the view and  customer.
+     * Initializes the presenter with the view and the customer data access object.
      * @param view The view interface.
-     * @param customer The customer domain object.
+     * @param customerDAO The customer data access object (injected).
      */
-    public CustomerShoppingCartPresenter(CustomerShoppingCartView view, Customer customer) {
+    public CustomerShoppingCartPresenter(CustomerShoppingCartView view, CustomerDAO customerDAO) {
         this.view = view;
-        this.customer = customer;
-
+        this.customerDAO = customerDAO;
     }
 
     /**
-     * Handles the click  for viewing the payment.
+     * Asynchronously loads the customer data and refreshes the cart view.
+     * @param customerId The unique identifier of the customer.
+     */
+    public void loadInitialData(String customerId) {
+        customerDAO.getCustomer(customerId).thenAccept(loadedCustomer -> {
+            if (loadedCustomer != null) {
+                this.customer = loadedCustomer;
+                refreshClicked(); // Φορτώνει τα δεδομένα στο UI μόλις έρθει ο πελάτης
+            } else {
+                if (view != null) view.showMessage("Ο πελάτης δεν βρέθηκε.");
+            }
+        }).exceptionally(e -> {
+            if (view != null) view.showMessage("Σφάλμα: " + e.getMessage());
+            return null;
+        });
+    }
+
+    /**
+     * Handles the click for viewing the payment.
      * Checks if the cart is empty before proceeding to payment.
      */
     public void ContinuePaymentClicked() {
-        if (customer.getShoppingCart().getItems().isEmpty()) {
-            view.showMessage( "Το καλάθι είναι άδειο!");
+        if (customer == null || customer.getShoppingCart() == null || customer.getShoppingCart().getItems().isEmpty()) {
+            if (view != null) view.showMessage("Το καλάθι είναι άδειο!");
         } else {
-            view.goToPayment();
+            if (view != null) view.goToPayment();
         }
     }
 
@@ -44,11 +63,12 @@ public class CustomerShoppingCartPresenter {
      * @param item The cart item to update.
      */
     public void plusClicked(CartItem item) {
+        if (customer == null || item == null) return;
         try {
             customer.addItemToCart(item.getProductType(), 1);
             refreshClicked();
         } catch (Exception e) {
-            view.showMessage(e.getMessage());
+            if (view != null) view.showMessage(e.getMessage());
         }
     }
 
@@ -57,11 +77,12 @@ public class CustomerShoppingCartPresenter {
      * @param item The cart item to update.
      */
     public void minusClicked(CartItem item) {
+        if (customer == null || item == null) return;
         try {
             customer.removeItemFromCart(item.getProductType(), 1);
             refreshClicked();
         } catch (Exception e) {
-            view.showMessage(e.getMessage());
+            if (view != null) view.showMessage(e.getMessage());
         }
     }
 
@@ -70,12 +91,13 @@ public class CustomerShoppingCartPresenter {
      * @param item The cart item to delete.
      */
     public void deleteClicked(CartItem item) {
+        if (customer == null || item == null) return;
         try {
             customer.removeItemFromCart(item.getProductType(), item.getQuantity());
             refreshClicked();
-            view.showMessage("Αφαιρέθηκε");
+            if (view != null) view.showMessage("Αφαιρέθηκε");
         } catch (Exception e) {
-            view.showMessage(e.getMessage());
+            if (view != null) view.showMessage(e.getMessage());
         }
     }
 
@@ -83,9 +105,9 @@ public class CustomerShoppingCartPresenter {
      * Calculates and updates the total price in the screen.
      */
     public void setTotalprice() {
-        if(customer.getShoppingCart()!=null){
+        if (customer != null && customer.getShoppingCart() != null) {
             Money totalCost = customer.getShoppingCart().getTotalCost();
-            view.showTotalPrice(String.format("%.2f €", totalCost.getAmount()));
+            if (view != null) view.showTotalPrice(String.format("%.2f €", totalCost.getAmount()));
         }
     }
 
@@ -93,10 +115,10 @@ public class CustomerShoppingCartPresenter {
      * Retrieves the cart items from the domain and updates the view.
      */
     public void loadCartData() {
-        if (customer.getShoppingCart() != null) {
-            view.showCartItems(new ArrayList<>(customer.getShoppingCart().getItems()));
+        if (customer != null && customer.getShoppingCart() != null) {
+            if (view != null) view.showCartItems(new ArrayList<>(customer.getShoppingCart().getItems()));
         } else {
-            view.showCartItems(new ArrayList<>());
+            if (view != null) view.showCartItems(new ArrayList<>());
         }
     }
 
@@ -108,9 +130,10 @@ public class CustomerShoppingCartPresenter {
         loadCartData();
     }
 
-
     public void BackToSearchClicked() {
-        view.showMessage("Μετάβαση στην Αναζήτηση Προϊόντων....");
-        view.goBack();
+        if (view != null) {
+            view.showMessage("Μετάβαση στην Αναζήτηση Προϊόντων....");
+            view.goBack();
+        }
     }
 }

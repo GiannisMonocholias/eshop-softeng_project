@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
@@ -36,12 +37,20 @@ public class CustomerShoppingCartPresenterTest {
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         view = new CustomerShoppingCartViewStub();
-        customer = CustomerDAOMemory.getInstance().getCustomer("CUST-500");
-        presenter = new CustomerShoppingCartPresenter(view, customer);
+
+        CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
+
+        // Resolve async operation synchronously for tests
+        customer = customerDAO.getCustomer("CUST-500").join();
+        presenter = new CustomerShoppingCartPresenter(view, customerDAO);
+
         cart = new ShoppingCart(customer);
-        product = MemoryInitializer.getProductTypeDAO().getProduct("TECH-008");
+        product = MemoryInitializer.getProductTypeDAO().getProduct("TECH-008").join();
         customer.addItemToCart(product, 2);
         item = cart.getItems().get(0);
+
+        // Load the data into the presenter
+        presenter.loadInitialData("CUST-500");
     }
 
     /**
@@ -58,7 +67,7 @@ public class CustomerShoppingCartPresenterTest {
      */
     @Test
     public void continuePaymentClickedWithEmptyCart() {
-        ShoppingCart cart2 = new ShoppingCart(customer);
+        customer.getShoppingCart().getItems().clear();
         presenter.ContinuePaymentClicked();
         Assert.assertEquals(0, view.getGoToPaymentCount());
         Assert.assertEquals("Το καλάθι είναι άδειο!", view.getMessage());
@@ -71,7 +80,6 @@ public class CustomerShoppingCartPresenterTest {
     public void plusClicked() {
         presenter.plusClicked(item);
         Assert.assertEquals(3, customer.getShoppingCart().getItems().get(0).getQuantity());
-
     }
 
     /**
@@ -79,11 +87,15 @@ public class CustomerShoppingCartPresenterTest {
      */
     @Test
     public void testWithNullArguments() {
-        ShoppingCart cart3 = new ShoppingCart(customer);
+        customer.getShoppingCart().getItems().clear();
+        ShoppingCart cart3 = customer.getShoppingCart();
+
         presenter.plusClicked(null);
         Assert.assertTrue(cart3.getItems().isEmpty());
+
         presenter.minusClicked(null);
         Assert.assertTrue(cart3.getItems().isEmpty());
+
         presenter.deleteClicked(null);
         Assert.assertTrue(cart3.getItems().isEmpty());
     }
@@ -115,7 +127,6 @@ public class CustomerShoppingCartPresenterTest {
         presenter.setTotalprice();
         Assert.assertEquals(new BigDecimal("1500.0"), cart.getTotalCost().getAmount());
         Assert.assertEquals("€", cart.getTotalCost().getCurrency());
-
     }
 
     /**
@@ -128,6 +139,5 @@ public class CustomerShoppingCartPresenterTest {
         presenter.loadCartData();
         Assert.assertNotNull(view.getCartItems());
         Assert.assertTrue(view.getCartItems().isEmpty());
-
     }
 }

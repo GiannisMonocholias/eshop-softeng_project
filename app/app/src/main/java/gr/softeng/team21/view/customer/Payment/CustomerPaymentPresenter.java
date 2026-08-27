@@ -1,93 +1,141 @@
 package gr.softeng.team21.view.customer.Payment;
 
-import android.widget.Toast;
-
-import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.PaymentType;
-import gr.softeng.team21.memorydao.OrderDAOMemory;
 
 /**
  * Presenter for the Customer Payment activity.
- * Handles the business logic for payment selection, order checkout, confirmation and cancellation.
+ * Handles the business logic for payment method selection, order checkout,
+ * confirmation, cancellation, and asynchronous persistence via DAOs.
  * @author PAVLOS GRATSANIS
  */
 public class CustomerPaymentPresenter {
-    private CustomerPaymentView view;
-    private Order order;
+    private final CustomerPaymentView view;
+    private final CustomerDAO customerDAO;
+    private final OrderDAO orderDAO;
+
     private Customer customer;
+    private Order order;
 
     /**
-     * Initializes the presenter with the view and customer.
-     * @param view The view interface.
-     * @param customer The customer domain object.
+     * Constructs a presenter instance using Dependency Injection.
+     * @param view The payment view interface.
+     * @param customerDAO The data access object for customers.
+     * @param orderDAO The data access object for orders.
      */
-    public CustomerPaymentPresenter(CustomerPaymentView view, Customer customer) {
+    public CustomerPaymentPresenter(CustomerPaymentView view, CustomerDAO customerDAO, OrderDAO orderDAO) {
         this.view = view;
-        this.customer = customer;
+        this.customerDAO = customerDAO;
+        this.orderDAO = orderDAO;
     }
 
     /**
-     * Handles the click for payment.
-     * Initiates checkout and directs to either cash confirmation or card payment screen.
+     * Asynchronously loads initial customer data, calculates total cart cost,
+     * and displays shipping details.
+     * @param customerId The unique identifier of the customer.
+     */
+    public void loadInitialData(String customerId) {
+        customerDAO.getCustomer(customerId).thenAccept(loadedCustomer -> {
+            if (loadedCustomer != null) {
+                this.customer = loadedCustomer;
+                loadShippingDetails();
+
+                if (customer.getShoppingCart() != null && customer.getShoppingCart().getTotalCost() != null) {
+                    view.showTotalAmount(customer.getShoppingCart().getTotalCost().toString());
+                }
+            } else {
+                if (view != null) view.showMessage("Ο πελάτης δεν βρέθηκε.");
+            }
+        }).exceptionally(e -> {
+            if (view != null) view.showMessage("Σφάλμα ανάκτησης στοιχείων: " + e.getMessage());
+            return null;
+        });
+    }
+
+    /**
+     * Handles payment button click based on selected payment type (Cash vs Card).
      * @param cashCheck True if payment is by cash, false if by card.
      */
     public void paymentClicked(boolean cashCheck) {
+        if (customer == null || customer.getShoppingCart() == null || customer.getShoppingCart().getItems().isEmpty()) {
+            if (view != null) view.showMessage("Το καλάθι είναι άδειο!");
+            return;
+        }
+
         if (cashCheck) {
             order = customer.Checkout();
             if (order == null) {
-                view.showMessage("Το καλάθι είναι άδειο!");
+                if (view != null) view.showMessage("Το καλάθι είναι άδειο!");
                 return;
             }
             customer.selectPaymentType(PaymentType.CASH, "", order);
-            view.showConfirmation(order.getTotal_amount());
-        } else
-            view.goToToCardPayment();
+            if (view != null) view.showConfirmation(order.getTotal_amount());
+        } else {
+            if (view != null) view.goToToCardPayment();
+        }
     }
 
     /**
-     * Confirms the order and navigates back to the HomePage.
+     * Confirms the order, saves it to the database asynchronously, and navigates home.
      */
     public void ConfirmClicked() {
+        if (order == null || customer == null) {
+            if (view != null) view.showMessage("Σφάλμα: Order cannot be null!!!");
+            return;
+        }
+
         try {
             customer.Confirm("CONFIRM", order);
-            OrderDAOMemory.getInstance().addOrder(order);
-            view.showMessage("Η παραγγελία σας καταχωρήθυκε.");
-            view.goToCustomerHomePage();
+            orderDAO.addOrder(order);
+            if (view != null) {
+                view.showMessage("Η παραγγελία σας καταχωρήθυκε.");
+                view.goToCustomerHomePage();
+            }
         } catch (Exception e) {
-            view.showMessage("Σφάλμα: " + e.getMessage());
+            if (view != null) view.showMessage("Σφάλμα: " + e.getMessage());
         }
     }
 
     /**
-     * Cancels the order and navigates back to the HomePage.
+     * Cancels the active order and navigates back to the home page.
      */
     public void CancelClicked() {
+        if (order == null || customer == null) {
+            if (view != null) view.showMessage("Σφάλμα: Order cannot be null!!!");
+            return;
+        }
+
         try {
             customer.Confirm("CANCEL", order);
-            view.showMessage("Η παραγγελία σας ακυρώθηκε.");
-            view.goToCustomerHomePage();
+            if (view != null) {
+                view.showMessage("Η παραγγελία σας ακυρώθηκε.");
+                view.goToCustomerHomePage();
+            }
         } catch (Exception e) {
-            view.showMessage("Σφάλμα: " + e.getMessage());
+            if (view != null) view.showMessage("Σφάλμα: " + e.getMessage());
         }
     }
 
     /**
-     * Sets the total payment amount in the view.
-     * @param amount The amount string to display.
+     * Updates the total payment amount displayed in the view.
+     * @param amount The formatted total amount string.
      */
     public void setpaymentClicked(String amount) {
-        view.showTotalAmount(amount);
+        if (view != null) view.showTotalAmount(amount);
     }
 
     /**
-     * Loads the customer's shipping details (name, address, phone) and updates the view.
+     * Extracts and populates customer shipping information in the view.
      */
     public void loadShippingDetails() {
-        String fullName = customer.getFirstname() + " " + customer.getLastname();
-        String address = customer.getAddress().toString();
-        String phone = customer.getPhonenumber();
-        view.showShippingDetails(fullName, address, phone);
+        if (customer != null && view != null) {
+            String fullName = customer.getFirstname() + " " + customer.getLastname();
+            String address = customer.getAddress() != null ? customer.getAddress().toString() : "";
+            String phone = customer.getPhonenumber();
+            view.showShippingDetails(fullName, address, phone);
+        }
     }
 }

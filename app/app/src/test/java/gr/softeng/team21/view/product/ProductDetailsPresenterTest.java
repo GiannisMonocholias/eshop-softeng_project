@@ -4,11 +4,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.ShoppingCart;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
+import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
 
 /**
  * Unit tests for the {@link ProductDetailsPresenter} class.
@@ -30,11 +33,16 @@ public class ProductDetailsPresenterTest {
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
-        customer = CustomerDAOMemory.getInstance().getCustomer("CUST-503");
-        cart=new ShoppingCart(customer);
+
+        CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
+        ProductTypeDAO productDAO = ProductTypeDAOMemory.getInstance();
+
+        customer = customerDAO.getCustomer("CUST-503").join(); // Χρήση join() για In-Memory DAO
+        cart = new ShoppingCart(customer);
         view = new ProductDetailsViewStub();
-        presenter = new ProductDetailsPresenter(view, customer);
-        product=MemoryInitializer.getProductTypeDAO().getProduct("TECH-020");
+
+        presenter = new ProductDetailsPresenter(view, customerDAO, productDAO);
+        product = productDAO.getProduct("TECH-020").join();
     }
 
     /**
@@ -42,7 +50,7 @@ public class ProductDetailsPresenterTest {
      */
     @Test
     public void plusClicked() {
-        presenter.loadProduct(product.getProductCode());
+        presenter.loadInitialData("CUST-503", product.getProductCode());
         presenter.plusClicked();
         presenter.plusClicked();
         Assert.assertEquals(3, view.getQuantity());
@@ -55,7 +63,7 @@ public class ProductDetailsPresenterTest {
      */
     @Test
     public void minusClicked() {
-        presenter.loadProduct(product.getProductCode());
+        presenter.loadInitialData("CUST-503", product.getProductCode());
         presenter.minusClicked();
         Assert.assertEquals(1, view.getQuantity());
         presenter.plusClicked();
@@ -70,10 +78,10 @@ public class ProductDetailsPresenterTest {
      */
     @Test
     public void addToCartClicked() {
-        presenter.loadProduct(product.getProductCode());
+        presenter.loadInitialData("CUST-503", product.getProductCode());
         presenter.plusClicked();
         presenter.addToCartClicked();
-        Assert.assertEquals(1,view.getAddToCartCount());
+        Assert.assertEquals(1, view.getAddToCartCount());
         Assert.assertEquals(1, customer.getShoppingCart().getItems().size());
     }
 
@@ -83,7 +91,7 @@ public class ProductDetailsPresenterTest {
     @Test
     public void openShoppingCartClicked() {
         presenter.openShoppingCartClicked();
-        Assert.assertEquals(1,view.getCartCount());
+        Assert.assertEquals(1, view.getCartCount());
         Assert.assertEquals("Μετάβαση στο Καλάθι...", view.getMessage());
     }
 
@@ -92,7 +100,7 @@ public class ProductDetailsPresenterTest {
      */
     @Test
     public void loadProduct() {
-        presenter.loadProduct(product.getProductCode());
+        presenter.loadInitialData("CUST-503", product.getProductCode());
         Assert.assertEquals("TECH-020", view.getCode());
 
     }
@@ -103,10 +111,10 @@ public class ProductDetailsPresenterTest {
      */
     @Test
     public void loadProductWithNullArguments() {
-        presenter.loadProduct(null);
+        presenter.loadInitialData("CUST-503", null);
         Assert.assertEquals(1, view.getQuantity());
 
-        presenter.loadProduct("TECH-150");
+        presenter.loadInitialData("CUST-503", "TECH-150");
         Assert.assertEquals(1, view.getQuantity());
 
     }

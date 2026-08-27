@@ -6,7 +6,7 @@ package gr.softeng.team21.view.user.EditData;
  * @author PAVLOS GRATSANIS
  */
 public class UserEditDataPresenter {
-    private UserEditDataView view;
+    private final UserEditDataView view;
 
     /**
      * Initializes the presenter with the view interface.
@@ -21,7 +21,9 @@ public class UserEditDataPresenter {
      * and calls the corresponding navigation method in the view.
      * @param position The index of the selected item.
      */
-    public void Selection(int position) {
+    public void handleSelection(int position) {
+        if (view == null) return;
+
         switch (position) {
             case 0:
                 view.goToUsername();
@@ -37,6 +39,9 @@ public class UserEditDataPresenter {
                 break;
             case 4:
                 view.goToPhone();
+                break;
+            default:
+                // Optionally handle unexpected positions
                 break;
         }
     }

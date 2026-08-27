@@ -1,8 +1,6 @@
 package gr.softeng.team21.view.customer.register;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,44 +16,33 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.UserCredentialsDAOFirebase;
 
 /**
  * Activity providing the UI for new customer registration.
- * Manages form inputs and implements {@link RegisterView} to handle feedback
- * from the registration logic.
+ * Manages form inputs, coordinates with {@link RegisterPresenter}, and securely
+ * handles asynchronous UI updates via runOnUiThread.
  * @author Γιάννης Μονοχολιάς
  */
 public class RegisterActivity extends AppCompatActivity implements RegisterView {
 
-    private TextInputEditText edtRegisterUsername;
-    private TextInputEditText edtRegisterPassword;
-    private TextInputEditText edtRegisterName;
-    private TextInputEditText edtRegisterSurname;
-    private TextInputEditText edtRegisterEmail;
-    private TextInputEditText edtRegisterPhone;
-
-    private TextInputEditText edtRegisterStreet;
-    private TextInputEditText edtRegisterNumber;
-    private TextInputEditText edtRegisterCity;
-    private TextInputEditText edtRegisterZip;
+    private TextInputEditText edtRegisterUsername, edtRegisterPassword, edtRegisterName;
+    private TextInputEditText edtRegisterSurname, edtRegisterEmail, edtRegisterPhone;
+    private TextInputEditText edtRegisterStreet, edtRegisterNumber, edtRegisterCity, edtRegisterZip;
 
     private MaterialButton btnRegister;
     private TextView txtLoginLink;
 
-    // Presenter
     private RegisterPresenter presenter;
 
-    /**
-     * Initializes the UI, sets up the presenter, and configures
-     * click listeners for the registration action and login redirection.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.registerActivity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -64,7 +51,11 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
 
         initializeViews();
 
-        presenter = new RegisterPresenter(this, CustomerDAOMemory.getInstance());
+        // Dependency Injection with Firebase DAOs
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+        UserCredentialsDAO credentialsDAO = new UserCredentialsDAOFirebase();
+
+        presenter = new RegisterPresenter(this, customerDAO, credentialsDAO);
 
         btnRegister.setOnClickListener(v -> {
             String username = getTextFromField(edtRegisterUsername);
@@ -77,14 +68,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
             presenter.register(username, firstname, password, lastname, phone, email);
         });
 
-        txtLoginLink.setOnClickListener(v -> {
-            finish();
-        });
+        txtLoginLink.setOnClickListener(v -> finish());
     }
 
-    /**
-     * Binds class members to XML components.
-     */
     private void initializeViews() {
         edtRegisterUsername = findViewById(R.id.edtRegisterUsername);
         edtRegisterPassword = findViewById(R.id.edtRegisterPassword);
@@ -102,49 +88,39 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
         txtLoginLink = findViewById(R.id.txtLoginLink);
     }
 
-    /**
-     *  Helper method to extract trimmed text from EditText fields.
-     */
     private String getTextFromField(EditText field) {
-        if (field.getText() != null) {
-            return field.getText().toString().trim();
-        }
-        return "";
+        return (field.getText() != null) ? field.getText().toString().trim() : "";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void showSuccessMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_LONG).show());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void showErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void clearInputFields() {
-        edtRegisterUsername.setText("");
-        edtRegisterPassword.setText("");
-        edtRegisterName.setText("");
-        edtRegisterSurname.setText("");
-        edtRegisterEmail.setText("");
-        edtRegisterPhone.setText("");
+        runOnUiThread(() -> {
+            edtRegisterUsername.setText("");
+            edtRegisterPassword.setText("");
+            edtRegisterName.setText("");
+            edtRegisterSurname.setText("");
+            edtRegisterEmail.setText("");
+            edtRegisterPhone.setText("");
 
-        edtRegisterStreet.setText("");
-        edtRegisterNumber.setText("");
-        edtRegisterCity.setText("");
-        edtRegisterZip.setText("");
+            edtRegisterStreet.setText("");
+            edtRegisterNumber.setText("");
+            edtRegisterCity.setText("");
+            edtRegisterZip.setText("");
 
-        edtRegisterUsername.requestFocus();
+            edtRegisterUsername.requestFocus();
+        });
     }
 }
