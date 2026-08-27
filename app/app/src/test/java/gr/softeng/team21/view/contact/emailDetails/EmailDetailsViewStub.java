@@ -71,27 +71,10 @@ public class EmailDetailsViewStub implements EmailDetailsView {
 
     // --- Accessor methods for verification during assertions ---
 
-    public String getDisplayedSubject() {
-        return displayedSubject;
-    }
-
-    public String getDisplayedSenderName() {
-        return displayedSenderName;
-    }
-
-    public String getDisplayedReceiverName() {
-        return displayedReceiverName;
-    }
-
-    public String getDisplayedBody() {
-        return displayedBody;
-    }
-
-    public String getDisplayedSenderEmail() {
-        return displayedSenderEmail;
-    }
-
-    public String getDisplayedReceiverEmail() {
-        return displayedReceiverEmail;
-    }
+    public String getDisplayedSubject() { return displayedSubject; }
+    public String getDisplayedSenderName() { return displayedSenderName; }
+    public String getDisplayedReceiverName() { return displayedReceiverName; }
+    public String getDisplayedBody() { return displayedBody; }
+    public String getDisplayedSenderEmail() { return displayedSenderEmail; }
+    public String getDisplayedReceiverEmail() { return displayedReceiverEmail; }
 }

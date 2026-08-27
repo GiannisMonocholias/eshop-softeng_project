@@ -10,13 +10,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 
 /**
  * Activity for viewing the content of a specific email.
  * Implements {@link EmailDetailsView} to render resolved sender/receiver data
- * passed from the presenter.
+ * passed from the presenter asynchronously onto the UI thread.
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailDetailsActivity extends AppCompatActivity implements EmailDetailsView {
@@ -30,10 +32,10 @@ public class EmailDetailsActivity extends AppCompatActivity implements EmailDeta
     private TextView txtReceiverEmailAddress;
     private TextView txtBody;
 
-    private static final String  EMP_ID_EXTRA = "user_id";
+    private static final String EMP_ID_EXTRA = "user_id";
 
     /**
-     * Initializes the UI, connects to memory DAOs, and extracts
+     * Initializes the UI, injects Firebase DAOs, and extracts
      * email data from the calling intent.
      */
     @Override
@@ -48,7 +50,11 @@ public class EmailDetailsActivity extends AppCompatActivity implements EmailDeta
             return insets;
         });
 
-        presenter = new EmailDetailsPresenter(this, EmployeeDAOMemory.getInstance(), CustomerDAOMemory.getInstance());
+        // Dependency Injection with Firebase
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+
+        presenter = new EmailDetailsPresenter(this, employeeDAO, customerDAO);
 
         txtSubject = findViewById(R.id.txtEmailDetailsEmailSubjectValue);
         txtSenderName = findViewById(R.id.txtEmailDetailsSenderName);
@@ -66,57 +72,39 @@ public class EmailDetailsActivity extends AppCompatActivity implements EmailDeta
         presenter.onViewCreated(subject, senderEmailAddress, receiverEmailAddress, body, employeeId);
     }
 
-    /**
-     * {@inheritDoc}
-     * Sets the text for the email subject field.
-     */
+    /** {@inheritDoc} */
     @Override
     public void displaySubject(String subject) {
-        txtSubject.setText(subject);
+        runOnUiThread(() -> txtSubject.setText(subject));
     }
 
-    /**
-     * {@inheritDoc}
-     * Sets the text for the sender's display name.
-     */
+    /** {@inheritDoc} */
     @Override
     public void displaySenderName(String sender) {
-        txtSenderName.setText(sender);
+        runOnUiThread(() -> txtSenderName.setText(sender));
     }
 
-    /**
-     * {@inheritDoc}
-     * Sets the text for the receiver's full name.
-     */
+    /** {@inheritDoc} */
     @Override
     public void displayReceiverName(String receiver) {
-        txtReceiverName.setText(receiver);
+        runOnUiThread(() -> txtReceiverName.setText(receiver));
     }
 
-    /**
-     * {@inheritDoc}
-     * Sets the text for the message content.
-     */
+    /** {@inheritDoc} */
     @Override
     public void displayBody(String body) {
-        txtBody.setText(body);
+        runOnUiThread(() -> txtBody.setText(body));
     }
 
-    /**
-     * {@inheritDoc}
-     * Displays the technical email address of the sender.
-     */
+    /** {@inheritDoc} */
     @Override
     public void displaySenderEmail(String email) {
-        txtSenderEmailAddress.setText(email);
+        runOnUiThread(() -> txtSenderEmailAddress.setText(email));
     }
 
-    /**
-     * {@inheritDoc}
-     * Displays the technical email address of the receiver.
-     */
+    /** {@inheritDoc} */
     @Override
     public void displayReceiverEmail(String email) {
-        txtReceiverEmailAddress.setText(email);
+        runOnUiThread(() -> txtReceiverEmailAddress.setText(email));
     }
 }

@@ -1,34 +1,30 @@
 package gr.softeng.team21.view.user.EditData;
 
 /**
- * Interface for the User Edit Data.
- * Defines the navigation methods to the specific data editing screens.
+ * Interface defining the UI operations for the unified User Edit Data screen.
  * @author PAVLOS GRATSANIS
  */
 public interface UserEditDataView {
+    /**
+     * Populates the input fields with the user's data fetched from the database.
+     */
+    void showUserData(String username, String password, String email, String firstName,
+                      String lastName, String phone, String street, String streetNo,
+                      String city, String zip, String country);
 
     /**
-     * Navigates to the username editing screen.
+     * Displays a general feedback message (error or success) to the user.
+     * @param message The message to display.
      */
-    void goToUsername();
+    void showMessage(String message);
 
     /**
-     * Navigates to the password editing screen.
+     * Shows a warning dialog when the user attempts to leave with unsaved changes.
      */
-    void goToPassword();
+    void showUnsavedChangesDialog();
 
     /**
-     * Navigates to the address editing screen.
+     * Closes the activity and returns to the previous screen.
      */
-    void goToAddress();
-
-    /**
-     * Navigates to the email editing screen.
-     */
-    void goToEmail();
-
-    /**
-     * Navigates to the phone editing screen.
-     */
-    void goToPhone();
+    void finishView();
 }

@@ -24,7 +24,7 @@ import gr.softeng.team21.domain.Deliverer;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.domain.User;
-import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
+import gr.softeng.team21.firebasedao.UserCredentialsDAOFirebase; // Προστέθηκε το Firebase import
 import gr.softeng.team21.view.admin.adminMenu.AdminMenuActivity;
 import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
 import gr.softeng.team21.view.customer.register.RegisterActivity;
@@ -71,8 +71,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         loginButton = findViewById(R.id.loginButton);
         registerTextView = findViewById(R.id.loginregisterTxtView);
 
-        // DEPENDENCY INJECTION
-        UserCredentialsDAO credentialsDAO = UserCredentialsDAOMemory.getInstance(); // Will be UserCredentialsDAOFirebase() later
+        // DEPENDENCY INJECTION (Ενεργοποίηση Firebase)
+        UserCredentialsDAO credentialsDAO = new UserCredentialsDAOFirebase();
         AuthenticationSystem authSystem = new AuthenticationSystem(credentialsDAO);
 
         presenter = new LoginPresenter(this, authSystem);

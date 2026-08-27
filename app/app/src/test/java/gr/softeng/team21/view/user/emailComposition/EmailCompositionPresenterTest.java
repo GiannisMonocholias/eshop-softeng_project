@@ -1,10 +1,11 @@
 package gr.softeng.team21.view.user.emailComposition;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
@@ -35,14 +36,14 @@ public class EmailCompositionPresenterTest {
         MemoryInitializer.prepareData();
 
         viewStub = new EmailCompositionViewStub();
-        presenter = new EmailCompositionPresenter(
-                viewStub,
-                CustomerDAOMemory.getInstance(),
-                EmployeeDAOMemory.getInstance()
-        );
+        CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
+        EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
 
-        employee = EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
-        customer = CustomerDAOMemory.getInstance().getCustomer(CUSTOMER_ID);
+        presenter = new EmailCompositionPresenter(viewStub, customerDAO, employeeDAO);
+
+        // Fetch asynchronously using .join() for testing environment
+        employee = employeeDAO.getEmployee(EMPLOYEE_ID).join();
+        customer = customerDAO.getCustomer(CUSTOMER_ID).join();
     }
 
     /**
@@ -122,7 +123,7 @@ public class EmailCompositionPresenterTest {
     @Test
     public void onSendClickedEmployeeToCustomerSuccess() {
         presenter.onViewCreated(EMPLOYEE_ID);
-        int initialCustomerInboxSize = customer.getEmailProvider().getInboxEmails().size();
+        int initialCustomerInboxSize = customer.getEmailProvider().getInboxEmails().join().size();
 
         viewStub.setRecipientEmailInput(customer.getEmailAddress().toString());
         viewStub.setSubjectInput("Order Update");
@@ -133,9 +134,8 @@ public class EmailCompositionPresenterTest {
         Assert.assertEquals("Το μήνυμα εστάλη!", viewStub.getSuccessMessage());
         Assert.assertTrue(viewStub.isFinishActivityCalled());
 
-
-        Assert.assertEquals(initialCustomerInboxSize + 1, customer.getEmailProvider().getInboxEmails().size());
-        Assert.assertEquals("Order Update", customer.getEmailProvider().getInboxEmails().get(initialCustomerInboxSize).getSubject());
+        Assert.assertEquals(initialCustomerInboxSize + 1, customer.getEmailProvider().getInboxEmails().join().size());
+        Assert.assertEquals("Order Update", customer.getEmailProvider().getInboxEmails().join().get(initialCustomerInboxSize).getSubject());
     }
 
     /**
@@ -144,7 +144,7 @@ public class EmailCompositionPresenterTest {
     @Test
     public void onSendClickedCustomerToEmployeeSuccess() {
         presenter.onViewCreated(CUSTOMER_ID);
-        int initialEmployeeInboxSize = employee.getEmailProvider().getInboxEmails().size();
+        int initialEmployeeInboxSize = employee.getEmailProvider().getInboxEmails().join().size();
 
         viewStub.setRecipientEmailInput(employee.getEmailAddress().toString());
         viewStub.setSubjectInput("Help Needed");
@@ -152,8 +152,7 @@ public class EmailCompositionPresenterTest {
 
         presenter.onSendClicked();
 
-
-        Assert.assertEquals(initialEmployeeInboxSize + 1, employee.getEmailProvider().getInboxEmails().size());
-        Assert.assertEquals("Help Needed", employee.getEmailProvider().getInboxEmails().get(initialEmployeeInboxSize).getSubject());
+        Assert.assertEquals(initialEmployeeInboxSize + 1, employee.getEmailProvider().getInboxEmails().join().size());
+        Assert.assertEquals("Help Needed", employee.getEmailProvider().getInboxEmails().join().get(initialEmployeeInboxSize).getSubject());
     }
 }

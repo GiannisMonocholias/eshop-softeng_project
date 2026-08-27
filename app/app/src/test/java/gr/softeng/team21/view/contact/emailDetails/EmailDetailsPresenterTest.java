@@ -1,6 +1,5 @@
 package gr.softeng.team21.view.contact.emailDetails;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,8 +50,8 @@ public class EmailDetailsPresenterTest {
      */
     @Test
     public void onViewCreatedEmployeeToEmployeeDisplaysCorrectDetails() {
-        Employee sender = EmployeeDAOMemory.getInstance().getEmployee(DELIVERER_ID);
-        Employee receiver = EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID);
+        Employee sender = EmployeeDAOMemory.getInstance().getEmployee(DELIVERER_ID).join();
+        Employee receiver = EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
 
         String subject = "Test Subject";
         String body = "Test Body";
@@ -79,8 +78,7 @@ public class EmailDetailsPresenterTest {
      */
     @Test
     public void onViewCreatedCustomerToEmployeeDisplaysCustomerSuffix() {
-        Customer sender = CustomerDAOMemory.getInstance().getCustomer(CUSTOMER_ID);
-
+        Customer sender = CustomerDAOMemory.getInstance().getCustomer(CUSTOMER_ID).join();
         String senderEmail = sender.getEmailAddress().toString();
 
         // EXECUTE
@@ -138,7 +136,7 @@ public class EmailDetailsPresenterTest {
      */
     @Test
     public void findReceiverNameReturnsCorrectNameForEmployee() {
-        String name = presenter.findReceiverName(EMPLOYEE_ID);
+        String name = presenter.findReceiverName(EMPLOYEE_ID).join();
         Assert.assertEquals("Μαρία Αλεξάνδρου", name);
     }
 
@@ -147,7 +145,7 @@ public class EmailDetailsPresenterTest {
      */
     @Test
     public void findReceiverNameReturnsCorrectNameForCustomer() {
-        String name = presenter.findReceiverName(CUSTOMER_ID);
+        String name = presenter.findReceiverName(CUSTOMER_ID).join();
         Assert.assertEquals("Νίκος Γεωργίου", name);
     }
 
@@ -156,7 +154,7 @@ public class EmailDetailsPresenterTest {
      */
     @Test
     public void findReceiverNameInvalidIdReturnsEmptyString() {
-        String name = presenter.findReceiverName("INVALID_ID");
+        String name = presenter.findReceiverName("INVALID_ID").join();
         Assert.assertEquals("", name);
     }
 
@@ -167,17 +165,17 @@ public class EmailDetailsPresenterTest {
     @Test
     public void findSenderNameChecksAllUserTypes() {
         // Check Employee
-        String empEmail = EmployeeDAOMemory.getInstance().getEmployee(DELIVERER_ID).getEmailAddress().toString();
-        Assert.assertTrue(presenter.findSenderName(empEmail).contains("(Υπάλληλος)"));
+        String empEmail = EmployeeDAOMemory.getInstance().getEmployee(DELIVERER_ID).join().getEmailAddress().toString();
+        Assert.assertTrue(presenter.findSenderName(empEmail).join().contains("(Υπάλληλος)"));
 
         // Check Customer
-        String custEmail = CustomerDAOMemory.getInstance().getCustomer(CUSTOMER_ID).getEmailAddress().toString();
-        Assert.assertTrue(presenter.findSenderName(custEmail).contains("(Πελάτης)"));
+        String custEmail = CustomerDAOMemory.getInstance().getCustomer(CUSTOMER_ID).join().getEmailAddress().toString();
+        Assert.assertTrue(presenter.findSenderName(custEmail).join().contains("(Πελάτης)"));
 
         // Check Admin
         String adminEmail = Admin.getInstance().getEmailAddress().toString();
-        Assert.assertTrue(presenter.findSenderName(adminEmail).contains("(Διαχειριστής)"));
+        Assert.assertTrue(presenter.findSenderName(adminEmail).join().contains("(Διαχειριστής)"));
 
-        Assert.assertNull(presenter.findSenderName("unknown@mail.com"));
+        Assert.assertNull(presenter.findSenderName("unknown@mail.com").join());
     }
 }

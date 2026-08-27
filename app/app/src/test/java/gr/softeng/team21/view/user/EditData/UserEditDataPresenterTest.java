@@ -4,45 +4,91 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.MemoryInitializer;
+
 /**
- * Unit tests for the {@link UserEditDataPresenter} class.
- * These tests verify the navigation logic when selecting different options from the edit menu.
+ * Unit tests for the unified {@link UserEditDataPresenter}.
+ * Verifies asynchronous loading, complex validation logic, state saving, and unsaved changes detection.
  * @author PAVLOS GRATSANIS
  */
 public class UserEditDataPresenterTest {
-    private UserEditDataViewStub view;
-    private UserEditDataPresenter presenter;
 
-    /**
-     * Sets up the test class before each test case.
-     * Initializes the view stub and the presenter.
-     */
+    private UserEditDataPresenter presenter;
+    private UserEditDataViewStub viewStub;
+    private Customer testCustomer;
+
     @Before
     public void setUp() throws Exception {
-        view = new UserEditDataViewStub();
-        presenter = new UserEditDataPresenter(view);
+        MemoryInitializer.prepareData();
+        CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
+        EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
+
+        testCustomer = customerDAO.getCustomer("CUST-500").join();
+
+        viewStub = new UserEditDataViewStub();
+        presenter = new UserEditDataPresenter(viewStub, customerDAO, employeeDAO);
     }
 
-    /**
-     * Verifies that the correct navigation method is called on the view
-     * corresponding to the selected index in the menu list.
-     * 0 -> Username, 1 -> Password, 2 -> Address, 3 -> Email, 4 -> Phone.
-     */
     @Test
-    public void selection() {
-        presenter.handleSelection(0);
-        Assert.assertEquals(1, view.getUsernameCount());
+    public void loadUserDataPopulatesViewCorrectly() {
+        presenter.loadUserData("CUST-500");
 
-        presenter.handleSelection(1);
-        Assert.assertEquals(1, view.getPasswordCount());
+        Assert.assertEquals(testCustomer.getUsername(), viewStub.getUsername());
+        Assert.assertEquals(testCustomer.getPassword(), viewStub.getPassword());
+    }
 
-        presenter.handleSelection(2);
-        Assert.assertEquals(1, view.getAddressCount());
+    @Test
+    public void onSaveClickedWithEmptyRequiredFieldsShowsError() {
+        presenter.loadUserData("CUST-500");
 
-        presenter.handleSelection(3);
-        Assert.assertEquals(1, view.getEmailCount());
+        presenter.onSaveClicked("", "", "", "Name", "Surname", "6999999999",
+                "Street", "1", "City", "12345", "Greece");
 
-        presenter.handleSelection(4);
-        Assert.assertEquals(1, view.getPhoneCount());
+        Assert.assertEquals("Συμπληρώστε τα υποχρεωτικά πεδία (Όνομα Χρήστη, Κωδικός, Email).", viewStub.getMessage());
+    }
+
+    @Test
+    public void onSaveClickedWithValidDataSavesAndFinishes() {
+        presenter.loadUserData("CUST-500");
+
+        presenter.onSaveClicked("NewUser", "NewPass123", "new@mail.com", "Nick", "Georgiou", "6911111111",
+                "Ermou", "10", "Athens", "10000", "Greece");
+
+        Assert.assertEquals("Τα στοιχεία σας ενημερώθηκαν επιτυχώς!", viewStub.getMessage());
+        Assert.assertTrue(viewStub.isFinishCalled());
+
+        // Verify domain object was updated
+        Assert.assertEquals("NewUser", testCustomer.getUsername());
+        Assert.assertEquals("NewPass123", testCustomer.getPassword());
+        Assert.assertEquals("6911111111", testCustomer.getPhonenumber());
+    }
+
+    @Test
+    public void onBackPressedWithUnsavedChangesTriggersDialog() {
+        presenter.loadUserData("CUST-500"); // Original state recorded
+
+        presenter.onBackPressed("ChangedUser", testCustomer.getPassword(), "new@email.com",
+                testCustomer.getFirstname(), testCustomer.getLastname(), testCustomer.getPhonenumber(),
+                "Street", "1", "City", "12345", "Greece");
+
+        Assert.assertTrue(viewStub.isUnsavedDialogCalled());
+    }
+
+    @Test
+    public void onBackPressedWithoutChangesFinishesSafely() {
+        presenter.loadUserData("CUST-500");
+
+        presenter.onBackPressed(testCustomer.getUsername(), testCustomer.getPassword(), testCustomer.getEmailAddress().toString(),
+                testCustomer.getFirstname(), testCustomer.getLastname(), testCustomer.getPhonenumber(),
+                testCustomer.getAddress().getStreet(), testCustomer.getAddress().getNumber(), testCustomer.getAddress().getCity(),
+                testCustomer.getAddress().getZipcode(), testCustomer.getAddress().getCountry());
+
+        Assert.assertTrue(viewStub.isFinishCalled());
+        Assert.assertFalse(viewStub.isUnsavedDialogCalled());
     }
 }

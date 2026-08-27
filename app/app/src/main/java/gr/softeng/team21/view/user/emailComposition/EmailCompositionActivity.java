@@ -13,12 +13,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 
 /**
  * Activity providing the UI for drafting and sending internal emails.
- * Implements {@link EmailCompositionView}
+ * Implements {@link EmailCompositionView} securely on the UI thread.
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailCompositionActivity extends AppCompatActivity implements EmailCompositionView {
@@ -31,8 +33,8 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
     private EmailCompositionPresenter presenter;
 
     /**
-     * Initializes UI components, instantiates the presenter, and identifies
-     * the sender ID from the calling intent.
+     * Initializes UI components, instantiates the presenter with Firebase DAOs,
+     * and identifies the sender ID from the calling intent.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +55,11 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
         edtBody = findViewById(R.id.edtEmailBody);
         btnSend = findViewById(R.id.btnEmailSend);
 
-        presenter = new EmailCompositionPresenter(
-                this,
-                CustomerDAOMemory.getInstance(),
-                EmployeeDAOMemory.getInstance()
-        );
+        // Dependency Injection with Firebase DAOs
+        CustomerDAO customerDAO = new CustomerDAOFirebase();
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+
+        presenter = new EmailCompositionPresenter(this, customerDAO, employeeDAO);
 
         String userId = null;
         if (getIntent().hasExtra("CUSTOMER_SERVICE_EMPLOYEE_ID")) {
@@ -80,61 +82,48 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
         btnSend.setOnClickListener(v -> presenter.onSendClicked());
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getRecipientEmail() {
         return edtRecipient.getText().toString().trim();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getSubject() {
         return edtSubject.getText().toString().trim();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String getBody() {
         return edtBody.getText().toString().trim();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setSenderDetails(String name, String email) {
-        txtSenderName.setText(name);
-        txtSenderEmail.setText(email);
+        runOnUiThread(() -> {
+            txtSenderName.setText(name);
+            txtSenderEmail.setText(email);
+        });
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void showErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void showSuccessMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void finishActivity() {
-        finish();
+        runOnUiThread(this::finish);
     }
 }

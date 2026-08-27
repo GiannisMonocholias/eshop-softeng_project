@@ -1,104 +1,55 @@
 package gr.softeng.team21.view.user.EditData;
 
 /**
- * Stub implementation of {@link UserEditDataView} for testing purposes.
- * It tracks the number of times each navigation method is called to verify the presenter's logic.
+ * Stub implementation of {@link UserEditDataView} for unit testing purposes.
+ * Captures UI updates, messages, and state changes triggered by the Presenter.
  * @author PAVLOS GRATSANIS
  */
 public class UserEditDataViewStub implements UserEditDataView {
-    private int UsernameCount = 0;
-    private int PasswordCount = 0;
-    private int EmailCount = 0;
-    private int PhoneCount = 0;
-    private int AddressCount = 0;
 
-    /**
-     * Returns the number of times the address navigation was triggered.
-     * Used for verification in tests.
-     * @return The count of address navigation calls.
-     */
-    public int getAddressCount() {
-        return AddressCount;
-    }
+    private String username, password, email, firstName, lastName, phone;
+    private String street, streetNo, city, zip, country;
 
-    /**
-     * Returns the number of times the phone navigation was triggered.
-     * Used for verification in tests.
-     * @return The count of phone navigation calls.
-     */
-    public int getPhoneCount() {
-        return PhoneCount;
-    }
+    private String message = "";
+    private boolean finishCalled = false;
+    private boolean unsavedDialogCalled = false;
 
-    /**
-     * Returns the number of times the email navigation was triggered.
-     * Used for verification in tests.
-     * @return The count of email navigation calls.
-     */
-    public int getEmailCount() {
-        return EmailCount;
-    }
-
-    /**
-     * Returns the number of times the password navigation was triggered.
-     * Used for verification in tests.
-     * @return The count of password navigation calls.
-     */
-    public int getPasswordCount() {
-        return PasswordCount;
-    }
-
-    /**
-     * Returns the number of times the username navigation was triggered.
-     * Used for verification in tests.
-     * @return The count of username navigation calls.
-     */
-    public int getUsernameCount() {
-        return UsernameCount;
-    }
-
-    /**
-     * {@inheritDoc}
-     * Increments the counter for username navigation.
-     */
     @Override
-    public void goToUsername() {
-        UsernameCount++;
+    public void showUserData(String username, String password, String email, String firstName,
+                             String lastName, String phone, String street, String streetNo,
+                             String city, String zip, String country) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.street = street;
+        this.streetNo = streetNo;
+        this.city = city;
+        this.zip = zip;
+        this.country = country;
     }
 
-    /**
-     * {@inheritDoc}
-     * Increments the counter for password navigation.
-     */
     @Override
-    public void goToPassword() {
-        PasswordCount++;
+    public void showMessage(String message) {
+        this.message = message;
     }
 
-    /**
-     * {@inheritDoc}
-     * Increments the counter for address navigation.
-     */
     @Override
-    public void goToAddress() {
-        AddressCount++;
+    public void showUnsavedChangesDialog() {
+        this.unsavedDialogCalled = true;
     }
 
-    /**
-     * {@inheritDoc}
-     * Increments the counter for email navigation.
-     */
     @Override
-    public void goToEmail() {
-        EmailCount++;
+    public void finishView() {
+        this.finishCalled = true;
     }
 
-    /**
-     * {@inheritDoc}
-     * Increments the counter for phone navigation.
-     */
-    @Override
-    public void goToPhone() {
-        PhoneCount++;
-    }
+    // Getters for Tests
+    public String getUsername() { return username; }
+    public String getPassword() { return password; }
+    public String getMessage() { return message; }
+    public boolean isFinishCalled() { return finishCalled; }
+    public boolean isUnsavedDialogCalled() { return unsavedDialogCalled; }
 }
