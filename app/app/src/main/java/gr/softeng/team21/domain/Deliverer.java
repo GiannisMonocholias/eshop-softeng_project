@@ -1,42 +1,31 @@
 package gr.softeng.team21.domain;
 
-import java.util.ArrayList;
 import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.util.Date;
 
 /**
-<<<<<<< Updated upstream
  * Represents a delivery employee (Deliverer) in the domain model.
  * This class manages the deliverer's order capacity and calculates availability
- * based on the current workload.
+ * based on the current workload count, without storing full Order objects.
  * @author Γιάννης Μονοχολιάς
  */
 public class Deliverer extends Employee {
-/**
- * Deliverer class extends Employee as deliverer is also
- * working for the company.
- *
- * Max_quantity is the maximum number of orders a deliverer can have.
- *
- * Boolean available is true when a deliverer can take one more order and false when
- * the number of orders that he has to deliver is equal to the max_quantity.
- *
- * ArrayList orders contains Order objects that the deliverer has to deliver.
- */
+
     private int max_quantity;
     private boolean available;
-    private ArrayList<Order> orders;
-
+    private int assignedOrdersCount;
 
     /**
-     * Default constructor
-     * */
+     * Default constructor for framework instantiation.
+     */
     public Deliverer() {
+        this.assignedOrdersCount = 0;
     }
 
     /**
      * Constructs a new Deliverer with personal, professional, and delivery-specific details.
-     * * @param username      The unique account username.
+     *
+     * @param username      The unique account username.
      * @param firstname     The employee's first name.
      * @param password      The account password.
      * @param lastname      The employee's last name.
@@ -49,7 +38,7 @@ public class Deliverer extends Employee {
      * @param employeeState The current employment status (e.g., ACTIVE).
      * @param hireDate      The official date of hire.
      * @param quan          The maximum number of orders the deliverer can handle.
-     * @param available     The initial availability status (legacy support).
+     * @param available     The initial availability status.
      */
     public Deliverer(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress,
                      String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate, int quan,
@@ -57,7 +46,7 @@ public class Deliverer extends Employee {
         super(username, firstname, password, lastname, phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
         this.max_quantity = quan;
         this.available = available;
-        orders = new ArrayList<>();
+        this.assignedOrdersCount = 0;
     }
 
     /**
@@ -77,59 +66,52 @@ public class Deliverer extends Employee {
 
     /**
      * Calculates the deliverer's availability dynamically.
-     * @return true if the current number of orders is less than the maximum capacity.
+     * @return true if the current number of assigned orders is less than the maximum capacity.
      */
     public boolean getAvailability() {
-        return orders.size() < max_quantity;
+        return assignedOrdersCount < max_quantity;
     }
 
     /**
-     * @return the availability state of the deliverer
+     * @return the explicit availability state of the deliverer.
      */
     public boolean isAvailable() {
         return available;
     }
 
     /**
-     * Updatesthe availability state of the deliverer
+     * Updates the availability state of the deliverer.
      * @param available the new availability state of the deliverer.
      */
     public void setAvailable(boolean available) {
         this.available = available;
     }
 
-
     /**
-     * @return the list of orders currently assigned to this deliverer.
+     * @return the current count of active orders assigned to this deliverer.
      */
-    public ArrayList<Order> getOrders() {
-        return orders;
+    public int getAssignedOrdersCount() {
+        return assignedOrdersCount;
     }
 
     /**
-     * Assigns a new order to the deliverer if they have not reached their maximum capacity.
-     * Validates capacity using the dynamic availability check.
-     * @param order the order to be assigned.
+     * Increments the deliverer's workload.
      * @throws IllegalArgumentException if the deliverer's capacity is full.
      */
-    public void addOrder(Order order){
-        if(orders.size() < max_quantity){
-            orders.add(order);
+    public void assignOrder() {
+        if (assignedOrdersCount < max_quantity) {
+            assignedOrdersCount++;
         } else {
             throw new IllegalArgumentException("Η λίστα του διανομέα είναι γεμάτη");
         }
     }
 
     /**
-     * Verifies if a specific order is in the deliverer's list and marks it as paid.
-     * @param order the order to be checked and updated.
-     * @return true if the order exists in the list and was updated, false otherwise.
+     * Decrements the deliverer's workload upon successful delivery.
      */
-    public boolean checkfor(Order order){
-        if(orders.contains(order)){
-            order.setPaid(true);
-            return true;
+    public void completeOrder() {
+        if (assignedOrdersCount > 0) {
+            assignedOrdersCount--;
         }
-        return false;
     }
 }

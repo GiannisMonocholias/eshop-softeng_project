@@ -70,16 +70,19 @@ public class EmailDAOMemory implements EmailDAO {
         return CompletableFuture.completedFuture(replied);
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void saveInboxEmails(EmailMessage msg) {
+    public CompletableFuture<Void> saveInboxEmails(EmailMessage msg) {
         inboxEmails.add(msg);
+        return CompletableFuture.completedFuture(null);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void saveSentEmails(EmailMessage msg) {
+    public CompletableFuture<Void> saveSentEmails(EmailMessage msg) {
         sentEmails.add(msg);
+        return CompletableFuture.completedFuture(null);
     }
 
     /** {@inheritDoc} */

@@ -14,8 +14,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.EmailDAOFirebase;
 import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 
 /**
@@ -58,8 +60,9 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
         // Dependency Injection with Firebase DAOs
         CustomerDAO customerDAO = new CustomerDAOFirebase();
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+        EmailDAO emailDAO = new EmailDAOFirebase();
 
-        presenter = new EmailCompositionPresenter(this, customerDAO, employeeDAO);
+        presenter = new EmailCompositionPresenter(this, customerDAO, employeeDAO, emailDAO);
 
         String userId = null;
         if (getIntent().hasExtra("CUSTOMER_SERVICE_EMPLOYEE_ID")) {

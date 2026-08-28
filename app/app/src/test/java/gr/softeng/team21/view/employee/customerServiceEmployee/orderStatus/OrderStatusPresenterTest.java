@@ -7,8 +7,10 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
 import gr.softeng.team21.domain.Order;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
@@ -16,27 +18,32 @@ import gr.softeng.team21.memorydao.OrderDAOMemory;
 /**
  * Unit tests for {@link OrderStatusPresenter}.
  * Verifies the logic for handling order notifications, including asynchronous loading of orders,
- * triggering role-specific confirmation dialogs, and processing email notifications
- * for delayed or ready orders using Dependency Injection.
+ * triggering role-specific confirmation dialogs, and verifying email persistence using DAOs.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderStatusPresenterTest {
 
     private OrderStatusPresenter presenter;
     private OrderStatusViewStub viewStub;
+    private EmailDAO emailDAO;
     private CustomerServiceEmployee csr1;
+
     private static final String EMPLOYEE_ID = "CSR-101";
     private static final String WRONG_TYPE_EMPLOYEE_ID = "PREP-201";
 
     /**
      * Initializes the testing environment before each test.
-     * Prepares memory data asynchronously, sets up dependencies, and instantiates the presenter.
+     * Prepares memory data asynchronously, injects dependencies including EmailDAO,
+     * and instantiates the presenter.
      */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
+
         viewStub = new OrderStatusViewStub();
-        presenter = new OrderStatusPresenter(viewStub, EmployeeDAOMemory.getInstance());
+        emailDAO = new EmailDAOMemory();
+        presenter = new OrderStatusPresenter(viewStub, EmployeeDAOMemory.getInstance(), emailDAO);
+
         csr1 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
     }
 
@@ -122,23 +129,20 @@ public class OrderStatusPresenterTest {
     }
 
     /**
-     * Verifies that interaction fails if no valid employee session is established
-     * (e.g., if loadOrders was never called successfully).
+     * Verifies that interaction fails if no valid employee session is established.
      */
     @Test
     public void onOrderClickedNoLoggedInEmployee() {
         Order anyOrder = OrderDAOMemory.getInstance().getOrder("ORD-2024-002");
-
         presenter.onOrderClicked(anyOrder);
-
         Assert.assertEquals("Σφάλμα: Δεν υπάρχει συνδεδεμένος υπάλληλος", viewStub.getErrorMsg());
     }
 
     /**
      * Verifies the full confirmation workflow for a delayed order:
-     * 1. A notification message is shown.
-     * 2. The UI list is refreshed.
-     * 3. The order is removed from the employee's pending list.
+     * 1. The async DAO actually saves the email in Sent & Inbox.
+     * 2. A success message is shown and the UI list is updated.
+     * 3. The order is removed from the pending list.
      */
     @Test
     public void onOrderConfirmedDelayedSendsEmailAndUpdatesList() {
@@ -148,6 +152,11 @@ public class OrderStatusPresenterTest {
 
         presenter.onOrderConfirmed(delayedOrder);
 
+        // Verify async DB writes
+        Assert.assertEquals(1, emailDAO.getSentEmails().join().size());
+        Assert.assertEquals(1, emailDAO.getInboxEmails().join().size());
+
+        // Verify UI updates
         Assert.assertTrue(viewStub.getMessageMsg().contains("καθυστέρησης"));
         Assert.assertTrue(viewStub.isListUpdated());
         Assert.assertFalse(csr1.getOrders().contains(delayedOrder));
@@ -164,8 +173,21 @@ public class OrderStatusPresenterTest {
 
         presenter.onOrderConfirmed(shippedOrder);
 
+        // Verify async DB writes
+        Assert.assertEquals(1, emailDAO.getSentEmails().join().size());
+        Assert.assertEquals(1, emailDAO.getInboxEmails().join().size());
+
+        // Verify UI updates
         Assert.assertTrue(viewStub.getMessageMsg().contains("ετοιμότητας"));
         Assert.assertTrue(viewStub.isListUpdated());
         Assert.assertFalse(csr1.getOrders().contains(shippedOrder));
+    }
+
+    /**
+     * Clears shared memory states after tests to ensure isolation.
+     */
+    @After
+    public void tearDown() {
+        EmployeeDAOMemory.getInstance().clear();
     }
 }

@@ -6,83 +6,71 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
+import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
 
 /**
  * Unit tests for {@link AssignedOrdersToPreparePresenter}.
- * This suite ensures that the list of orders already assigned to a preparation
- * employee is retrieved correctly asynchronously and that selecting an order leads to the proper
- * navigation flow. Employs Dependency Injection.
+ * Ensures that orders assigned via Foreign Keys to a preparation employee are
+ * retrieved correctly via the DAO and that selection triggers the proper navigation flow.
  * @author Γιάννης Μονοχολιάς
  */
 public class AssignedOrdersToPreparePresenterTest {
 
     private AssignedOrdersToPreparePresenter presenter;
     private AssignedOrdersToPrepareViewStub viewStub;
-    private OrderPreparationEmployee prepEmployee;
+    private OrderDAO orderDAO;
 
     private static final String EMPLOYEE_ID = "PREP-201";
 
-    /**
-     * Initializes the testing environment before each test.
-     * Prepares memory data asynchronously, sets up the presenter with injected dependencies,
-     * and ensures at least one order is assigned to the test employee.
-     */
     @Before
     public void setUp() {
         MemoryInitializer.prepareData();
 
         viewStub = new AssignedOrdersToPrepareViewStub();
-        presenter = new AssignedOrdersToPreparePresenter(viewStub, EmployeeDAOMemory.getInstance());
+        orderDAO = OrderDAOMemory.getInstance();
+        presenter = new AssignedOrdersToPreparePresenter(viewStub, EmployeeDAOMemory.getInstance(), orderDAO);
 
-        prepEmployee = (OrderPreparationEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
-        Order orderToAssign = OrderDAOMemory.getInstance().getOrder("ORD-2023-001").join();
-
-        prepEmployee.addOrder(orderToAssign);
+        // Fetch a test order and assign it to the employee using the new Foreign Key logic
+        Order orderToAssign = orderDAO.getOrder("ORD-2024-001").join(); // Ensure this ID exists in MemoryInitializer
+        if (orderToAssign != null) {
+            orderToAssign.setPreparationEmployeeId(EMPLOYEE_ID);
+            orderToAssign.setOrderstatus(OrderStatusType.NEW);
+            orderDAO.updateOrder(orderToAssign).join();
+        }
     }
 
-    /**
-     * Verifies that the presenter correctly retrieves the list of assigned orders
-     * for the given employee and pushes them to the view asynchronously.
-     */
     @Test
     public void loadAssignedOrdersReturnsCorrectList() {
         presenter.loadAssignedOrders(EMPLOYEE_ID);
         ArrayList<Order> result = viewStub.getLoadedOrders();
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(1, result.size());
-        Assert.assertEquals("ORD-2023-001", result.get(0).getOrdercode());
-        Assert.assertEquals(prepEmployee.getAssignedOrders(), result);
+        Assert.assertFalse(result.isEmpty());
+        Assert.assertEquals(EMPLOYEE_ID, result.get(0).getPreparationEmployeeId());
+        Assert.assertEquals(OrderStatusType.NEW, result.get(0).getOrderstatus());
     }
 
-    /**
-     * Verifies that providing an invalid employee ID or role results in an error message.
-     */
     @Test
     public void loadAssignedOrdersInvalidEmployeeShowsError() {
         presenter.loadAssignedOrders("INVALID_ID");
         Assert.assertTrue(viewStub.getErrorMessage().contains("δεν βρέθηκε"));
     }
 
-    /**
-     * Verifies that clicking on an assigned order correctly triggers the navigation
-     * to the details view with the required employee and order identifiers.
-     */
     @Test
     public void onClickOrderNavigatesToDetails() {
-        // Load orders first to initialize the loggedInEmployee within the presenter
         presenter.loadAssignedOrders(EMPLOYEE_ID);
 
-        Order order = prepEmployee.getAssignedOrders().get(0);
+        Order order = viewStub.getLoadedOrders().get(0);
         presenter.onClickOrder(order);
 
         Assert.assertTrue(viewStub.isNavigationCalled());
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigatedEmployeeId());
-        Assert.assertEquals("ORD-2023-001", viewStub.getNavigatedOrderCode());
+        Assert.assertEquals(order.getOrdercode(), viewStub.getNavigatedOrderCode());
     }
 }

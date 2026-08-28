@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import gr.softeng.team21.contact.EmailMessage;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
@@ -32,20 +33,22 @@ public class CustomerServiceEmployeeEmailListPresenterTest {
      * Sets up memory DAOs, a view stub, and adds a test email to the target employee's inbox.
      */
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         viewStub = new CustomerServiceEmployeeEmailListViewStub();
 
-        csr1 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee("CSR-101").join();
-        csr2 = (CustomerServiceEmployee) EmployeeDAOMemory.getInstance().getEmployee("CSR-102").join();
+        EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
+
+        csr1 = (CustomerServiceEmployee) employeeDAO.getEmployee("CSR-101").join();
+        csr2 = (CustomerServiceEmployee) employeeDAO.getEmployee("CSR-102").join();
 
         EmailMessage testMsg = new EmailMessage(csr2.getEmailAddress(), csr1.getEmailAddress(),
                 "Test Subject", "Test Body", new Date()
         );
         csr1.getEmailProvider().saveInboxEmails(testMsg);
 
-        // Inject the memory DAO into the presenter for testing
-        presenter = new CustomerServiceEmployeeEmailListPresenter(viewStub, EmployeeDAOMemory.getInstance());
+        // Inject the DAO into the presenter for testing
+        presenter = new CustomerServiceEmployeeEmailListPresenter(viewStub, employeeDAO);
     }
 
     /**

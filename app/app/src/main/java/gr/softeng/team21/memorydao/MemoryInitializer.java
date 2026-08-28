@@ -32,7 +32,7 @@ import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 public class MemoryInitializer {
     public static void eraseData() {
         try {
-            getProductsWareHouseDAO().clear();
+            getProductsWareHouseDAO().clear().join();
             if (!getProductsWareHouseDAO().getProductStocks().join().isEmpty()) {
                 throw new IllegalStateException("Products warehouse was not cleared");
             }
@@ -61,7 +61,7 @@ public class MemoryInitializer {
 
         // ProductTypeDAO erase data
         try {
-            getProductTypeDAO().clear();
+            getProductTypeDAO().clear().join();
             if (!getProductTypeDAO().getProducts().join().isEmpty()) {
                 throw new IllegalStateException("Product types repository was not cleared");
             }

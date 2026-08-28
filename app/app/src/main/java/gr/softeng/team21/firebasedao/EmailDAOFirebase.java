@@ -90,17 +90,23 @@ public class EmailDAOFirebase implements EmailDAO {
         });
     }
 
+
     /** {@inheritDoc} */
     @Override
-    public void saveInboxEmails(EmailMessage msg) {
-        // Firestore creates a unique document ID automatically using .add()
-        inboxRef.add(msg);
+    public CompletableFuture<Void> saveInboxEmails(EmailMessage msg) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        inboxRef.add(msg).addOnSuccessListener(doc -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+        return future;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void saveSentEmails(EmailMessage msg) {
-        sentRef.add(msg);
+    public CompletableFuture<Void> saveSentEmails(EmailMessage msg) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        sentRef.add(msg).addOnSuccessListener(doc -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+        return future;
     }
 
     /** {@inheritDoc} */

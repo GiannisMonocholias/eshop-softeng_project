@@ -1,30 +1,41 @@
 package gr.softeng.team21.domain;
 
 import gr.softeng.team21.contact.EmailAddress;
-import gr.softeng.team21.memorydao.EmailDAOMemory;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
-import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 import gr.softeng.team21.util.Date;
 
 /**
- * Η κλάση αυτή αναπαριστά το ανν διαχειριστή του καταστήματος.
- * Επεκτείνει την κλάση User αφού κάθε άτομο που χρησιμοποιεί την εφαρμογή είναι ένας user.
+ * This class represents the administrator of the e-shop.
+ * It extends the {@link User} class and utilizes the Singleton design pattern
+ * to ensure that only one administrator instance exists within the system.
+ * @author Αλέξανρδος Δρακάκης
  */
 public class Admin extends User {
 
     private static Admin instance;
     int salary;
-    EmployeeDAOMemory rep = EmployeeDAOMemory.getInstance();
 
-
-
+    /**
+     * Constructs a new Admin instance with the specified personal and professional details.
+     * Note: While the constructor is public, instantiation should generally be handled
+     * through the {@link #getInstance()} methods to maintain the Singleton pattern.
+     * @param username     The administrator's username.
+     * @param firstname    The administrator's first name.
+     * @param password     The administrator's password.
+     * @param lastname     The administrator's last name.
+     * @param phoneNumber  The administrator's phone number.
+     * @param emailaddress The administrator's email address.
+     * @param salary       The administrator's initial salary.
+     */
     public Admin(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, int salary){
         super(username, firstname, password, lastname, phoneNumber, emailaddress);
         this.salary = salary;
-        this.emailDAOMemory = new EmailDAOMemory();
     }
 
-
+    /**
+     * Retrieves the Singleton instance of the Admin.
+     * If the instance does not currently exist, it initializes it using default placeholder values.
+     * @return The single, shared {@link Admin} instance.
+     */
     public static Admin getInstance(){
         if(instance == null){
             EmailAddress defaultEmail = new EmailAddress("default_admin");
@@ -33,113 +44,38 @@ public class Admin extends User {
         return instance;
     }
 
-
+    /**
+     * Retrieves the Singleton instance of the Admin.
+     * If the instance does not exist, it initializes it using the explicitly provided parameter values.
+     * @param username     The administrator's username.
+     * @param firstname    The administrator's first name.
+     * @param password     The administrator's password.
+     * @param lastname     The administrator's last name.
+     * @param phoneNumber  The administrator's phone number.
+     * @param emailaddress The administrator's email address.
+     * @param salary       The administrator's salary.
+     * @return The single, shared {@link Admin} instance.
+     */
     public static Admin getInstance(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, int salary){
         if(instance == null){
             instance = new Admin(username, firstname, password, lastname, phoneNumber, emailaddress, salary);
         }
-
         return instance;
     }
 
-
+    /**
+     * Retrieves the current salary of the administrator.
+     * @return The salary as an integer value.
+     */
     public int getSalary(){
         return salary;
     }
 
+    /**
+     * Updates the salary of the administrator.
+     * @param salary The new salary value to be assigned.
+     */
     public void setSalary(int salary){
         this.salary = salary;
-    }
-
-    /**
-     *
-     * @param username όνομα χρήστη υπαλλήλου
-     * @param firstname όνομα υπαλλήλου
-     * @param password κωδικός πρόσβασης υπαλλήλου
-     * @param lastname επίθετο υπαλλήλου
-     * @param phoneNumber αριθμός τηλεφώνου υπαλλήλου
-     * @param emailaddress διεύθυνση email υπαλλήλου
-     * @param employeeId μοναδικό id υπαλλήλου
-     * @param bonus μπόνους υπαλλήλου
-     * @param salary μισθός υπαλλήλου
-     * @param workingHours ώρες εργασίας υπαλλήλου
-     * @param employeeState κατάσταση υπαλλήλου
-     * @param hireDate ημερομηνία πρόσληψης υπαλλήλου
-     *
-     * Η createEmployee δέχεται τα παραπάνω δεδομένα ως ορίσματα και δημιουργεί ένα νέο αντικειμενο υπαλλήλου
-     * το οποίο αποθηκεύει στη λίστα υπαλλήλων μέσω του EmployeeDAOMemory.
-     */
-
-    public void createEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate){
-        Employee employee = new Employee(username , firstname , password , lastname , phoneNumber , emailaddress , employeeId , bonus , salary , workingHours , employeeState , hireDate);
-        EmployeeDAOMemory.getInstance().addEmployee(employee);
-    }
-    public void createEmployee(Employee employee){
-        EmployeeDAOMemory.getInstance().addEmployee(employee);
-    }
-
-    public void createCustomerServiceEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate){
-        CustomerServiceEmployee cse = new CustomerServiceEmployee(username, firstname, password, lastname ,phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
-        EmployeeDAOMemory.getInstance().addEmployee(cse);
-    }
-
-    public void createCustomerServiceEmployee(CustomerServiceEmployee cse){
-        EmployeeDAOMemory.getInstance().addEmployee(cse);
-    }
-
-    public void createOrderPreparationEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate){
-        OrderPreparationEmployee orderPreparationEmployee = new OrderPreparationEmployee(username, firstname, password, lastname ,phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
-        EmployeeDAOMemory.getInstance().addEmployee(orderPreparationEmployee);
-    }
-
-    public void createOrderPreparationEmployee(OrderPreparationEmployee orderPreparationEmployee){
-        EmployeeDAOMemory.getInstance().addEmployee(orderPreparationEmployee);
-    }
-
-    public void createUpdateCatalogueEmployee(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress, String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate){
-        UpdateCatalogueEmployee updateCatalogueEmployee = new UpdateCatalogueEmployee(username, firstname, password, lastname ,phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate);
-        EmployeeDAOMemory.getInstance().addEmployee(updateCatalogueEmployee);
-    }
-
-    public void createUpdateCatalogueEmployee(UpdateCatalogueEmployee updateCatalogueEmployee){
-        EmployeeDAOMemory.getInstance().addEmployee(updateCatalogueEmployee);
-    }
-
-    public void createDeliverer(String username, String firstname, String password, String lastname, String phoneNumber, EmailAddress emailaddress,
-                                String employeeId, int bonus, int salary, int workingHours, EmployeeState employeeState, Date hireDate, int quan,
-                                boolean available){
-        Deliverer deliverer = new Deliverer(username, firstname, password, lastname ,phoneNumber, emailaddress, employeeId, bonus, salary, workingHours, employeeState, hireDate, quan, available);
-        EmployeeDAOMemory.getInstance().addEmployee(deliverer);
-    }
-
-    public void createDeliverer(Deliverer deliverer){
-        EmployeeDAOMemory.getInstance().addEmployee(deliverer);
-    }
-
-    /**
-     *
-     * @param emp αντικείμενο υπαλλήλου
-     *
-     * Η deleteEmployee δέχεται ένα αντικείμενο υπαλλήλου τον οποίο μέσω αυτου εντοπίζει
-     * και διαγράφει από τη λίστα.
-     */
-    public void deleteEmployee(Employee emp){
-        rep.removeEmployee(emp);
-    }
-
-    /**
-     *
-     * @param submissionDate ημερομηνία υποβολής αιτήματος
-     * @param updateDescription περιγραφή αιτήματος
-     * @param product προϊόν προς επεξεργασία
-     * @param type τύπος αιτήματος (εισαγωγή , διαγραφή , τροποποίηση προϊόντος)
-     * @param requestId μοναδικό id αιτήματος
-     *
-     * Η createUpdateRequest(...) δημιουργεί ένα νέο αίτημα του διαχειριστή προς τους υπαλλήλους
-     * και το αποθηκεύει στη λίστα αιτημάτων μέσω της στατικής μεθόδου addUpdateRequest(...).
-     */
-    public void createUpdateRequest(Date submissionDate, String updateDescription, ProductType product, AllowedRequest type, int requestId){
-        CatalogueUpdateRequest request = new CatalogueUpdateRequest(submissionDate , updateDescription , product , type , requestId);
-        UpdateRequestDAOMemory.getInstance().addUpdateRequest(request);
     }
 }

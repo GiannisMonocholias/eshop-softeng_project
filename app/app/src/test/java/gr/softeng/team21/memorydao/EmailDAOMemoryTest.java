@@ -13,8 +13,7 @@ import gr.softeng.team21.contact.EmailMessage;
  * Unit tests for the {@link EmailDAOMemory} class.
  * This suite verifies the functionality of the in-memory email repository,
  * accommodating the asynchronous {@link java.util.concurrent.CompletableFuture}
- * contract by utilizing the {@code .join()} method for test assertions.
- *
+ * contract by utilizing the {@code .join()} method for test assertions and saves.
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailDAOMemoryTest {
@@ -30,7 +29,8 @@ public class EmailDAOMemoryTest {
         EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
-        provider.saveInboxEmails(msg);
+        // Use .join() since saveInboxEmails now returns a CompletableFuture<Void>
+        provider.saveInboxEmails(msg).join();
 
         ArrayList<EmailMessage> inbox = provider.getInboxEmails().join();
         assertEquals(1, inbox.size());
@@ -45,7 +45,8 @@ public class EmailDAOMemoryTest {
         EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
-        provider.saveSentEmails(msg);
+        // Use .join() since saveSentEmails now returns a CompletableFuture<Void>
+        provider.saveSentEmails(msg).join();
 
         ArrayList<EmailMessage> sent = provider.getSentEmails().join();
         assertEquals(1, sent.size());
@@ -63,8 +64,8 @@ public class EmailDAOMemoryTest {
         EmailMessage readMsg = new EmailMessage(from, to, "Read", "Body", new Date());
         readMsg.setRead(true);
 
-        provider.saveInboxEmails(unreadMsg);
-        provider.saveInboxEmails(readMsg);
+        provider.saveInboxEmails(unreadMsg).join();
+        provider.saveInboxEmails(readMsg).join();
 
         ArrayList<EmailMessage> unread = provider.getUnreadEmails().join();
         assertEquals(1, unread.size());
@@ -82,8 +83,8 @@ public class EmailDAOMemoryTest {
         readMsg.setRead(true);
         EmailMessage unreadMsg = new EmailMessage(from, to, "Unread", "Body", new Date());
 
-        provider.saveInboxEmails(readMsg);
-        provider.saveInboxEmails(unreadMsg);
+        provider.saveInboxEmails(readMsg).join();
+        provider.saveInboxEmails(unreadMsg).join();
 
         ArrayList<EmailMessage> readEmails = provider.getReadEmails().join();
         assertEquals(1, readEmails.size());
@@ -101,8 +102,8 @@ public class EmailDAOMemoryTest {
         EmailMessage repliedMsg = new EmailMessage(from, to, "Replied", "Body", new Date());
         repliedMsg.setReplied(true);
 
-        provider.saveInboxEmails(unrepliedMsg);
-        provider.saveInboxEmails(repliedMsg);
+        provider.saveInboxEmails(unrepliedMsg).join();
+        provider.saveInboxEmails(repliedMsg).join();
 
         ArrayList<EmailMessage> unreplied = provider.getUnrepliedEmails().join();
         assertEquals(1, unreplied.size());
@@ -120,8 +121,8 @@ public class EmailDAOMemoryTest {
         repliedMsg.setReplied(true);
         EmailMessage unrepliedMsg = new EmailMessage(from, to, "Unreplied", "Body", new Date());
 
-        provider.saveInboxEmails(repliedMsg);
-        provider.saveInboxEmails(unrepliedMsg);
+        provider.saveInboxEmails(repliedMsg).join();
+        provider.saveInboxEmails(unrepliedMsg).join();
 
         ArrayList<EmailMessage> repliedEmails = provider.getRepliedEmails().join();
         assertEquals(1, repliedEmails.size());
@@ -136,7 +137,7 @@ public class EmailDAOMemoryTest {
         EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
-        provider.saveInboxEmails(msg);
+        provider.saveInboxEmails(msg).join();
 
         assertTrue(provider.inInbox(msg).join());
         assertFalse(provider.inInbox(new EmailMessage(from, to, "Other", "Body", new Date())).join());
@@ -150,7 +151,7 @@ public class EmailDAOMemoryTest {
         EmailDAOMemory provider = new EmailDAOMemory();
         EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
 
-        provider.saveSentEmails(msg);
+        provider.saveSentEmails(msg).join();
 
         assertTrue(provider.inSent(msg).join());
         assertFalse(provider.inSent(new EmailMessage(from, to, "Other", "Body", new Date())).join());

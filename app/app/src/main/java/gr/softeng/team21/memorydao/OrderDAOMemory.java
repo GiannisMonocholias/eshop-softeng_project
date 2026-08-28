@@ -1,5 +1,6 @@
 package gr.softeng.team21.memorydao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
@@ -7,87 +8,78 @@ import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Order;
 
 /**
- * In-memory implementation of the {@link OrderDAO} interface.
- * This class serves as a centralized repository for tracking and managing
- * customer orders throughout their lifecycle, wrapped in CompletableFutures
- * to match the asynchronous architectural pattern.
+ * In-memory implementation of the {@link OrderDAO} interface for Unit Testing.
+ * Simulates database queries and persistence without network overhead.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderDAOMemory implements OrderDAO {
+
     private static OrderDAOMemory instance;
+    private final HashMap<String, Order> orders = new HashMap<>();
 
-    private static HashMap<String, Order> orders;
+    private OrderDAOMemory() {}
 
-    /**
-     * Private constructor for the Singleton pattern.
-     * Initializes the map used to store orders in memory.
-     */
-    private OrderDAOMemory(){
-        orders = new HashMap<>();
-    }
-
-    /**
-     * Returns the singleton instance of OrderDAOMemory.
-     * @return The unique instance of this DAO.
-     */
-    public static OrderDAOMemory getInstance(){
-        if (instance == null){
-            instance = new OrderDAOMemory();
-        }
+    public static OrderDAOMemory getInstance() {
+        if (instance == null) instance = new OrderDAOMemory();
         return instance;
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>This memory implementation synchronously checks the map and returns a completed future.</p>
-     */
     @Override
-    public CompletableFuture<Order> getOrder(String orderCode){
-        CompletableFuture<Order> future = new CompletableFuture<>();
-        if(orderCode == null) {
-            future.completeExceptionally(new IllegalArgumentException("The orderCode must not be null"));
-        } else {
-            future.complete(orders.get(orderCode));
-        }
-        return future;
+    public CompletableFuture<Order> getOrder(String orderCode) {
+        return CompletableFuture.completedFuture(orders.get(orderCode));
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>Validates memory constraints before adding. Completes exceptionally if the order already exists.</p>
-     */
     @Override
-    public CompletableFuture<Void> addOrder(Order order){
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        if(order != null){
-            if(!orders.containsKey(order.getOrdercode())){
-                orders.put(order.getOrdercode(), order);
-                future.complete(null);
-            }
-            else {
-                future.completeExceptionally(new IllegalArgumentException("The given order is already in the repository"));
+    public CompletableFuture<HashMap<String, Order>> getOrders() {
+        return CompletableFuture.completedFuture(new HashMap<>(orders));
+    }
+
+    @Override
+    public CompletableFuture<ArrayList<Order>> getOrdersByDelivererId(String delivererId) {
+        ArrayList<Order> result = new ArrayList<>();
+        for (Order order : orders.values()) {
+            if (delivererId.equals(order.getDelivererId())) {
+                result.add(order);
             }
         }
-        else {
-            future.completeExceptionally(new IllegalArgumentException("The Order argument must not be null"));
+        return CompletableFuture.completedFuture(result);
+    }
+
+    @Override
+    public CompletableFuture<ArrayList<Order>> getOrdersByPreparationEmployeeId(String employeeId) {
+        ArrayList<Order> result = new ArrayList<>();
+        for (Order order : orders.values()) {
+            if (employeeId.equals(order.getPreparationEmployeeId())) {
+                result.add(order);
+            }
         }
-        return future;
+        return CompletableFuture.completedFuture(result);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>This implementation returns an immediately completed future containing the memory map.</p>
-     */
     @Override
-    public CompletableFuture<HashMap<String, Order>> getOrders(){
-        return CompletableFuture.completedFuture(orders);
+    public CompletableFuture<Void> addOrder(Order order) {
+        if (orders.containsKey(order.getOrdercode())) {
+            CompletableFuture<Void> future = new CompletableFuture<>();
+            future.completeExceptionally(new IllegalArgumentException("Order exists"));
+            return future;
+        }
+        orders.put(order.getOrdercode(), order);
+        return CompletableFuture.completedFuture(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public CompletableFuture<Void> clear(){
+    public CompletableFuture<Void> updateOrder(Order order) {
+        if (order == null || order.getOrdercode() == null) {
+            CompletableFuture<Void> future = new CompletableFuture<>();
+            future.completeExceptionally(new IllegalArgumentException("Order cannot be null"));
+            return future;
+        }
+        orders.put(order.getOrdercode(), order);
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
+    public CompletableFuture<Void> clear() {
         orders.clear();
         return CompletableFuture.completedFuture(null);
     }

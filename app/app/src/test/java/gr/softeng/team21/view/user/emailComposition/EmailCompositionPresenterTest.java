@@ -5,23 +5,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 
 /**
  * Unit tests for {@link EmailCompositionPresenter}.
  * This suite verifies the logic for preparing the email composition screen and
- * the process of sending emails between different types of users (Employees and Customers).
+ * the process of sending emails safely using the dedicated EmailDAO.
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailCompositionPresenterTest {
 
     private EmailCompositionPresenter presenter;
     private EmailCompositionViewStub viewStub;
+    private EmailDAO emailDAO;
     private static final String EMPLOYEE_ID = "CSR-101";
     private static final String CUSTOMER_ID = "CUST-500";
 
@@ -38,8 +41,9 @@ public class EmailCompositionPresenterTest {
         viewStub = new EmailCompositionViewStub();
         CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
         EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
+        emailDAO = new EmailDAOMemory();
 
-        presenter = new EmailCompositionPresenter(viewStub, customerDAO, employeeDAO);
+        presenter = new EmailCompositionPresenter(viewStub, customerDAO, employeeDAO, emailDAO);
 
         // Fetch asynchronously using .join() for testing environment
         employee = employeeDAO.getEmployee(EMPLOYEE_ID).join();
@@ -118,12 +122,14 @@ public class EmailCompositionPresenterTest {
 
     /**
      * Verifies successful email delivery from an Employee to a Customer.
-     * Checks for the success message, activity termination, and inbox update.
+     * Checks for the success message, activity termination, and verifies the global EmailDAO state.
      */
     @Test
     public void onSendClickedEmployeeToCustomerSuccess() {
         presenter.onViewCreated(EMPLOYEE_ID);
-        int initialCustomerInboxSize = customer.getEmailProvider().getInboxEmails().join().size();
+
+        int initialInboxSize = emailDAO.getInboxEmails().join().size();
+        int initialSentSize = emailDAO.getSentEmails().join().size();
 
         viewStub.setRecipientEmailInput(customer.getEmailAddress().toString());
         viewStub.setSubjectInput("Order Update");
@@ -134,8 +140,10 @@ public class EmailCompositionPresenterTest {
         Assert.assertEquals("Το μήνυμα εστάλη!", viewStub.getSuccessMessage());
         Assert.assertTrue(viewStub.isFinishActivityCalled());
 
-        Assert.assertEquals(initialCustomerInboxSize + 1, customer.getEmailProvider().getInboxEmails().join().size());
-        Assert.assertEquals("Order Update", customer.getEmailProvider().getInboxEmails().join().get(initialCustomerInboxSize).getSubject());
+        // Validate DAO state updates
+        Assert.assertEquals(initialInboxSize + 1, emailDAO.getInboxEmails().join().size());
+        Assert.assertEquals(initialSentSize + 1, emailDAO.getSentEmails().join().size());
+        Assert.assertEquals("Order Update", emailDAO.getInboxEmails().join().get(initialInboxSize).getSubject());
     }
 
     /**
@@ -144,7 +152,9 @@ public class EmailCompositionPresenterTest {
     @Test
     public void onSendClickedCustomerToEmployeeSuccess() {
         presenter.onViewCreated(CUSTOMER_ID);
-        int initialEmployeeInboxSize = employee.getEmailProvider().getInboxEmails().join().size();
+
+        int initialInboxSize = emailDAO.getInboxEmails().join().size();
+        int initialSentSize = emailDAO.getSentEmails().join().size();
 
         viewStub.setRecipientEmailInput(employee.getEmailAddress().toString());
         viewStub.setSubjectInput("Help Needed");
@@ -152,7 +162,8 @@ public class EmailCompositionPresenterTest {
 
         presenter.onSendClicked();
 
-        Assert.assertEquals(initialEmployeeInboxSize + 1, employee.getEmailProvider().getInboxEmails().join().size());
-        Assert.assertEquals("Help Needed", employee.getEmailProvider().getInboxEmails().join().get(initialEmployeeInboxSize).getSubject());
+        Assert.assertEquals(initialInboxSize + 1, emailDAO.getInboxEmails().join().size());
+        Assert.assertEquals(initialSentSize + 1, emailDAO.getSentEmails().join().size());
+        Assert.assertEquals("Help Needed", emailDAO.getInboxEmails().join().get(initialInboxSize).getSubject());
     }
 }

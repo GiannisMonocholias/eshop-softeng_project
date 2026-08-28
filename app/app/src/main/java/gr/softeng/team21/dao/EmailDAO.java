@@ -58,19 +58,19 @@ public interface EmailDAO {
      */
     CompletableFuture<ArrayList<EmailMessage>> getRepliedEmails();
 
+
     /**
      * Saves a new message to the inbox storage in the database.
-     *
      * @param msg The email message to be saved.
      */
-    void saveInboxEmails(EmailMessage msg);
+    CompletableFuture<Void> saveInboxEmails(EmailMessage msg);
 
     /**
      * Saves a new message to the sent messages storage in the database.
-     *
      * @param msg The email message to be saved.
      */
-    void saveSentEmails(EmailMessage msg);
+    CompletableFuture<Void> saveSentEmails(EmailMessage msg);
+
 
     /**
      * Checks if a specific message exists in the inbox.

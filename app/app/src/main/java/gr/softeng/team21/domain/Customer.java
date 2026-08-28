@@ -199,8 +199,6 @@ public class Customer extends User {
     /**
      * Confirms the order locally for the customer domain logic.
      * If choice is "CONFIRM", it links the current shopping cart to the order and clears the active cart.
-     * NOTE: The actual saving to the database/DAO should be handled by the Presenter.
-     *
      * @param confirmchoice the confirmation choice (must be "CONFIRM" or "CANCEL")
      * @param order         the order being confirmed
      * @throws IllegalArgumentException if order is null or confirm choice is invalid

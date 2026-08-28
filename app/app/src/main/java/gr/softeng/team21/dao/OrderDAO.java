@@ -1,42 +1,60 @@
 package gr.softeng.team21.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
-
 import gr.softeng.team21.domain.Order;
 
 /**
- * Interface for the Order Data Access Object.
- * Defines asynchronous operations for managing customer orders throughout their lifecycle.
- * @author Γιάννης Μονοχολιάς
+ * Data Access Object (DAO) interface for managing orders.
+ * Handles asynchronous database operations using CompletableFuture.
+ * @author PAVLOS GRATSANIS
  */
 public interface OrderDAO {
 
      /**
-      * Retrieves an order asynchronously based on its unique order code.
-      * @param orderCode The unique alphanumeric identifier of the order.
-      * @return A CompletableFuture containing the {@link Order} object if found, otherwise null.
-      * Completes exceptionally with an IllegalArgumentException if the provided orderCode is null.
+      * Retrieves an order by its unique code.
+      * @param orderCode The unique order ID.
+      * @return A CompletableFuture containing the order, or null if not found.
       */
      CompletableFuture<Order> getOrder(String orderCode);
 
      /**
-      * Registers a new order in the repository asynchronously.
-      * @param order The order object to be added.
-      * @return A CompletableFuture representing the completion of the insertion.
-      * Completes exceptionally with an IllegalArgumentException if the order is null or already exists.
+      * Retrieves all orders in the system. (Use with caution on large datasets).
+      * @return A CompletableFuture containing a Map of all orders.
+      */
+     CompletableFuture<HashMap<String, Order>> getOrders();
+
+     /**
+      * Efficiently queries the database for all orders assigned to a specific deliverer
+      * using database-level indexes.
+      * @param delivererId The unique ID of the deliverer.
+      * @return A CompletableFuture containing a list of assigned orders.
+      */
+     CompletableFuture<ArrayList<Order>> getOrdersByDelivererId(String delivererId);
+
+     /**
+      * Efficiently queries the database for all orders assigned to a specific preparation employee
+      * using database-level indexes.
+      * @param employeeId The unique ID of the preparation employee.
+      * @return A CompletableFuture containing a list of assigned orders.
+      */
+     CompletableFuture<ArrayList<Order>> getOrdersByPreparationEmployeeId(String employeeId);
+
+     /**
+      * Saves a completely new order to the database. Throws an error if it already exists.
+      * @param order The order to add.
       */
      CompletableFuture<Void> addOrder(Order order);
 
      /**
-      * Returns a map containing all orders currently stored in the system asynchronously.
-      * @return A CompletableFuture containing a HashMap of all registered orders.
+      * Updates (overwrites) an existing order in the database.
+      * @param order The order to update.
       */
-     CompletableFuture<HashMap<String,Order>> getOrders();
+     CompletableFuture<Void> updateOrder(Order order);
 
      /**
-      * Clears all order records from the repository asynchronously.
-      * @return A CompletableFuture representing the completion of the clearing operation.
+      * Clears all orders from the database.
       */
      CompletableFuture<Void> clear();
 }

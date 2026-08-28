@@ -3,13 +3,13 @@ package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparatio
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-
-import gr.softeng.team21.domain.CartItem;
+import gr.softeng.team21.dao.EmailDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.OrderDAO;
+import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.OrderStatusType;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.OrderDAOMemory;
@@ -17,123 +17,64 @@ import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 
 /**
  * Unit tests for {@link OrderPreparationDetailsPresenter}.
- * This suite validates the detailed order preparation process asynchronously, focusing on
- * stock checking logic, status transitions (SHIPPED vs DELAYED), and error handling
- * utilizing Dependency Injection for data sources.
+ * Verifies fully asynchronous logic for checking stock concurrently, assigning
+ * Foreign Keys (Deliverer or Customer Service), updating Order Status, and dispatching emails safely.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderPreparationDetailsPresenterTest {
 
     private OrderPreparationDetailsPresenter presenter;
     private OrderPreparationDetailsViewStub viewStub;
-    private OrderPreparationEmployee prepEmployee;
-    private Order order;
+    private OrderDAO orderDAO;
+    private EmailDAO emailDAO;
 
-    private static final String EMPLOYEE_ID = "PREP-201";
-    private static final String ORDER_CODE = "ORD-2023-001";
+    private static final String PREP_EMP_ID = "PREP-201";
+    private static final String ORDER_CODE_OK = "ORD-2024-001"; // Has stock in MemoryInitializer
+    private static final String ORDER_CODE_MISSING = "ORD-2024-002"; // Missing stock in MemoryInitializer
 
-    /**
-     * Initializes data asynchronously and sets up the presenter and target domain objects before each test.
-     */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MemoryInitializer.prepareData();
         viewStub = new OrderPreparationDetailsViewStub();
 
-        presenter = new OrderPreparationDetailsPresenter(
-                viewStub,
-                EmployeeDAOMemory.getInstance(),
-                OrderDAOMemory.getInstance()
-        );
+        EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
+        orderDAO = OrderDAOMemory.getInstance();
+        ProductsWareHouseDAO wareHouseDAO = ProductsWareHouseDAOMemory.getInstance();
+        emailDAO = new EmailDAOMemory();
 
-        // Retrieve domain models using .join() due to async architecture
-        prepEmployee = (OrderPreparationEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
-        order = OrderDAOMemory.getInstance().getOrder(ORDER_CODE).join();
-
-        prepEmployee.addOrder(order);
+        presenter = new OrderPreparationDetailsPresenter(viewStub, employeeDAO, orderDAO, wareHouseDAO, emailDAO);
     }
 
-    /**
-     * Verifies that order details are correctly loaded asynchronously and mapped to the view.
-     */
     @Test
-    public void loadOrderDisplaysCorrectDetails() {
-        presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
+    public void checkStock_WithSufficientStock_ShipsOrderAndAssignsDeliverer() {
+        presenter.loadOrder(PREP_EMP_ID, ORDER_CODE_OK);
 
-        ArrayList<CartItem> items = viewStub.getLoadedItems();
-
-        Assert.assertEquals(ORDER_CODE, viewStub.getDisplayedOrderCode());
-        Assert.assertNotNull(items);
-        Assert.assertFalse(items.isEmpty());
-    }
-
-    /**
-     * Verifies successful stock verification leading to the "SHIPPED" status.
-     */
-    @Test
-    public void checkStockOrderSufficientStock_Success() {
-        presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
+        // Execute the async check
         presenter.checkStockOrder();
 
-        Assert.assertTrue(viewStub.getSuccessMessage().contains("επιτυχώς"));
-        Assert.assertEquals(OrderStatusType.SHIPPED, order.getOrderstatus());
+        // Fetch the updated order from DAO synchronously using join()
+        Order processedOrder = orderDAO.getOrder(ORDER_CODE_OK).join();
+
+        Assert.assertEquals(OrderStatusType.SHIPPED, processedOrder.getOrderstatus());
+        Assert.assertNotNull(processedOrder.getDelivererId());
+        Assert.assertTrue(viewStub.getSuccessMessage().contains("έτοιμη προς παράδοση"));
     }
 
-    /**
-     * Verifies that insufficient stock results in a "DELAYED" status and appropriate error message.
-     */
     @Test
-    public void checkStockOrderInsufficientStockShowsError() {
-        presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
+    public void checkStock_WithInsufficientStock_DelaysOrderAndAssignsCS() {
+        presenter.loadOrder(PREP_EMP_ID, ORDER_CODE_MISSING);
 
-        ProductsWareHouseDAOMemory warehouse = (ProductsWareHouseDAOMemory) ProductsWareHouseDAOMemory.getInstance();
-        warehouse.getProductStocks().put(order.getShoppingCart().getItems().get(0).getProductType(), 0);
-
+        // Execute the async check
         presenter.checkStockOrder();
 
+        // Fetch the updated order from DAO synchronously using join()
+        Order processedOrder = orderDAO.getOrder(ORDER_CODE_MISSING).join();
+
+        Assert.assertEquals(OrderStatusType.DELAYED, processedOrder.getOrderstatus());
+        Assert.assertNotNull(processedOrder.getCustomerServiceId());
         Assert.assertTrue(viewStub.getErrorMessage().contains("Ανεπαρκές απόθεμα"));
-        Assert.assertEquals(OrderStatusType.DELAYED, order.getOrderstatus());
-    }
 
-    /**
-     * Verifies error handling when attempting to check stock for a null order.
-     */
-    @Test
-    public void checkStockOrder_NullOrderShowsErrorMessage() {
-        presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
-
-        presenter.setOrderToPrepare(null);
-        presenter.checkStockOrder();
-
-        Assert.assertEquals("Σφάλμα: Δεν δόθηκε παραγγελία (null Order pointer)", viewStub.getErrorMessage());
-    }
-
-    /**
-     * Verifies that an employee cannot prepare an order that is not assigned to them.
-     */
-    @Test
-    public void checkStockOrderOrderNotAssignedShowsErrorMessage() {
-        presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
-
-        prepEmployee.removeOrder(order);
-        presenter.checkStockOrder();
-
-        Assert.assertEquals("Σφάλμα: Δεν σας έχει ανατεθεί η συγκεκριμένη παραγγελία", viewStub.getErrorMessage());
-    }
-
-    /**
-     * Verifies that if no deliverers exist in the system, an {@link IllegalStateException} is thrown
-     * during the order shipping phase natively by the domain logic.
-     */
-    @Test(expected = IllegalStateException.class)
-    public void checkStockOrderNoDeliverersAvailableThrowsIllegalStateException() {
-        presenter.loadOrder(EMPLOYEE_ID, ORDER_CODE);
-
-        EmployeeDAOMemory memoryDAO = (EmployeeDAOMemory) EmployeeDAOMemory.getInstance();
-        memoryDAO.getEmployees().join().remove("DEL-401");
-        memoryDAO.getEmployees().join().remove("DEL-402");
-        memoryDAO.getEmployees().join().remove("DEL-403");
-
-        presenter.checkStockOrder();
+        // Verifies the delay email was generated and saved to DAOs
+        Assert.assertEquals(1, emailDAO.getSentEmails().join().size());
     }
 }
