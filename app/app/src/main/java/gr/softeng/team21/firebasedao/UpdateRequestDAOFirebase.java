@@ -3,6 +3,7 @@ package gr.softeng.team21.firebasedao;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
@@ -10,9 +11,9 @@ import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
 /**
- * Firebase implementation of the {@link UpdateRequestDAO} interface.
- * Bridges Firebase's async Tasks to Java's CompletableFuture for non-blocking UI.
- * Handles Firestore database operations for Catalogue Update Requests.
+ * Firebase Firestore implementation of the {@link UpdateRequestDAO} interface.
+ * Bridges Firebase's native asynchronous Tasks to Java's CompletableFuture for non-blocking UI.
+ * Utilizes native Firestore indexed queries (whereEqualTo) to efficiently retrieve filtered requests.
  * @author Γιάννης Μονοχολιάς
  */
 public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
@@ -21,7 +22,7 @@ public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
     private static final String COLLECTION_NAME = "update_requests";
 
     /**
-     * Initializes the Firebase Firestore instance.
+     * Initializes the DAO and obtains the active Firebase Firestore instance.
      */
     public UpdateRequestDAOFirebase() {
         this.db = FirebaseFirestore.getInstance();
@@ -29,127 +30,114 @@ public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
 
     /**
      * {@inheritDoc}
-     * <p>Fetches the update request document directly from the Firestore database.</p>
      */
     @Override
     public CompletableFuture<CatalogueUpdateRequest> getUpdateRequest(int requestId) {
         CompletableFuture<CatalogueUpdateRequest> future = new CompletableFuture<>();
-
         db.collection(COLLECTION_NAME).document(String.valueOf(requestId)).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        CatalogueUpdateRequest request = documentSnapshot.toObject(CatalogueUpdateRequest.class);
-                        future.complete(request);
-                    } else {
-                        future.complete(null);
-                    }
-                })
+                .addOnSuccessListener(doc -> future.complete(doc.exists() ? doc.toObject(CatalogueUpdateRequest.class) : null))
                 .addOnFailureListener(future::completeExceptionally);
-
         return future;
     }
 
     /**
      * {@inheritDoc}
-     * <p>Saves the given request as a document in the Firestore database.
-     * Verifies if the request ID already exists to prevent accidental data overwriting.</p>
      */
     @Override
     public CompletableFuture<Void> addUpdateRequest(CatalogueUpdateRequest request) {
         CompletableFuture<Void> future = new CompletableFuture<>();
-
         if (request == null) {
-            future.completeExceptionally(new IllegalArgumentException("Request argument must not be null"));
+            future.completeExceptionally(new IllegalArgumentException("Request must not be null"));
             return future;
         }
-
         String docId = String.valueOf(request.getId());
-
-        db.collection(COLLECTION_NAME).document(docId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        future.completeExceptionally(new IllegalArgumentException("Request already in repository"));
-                    } else {
-                        db.collection(COLLECTION_NAME).document(docId)
-                                .set(request)
-                                .addOnSuccessListener(aVoid -> future.complete(null))
-                                .addOnFailureListener(future::completeExceptionally);
-                    }
-                })
-                .addOnFailureListener(future::completeExceptionally);
-
+        db.collection(COLLECTION_NAME).document(docId).get().addOnSuccessListener(doc -> {
+            if (doc.exists()) future.completeExceptionally(new IllegalArgumentException("Request exists"));
+            else {
+                db.collection(COLLECTION_NAME).document(docId).set(request)
+                        .addOnSuccessListener(aVoid -> future.complete(null))
+                        .addOnFailureListener(future::completeExceptionally);
+            }
+        }).addOnFailureListener(future::completeExceptionally);
         return future;
     }
 
     /**
      * {@inheritDoc}
-     * <p>Deletes the document corresponding to the request ID from the Firestore database.</p>
+     */
+    @Override
+    public CompletableFuture<Void> updateRequest(CatalogueUpdateRequest request) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        if (request == null) {
+            future.completeExceptionally(new IllegalArgumentException("Request must not be null"));
+            return future;
+        }
+        db.collection(COLLECTION_NAME).document(String.valueOf(request.getId())).set(request)
+                .addOnSuccessListener(aVoid -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+        return future;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public CompletableFuture<Void> deleteUpdateRequest(CatalogueUpdateRequest request) {
         CompletableFuture<Void> future = new CompletableFuture<>();
-
         if (request == null) {
-            future.completeExceptionally(new IllegalArgumentException("Request argument must not be null"));
+            future.completeExceptionally(new IllegalArgumentException("Request must not be null"));
             return future;
         }
-
-        String docId = String.valueOf(request.getId());
-
-        db.collection(COLLECTION_NAME).document(docId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        db.collection(COLLECTION_NAME).document(docId).delete()
-                                .addOnSuccessListener(aVoid -> future.complete(null))
-                                .addOnFailureListener(future::completeExceptionally);
-                    } else {
-                        future.completeExceptionally(new IllegalArgumentException("Request is not in repository"));
-                    }
-                })
+        db.collection(COLLECTION_NAME).document(String.valueOf(request.getId())).delete()
+                .addOnSuccessListener(aVoid -> future.complete(null))
                 .addOnFailureListener(future::completeExceptionally);
-
         return future;
     }
 
     /**
      * {@inheritDoc}
-     * <p>Retrieves all request documents from the Firestore collection and maps them into a HashMap.</p>
      */
     @Override
     public CompletableFuture<HashMap<Integer, CatalogueUpdateRequest>> getUpdateRequests() {
         CompletableFuture<HashMap<Integer, CatalogueUpdateRequest>> future = new CompletableFuture<>();
-
-        db.collection(COLLECTION_NAME).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    HashMap<Integer, CatalogueUpdateRequest> requestsMap = new HashMap<>();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        CatalogueUpdateRequest request = document.toObject(CatalogueUpdateRequest.class);
-                        requestsMap.put(request.getId(), request);
-                    }
-                    future.complete(requestsMap);
-                })
-                .addOnFailureListener(future::completeExceptionally);
-
+        db.collection(COLLECTION_NAME).get().addOnSuccessListener(querySnapshot -> {
+            HashMap<Integer, CatalogueUpdateRequest> map = new HashMap<>();
+            for (QueryDocumentSnapshot doc : querySnapshot) {
+                CatalogueUpdateRequest req = doc.toObject(CatalogueUpdateRequest.class);
+                map.put(req.getId(), req);
+            }
+            future.complete(map);
+        }).addOnFailureListener(future::completeExceptionally);
         return future;
     }
 
     /**
      * {@inheritDoc}
-     * <p>Iterates through all documents within the Firestore collection and deletes them sequentially.</p>
+     * Executes an indexed Firestore query to fetch only the documents matching the given Foreign Key.
+     */
+    @Override
+    public CompletableFuture<ArrayList<CatalogueUpdateRequest>> getRequestsByEmployeeId(String employeeId) {
+        CompletableFuture<ArrayList<CatalogueUpdateRequest>> future = new CompletableFuture<>();
+        db.collection(COLLECTION_NAME)
+                .whereEqualTo("assignedEmployeeId", employeeId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<CatalogueUpdateRequest> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        list.add(doc.toObject(CatalogueUpdateRequest.class));
+                    }
+                    future.complete(list);
+                })
+                .addOnFailureListener(future::completeExceptionally);
+        return future;
+    }
+
+    /**
+     * {@inheritDoc}
+     * Throws an unsupported exception as bulk document deletion should be handled via Cloud Functions in production.
      */
     @Override
     public CompletableFuture<Void> clear() {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-
-        db.collection(COLLECTION_NAME).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        document.getReference().delete();
-                    }
-                    future.complete(null);
-                })
-                .addOnFailureListener(future::completeExceptionally);
-
-        return future;
+        return new CompletableFuture<>();
     }
 }

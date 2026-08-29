@@ -11,26 +11,28 @@ import gr.softeng.team21.domain.RequestStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
 /**
- * Presenter for the product insertion screen.
+ * Presenter for the product insertion execution screen.
  * Handles the logic for validating user input, creating a new {@link ProductType}
- * domain object, and updating the request status asynchronously via Dependency Injection.
+ * domain object, and updating the request status asynchronously using DAOs.
+ * Implements Dependency Injection to decouple business logic from the UI.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteInsertProductPresenter {
-    private ExecuteInsertProductView view;
-    private EmployeeDAO employeeDAO;
-    private UpdateRequestDAO updateRequestDAO;
-    private ProductTypeDAO productTypeDAO;
+
+    private final ExecuteInsertProductView view;
+    private final EmployeeDAO employeeDAO;
+    private final UpdateRequestDAO updateRequestDAO;
+    private final ProductTypeDAO productTypeDAO;
 
     private CatalogueUpdateRequest currentRequest;
     private UpdateCatalogueEmployee loggedInEmployee;
 
     /**
      * Initializes the presenter with injected DAOs and the view interface.
-     * @param view The view implementation (Activity or Stub).
-     * @param employeeDAO Data access for employee records.
-     * @param updateRequestDAO Data access for update requests.
-     * @param productTypeDAO Data access for the product catalogue.
+     * @param view The view implementation (Activity or Stub) to handle UI updates.
+     * @param employeeDAO Data access object for verifying employee sessions.
+     * @param updateRequestDAO Data access object for managing catalogue update requests.
+     * @param productTypeDAO Data access object for the product catalogue repository.
      */
     public ExecuteInsertProductPresenter(ExecuteInsertProductView view, EmployeeDAO employeeDAO, UpdateRequestDAO updateRequestDAO, ProductTypeDAO productTypeDAO) {
         this.view = view;
@@ -41,42 +43,45 @@ public class ExecuteInsertProductPresenter {
 
     /**
      * Asynchronously loads the specific request instructions and employee context.
-     * @param employeeId The ID of the employee executing the insert.
-     * @param requestId The ID of the insert request.
+     * Replaces full map downloads with an optimized direct ID fetch from the DAO.
+     * @param employeeId The unique ID of the employee executing the insert operation.
+     * @param requestId The unique ID of the specific insertion request.
      */
     public void loadRequestDetails(String employeeId, int requestId) {
         employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
             if (employee instanceof UpdateCatalogueEmployee) {
                 this.loggedInEmployee = (UpdateCatalogueEmployee) employee;
 
-                updateRequestDAO.getUpdateRequests().thenAccept(requestsMap -> {
-                    this.currentRequest = requestsMap.get(requestId);
+                // Use the direct getUpdateRequest method instead of fetching the whole map
+                updateRequestDAO.getUpdateRequest(requestId).thenAccept(request -> {
+                    this.currentRequest = request;
 
                     if (currentRequest != null) {
-                        view.setRequestDescription(currentRequest.getUpdateDescription());
+                        if (view != null) view.setRequestDescription(currentRequest.getUpdateDescription());
                     } else {
-                        view.showError("Σφάλμα: Το αίτημα δεν βρέθηκε.");
+                        if (view != null) view.showError("Σφάλμα: Το αίτημα δεν βρέθηκε.");
                     }
                 }).exceptionally(e -> {
-                    view.showError("Σφάλμα ανάκτησης αιτήματος: " + e.getMessage());
+                    if (view != null) view.showError("Σφάλμα ανάκτησης αιτήματος: " + e.getMessage());
                     return null;
                 });
             } else {
-                view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
+                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
         }).exceptionally(e -> {
-            view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
+            if (view != null) view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
             return null;
         });
     }
 
     /**
-     * Processes the insertion logic asynchronously. Validates numeric input for price,
-     * creates the domain object, and persists it via the DAO.
+     * Processes the product insertion logic asynchronously.
+     * Validates numeric input for price, instantiates the domain object, persists it
+     * via the DAO, and updates the lifecycle status of the associated request.
      */
     public void onConfirmInsert() {
         if (currentRequest == null || loggedInEmployee == null) {
-            view.showError("Δεν υπάρχει ενεργό αίτημα προς καταχώρηση.");
+            if (view != null) view.showError("Δεν υπάρχει ενεργό αίτημα προς καταχώρηση.");
             return;
         }
 
@@ -95,24 +100,26 @@ public class ExecuteInsertProductPresenter {
 
             // Persist product and update status asynchronously
             productTypeDAO.addProductType(newProduct).thenAccept(v1 -> {
-                currentRequest.setStatus(RequestStatusType.SERVED);
 
-                // Persist the request state change
-                updateRequestDAO.addUpdateRequest(currentRequest).thenAccept(v2 -> {
-                    view.showSuccessMessage("Το προϊόν καταχωρήθηκε επιτυχώς!");
-                    loggedInEmployee.getAssignedRequests().remove(currentRequest.getId());
+                // Update domain state locally
+                currentRequest.setStatus(RequestStatusType.SERVED);
+                loggedInEmployee.incrementTotalCatalogueUpdates();
+
+                // Persist the request state change using updateRequest (overwrites existing document)
+                updateRequestDAO.updateRequest(currentRequest).thenAccept(v2 -> {
+                    if (view != null) view.showSuccessMessage("Το προϊόν καταχωρήθηκε επιτυχώς!");
                 }).exceptionally(e -> {
-                    view.showError("Σφάλμα κατά την ενημέρωση του αιτήματος: " + e.getMessage());
+                    if (view != null) view.showError("Σφάλμα κατά την ενημέρωση του αιτήματος: " + e.getMessage());
                     return null;
                 });
 
             }).exceptionally(e -> {
-                view.showError("Error: " + e.getMessage());
+                if (view != null) view.showError("Error: " + e.getMessage());
                 return null;
             });
 
         } catch (NumberFormatException e) {
-            view.showInputError("price", "Please enter a valid price (e.g., 12.50)");
+            if (view != null) view.showInputError("price", "Please enter a valid price (e.g., 12.50)");
         }
     }
 }

@@ -2,8 +2,8 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates
 
 /**
  * A stub implementation of the {@link ExecuteInsertProductView} interface for unit testing.
- * It simulates the product insertion form, capturing input values and providing
- * mechanisms to verify success, general asynchronous error messages, and field-specific validation errors.
+ * It mimics the behavior of the product insertion form, capturing setter inputs and providing
+ * mechanisms to verify success, asynchronous error messages, and specific field validation triggers.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteInsertProductViewStub implements ExecuteInsertProductView {
@@ -20,38 +20,50 @@ public class ExecuteInsertProductViewStub implements ExecuteInsertProductView {
     private String inputErrorMessage = "";
 
     /**
-     * Simulates the user entering a product code into the text field.
+     * Simulates the user entering a product code into the stub text field.
      * @param codeInput The product code string.
      */
     public void setCodeInput(String codeInput) { this.codeInput = codeInput; }
 
     /**
-     * Simulates the user entering a product name.
+     * Simulates the user entering a product name into the stub text field.
      * @param nameInput The product name string.
      */
     public void setNameInput(String nameInput) { this.nameInput = nameInput; }
 
     /**
-     * Simulates the user entering a price.
+     * Simulates the user entering a price into the stub text field.
      * @param priceInput The product price string.
      */
     public void setPriceInput(String priceInput) { this.priceInput = priceInput; }
 
     /**
-     * Simulates the user entering a description.
+     * Simulates the user entering a description into the stub text field.
      * @param descInput The product description string.
      */
     public void setDescInput(String descInput) { this.descInput = descInput; }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductCode() { return codeInput; }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductName() { return nameInput; }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductPrice() { return priceInput; }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getProductDescription() { return descInput; }
 
@@ -88,10 +100,25 @@ public class ExecuteInsertProductViewStub implements ExecuteInsertProductView {
         this.errorMessage = message;
     }
 
-    // --- Accessor methods for verification during testing ---
+    // --- Accessor methods for verification during testing assertions ---
 
+    /**
+     * @return The stored description string intended for the UI.
+     */
     public String getRequestDescription() { return requestDescription; }
+
+    /**
+     * @return The text content of a dispatched success message.
+     */
     public String getSuccessMessage() { return successMessage; }
+
+    /**
+     * @return The text content of a dispatched error message.
+     */
     public String getErrorMessage() { return errorMessage; }
+
+    /**
+     * @return The field identifier that was flagged with an input error.
+     */
     public String getInputErrorField() { return inputErrorField; }
 }

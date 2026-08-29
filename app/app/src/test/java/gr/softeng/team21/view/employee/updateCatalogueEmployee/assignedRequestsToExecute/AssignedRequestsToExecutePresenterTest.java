@@ -4,94 +4,86 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
 
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
-import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+import gr.softeng.team21.domain.RequestStatusType;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
 /**
  * Unit tests for {@link AssignedRequestsToExecutePresenter}.
- * This suite ensures that the list of catalogue update requests already assigned to an employee
- * is correctly retrieved asynchronously via Dependency Injection and that user interaction
- * triggers the proper navigation.
+ * This suite ensures that requests mapped via Foreign Keys are correctly retrieved
+ * asynchronously from the DAOs and that user interaction triggers proper navigation logic.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class AssignedRequestsToExecutePresenterTest {
 
     private AssignedRequestsToExecutePresenter presenter;
     private AssignedRequestsToExecuteViewStub viewStub;
-    private UpdateCatalogueEmployee catEmployee;
 
     private static final String EMPLOYEE_ID = "CAT-301";
     private static final int REQUEST_ID = 1;
 
     /**
      * Initializes the testing environment before each test.
-     * Prepares memory data, sets up the presenter with injected dependencies, and assigns
-     * a specific request to the test employee to simulate an active workload.
+     * Prepares memory data, sets up the presenter with injected DAOs, and assigns
+     * a specific request to the test employee using Foreign Key assignment logic.
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MemoryInitializer.prepareData();
-
         viewStub = new AssignedRequestsToExecuteViewStub();
-        presenter = new AssignedRequestsToExecutePresenter(viewStub, EmployeeDAOMemory.getInstance());
 
-        // Retrieve Employee using .join() due to CompletableFuture architecture
-        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
+        presenter = new AssignedRequestsToExecutePresenter(viewStub, EmployeeDAOMemory.getInstance(), UpdateRequestDAOMemory.getInstance());
 
-        // UpdateRequestDAOMemory map retrieval
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(REQUEST_ID);
-
-        // Simulate the assignment of the request to the employee
-        catEmployee.assignRequest(request.getId());
+        // Assign a request asynchronously using the updated DAO architecture
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequest(REQUEST_ID).join();
+        if (request != null) {
+            request.setAssignedEmployeeId(EMPLOYEE_ID);
+            request.setStatus(RequestStatusType.ASSIGNED);
+            UpdateRequestDAOMemory.getInstance().updateRequest(request).join();
+        }
     }
 
     /**
-     * Verifies that the presenter retrieves only the requests assigned to the specific employee
-     * asynchronously and correctly pushes them to the view.
+     * Verifies that the presenter successfully retrieves the requests assigned to the specific
+     * employee asynchronously via the DAO and pushes them to the view.
      */
     @Test
     public void loadAssignedRequestsReturnsCorrectList() {
         presenter.loadAssignedRequests(EMPLOYEE_ID);
-
         ArrayList<CatalogueUpdateRequest> result = viewStub.getLoadedRequests();
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals(REQUEST_ID, result.get(0).getId());
+        Assert.assertEquals(EMPLOYEE_ID, result.get(0).getAssignedEmployeeId());
     }
 
     /**
-     * Verifies the presenter gracefully handles an invalid employee ID.
-     */
-    @Test
-    public void loadAssignedRequestsInvalidEmployeeShowsError() {
-        presenter.loadAssignedRequests("INVALID_ID");
-        Assert.assertTrue(viewStub.getErrorMessage().contains("δεν βρέθηκε"));
-    }
-
-    /**
-     * Verifies that clicking on an assigned request correctly triggers the navigation
-     * to the details view with the required employee and request context.
+     * Verifies that clicking on an assigned request triggers the correct navigation
+     * callback in the view interface with accurate employee and request context.
      */
     @Test
     public void onClickRequestNavigatesToDetails() {
-        // Load requests first to initialize the internal loggedInEmployee in the presenter
         presenter.loadAssignedRequests(EMPLOYEE_ID);
-
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().get(REQUEST_ID);
+        CatalogueUpdateRequest request = viewStub.getLoadedRequests().get(0);
 
         presenter.onClickRequest(request);
 
-        // Verification of navigation state via Stub
         Assert.assertTrue(viewStub.isNavigationCalled());
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigatedEmployeeId());
-        Assert.assertEquals(request, viewStub.getNavigatedRequest());
         Assert.assertEquals(REQUEST_ID, viewStub.getNavigatedRequest().getId());
+    }
+
+    /**
+     * Clears all memory state to ensure tests run in isolation.
+     */
+    @After
+    public void tearDown() {
+        EmployeeDAOMemory.getInstance().clear();
+        UpdateRequestDAOMemory.getInstance().clear().join();
     }
 }

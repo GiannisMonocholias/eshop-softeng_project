@@ -11,29 +11,45 @@ import java.util.ArrayList;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.util.Money;
 
+/**
+ * Unit tests for the {@link OrderLine} domain class.
+ * Verifies the correct behavior of order line attributes, including
+ * calculations of total bills, and ensures correct encapsulation.
+ * @author Γιάννης Μονοχολιάς
+ */
 public class OrderLineTest {
 
-    OrderLine orderLine;
+    private OrderLine orderLine;
+    private ArrayList<OrderLine> orderProducts;
 
-    ArrayList<OrderLine> orderProducts = new ArrayList<>();
-
-
+    /**
+     * Initializes the testing environment before each test.
+     * Sets up a sample product and an OrderLine instance.
+     */
     @Before
     public void setUp() throws Exception {
-
-        orderLine = new OrderLine(new WholesaleProduct(2526, "Fifa 26","EASports","PS5 game", new Money(70 , "euro")) , 10 , new SupOrder(new Date() , 002 , Admin.getInstance() , orderProducts));
+        orderProducts = new ArrayList<>();
+        // Constructor adjusted to 2 parameters (removed circular dependency with SupOrder)
+        orderLine = new OrderLine(new WholesaleProduct(2526, "Fifa 26", "EASports", "PS5 game", new Money(70, "euro")), 10);
         orderProducts.add(orderLine);
-
     }
 
+    /**
+     * Verifies that the total bill for the order line is calculated correctly
+     * by multiplying the product price by the quantity.
+     */
     @Test
     public void totalBill() {
-        for(OrderLine ord : orderProducts){
+        for (OrderLine ord : orderProducts) {
             BigDecimal bill = ord.totalBill();
-            assertEquals(bill , (ord.getProduct().getPrice().multiply(ord.getQuantity()).getAmount()));
+            BigDecimal expectedAmount = ord.getProduct().getPrice().getAmount().multiply(BigDecimal.valueOf(ord.getQuantity()));
+            assertEquals(expectedAmount, bill);
         }
     }
 
+    /**
+     * Verifies the getter and setter for the quantity attribute.
+     */
     @Test
     public void testSetAndGetQuantity() {
         int expected = 50;
@@ -41,17 +57,12 @@ public class OrderLineTest {
         assertEquals(expected, orderLine.getQuantity());
     }
 
-    @Test
-    public void testSetAndGetOrder() {
-        SupOrder order = new SupOrder(new Date() , 005 , Admin.getInstance(), orderProducts);
-        orderLine.setOrder(order);
-        assertEquals(order, orderLine.getOrder());
-    }
-
-
+    /**
+     * Verifies the getter and setter for the product attribute.
+     */
     @Test
     public void testSetAndGetProduct() {
-        WholesaleProduct product = new WholesaleProduct(12526, "Fifa 26","EASports","PS5 game", new Money(70 , "euro"));
+        WholesaleProduct product = new WholesaleProduct(12526, "Fifa 26", "EASports", "PS5 game", new Money(70, "euro"));
         orderLine.setProduct(product);
         assertEquals(product, orderLine.getProduct());
     }

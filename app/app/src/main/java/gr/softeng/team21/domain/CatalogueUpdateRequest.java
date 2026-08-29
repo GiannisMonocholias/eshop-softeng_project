@@ -5,7 +5,8 @@ import gr.softeng.team21.util.Date;
 /**
  * Represents a request to update the product catalogue.
  * This class tracks the lifecycle of an update, including its status,
- * the type of product affected, and whether the update has been executed.
+ * the type of product affected, whether the update has been executed,
+ * and the Foreign Key of the employee assigned to it.
  * @author Γιάννης Μονοχολιάς
  */
 public class CatalogueUpdateRequest {
@@ -18,10 +19,12 @@ public class CatalogueUpdateRequest {
     private boolean executed = false;
     private RequestStatusType status = RequestStatusType.NEW;
 
+    // Foreign Key for the assigned employee
+    private String assignedEmployeeId = null;
 
     /**
-     * Default constructor
-     * */
+     * Default constructor required for framework instantiation (e.g., Firebase).
+     */
     public CatalogueUpdateRequest() {
         submissionDate = null;
     }
@@ -130,4 +133,19 @@ public class CatalogueUpdateRequest {
      * @return the immutable date of initial submission.
      */
     public Date getSubmissionDate() { return submissionDate; }
+
+    /**
+     * @return the unique ID of the employee assigned to this request, or null if unassigned.
+     */
+    public String getAssignedEmployeeId() {
+        return assignedEmployeeId;
+    }
+
+    /**
+     * Assigns an employee to this request using their unique identifier (Foreign Key).
+     * @param assignedEmployeeId the unique ID of the employee.
+     */
+    public void setAssignedEmployeeId(String assignedEmployeeId) {
+        this.assignedEmployeeId = assignedEmployeeId;
+    }
 }

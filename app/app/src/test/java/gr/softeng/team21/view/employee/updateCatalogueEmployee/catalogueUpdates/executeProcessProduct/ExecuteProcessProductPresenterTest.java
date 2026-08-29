@@ -8,7 +8,6 @@ import org.junit.Test;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.RequestStatusType;
-import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
@@ -17,15 +16,14 @@ import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 /**
  * Unit tests for {@link ExecuteProcessProductPresenter}.
  * This suite verifies the asynchronous update workflow for existing products, ensuring data integrity,
- * correct price validation, and synchronized status updates between products
- * and administrative requests without using try-catch blocks.
+ * correct price validation, and synchronized status updates between product DAOs
+ * and request DAOs without relying on deprecated domain collections.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteProcessProductPresenterTest {
 
     private ExecuteProcessProductPresenter presenter;
     private ExecuteProcessProductViewStub viewStub;
-    private UpdateCatalogueEmployee catEmployee;
 
     private static final String EMPLOYEE_ID = "CAT-301";
     private static final int PROCESS_REQUEST_ID = 2;
@@ -33,7 +31,8 @@ public class ExecuteProcessProductPresenterTest {
 
     /**
      * Initializes the test environment, prepares memory data asynchronously, and simulates
-     * a request assignment before each test case using Dependency Injection.
+     * a request assignment before each test case using the new Foreign Key DAO logic.
+     * @throws Exception if data initialization fails.
      */
     @Before
     public void setUp() throws Exception {
@@ -47,16 +46,18 @@ public class ExecuteProcessProductPresenterTest {
                 ProductTypeDAOMemory.getInstance()
         );
 
-        // Uses .join() to safely fetch data from CompletableFuture DAOs
-        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(PROCESS_REQUEST_ID);
-
-        catEmployee.assignRequest(request.getId());
+        // Fetch request and assign it to the employee asynchronously using the DAO
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequest(PROCESS_REQUEST_ID).join();
+        if (request != null) {
+            request.setAssignedEmployeeId(EMPLOYEE_ID);
+            request.setStatus(RequestStatusType.ASSIGNED);
+            UpdateRequestDAOMemory.getInstance().updateRequest(request).join();
+        }
     }
 
     /**
-     * Verifies that existing product details and request descriptions are
-     * correctly loaded asynchronously into the edit form.
+     * Verifies that existing product details and admin request descriptions are
+     * correctly loaded asynchronously from the DAOs and pushed to the UI form.
      */
     @Test
     public void loadRequestDetailsValidDataDisplaysDetails() {
@@ -69,7 +70,8 @@ public class ExecuteProcessProductPresenterTest {
     }
 
     /**
-     * Verifies that error handling works for non-existent request IDs without crashing.
+     * Verifies that error handling works gracefully for non-existent request IDs
+     * without crashing the application.
      */
     @Test
     public void loadRequestDetailsInvalidDataShowsError() {
@@ -78,8 +80,8 @@ public class ExecuteProcessProductPresenterTest {
     }
 
     /**
-     * Verifies that a valid price input leads to the confirmation dialog
-     * instead of an error.
+     * Verifies that a valid numeric price input successfully passes validation
+     * and triggers the confirmation dialog.
      */
     @Test
     public void onSaveClickedValidPriceShowsConfirmation() {
@@ -93,7 +95,8 @@ public class ExecuteProcessProductPresenterTest {
     }
 
     /**
-     * Verifies that non-numeric price inputs trigger a validation error.
+     * Verifies that non-numeric price inputs (e.g., text) trigger a specific validation error
+     * preventing further processing.
      */
     @Test
     public void onSaveClickedInvalidPriceShowsInputError() {
@@ -107,7 +110,7 @@ public class ExecuteProcessProductPresenterTest {
     }
 
     /**
-     * Verifies that negative price inputs are rejected.
+     * Verifies that negative price inputs are strictly rejected by the validation logic.
      */
     @Test
     public void onSaveClickedNegativePriceShowsInputError() {
@@ -122,9 +125,9 @@ public class ExecuteProcessProductPresenterTest {
 
     /**
      * Verifies the complete asynchronous update workflow:
-     * 1. Updates the product details in the catalogue.
-     * 2. Sets the request status to SERVED.
-     * 3. Removes the task from the employee's assigned list.
+     * 1. Updates the product details inside the ProductTypeDAO.
+     * 2. Overwrites the request status as SERVED inside the UpdateRequestDAO.
+     * 3. Confirms UI success feedback generation.
      */
     @Test
     public void onSaveConfirmedUpdatesProductAndRequest() {
@@ -148,11 +151,18 @@ public class ExecuteProcessProductPresenterTest {
         Assert.assertEquals(newDesc, updatedProduct.getDescription());
         Assert.assertEquals(1100.0, updatedProduct.getPrice().getAmount().doubleValue(), 0.001);
 
-        // Verify request state
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(PROCESS_REQUEST_ID);
+        // Verify request state transition
+        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequest(PROCESS_REQUEST_ID).join();
         Assert.assertEquals(RequestStatusType.SERVED, request.getStatus());
+    }
 
-        // Verify employee task cleanup
-        Assert.assertFalse(catEmployee.getAssignedRequests().containsKey(PROCESS_REQUEST_ID));
+    /**
+     * Clears shared memory state to maintain strict test isolation.
+     */
+    @After
+    public void tearDown() {
+        EmployeeDAOMemory.getInstance().clear();
+        ProductTypeDAOMemory.getInstance().clear();
+        UpdateRequestDAOMemory.getInstance().clear().join();
     }
 }

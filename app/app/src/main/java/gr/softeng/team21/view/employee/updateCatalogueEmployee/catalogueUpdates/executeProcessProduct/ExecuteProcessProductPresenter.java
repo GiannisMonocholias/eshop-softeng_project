@@ -11,26 +11,29 @@ import gr.softeng.team21.domain.RequestStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
 /**
- * Presenter for the product modification screen.
+ * Presenter for the product modification (process) screen.
  * Handles the asynchronous logic for validating new inputs, updating the domain object,
- * and marking the administrative request as served using Dependency Injection.
+ * persisting changes to the product repository, and marking the administrative
+ * request as SERVED via DAOs. Completely decoupled from domain-level RAM lists.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteProcessProductPresenter {
-    private ExecuteProcessProductView view;
-    private EmployeeDAO employeeDAO;
-    private UpdateRequestDAO updateRequestDAO;
-    private ProductTypeDAO productTypeDAO;
+
+    private final ExecuteProcessProductView view;
+    private final EmployeeDAO employeeDAO;
+    private final UpdateRequestDAO updateRequestDAO;
+    private final ProductTypeDAO productTypeDAO;
+
     private CatalogueUpdateRequest currentRequest;
     private UpdateCatalogueEmployee loggedInEmployee;
     private ProductType productToEdit;
 
     /**
      * Initializes the presenter with injected DAOs and the view interface.
-     * @param view The view implementation (Activity or Stub).
-     * @param employeeDAO Data access for employee records.
-     * @param updateRequestDAO Data access for update requests.
-     * @param productTypeDAO Data access for the product catalogue.
+     * @param view The View contract implementation handling UI updates.
+     * @param employeeDAO Data access object for validating employee sessions.
+     * @param updateRequestDAO Data access object for managing catalogue update requests.
+     * @param productTypeDAO Data access object for the product catalogue repository.
      */
     public ExecuteProcessProductPresenter(ExecuteProcessProductView view, EmployeeDAO employeeDAO, UpdateRequestDAO updateRequestDAO, ProductTypeDAO productTypeDAO) {
         this.view = view;
@@ -41,48 +44,57 @@ public class ExecuteProcessProductPresenter {
 
     /**
      * Asynchronously loads the request context and the specific product to be edited.
-     * @param employeeId The ID of the employee executing the process.
-     * @param requestId  The ID of the process request.
+     * Replaces the inefficient full-map download with a direct, indexed DAO fetch.
+     * @param employeeId The unique ID of the employee executing the modification.
+     * @param requestId  The unique ID of the specific process request.
      */
     public void loadRequestDetails(String employeeId, int requestId) {
         employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
             if (employee instanceof UpdateCatalogueEmployee) {
                 this.loggedInEmployee = (UpdateCatalogueEmployee) employee;
 
-                updateRequestDAO.getUpdateRequests().thenAccept(requestsMap -> {
-                    this.currentRequest = requestsMap.get(requestId);
+                // Optimized specific document fetch
+                updateRequestDAO.getUpdateRequest(requestId).thenAccept(request -> {
+                    this.currentRequest = request;
 
                     if (currentRequest == null || currentRequest.getProduct() == null) {
-                        view.showError("Σφάλμα: Τα στοιχεία του αιτήματος ή του επηρεαζόμενου προϊόντος δεν βρέθηκαν.");
+                        if (view != null) view.showError("Σφάλμα: Τα στοιχεία του αιτήματος ή του επηρεαζόμενου προϊόντος δεν βρέθηκαν.");
                         return;
                     }
 
                     this.productToEdit = currentRequest.getProduct();
-                    view.setRequestDescription(currentRequest.getUpdateDescription());
 
-                    String priceStr = (productToEdit.getPrice() != null) ?
-                            String.valueOf(productToEdit.getPrice().getAmount()) : "";
+                    if (view != null) {
+                        view.setRequestDescription(currentRequest.getUpdateDescription());
 
-                    view.setProductData(productToEdit.getProductCode(), productToEdit.getProductname(),
-                            priceStr, productToEdit.getDescription());
+                        String priceStr = (productToEdit.getPrice() != null) ?
+                                String.valueOf(productToEdit.getPrice().getAmount()) : "";
+
+                        view.setProductData(productToEdit.getProductCode(), productToEdit.getProductname(),
+                                priceStr, productToEdit.getDescription());
+                    }
 
                 }).exceptionally(e -> {
-                    view.showError("Σφάλμα ανάκτησης αιτήματος: " + e.getMessage());
+                    if (view != null) view.showError("Σφάλμα ανάκτησης αιτήματος: " + e.getMessage());
                     return null;
                 });
             } else {
-                view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
+                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
         }).exceptionally(e -> {
-            view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
+            if (view != null) view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
             return null;
         });
     }
 
     /**
-     * Validates the price input and requests user confirmation.
+     * Triggered when the user clicks the save button.
+     * Validates the price input to ensure it is a positive numeric value before requesting
+     * user confirmation via the view.
      */
     public void onSaveClicked() {
+        if (view == null) return;
+
         String newPriceStr = view.getProductPrice();
         try {
             double priceVal = Double.parseDouble(newPriceStr);
@@ -96,8 +108,7 @@ public class ExecuteProcessProductPresenter {
 
     /**
      * Asynchronously applies the validated changes to the domain object, updates the
-     * product repository, and marks the request status as SERVED.
-     * Cleans up the employee's assigned task queue upon success.
+     * product repository, and overwrites the request status as SERVED in the database.
      */
     public void onSaveConfirmed() {
         if (currentRequest == null || loggedInEmployee == null || productToEdit == null) return;
@@ -117,21 +128,21 @@ public class ExecuteProcessProductPresenter {
 
         // Persist product updates asynchronously
         productTypeDAO.processProduct(productToEdit).thenAccept(v1 -> {
-            currentRequest.setStatus(RequestStatusType.SERVED);
 
-            // Persist the request state change
-            updateRequestDAO.addUpdateRequest(currentRequest).thenAccept(v2 -> {
-                if (loggedInEmployee.getAssignedRequests() != null) {
-                    loggedInEmployee.getAssignedRequests().remove(currentRequest.getId());
-                }
-                view.showSuccessMessage("Οι αλλαγές αποθηκεύτηκαν επιτυχώς!");
+            // Update request state locally
+            currentRequest.setStatus(RequestStatusType.SERVED);
+            loggedInEmployee.incrementTotalCatalogueUpdates();
+
+            // Persist the request state change using overwrite (updateRequest)
+            updateRequestDAO.updateRequest(currentRequest).thenAccept(v2 -> {
+                if (view != null) view.showSuccessMessage("Οι αλλαγές αποθηκεύτηκαν επιτυχώς!");
             }).exceptionally(e -> {
-                view.showError("Σφάλμα κατά την ενημέρωση του αιτήματος: " + e.getMessage());
+                if (view != null) view.showError("Σφάλμα κατά την ενημέρωση του αιτήματος: " + e.getMessage());
                 return null;
             });
 
         }).exceptionally(e -> {
-            view.showError("Σφάλμα κατά την αποθήκευση του προϊόντος: " + e.getMessage());
+            if (view != null) view.showError("Σφάλμα κατά την αποθήκευση του προϊόντος: " + e.getMessage());
             return null;
         });
     }

@@ -18,8 +18,10 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeInsertProduct.ExecuteInsertProductActivity;
 import gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct.ExecuteProcessProductActivity;
@@ -66,7 +68,9 @@ public class AssignedRequestsToExecuteActivity extends AppCompatActivity impleme
 
         // DEPENDENCY INJECTION
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
-        presenter = new AssignedRequestsToExecutePresenter(this, employeeDAO);
+        UpdateRequestDAO updateRequestDAO = new UpdateRequestDAOFirebase();
+
+        presenter = new AssignedRequestsToExecutePresenter(this, employeeDAO, updateRequestDAO);
 
         recyclerView = findViewById(R.id.rvRequestsAssigned);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

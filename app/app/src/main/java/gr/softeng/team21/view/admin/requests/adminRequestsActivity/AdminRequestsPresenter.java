@@ -8,7 +8,7 @@ import gr.softeng.team21.domain.CatalogueUpdateRequest;
 
 /**
  * Presenter responsible for fetching all submitted catalogue update requests
- * from the database to be displayed to the administrator.
+ * from the database asynchronously to be displayed to the administrator.
  * @author Γιάννης Μονοχολιάς, Αλέξανδρος Δρακάκης
  */
 public class AdminRequestsPresenter {
@@ -27,14 +27,21 @@ public class AdminRequestsPresenter {
     }
 
     /**
-     * Retrieves all update requests from the database and forwards them to the view.
+     * Retrieves all update requests from the database asynchronously and forwards them to the view.
      */
     public void loadRequests() {
-        // Direct conversion from values map to a standard List
-        List<CatalogueUpdateRequest> reqs = new ArrayList<>(updateRequestDAO.getUpdateRequests().values());
+        // Unpack the asynchronous map
+        updateRequestDAO.getUpdateRequests().thenAccept(requestsMap -> {
 
-        if (view != null) {
-            view.showRequests(reqs);
-        }
+            List<CatalogueUpdateRequest> reqs = new ArrayList<>(requestsMap.values());
+
+            if (view != null) {
+                view.showRequests(reqs);
+            }
+
+        }).exceptionally(e -> {
+            System.err.println("Σφάλμα φόρτωσης αιτημάτων: " + e.getMessage());
+            return null;
+        });
     }
 }

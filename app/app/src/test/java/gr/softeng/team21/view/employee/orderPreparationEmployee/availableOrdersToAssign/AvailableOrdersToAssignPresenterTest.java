@@ -1,5 +1,6 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersToAssign;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +8,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import gr.softeng.team21.domain.Order;
-import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
@@ -17,14 +17,13 @@ import gr.softeng.team21.memorydao.OrderDAOMemory;
  * Unit tests for {@link AvailableOrdersToAssignPresenter}.
  * This suite verifies the logic for filtering available orders asynchronously, displaying
  * confirmation prompts, and the atomic process of assigning an order to an employee
- * using Dependency Injection.
+ * using Foreign Keys and Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class AvailableOrdersToAssignPresenterTest {
 
     private AvailableOrdersToAssignPresenter presenter;
     private AvailableOrdersToAssignViewStub viewStub;
-    private OrderPreparationEmployee prepEmployee;
 
     private static final String EMPLOYEE_ID = "PREP-201";
 
@@ -37,11 +36,11 @@ public class AvailableOrdersToAssignPresenterTest {
         MemoryInitializer.prepareData();
 
         viewStub = new AvailableOrdersToAssignViewStub();
-        presenter = new AvailableOrdersToAssignPresenter(viewStub, EmployeeDAOMemory.getInstance(),
-                OrderDAOMemory.getInstance());
-
-        // Using .join() since the DAOs now return CompletableFuture
-        prepEmployee = (OrderPreparationEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
+        presenter = new AvailableOrdersToAssignPresenter(
+                viewStub,
+                EmployeeDAOMemory.getInstance(),
+                OrderDAOMemory.getInstance()
+        );
     }
 
     /**
@@ -57,6 +56,7 @@ public class AvailableOrdersToAssignPresenterTest {
         Assert.assertEquals(1, result.size());
         Assert.assertEquals("ORD-2024-002", result.get(0).getOrdercode());
         Assert.assertEquals(OrderStatusType.NEW, result.get(0).getOrderstatus());
+        Assert.assertNull(result.get(0).getPreparationEmployeeId());
     }
 
     /**
@@ -80,8 +80,9 @@ public class AvailableOrdersToAssignPresenterTest {
     /**
      * Verifies the full asynchronous order assignment workflow:
      * 1. Order status changes from NEW to PROCESSING.
-     * 2. The order is added to the employee's assigned list.
-     * 3. The UI receives a success message and refreshes the list.
+     * 2. The order is assigned the employee's ID via Foreign Key.
+     * 3. The DAO successfully persists the updated order.
+     * 4. The UI receives a success message and refreshes the list.
      */
     @Test
     public void onOrderConfirmedAssignsOrderAndUpdatesStatus() {
@@ -92,13 +93,25 @@ public class AvailableOrdersToAssignPresenterTest {
 
         presenter.onOrderConfirmed(orderToAssign);
 
+        // Fetch updated order from DAO synchronously
+        Order updatedOrder = OrderDAOMemory.getInstance().getOrder("ORD-2024-002").join();
+
         // Domain state verification
-        Assert.assertEquals(OrderStatusType.PROCESSING, orderToAssign.getOrderstatus());
-        Assert.assertTrue(prepEmployee.getAssignedOrders().contains(orderToAssign));
+        Assert.assertEquals(OrderStatusType.PROCESSING, updatedOrder.getOrderstatus());
+        Assert.assertEquals(EMPLOYEE_ID, updatedOrder.getPreparationEmployeeId());
 
         // View feedback verification via stub
         Assert.assertTrue(viewStub.getMessageShown().contains("επιτυχώς"));
         Assert.assertTrue(viewStub.isListUpdated());
         Assert.assertEquals(orderToAssign, viewStub.getRemovedOrder());
+    }
+
+    /**
+     * Clears shared memory state to maintain test isolation.
+     */
+    @After
+    public void tearDown() {
+        EmployeeDAOMemory.getInstance().clear();
+        OrderDAOMemory.getInstance().clear().join();
     }
 }

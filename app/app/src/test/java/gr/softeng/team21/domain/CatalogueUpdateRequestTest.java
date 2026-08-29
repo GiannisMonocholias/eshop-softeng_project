@@ -10,13 +10,13 @@ import gr.softeng.team21.util.Money;
 /**
  * Unit tests for the {@link CatalogueUpdateRequest} class.
  * This suite verifies the integrity of request metadata, including unique identifiers,
- * submission dates, descriptions, product associations, and execution status.
+ * submission dates, descriptions, product associations, execution status, and assigned employee Foreign Keys.
  * @author Γιάννης Μονοχολιάς
  */
 public class CatalogueUpdateRequestTest {
     private CatalogueUpdateRequest request;
-    private  ProductType product1;
-    Date previousDate;
+    private ProductType product1;
+    private Date previousDate;
 
     /**
      * Sets up the testing environment before each test case.
@@ -24,7 +24,7 @@ public class CatalogueUpdateRequestTest {
      */
     @Before
     public void setUp(){
-        product1 = new ProductType ( "Mouse Logitech", "Wireless", new Money( 50, "€" ), "product1245" );
+        product1 = new ProductType("Mouse Logitech", "Wireless", new Money(50, "€"), "product1245");
         previousDate = new Date(1, 12, 2025);
         request = new CatalogueUpdateRequest(previousDate, "Add new laptop to catalogue", product1, AllowedRequest.INSERT_PRODUCT, 101);
     }
@@ -71,7 +71,7 @@ public class CatalogueUpdateRequestTest {
         assertEquals(product1, request.getProduct());
 
         // New product
-        ProductType newProduct = new ProductType ( "Laptop Dell", "High End", new Money ( 500, "€" ), "l101" );
+        ProductType newProduct = new ProductType("Laptop Dell", "High End", new Money(500, "€"), "l101");
         request.setProduct(newProduct);
         assertEquals(newProduct, request.getProduct());
     }
@@ -93,11 +93,39 @@ public class CatalogueUpdateRequestTest {
      */
     @Test
     public void executedGetterSetterTest(){
-        //Initially the request is not executed
+        // Initially the request is not executed
         assertFalse(request.getExecuted());
 
         request.setExecuted(true);
         // Now the request has been executed
         assertTrue(request.getExecuted());
+    }
+
+    /**
+     * Tests the assigned employee ID (Foreign Key) property accessors.
+     * Ensures new requests start unassigned and can successfully store an employee ID.
+     */
+    @Test
+    public void assignedEmployeeIdGetterSetterTest() {
+        // Initially, the request is not assigned to anyone
+        assertNull(request.getAssignedEmployeeId());
+
+        // Assign the request to an employee using their ID
+        String expectedEmployeeId = "CAT-301";
+        request.setAssignedEmployeeId(expectedEmployeeId);
+
+        assertEquals(expectedEmployeeId, request.getAssignedEmployeeId());
+    }
+
+    /**
+     * Tests the request status (RequestStatusType enum) property accessors.
+     */
+    @Test
+    public void statusGetterSetterTest() {
+        // Initially NEW based on the default initialization
+        assertEquals(RequestStatusType.NEW, request.getStatus());
+
+        request.setStatus(RequestStatusType.ASSIGNED);
+        assertEquals(RequestStatusType.ASSIGNED, request.getStatus());
     }
 }

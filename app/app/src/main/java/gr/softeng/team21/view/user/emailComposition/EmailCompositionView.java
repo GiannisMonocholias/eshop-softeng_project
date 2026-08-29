@@ -1,48 +1,59 @@
 package gr.softeng.team21.view.user.emailComposition;
 
 /**
- * Defines the methods for capturing message input and providing
- * feedback during the sending process.
+ * View interface contract for the Email Composition screen.
+ * Defines methods for retrieving user input, setting sender details dynamically,
+ * and providing validation feedback or process status messages asynchronously.
  * @author Γιάννης Μονοχολιάς
  */
 public interface EmailCompositionView {
 
     /**
-     * @return recipient email input
+     * Retrieves the recipient email address entered by the user.
+     * @return The recipient's email address string.
      */
     String getRecipientEmail();
 
     /**
-     * @return email subject input
+     * Retrieves the subject line entered by the user.
+     * @return The email subject string.
      */
     String getSubject();
 
     /**
-     * @return email body input
+     * Retrieves the main body text of the email entered by the user.
+     * @return The email body string.
      */
     String getBody();
 
     /**
-     * Displays the sender's profile information in the UI header.
-     * @param name  The full name of the logged-in user.
-     * @param email The email address of the logged-in user.
+     * Updates the UI to display the name and email of the currently logged-in sender.
+     * @param name  The full name of the sender.
+     * @param email The email address of the sender.
      */
     void setSenderDetails(String name, String email);
 
     /**
-     * Displays an error message, usually via a Toast or Alert.
-     * @param message The error description.
+     * Highlights validation errors on specific input fields (e.g., missing subject, invalid email).
+     * @param field The name identifier of the field (e.g., "recipient", "subject", "body").
+     * @param message The specific error message to display on the UI field.
+     */
+    void showInputError(String field, String message);
+
+    /**
+     * Displays a general error alert dialog for system or database failures.
+     * @param message The error description message.
      */
     void showErrorMessage(String message);
 
     /**
-     * Displays a success confirmation message.
-     * @param message The success description.
+     * Displays a success alert indicating the email was dispatched.
+     * @param message The success description message.
      */
     void showSuccessMessage(String message);
 
     /**
-     * Terminates the composition activity.
+     * Terminates the current activity and returns the user to the previous screen.
      */
     void finishActivity();
 }

@@ -10,32 +10,21 @@ import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 /**
  * Presenter for the Available Requests to Assign screen.
  * Handles the asynchronous logic of filtering available catalogue requests and manages the
- * domain-level assignment to the logged-in employee using Dependency Injection.
+ * database assignment using Foreign Keys via Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class AvailableRequestsToAssignPresenter {
-    private AvailableRequestsToAssignView view;
-    private EmployeeDAO employeeDAO;
-    private UpdateRequestDAO updateRequestDAO;
+    private final AvailableRequestsToAssignView view;
+    private final EmployeeDAO employeeDAO;
+    private final UpdateRequestDAO updateRequestDAO;
     private UpdateCatalogueEmployee loggedInEmployee;
 
-    /**
-     * Initializes the presenter with injected DAOs and the view interface.
-     * @param view The view implementation (Activity or Stub).
-     * @param employeeDAO Data source for employee records.
-     * @param updateRequestDAO Data source for catalogue update requests.
-     */
     public AvailableRequestsToAssignPresenter(AvailableRequestsToAssignView view, EmployeeDAO employeeDAO, UpdateRequestDAO updateRequestDAO){
         this.view = view;
         this.employeeDAO = employeeDAO;
         this.updateRequestDAO = updateRequestDAO;
     }
 
-    /**
-     * Asynchronously loads all catalogue update requests that currently have a status of NEW,
-     * and triggers a UI update via the view.
-     * @param employeeId The ID of the employee browsing the requests.
-     */
     public void loadAvailableRequests(String employeeId) {
         employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
             if (employee instanceof UpdateCatalogueEmployee) {
@@ -48,51 +37,50 @@ public class AvailableRequestsToAssignPresenter {
                             requests.add(cur_request);
                         }
                     }
-                    view.updateAvailableRequestsList(requests);
+                    if (view != null) view.updateAvailableRequestsList(requests);
                 }).exceptionally(e -> {
-                    view.showError("Σφάλμα ανάκτησης αιτημάτων: " + e.getMessage());
+                    if (view != null) view.showError("Σφάλμα ανάκτησης αιτημάτων: " + e.getMessage());
                     return null;
                 });
             } else {
-                view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
+                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
             }
         }).exceptionally(e -> {
-            view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
+            if (view != null) view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
             return null;
         });
     }
 
-    /**
-     * Triggered when a request is clicked. Requests a confirmation dialog from the view.
-     * @param request The selected request.
-     */
     public void onRequestClicked(CatalogueUpdateRequest request) {
         if (loggedInEmployee == null) {
-            view.showError("Δεν υπάρχει ενεργή συνεδρία υπαλλήλου.");
+            if (view != null) view.showError("Δεν υπάρχει ενεργή συνεδρία υπαλλήλου.");
             return;
         }
-        String confirmationMessage = "Θέλετε να αναλάβετε αυτή την παραγγελία;";
-        view.showConfirmationDialog(request, confirmationMessage);
+        if (view != null) view.showConfirmationDialog(request, "Θέλετε να αναλάβετε αυτή την παραγγελία;");
     }
 
     /**
-     * Finalizes the assignment in the domain model and updates the request status.
-     * @param request The request confirmed for assignment.
+     * Finalizes the assignment by updating the Foreign Key and saving to the database.
      */
     public void onRequestConfirmed(CatalogueUpdateRequest request) {
         if (loggedInEmployee == null) return;
 
-        boolean result = loggedInEmployee.assignRequest(request.getId());
-
-        if (!result) {
-            view.showError("Σφάλμα: το αίτημα με ID " + request.getId() + " δεν υπάρχει ή δεν σας έχει ανατεθεί");
-            return;
-        }
-
+        // Apply Domain State Changes using Foreign Key
         request.setStatus(RequestStatusType.ASSIGNED);
 
-        view.showMessage("Το αίτημα ανατέθηκε επιτυχώς!");
-        view.onRequestAssignedSuccess(request);
-        view.updateList();
+        // ΣΗΜΕΙΩΣΗ: Πρέπει να προσθέσεις τη μέθοδο setAssignedEmployeeId στο CatalogueUpdateRequest!
+        request.setAssignedEmployeeId(loggedInEmployee.getEmployeeId());
+
+        // Save asynchronously via DAO
+        updateRequestDAO.updateRequest(request).thenAccept(v -> {
+            if (view != null) {
+                view.showMessage("Το αίτημα ανατέθηκε επιτυχώς!");
+                view.onRequestAssignedSuccess(request);
+                view.updateList();
+            }
+        }).exceptionally(e -> {
+            if (view != null) view.showError("Αποτυχία ενημέρωσης βάσης: " + e.getMessage());
+            return null;
+        });
     }
 }

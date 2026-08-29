@@ -12,6 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmailDAO;
@@ -22,7 +24,8 @@ import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 
 /**
  * Activity providing the UI for drafting and sending internal emails.
- * Implements {@link EmailCompositionView} securely on the UI thread.
+ * Implements {@link EmailCompositionView} securely on the UI thread and utilizes
+ * Material Components for user feedback.
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailCompositionActivity extends AppCompatActivity implements EmailCompositionView {
@@ -36,7 +39,8 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
 
     /**
      * Initializes UI components, instantiates the presenter with Firebase DAOs,
-     * and identifies the sender ID from the calling intent.
+     * and identifies the sender ID from the calling intent asynchronously.
+     * @param savedInstanceState If the activity is being re-initialized.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,14 +118,51 @@ public class EmailCompositionActivity extends AppCompatActivity implements Email
 
     /** {@inheritDoc} */
     @Override
+    public void showInputError(String field, String message) {
+        runOnUiThread(() -> {
+            switch (field) {
+                case "recipient":
+                    edtRecipient.setError(message);
+                    edtRecipient.requestFocus();
+                    break;
+                case "subject":
+                    edtSubject.setError(message);
+                    edtSubject.requestFocus();
+                    break;
+                case "body":
+                    edtBody.setError(message);
+                    edtBody.requestFocus();
+                    break;
+            }
+        });
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void showErrorMessage(String message) {
-        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Σφάλμα")
+                    .setMessage(message)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("OK", null)
+                    .show();
+        });
     }
 
     /** {@inheritDoc} */
     @Override
     public void showSuccessMessage(String message) {
-        runOnUiThread(() -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Επιτυχία")
+                    .setMessage(message)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    // Κλείνει αυτόματα την Activity μόλις ο χρήστης πατήσει OK
+                    .setPositiveButton("OK", (dialog, which) -> finishActivity())
+                    .setCancelable(false)
+                    .show();
+        });
     }
 
     /** {@inheritDoc} */

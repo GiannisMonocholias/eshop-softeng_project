@@ -17,8 +17,10 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.firebasedao.OrderDAOFirebase;
 import gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationDetails.OrderPreparationDetailsActivity;
 import gr.softeng.team21.view.util.OrderAdapter;
 import gr.softeng.team21.view.util.OrderAdapterType;
@@ -56,7 +58,9 @@ public class AssignedOrdersToPrepareActivity extends AppCompatActivity implement
 
         // DEPENDENCY INJECTION: Connect Presenter to Firebase
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
-        presenter = new AssignedOrdersToPreparePresenter(this, employeeDAO);
+        OrderDAO orderDAO = new OrderDAOFirebase();
+
+        presenter = new AssignedOrdersToPreparePresenter(this, employeeDAO, orderDAO);
 
         recyclerView = findViewById(R.id.OrdPrepEmprecyclerViewAssignedOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

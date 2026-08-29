@@ -22,10 +22,10 @@ import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
 import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
 
 /**
- * Activity for processing a product modification request.
+ * Android Activity for processing a product modification request.
  * Provides a form-based UI for updating product attributes and implements
  * {@link ExecuteProcessProductView} for communication with the presenter.
- * Secures UI updates via runOnUiThread and uses Material Components.
+ * Secures UI thread updates via runOnUiThread and uses Android Material Components.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteProcessProductActivity extends AppCompatActivity implements ExecuteProcessProductView {
@@ -41,9 +41,9 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
     private static final String REQ_ID_EXTRA = "REQUEST_ID";
 
     /**
-     * Initializes UI components, sets up window insets, injects DAOs, and triggers
-     * the asynchronous loading of request details via the presenter.
-     * @param savedInstanceState If the activity is being re-initialized.
+     * Initializes UI components, sets up window insets, injects Firebase DAOs,
+     * and triggers the asynchronous loading of request details via the presenter.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
     }
 
     /**
-     * Binds class variables to XML layout IDs.
+     * Helper method mapping class variables to XML layout IDs.
      */
     private void initializeViews() {
         txtDescription = findViewById(R.id.txtexecuteProcessProductRequestDescription);
@@ -142,6 +142,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
 
     /**
      * {@inheritDoc}
+     * Highlights the respective input field with an error message and requests focus.
      */
     @Override
     public void showInputError(String field, String message) {
@@ -156,7 +157,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
 
     /**
      * {@inheritDoc}
-     * Shows a success {@link MaterialAlertDialogBuilder} and returns the user to the previous screen.
+     * Shows a success {@link MaterialAlertDialogBuilder}. Upon dismissal, terminates the activity.
      */
     @Override
     public void showSuccessMessage(String message) {
@@ -174,7 +175,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
     /**
      * {@inheritDoc}
      * Displays a confirmation {@link MaterialAlertDialogBuilder} to ensure the user
-     * wants to overwrite catalogue data.
+     * explicitly intends to overwrite the existing catalogue data.
      */
     @Override
     public void showConfirmationDialog() {
@@ -191,6 +192,7 @@ public class ExecuteProcessProductActivity extends AppCompatActivity implements 
 
     /**
      * {@inheritDoc}
+     * Displays a dismissable error dialog using Material Components.
      */
     @Override
     public void showError(String message) {

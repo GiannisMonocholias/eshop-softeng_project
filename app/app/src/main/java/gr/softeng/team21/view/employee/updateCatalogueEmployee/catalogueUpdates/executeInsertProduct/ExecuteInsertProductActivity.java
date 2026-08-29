@@ -22,10 +22,10 @@ import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
 import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
 
 /**
- * Activity providing the UI form for registering a new product into the catalogue.
- * Captures user input via TextInputEditText fields and delegates the logic
- * to the {@link ExecuteInsertProductPresenter}. Implements safe UI updates via runOnUiThread
- * and utilizes Material Components.
+ * Android Activity providing the UI form for registering a new product into the catalogue.
+ * Captures user input via TextInputEditText fields and delegates the persistence and validation logic
+ * to the {@link ExecuteInsertProductPresenter}.
+ * Implements safe UI updates via runOnUiThread and utilizes Android Material Components.
  * @author Γιάννης Μονοχολιάς
  */
 public class ExecuteInsertProductActivity extends AppCompatActivity implements ExecuteInsertProductView {
@@ -40,9 +40,9 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
     private static final String REQ_ID_EXTRA = "REQUEST_ID";
 
     /**
-     * Initializes the Activity, binds UI components, injects DAOs, and
-     * initiates the asynchronous request detail loading process.
-     * @param savedInstanceState If the activity is being re-initialized.
+     * Initializes the Activity, binds XML UI components to local variables, injects DAOs
+     * into the presenter, and initiates the asynchronous data loading sequence.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +68,14 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
         String employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
         int requestId = getIntent().getIntExtra(REQ_ID_EXTRA, -1);
 
-        // Fetch data asynchronously
+        // Fetch initialization data asynchronously
         presenter.loadRequestDetails(employeeId, requestId);
 
         btnConfirm.setOnClickListener(v -> presenter.onConfirmInsert());
     }
 
     /**
-     * Binds class members to layout views.
+     * Helper method to map XML layout elements to class members.
      */
     private void initializeViews() {
         txtRequestDescription = findViewById(R.id.txtexecuteInsertProductRequestDescription);
@@ -128,6 +128,7 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
 
     /**
      * {@inheritDoc}
+     * Sets an error state on a specific input field and requests focus to guide the user.
      */
     @Override
     public void showInputError(String field, String message) {
@@ -151,7 +152,7 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
 
     /**
      * {@inheritDoc}
-     * Displays a success dialog using Material Components.
+     * Displays a success dialog using Material Components. Dismissing it terminates the activity.
      */
     @Override
     public void showSuccessMessage(String message) {
@@ -168,7 +169,7 @@ public class ExecuteInsertProductActivity extends AppCompatActivity implements E
 
     /**
      * {@inheritDoc}
-     * Displays an error dialog using Material Components.
+     * Displays a dismissable error dialog using Material Components.
      */
     @Override
     public void showError(String message) {
