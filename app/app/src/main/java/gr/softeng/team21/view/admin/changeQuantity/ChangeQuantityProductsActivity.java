@@ -16,8 +16,10 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.ProductTypeDAO;
+import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
+import gr.softeng.team21.firebasedao.ProductsWareHouseDAOFirebase;
 import gr.softeng.team21.view.util.ChangeQuantityProductsAdapter;
 
 /**
@@ -65,8 +67,9 @@ public class ChangeQuantityProductsActivity extends AppCompatActivity implements
      */
     @Override
     public void showProducts(ArrayList<ProductType> products) {
+        ProductsWareHouseDAO wareHouseDAO = new ProductsWareHouseDAOFirebase();
         runOnUiThread(() -> {
-            adapter = new ChangeQuantityProductsAdapter(products);
+            adapter = new ChangeQuantityProductsAdapter(products,wareHouseDAO);
             recyclerView.setAdapter(adapter);
         });
     }

@@ -15,32 +15,33 @@ import com.google.android.material.button.MaterialButton;
 import java.util.List;
 
 import gr.softeng.team21.R;
+import android.os.Handler;
+import android.os.Looper;
+import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.domain.ProductType;
-import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 
 /**
  * RecyclerView Adapter responsible for rendering the list of products and handling
  * user interactions to modify warehouse stock quantities dynamically.
  * Features a modern, distinct dual-button (+/-) UI pattern.
- *
  * @author Αλέξανδρος Δρακάκης, Γιάννης Μονοχολιάς
  */
 public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQuantityProductsAdapter.ViewHolder> {
 
     private final List<ProductType> products;
+    private final ProductsWareHouseDAO wareHouseDAO;
 
     /**
      * Constructs the adapter with a provided list of products.
-     *
      * @param products The dataset of ProductType objects to display.
      */
-    public ChangeQuantityProductsAdapter(List<ProductType> products) {
+    public ChangeQuantityProductsAdapter(List<ProductType> products, ProductsWareHouseDAO wareHouseDAO) {
         this.products = products;
+        this.wareHouseDAO = wareHouseDAO;
     }
 
     /**
      * Inflates the custom XML layout for individual list items.
-     *
      * @param parent   The ViewGroup into which the new View will be added.
      * @param viewType The view type of the new View.
      * @return A new instance of {@link ViewHolder}.
@@ -56,7 +57,6 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
     /**
      * Binds data to the views inside the ViewHolder and sets up the event listeners
      * for adjusting product stock using the memory DAO.
-     *
      * @param holder   The ViewHolder to update.
      * @param position The position of the item within the adapter's data set.
      */
@@ -68,32 +68,38 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
         holder.txtProductCode.setText("Κωδικός: " + product.getProductCode());
 
         // 1. Display Current Stock
-        Integer currentStock = ProductsWareHouseDAOMemory.getInstance().getProductStock(product);
-        holder.txtCurrentStock.setText(currentStock != null ? currentStock + " τεμ." : "0 τεμ.");
+        wareHouseDAO.getProductStock(product).thenAccept(currentStock -> {
+            int stock = (currentStock != null) ? currentStock : 0;
+            runOnMainThread(() -> holder.txtCurrentStock.setText(stock + " τεμ."));
+        });
 
         // 2. Remove Stock Button Logic (-)
-        holder.btnApplyRemove.setOnClickListener(v -> {
-            int changeAmt = getAmountFromInput(holder.edtChangeAmount);
-            boolean success = ProductsWareHouseDAOMemory.getInstance().decreaseProductStock(product, changeAmt);
+        int changeAmt = getAmountFromInput(holder.edtChangeAmount);
 
+        wareHouseDAO.decreaseProductStock(product, changeAmt).thenAccept(success -> {
             if (success) {
-                // Update UI instantly
-                holder.txtCurrentStock.setText(ProductsWareHouseDAOMemory.getInstance().getProductStock(product) + " τεμ.");
-                holder.edtChangeAmount.setText("1"); // Reset input to 1
+                wareHouseDAO.getProductStock(product).thenAccept(newStock -> {
+                    runOnMainThread(() -> {
+                        holder.txtCurrentStock.setText(newStock + " τεμ.");
+                        holder.edtChangeAmount.setText("1");
+                    });
+                });
             } else {
-                Toast.makeText(v.getContext(), "Μη επαρκές απόθεμα για αφαίρεση!", Toast.LENGTH_SHORT).show();
+                runOnMainThread(() -> Toast.makeText(holder.itemView.getContext(), "Μη επαρκές απόθεμα για αφαίρεση!", Toast.LENGTH_SHORT).show());
             }
         });
 
         // 3. Add Stock Button Logic (+)
-        holder.btnApplyAdd.setOnClickListener(v -> {
-            int changeAmt = getAmountFromInput(holder.edtChangeAmount);
-            boolean success = ProductsWareHouseDAOMemory.getInstance().increaseProductStock(product, changeAmt);
+        changeAmt = getAmountFromInput(holder.edtChangeAmount);
 
+        wareHouseDAO.increaseProductStock(product, changeAmt).thenAccept(success -> {
             if (success) {
-                // Update UI instantly
-                holder.txtCurrentStock.setText(ProductsWareHouseDAOMemory.getInstance().getProductStock(product) + " τεμ.");
-                holder.edtChangeAmount.setText("1"); // Reset input to 1
+                wareHouseDAO.getProductStock(product).thenAccept(newStock -> {
+                    runOnMainThread(() -> {
+                        holder.txtCurrentStock.setText(newStock + " τεμ.");
+                        holder.edtChangeAmount.setText("1");
+                    });
+                });
             }
         });
     }
@@ -107,9 +113,18 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
     }
 
     /**
+     * Helper method to safely execute UI updates on the main thread from within an Adapter.
+     * Acts as a replacement for Activity's runOnUiThread().
+     *
+     * @param action The runnable task to execute on the main thread.
+     */
+    private void runOnMainThread(Runnable action) {
+        new android.os.Handler(android.os.Looper.getMainLooper()).post(action);
+    }
+
+    /**
      * Helper method to safely parse the input from the EditText.
      * Prevents crashes by defaulting to 1 if the input is empty or invalid.
-     *
      * @param edt The EditText instance to read from.
      * @return The parsed positive integer, defaulting to 1.
      */

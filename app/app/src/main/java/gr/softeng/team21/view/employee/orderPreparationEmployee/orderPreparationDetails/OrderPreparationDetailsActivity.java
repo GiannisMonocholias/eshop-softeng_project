@@ -88,7 +88,9 @@ public class OrderPreparationDetailsActivity extends AppCompatActivity implement
     public void updateCartItems(ArrayList<CartItem> items) {
         runOnUiThread(() -> {
             if (items != null) {
-                StockProductAdapter adapter = new StockProductAdapter(items);
+                ProductsWareHouseDAO wareHouseDAO = new ProductsWareHouseDAOFirebase();
+
+                StockProductAdapter adapter = new StockProductAdapter(items, wareHouseDAO);
                 recyclerView.setAdapter(adapter);
             }
         });

@@ -25,13 +25,15 @@ import gr.softeng.team21.memorydao.ProductsWareHouseDAOMemory;
 public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapter.ViewHolder> {
 
     private final List<CartItem> cartItems;
+    private final ProductsWareHouseDAO wareHouseDAO;
 
     /**
      * Constructor for StockProductAdapter.
      * @param cartItems The list of items contained in the order.
      */
-    public StockProductAdapter(List<CartItem> cartItems) {
+    public StockProductAdapter(List<CartItem> cartItems, ProductsWareHouseDAO wareHouseDAO) {
         this.cartItems = cartItems;
+        this.wareHouseDAO = wareHouseDAO;
     }
 
     /**
@@ -69,17 +71,22 @@ public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapte
         }
 
         int reqQty = item.getQuantity();
-        int stockQty = ProductsWareHouseDAOMemory.getInstance().getProductStock(product);
-
         holder.txtReqValue.setText(String.valueOf(reqQty));
-        holder.txtStockValue.setText(String.valueOf(stockQty));
 
-        // Logic for color coding the stock availability
-        if (reqQty > stockQty) {
-            holder.txtStockValue.setTextColor(Color.RED);
-        } else {
-            holder.txtStockValue.setTextColor(Color.parseColor("#2E7D32"));
-        }
+        wareHouseDAO.getProductStock(product).thenAccept(currentStock -> {
+            int stockQty = (currentStock != null) ? currentStock : 0;
+
+            runOnMainThread(() -> {
+                holder.txtStockValue.setText(String.valueOf(stockQty));
+
+                if (reqQty > stockQty) {
+                    holder.txtStockValue.setTextColor(android.graphics.Color.RED);
+                } else {
+                    holder.txtStockValue.setTextColor(android.graphics.Color.parseColor("#2E7D32"));
+                }
+            });
+        });
+
     }
 
     /**
@@ -89,6 +96,16 @@ public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapte
     @Override
     public int getItemCount() {
         return (cartItems != null) ? cartItems.size() : 0;
+    }
+
+    /**
+     * Helper method to safely execute UI updates on the main thread from within an Adapter.
+     * Acts as a replacement for Activity's runOnUiThread().
+     *
+     * @param action The runnable task to execute on the main thread.
+     */
+    private void runOnMainThread(Runnable action) {
+        new android.os.Handler(android.os.Looper.getMainLooper()).post(action);
     }
 
     /**
