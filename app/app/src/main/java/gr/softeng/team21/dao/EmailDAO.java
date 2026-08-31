@@ -7,8 +7,10 @@ import gr.softeng.team21.contact.EmailMessage;
 
 /**
  * Data Access Object (DAO) interface for managing email messages.
+ * Uses a single unified collection approach, delegating the sorting and filtering
+ * (e.g., retrieving an inbox) to database-level queries rather than keeping separate lists.
  * <p>
- * This interface uses {@link CompletableFuture} for all data retrieval operations
+ * This interface uses {@link CompletableFuture} for all data operations
  * to support asynchronous database implementations (e.g., Firebase) without
  * blocking the main UI thread.
  *
@@ -17,74 +19,36 @@ import gr.softeng.team21.contact.EmailMessage;
 public interface EmailDAO {
 
     /**
-     * Retrieves all emails currently stored in the user's inbox asynchronously.
+     * Retrieves all incoming emails specifically targeted to a given email address asynchronously.
+     * This functionally acts as the "Inbox" query.
      *
-     * @return A CompletableFuture containing a list of inbox EmailMessages.
+     * @param receiverEmailAddress The exact email address of the recipient (to.address).
+     * @return A CompletableFuture containing a list of EmailMessages for the user.
      */
-    CompletableFuture<ArrayList<EmailMessage>> getInboxEmails();
+    CompletableFuture<ArrayList<EmailMessage>> getEmailsForUser(String receiverEmailAddress);
 
     /**
-     * Retrieves all emails that have been sent by the user asynchronously.
+     * Saves a new message to the centralized database collection asynchronously.
      *
-     * @return A CompletableFuture containing a list of sent EmailMessages.
-     */
-    CompletableFuture<ArrayList<EmailMessage>> getSentEmails();
-
-    /**
-     * Filters and returns all emails in the inbox that have not been read yet.
-     *
-     * @return A CompletableFuture containing a list of unread EmailMessages.
-     */
-    CompletableFuture<ArrayList<EmailMessage>> getUnreadEmails();
-
-    /**
-     * Filters and returns all emails in the inbox that have already been read.
-     *
-     * @return A CompletableFuture containing a list of read EmailMessages.
-     */
-    CompletableFuture<ArrayList<EmailMessage>> getReadEmails();
-
-    /**
-     * Filters and returns all emails in the inbox that have not received a reply yet.
-     *
-     * @return A CompletableFuture containing a list of unreplied EmailMessages.
-     */
-    CompletableFuture<ArrayList<EmailMessage>> getUnrepliedEmails();
-
-    /**
-     * Filters and returns all emails in the inbox that have been replied to.
-     *
-     * @return A CompletableFuture containing a list of replied EmailMessages.
-     */
-    CompletableFuture<ArrayList<EmailMessage>> getRepliedEmails();
-
-
-    /**
-     * Saves a new message to the inbox storage in the database.
      * @param msg The email message to be saved.
+     * @return A CompletableFuture completing when the save operation is successful.
      */
-    CompletableFuture<Void> saveInboxEmails(EmailMessage msg);
+    CompletableFuture<Void> saveEmail(EmailMessage msg);
 
     /**
-     * Saves a new message to the sent messages storage in the database.
-     * @param msg The email message to be saved.
-     */
-    CompletableFuture<Void> saveSentEmails(EmailMessage msg);
-
-
-    /**
-     * Checks if a specific message exists in the inbox.
+     * Updates an existing email message in the centralized database collection asynchronously.
+     * Primarily used for state changes (e.g., marking an email as read).
      *
-     * @param msg The email message to search for.
-     * @return A CompletableFuture containing true if found, false otherwise.
+     * @param msg The email message object containing the updated state and a valid emailId.
+     * @return A CompletableFuture completing when the update operation is successful.
      */
-    CompletableFuture<Boolean> inInbox(EmailMessage msg);
+    CompletableFuture<Void> updateEmail(EmailMessage msg);
 
     /**
-     * Checks if a specific message exists in the sent items.
+     * Clears all stored emails from the repository asynchronously.
+     * Primarily intended for resetting state during Unit Testing.
      *
-     * @param msg The email message to search for.
-     * @return A CompletableFuture containing true if found, false otherwise.
+     * @return A CompletableFuture representing the completion of the clearing operation.
      */
-    CompletableFuture<Boolean> inSent(EmailMessage msg);
+    CompletableFuture<Void> clear();
 }

@@ -10,12 +10,24 @@ import gr.softeng.team21.util.Date;
 /**
  * Unit tests for the {@link EmailMessage} domain class.
  * This suite verifies the state management of email messages, including read/reply
- * statuses, sender/recipient integrity, and content manipulation.
+ * statuses, sender/recipient integrity, document IDs, and content manipulation.
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailMessageTest {
     private final EmailAddress from = new EmailAddress("sender@example.com");
     private final EmailAddress to = new EmailAddress("recipient@example.com");
+
+    /**
+     * Verifies that the unique document identifier (emailId) can be correctly set and retrieved.
+     */
+    @Test
+    public void getEmailIdAndSetEmailIdTest() {
+        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
+        assertNull("Default emailId should be null before saving", msg.getEmailId());
+
+        msg.setEmailId("DOC-12345");
+        assertEquals("DOC-12345", msg.getEmailId());
+    }
 
     /**
      * Verifies that a newly created email message has its replied status

@@ -6,6 +6,7 @@ import gr.softeng.team21.contact.EmailMessage;
 /**
  * Stub implementation of {@link CustomerEmailListView} for testing purposes.
  * Captures asynchronous email loads and navigation events.
+ *
  * @author PAVLOS GRATSANIS
  */
 public class CustomerEmailListViewStub implements CustomerEmailListView {
@@ -44,7 +45,6 @@ public class CustomerEmailListViewStub implements CustomerEmailListView {
         this.detailsId = customerId;
     }
 
-    // --- Getters for Tests ---
     public ArrayList<EmailMessage> getLoadedEmails() { return loadedEmails; }
     public String getErrorMessage() { return errorMessage; }
     public int getCreateNewMsgCount() { return createNewMsgCount; }

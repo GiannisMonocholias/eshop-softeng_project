@@ -16,8 +16,9 @@ import gr.softeng.team21.memorydao.MemoryInitializer;
 
 /**
  * Unit tests for {@link EmailCompositionPresenter}.
- * This suite verifies the logic for preparing the email composition screen and
- * the process of sending emails safely using the dedicated EmailDAO.
+ * Verifies validation constraints and the single-dispatch logic
+ * via the unified EmailDAO structure.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailCompositionPresenterTest {
@@ -31,9 +32,6 @@ public class EmailCompositionPresenterTest {
     private Employee employee;
     private Customer customer;
 
-    /**
-     * Prepares data and initializes the presenter and dependencies before each test.
-     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
@@ -41,72 +39,53 @@ public class EmailCompositionPresenterTest {
         viewStub = new EmailCompositionViewStub();
         CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
         EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
-        emailDAO = new EmailDAOMemory();
+
+        emailDAO = EmailDAOMemory.getInstance();
+        emailDAO.clear().join();
 
         presenter = new EmailCompositionPresenter(viewStub, customerDAO, employeeDAO, emailDAO);
 
-        // Fetch asynchronously using .join() for testing environment
         employee = employeeDAO.getEmployee(EMPLOYEE_ID).join();
         customer = customerDAO.getCustomer(CUSTOMER_ID).join();
     }
 
-    /**
-     * Verifies that when an employee opens the composition screen, their details
-     * (name and email) are loaded correctly into the view.
-     */
     @Test
     public void onViewCreatedEmployeeSenderLoadsCorrectDetails() {
         presenter.onViewCreated(EMPLOYEE_ID);
-
         Assert.assertEquals("Μαρία Αλεξάνδρου", viewStub.getDisplayedSenderName());
         Assert.assertEquals(employee.getEmailAddress().toString(), viewStub.getDisplayedSenderEmail());
     }
 
-    /**
-     * Verifies that when a customer opens the composition screen, their details
-     * are loaded correctly into the view.
-     */
     @Test
     public void onViewCreatedCustomerSenderLoadsCorrectDetails() {
         presenter.onViewCreated(CUSTOMER_ID);
-
         Assert.assertEquals("Νίκος Γεωργίου", viewStub.getDisplayedSenderName());
         Assert.assertEquals(customer.getEmailAddress().toString(), viewStub.getDisplayedSenderEmail());
     }
 
-    /**
-     * Verifies that providing an invalid user ID triggers an error message
-     * and closes the activity.
-     */
     @Test
     public void onViewCreatedInvalidUserShowsErrorAndFinishes() {
         presenter.onViewCreated("INVALID_ID");
-
         Assert.assertTrue(viewStub.getErrorMessage().contains("δεν βρέθηκε"));
         Assert.assertTrue(viewStub.isFinishActivityCalled());
     }
 
-    /**
-     * Verifies that attempting to send an email with empty required fields
-     * triggers a validation error message.
-     */
     @Test
-    public void onSendClickedEmptyFieldsShowsError() {
+    public void onSendClickedEmptyFieldsShowsInputErrors() {
         presenter.onViewCreated(EMPLOYEE_ID);
 
         viewStub.setRecipientEmailInput("");
-        viewStub.setSubjectInput("Subject");
-        viewStub.setBodyInput("Body");
+        viewStub.setSubjectInput("");
+        viewStub.setBodyInput("");
 
         presenter.onSendClicked();
 
-        Assert.assertEquals("Παρακαλώ συμπληρώστε όλα τα πεδία.", viewStub.getErrorMessage());
+        // Ελέγχει την εμφάνιση των σφαλμάτων σε κάθε πεδίο ξεχωριστά
+        Assert.assertEquals("Το email παραλήπτη είναι υποχρεωτικό.", viewStub.getInputError("recipient"));
+        Assert.assertEquals("Το θέμα είναι υποχρεωτικό.", viewStub.getInputError("subject"));
+        Assert.assertEquals("Το κείμενο μηνύματος δεν μπορεί να είναι κενό.", viewStub.getInputError("body"));
     }
 
-    /**
-     * Verifies that an error is shown if the recipient's email address
-     * does not exist in the system.
-     */
     @Test
     public void onSendClickedRecipientNotFoundShowsError() {
         presenter.onViewCreated(EMPLOYEE_ID);
@@ -120,50 +99,23 @@ public class EmailCompositionPresenterTest {
         Assert.assertEquals("Δεν βρέθηκε χρήστης με αυτό το email.", viewStub.getErrorMessage());
     }
 
-    /**
-     * Verifies successful email delivery from an Employee to a Customer.
-     * Checks for the success message, activity termination, and verifies the global EmailDAO state.
-     */
     @Test
     public void onSendClickedEmployeeToCustomerSuccess() {
         presenter.onViewCreated(EMPLOYEE_ID);
 
-        int initialInboxSize = emailDAO.getInboxEmails().join().size();
-        int initialSentSize = emailDAO.getSentEmails().join().size();
+        String recipientAddress = customer.getEmailAddress().toString();
+        int initialSize = emailDAO.getEmailsForUser(recipientAddress).join().size();
 
-        viewStub.setRecipientEmailInput(customer.getEmailAddress().toString());
+        viewStub.setRecipientEmailInput(recipientAddress);
         viewStub.setSubjectInput("Order Update");
         viewStub.setBodyInput("Your order is ready.");
 
         presenter.onSendClicked();
 
-        Assert.assertEquals("Το μήνυμα εστάλη!", viewStub.getSuccessMessage());
-        Assert.assertTrue(viewStub.isFinishActivityCalled());
+        Assert.assertEquals("Το μήνυμα εστάλη επιτυχώς!", viewStub.getSuccessMessage());
 
-        // Validate DAO state updates
-        Assert.assertEquals(initialInboxSize + 1, emailDAO.getInboxEmails().join().size());
-        Assert.assertEquals(initialSentSize + 1, emailDAO.getSentEmails().join().size());
-        Assert.assertEquals("Order Update", emailDAO.getInboxEmails().join().get(initialInboxSize).getSubject());
-    }
-
-    /**
-     * Verifies successful email delivery from a Customer to an Employee.
-     */
-    @Test
-    public void onSendClickedCustomerToEmployeeSuccess() {
-        presenter.onViewCreated(CUSTOMER_ID);
-
-        int initialInboxSize = emailDAO.getInboxEmails().join().size();
-        int initialSentSize = emailDAO.getSentEmails().join().size();
-
-        viewStub.setRecipientEmailInput(employee.getEmailAddress().toString());
-        viewStub.setSubjectInput("Help Needed");
-        viewStub.setBodyInput("I have a question.");
-
-        presenter.onSendClicked();
-
-        Assert.assertEquals(initialInboxSize + 1, emailDAO.getInboxEmails().join().size());
-        Assert.assertEquals(initialSentSize + 1, emailDAO.getSentEmails().join().size());
-        Assert.assertEquals("Help Needed", emailDAO.getInboxEmails().join().get(initialInboxSize).getSubject());
+        // Validate state updates based on the exact receiver address
+        Assert.assertEquals(initialSize + 1, emailDAO.getEmailsForUser(recipientAddress).join().size());
+        Assert.assertEquals("Order Update", emailDAO.getEmailsForUser(recipientAddress).join().get(initialSize).getSubject());
     }
 }

@@ -1,9 +1,12 @@
 package gr.softeng.team21.view.user.emailComposition;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A stub implementation of the {@link EmailCompositionView} interface for unit testing.
- * It simulates the user interface for composing an email, allowing tests to set
- * input values and verify output messages or view state changes.
+ * Captures form states, input errors, and success/error notifications.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailCompositionViewStub implements EmailCompositionView {
@@ -18,52 +21,39 @@ public class EmailCompositionViewStub implements EmailCompositionView {
     private String successMessage = "";
     private boolean finishActivityCalled = false;
 
-    /**
-     * Simulates user input for the recipient's email address.
-     * @param recipientEmailInput The email address entered by the user.
-     */
+    // Αποθήκευση των errors ανά πεδίο
+    private final Map<String, String> inputErrors = new HashMap<>();
+
     public void setRecipientEmailInput(String recipientEmailInput) {
         this.recipientEmailInput = recipientEmailInput;
     }
 
-    /**
-     * Simulates user input for the email subject.
-     * @param subjectInput The subject entered by the user.
-     */
     public void setSubjectInput(String subjectInput) {
         this.subjectInput = subjectInput;
     }
 
-    /**
-     * Simulates user input for the email body content.
-     * @param bodyInput The message body entered by the user.
-     */
     public void setBodyInput(String bodyInput) {
         this.bodyInput = bodyInput;
     }
 
     @Override
-    public String getRecipientEmail() {
-        return recipientEmailInput;
-    }
+    public String getRecipientEmail() { return recipientEmailInput; }
 
     @Override
-    public String getSubject() {
-        return subjectInput;
-    }
+    public String getSubject() { return subjectInput; }
 
     @Override
-    public String getBody() {
-        return bodyInput;
-    }
+    public String getBody() { return bodyInput; }
 
-    /**
-     * Captures the sender's details displayed on the UI.
-     */
     @Override
     public void setSenderDetails(String name, String email) {
         this.displayedSenderName = name;
         this.displayedSenderEmail = email;
+    }
+
+    @Override
+    public void showInputError(String field, String message) {
+        inputErrors.put(field, message);
     }
 
     @Override
@@ -76,9 +66,6 @@ public class EmailCompositionViewStub implements EmailCompositionView {
         this.successMessage = message;
     }
 
-    /**
-     * Captures whether the view was requested to close/finish.
-     */
     @Override
     public void finishActivity() {
         this.finishActivityCalled = true;
@@ -91,4 +78,11 @@ public class EmailCompositionViewStub implements EmailCompositionView {
     public String getErrorMessage() { return errorMessage; }
     public String getSuccessMessage() { return successMessage; }
     public boolean isFinishActivityCalled() { return finishActivityCalled; }
+
+    /**
+     * Retrieves the mapped error string for a given field identifier.
+     */
+    public String getInputError(String field) {
+        return inputErrors.get(field);
+    }
 }

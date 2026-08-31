@@ -1,7 +1,5 @@
 package gr.softeng.team21.view.user.emailComposition;
 
-import java.util.concurrent.CompletableFuture;
-
 import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmailDAO;
@@ -14,7 +12,7 @@ import gr.softeng.team21.domain.User;
 /**
  * Presenter for the Email Composition screen.
  * Handles user identification, recipient lookup across different user types
- * (Customer/Employee) asynchronously, and executes the email creation and dispatch logic via EmailDAO.
+ * (Customer/Employee) asynchronously, and executes the unified email dispatch logic via EmailDAO.
  * @author Γιάννης Μονοχολιάς
  */
 public class EmailCompositionPresenter {
@@ -26,10 +24,6 @@ public class EmailCompositionPresenter {
 
     /**
      * Initializes the presenter with required DAOs and view interface.
-     * @param view The View interface implementation.
-     * @param customerDAO DAO for looking up customer data.
-     * @param employeeDAO DAO for looking up employee data.
-     * @param emailDAO DAO for dispatching and saving the email.
      */
     public EmailCompositionPresenter(EmailCompositionView view, CustomerDAO customerDAO, EmployeeDAO employeeDAO, EmailDAO emailDAO) {
         this.view = view;
@@ -40,8 +34,6 @@ public class EmailCompositionPresenter {
 
     /**
      * Identifies the sender asynchronously by checking both Customer and Employee repositories.
-     * Updates the view with sender details upon successful identification.
-     * @param userId The ID of the user composing the email.
      */
     public void onViewCreated(String userId) {
         customerDAO.getCustomer(userId).thenAccept(customer -> {
@@ -70,9 +62,6 @@ public class EmailCompositionPresenter {
         });
     }
 
-    /**
-     * Helper method to safely update the view with the sender's name and email.
-     */
     private void updateSenderView() {
         if (sender != null && view != null) {
             String emailStr = (sender.getEmailAddress() != null) ? sender.getEmailAddress().toString() : "";
@@ -82,18 +71,32 @@ public class EmailCompositionPresenter {
 
     /**
      * Validates input fields and performs an asynchronous cross-repository search for the recipient.
-     * If found, constructs and dispatches the email via the EmailDAO.
+     * If found, constructs and dispatches the email via the centralized EmailDAO.
      */
     public void onSendClicked() {
+        if (view == null) return;
+
         String recipientEmailStr = view.getRecipientEmail();
         String subject = view.getSubject();
         String body = view.getBody();
 
-        // Basic validation
-        if (recipientEmailStr.trim().isEmpty() || subject.trim().isEmpty() || body.trim().isEmpty()) {
-            if (view != null) view.showErrorMessage("Παρακαλώ συμπληρώστε όλα τα πεδία.");
-            return;
+        boolean hasError = false;
+
+        // Validation & highlight empty fields
+        if (recipientEmailStr.trim().isEmpty()) {
+            view.showInputError("recipient", "Το email παραλήπτη είναι υποχρεωτικό.");
+            hasError = true;
         }
+        if (subject.trim().isEmpty()) {
+            view.showInputError("subject", "Το θέμα είναι υποχρεωτικό.");
+            hasError = true;
+        }
+        if (body.trim().isEmpty()) {
+            view.showInputError("body", "Το κείμενο μηνύματος δεν μπορεί να είναι κενό.");
+            hasError = true;
+        }
+
+        if (hasError) return;
 
         // Search for recipient in Customers asynchronously
         customerDAO.getCustomers().thenAccept(customersMap -> {
@@ -121,38 +124,31 @@ public class EmailCompositionPresenter {
                     if (empRecipient != null) {
                         finalizeSending(empRecipient, subject, body);
                     } else {
-                        if (view != null) view.showErrorMessage("Δεν βρέθηκε χρήστης με αυτό το email.");
+                        view.showErrorMessage("Δεν βρέθηκε χρήστης με αυτό το email.");
                     }
                 }).exceptionally(e -> {
-                    if (view != null) view.showErrorMessage("Error searching employees: " + e.getMessage());
+                    view.showErrorMessage("Error searching employees: " + e.getMessage());
                     return null;
                 });
             }
         }).exceptionally(e -> {
-            if (view != null) view.showErrorMessage("Error searching customers: " + e.getMessage());
+            view.showErrorMessage("Error searching customers: " + e.getMessage());
             return null;
         });
     }
 
     /**
      * Constructs the EmailMessage object and delegates persistence to the EmailDAO.
-     * Both sent and inbox folders are updated.
-     *
-     * @param recipient The resolved recipient user object.
-     * @param subject The email subject.
-     * @param body The email body.
+     * A single database entry is created for both users (unified collection).
      */
     private void finalizeSending(User recipient, String subject, String body) {
         if (sender != null) {
             EmailMessage email = new EmailMessage(sender.getEmailAddress(), recipient.getEmailAddress(), subject, body, new Date());
 
-            CompletableFuture<Void> sentFuture = emailDAO.saveSentEmails(email);
-            CompletableFuture<Void> inboxFuture = emailDAO.saveInboxEmails(email);
-
-            CompletableFuture.allOf(sentFuture, inboxFuture).thenAccept(v -> {
+            // A single save operation handles the dispatch
+            emailDAO.saveEmail(email).thenAccept(v -> {
                 if (view != null) {
-                    view.showSuccessMessage("Το μήνυμα εστάλη!");
-                    view.finishActivity();
+                    view.showSuccessMessage("Το μήνυμα εστάλη επιτυχώς!");
                 }
             }).exceptionally(e -> {
                 if (view != null) view.showErrorMessage("Αποτυχία αποστολής: " + e.getMessage());

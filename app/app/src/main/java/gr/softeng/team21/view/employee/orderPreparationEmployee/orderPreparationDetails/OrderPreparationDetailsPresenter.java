@@ -25,7 +25,7 @@ import gr.softeng.team21.util.Date;
 /**
  * Presenter for managing order preparation.
  * Handles fully asynchronous stock verification for multiple items, dynamic employee
- * assignment, order status updates, and dispatching notification emails via DAOs.
+ * assignment, order status updates, and dispatching notification emails via the unified EmailDAO.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderPreparationDetailsPresenter {
@@ -135,8 +135,9 @@ public class OrderPreparationDetailsPresenter {
                     String msg = buildShortageMessage(insufficientStocks);
                     EmailMessage delayEmail = new EmailMessage(loggedInEmployee.getEmailAddress(), assignedEmployee.getEmailAddress(), "Inadequate stock", msg, new Date());
 
-                    CompletableFuture.allOf(emailDAO.saveSentEmails(delayEmail), emailDAO.saveInboxEmails(delayEmail))
-                            .thenRun(() -> saveOrderAndNotifyView("Ανεπαρκές απόθεμα: Ενημερώθηκε η εξυπηρέτηση πελατών."))
+                    // ΜΙΑ ενιαία κλήση αποθήκευσης email βάσει της νέας αρχιτεκτονικής
+                    emailDAO.saveEmail(delayEmail)
+                            .thenAccept(v -> saveOrderAndNotifyView("Ανεπαρκές απόθεμα: Ενημερώθηκε η εξυπηρέτηση πελατών."))
                             .exceptionally(e -> {
                                 if (view != null) view.showErrorMessage("Σφάλμα αποστολής email: " + e.getMessage());
                                 return null;

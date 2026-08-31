@@ -18,7 +18,8 @@ import gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEm
 /**
  * Unit tests for {@link CustomerServiceEmployeeEmailListPresenter}.
  * Ensures that the inbox logic functions correctly, covering asynchronous
- * message retrieval strictly via the EmailDAO.
+ * message retrieval strictly via the unified EmailDAO collection.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class CustomerServiceEmployeeEmailListPresenterTest {
@@ -33,7 +34,10 @@ public class CustomerServiceEmployeeEmailListPresenterTest {
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         viewStub = new CustomerServiceEmployeeEmailListViewStub();
-        emailDAO = new EmailDAOMemory();
+
+        emailDAO = EmailDAOMemory.getInstance();
+        emailDAO.clear().join(); // Εξασφάλιση καθαρού state
+
         EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
 
         csr1 = (CustomerServiceEmployee) employeeDAO.getEmployee("CSR-101").join();
@@ -41,8 +45,8 @@ public class CustomerServiceEmployeeEmailListPresenterTest {
 
         EmailMessage testMsg = new EmailMessage(csr2.getEmailAddress(), csr1.getEmailAddress(), "Test Subject", "Test Body", new Date());
 
-        // Save the test email directly to the DAO
-        emailDAO.saveInboxEmails(testMsg).join();
+        // Αποθήκευση στο ενιαίο collection
+        emailDAO.saveEmail(testMsg).join();
 
         presenter = new CustomerServiceEmployeeEmailListPresenter(viewStub, employeeDAO, emailDAO);
     }
@@ -66,10 +70,13 @@ public class CustomerServiceEmployeeEmailListPresenterTest {
 
     @Test
     public void onEmailSelectedMarksAsReadAndNavigates() {
-        EmailMessage email = emailDAO.getInboxEmails().join().get(0);
+        EmailMessage email = emailDAO.getEmailsForUser(csr1.getEmailAddress().toString()).join().get(0);
         presenter.onEmailSelected(email, csr1.getEmployeeId());
 
-        Assert.assertTrue(email.isRead());
+        // Επιβεβαίωση persistence της αλλαγής (isRead)
+        EmailMessage updatedEmail = emailDAO.getEmailsForUser(csr1.getEmailAddress().toString()).join().get(0);
+        Assert.assertTrue(updatedEmail.isRead());
+
         Assert.assertEquals(1, viewStub.getNavigateToEmailDetailsCount());
         Assert.assertEquals("Test Subject", viewStub.getDetailsSubject());
     }

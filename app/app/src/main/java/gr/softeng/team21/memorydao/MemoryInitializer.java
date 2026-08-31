@@ -2,6 +2,7 @@ package gr.softeng.team21.memorydao;
 
 import java.math.BigDecimal;
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.dao.ProductTypeDAO;
@@ -96,6 +97,11 @@ public class MemoryInitializer {
                 throw new IllegalStateException("Users credentials repository was not cleared");
             }
         } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        try {
+            getEmailDAO().clear().join();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -587,5 +593,8 @@ public class MemoryInitializer {
         return UserCredentialsDAOMemory.getInstance();
     }
 
+    public static EmailDAO getEmailDAO() {
+        return EmailDAOMemory.getInstance();
+    }
 
 }

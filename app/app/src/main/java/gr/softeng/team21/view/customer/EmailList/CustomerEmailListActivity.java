@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import gr.softeng.team21.R;
 import gr.softeng.team21.contact.EmailMessage;
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.EmailDAOFirebase;
 import gr.softeng.team21.view.contact.emailDetails.EmailDetailsActivity;
 import gr.softeng.team21.view.user.emailComposition.EmailCompositionActivity;
 import gr.softeng.team21.view.util.EmailAdapter;
@@ -54,9 +56,11 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
             return insets;
         });
 
-        // Dependency Injection for Firebase
+        // Dependency Injection for Firebase DAOs
         CustomerDAO customerDAO = new CustomerDAOFirebase();
-        presenter = new CustomerEmailListPresenter(this, customerDAO);
+        EmailDAO emailDAO = new EmailDAOFirebase();
+
+        presenter = new CustomerEmailListPresenter(this, customerDAO, emailDAO);
 
         recyclerView = findViewById(R.id.recyclerViewEmails);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

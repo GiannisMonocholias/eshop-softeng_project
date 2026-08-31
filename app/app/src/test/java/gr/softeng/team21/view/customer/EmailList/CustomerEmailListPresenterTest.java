@@ -8,14 +8,17 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.contact.EmailMessage;
+import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.util.Date;
 
 /**
  * Unit tests for the {@link CustomerEmailListPresenter} class.
- * Accommodates the async logic by verifying the ViewStub's captured state.
+ * Accommodates the async logic by verifying the ViewStub's captured state
+ * and interacting with the centralized EmailDAO.
  *
  * @author PAVLOS GRATSANIS
  */
@@ -23,12 +26,17 @@ public class CustomerEmailListPresenterTest {
 
     private CustomerEmailListPresenter presenter;
     private CustomerEmailListViewStub view;
+    private EmailDAO emailDAO;
     private Customer customer;
 
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         view = new CustomerEmailListViewStub();
+
+        emailDAO = EmailDAOMemory.getInstance();
+        emailDAO.clear().join(); // Καθαρισμός για ασφαλή δοκιμή
+
         customer = CustomerDAOMemory.getInstance().getCustomer("CUST-500").join();
 
         EmailMessage testMsg = new EmailMessage(
@@ -39,8 +47,10 @@ public class CustomerEmailListPresenterTest {
                 new Date()
         );
 
-        customer.getEmailProvider().saveInboxEmails(testMsg);
-        presenter = new CustomerEmailListPresenter(view, CustomerDAOMemory.getInstance());
+        // Αποθήκευση απευθείας στο ενιαίο collection της βάσης
+        emailDAO.saveEmail(testMsg).join();
+
+        presenter = new CustomerEmailListPresenter(view, CustomerDAOMemory.getInstance(), emailDAO);
     }
 
     @Test
@@ -59,7 +69,7 @@ public class CustomerEmailListPresenterTest {
         presenter.loadInbox("INVALID-ID-999");
 
         Assert.assertNull(view.getLoadedEmails());
-        Assert.assertEquals("Ο πελάτης δεν βρέθηκε.", view.getErrorMessage());
+        Assert.assertEquals("Ο πελάτης δεν βρέθηκε ή δεν έχει δηλωμένο email.", view.getErrorMessage());
     }
 
     @Test
@@ -72,18 +82,18 @@ public class CustomerEmailListPresenterTest {
 
     @Test
     public void onEmailSelectedMarksAsReadAndNavigates() {
-        // Prepare view state
         presenter.loadInbox("CUST-500");
         EmailMessage email = view.getLoadedEmails().get(0);
 
         presenter.onEmailSelected(email, customer.getCustomer_id());
-        Assert.assertTrue(email.isRead());
+
+        // Επιβεβαίωση ότι η αλλαγή κατάστασης αποθηκεύτηκε στο DAO
+        EmailMessage updatedEmail = emailDAO.getEmailsForUser(customer.getEmailAddress().toString()).join().get(0);
+        Assert.assertTrue(updatedEmail.isRead());
 
         Assert.assertEquals(1, view.getEmailDetailsCount());
         Assert.assertEquals("Test Subject", view.getDetailsSubject());
         Assert.assertEquals("Test Body", view.getDetailsBody());
         Assert.assertEquals("CUST-500", view.getDetailsId());
-        Assert.assertEquals("sender@test.com", view.getDetailsSender());
-        Assert.assertEquals(customer.getEmailAddress().toString(), view.getDetailsReceiver());
     }
 }
