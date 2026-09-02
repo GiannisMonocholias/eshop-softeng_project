@@ -5,8 +5,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;
+
 import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.dao.OrderDAO;
+import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
@@ -16,7 +18,7 @@ import gr.softeng.team21.memorydao.OrderDAOMemory;
 /**
  * Unit tests for {@link OrderStatusPresenter}.
  * Verifies the logic for handling order notifications, testing asynchronous loading
- * using Foreign Keys from the OrderDAO and verifying email persistence using EmailDAO.
+ * using Foreign Keys from the OrderDAO and verifying email persistence using the unified EmailDAO.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderStatusPresenterTest {
@@ -32,7 +34,10 @@ public class OrderStatusPresenterTest {
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         viewStub = new OrderStatusViewStub();
-        emailDAO = new EmailDAOMemory();
+
+        emailDAO = EmailDAOMemory.getInstance();
+        emailDAO.clear().join();
+
         orderDAO = OrderDAOMemory.getInstance();
 
         presenter = new OrderStatusPresenter(viewStub, EmployeeDAOMemory.getInstance(), orderDAO, emailDAO);
@@ -61,8 +66,11 @@ public class OrderStatusPresenterTest {
 
         presenter.onOrderConfirmed(delayedOrder);
 
-        // Verify async DB writes
-        Assert.assertEquals(1, emailDAO.getSentEmails().join().size());
+        Customer customer = delayedOrder.getShoppingCart().getCustomer();
+        String customerEmail = customer.getEmailAddress().toString();
+
+        // Verify async DB writes dynamically fetching by receiver address
+        Assert.assertEquals(1, emailDAO.getEmailsForUser(customerEmail).join().size());
 
         // Verify Order is unassigned from CSR
         Order updatedOrder = orderDAO.getOrder("ORD-2024-004").join();

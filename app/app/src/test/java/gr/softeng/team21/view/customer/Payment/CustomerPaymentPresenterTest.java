@@ -84,7 +84,7 @@ public class CustomerPaymentPresenterTest {
         presenter.loadShippingDetails();
         Assert.assertEquals("Γιώργος Παπαδόπουλος", view.getShippingName());
         Assert.assertEquals("6987659483", view.getShippingPhone());
-        Assert.assertEquals("Τσιμισκή 42, Θεσσαλονίκη, 54623, Ελλάδα", view.getShippingAddress());
+        Assert.assertEquals("Τσιμισκή 42, Θεσσαλονίκη, Ελλάδα, 54623", view.getShippingAddress());
     }
 
     @Test

@@ -6,62 +6,45 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.NoSuchElementException;
+import java.util.concurrent.CompletionException;
 
 import gr.softeng.team21.contact.EmailAddress;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.util.Date;
 
 /**
  * Unit tests for the {@link AuthenticationSystem} class.
- * This test suite verifies the Singleton integrity, user registration logic,
- * successful and failed login attempts, and account removal processes.
+ * This test suite verifies user registration logic, successful and failed login attempts,
+ * and account removal processes securely using Async DAOs.
  * @author Γιάννης Μονοχολιάς
  */
 public class AuthenticationSystemTest {
     private AuthenticationSystem authSystem;
-    private UserCredentialsDAOMemory repo;
+    private UserCredentialsDAO repo;
 
-    /**
-     * Sets up the testing environment before each test.
-     * Initializes the credentials repository and the authentication system instance.
-     */
     @Before
     public void setUp() {
-        repo = UserCredentialsDAOMemory.getInstance();
-        authSystem = AuthenticationSystem.getInstance();
+        repo = MemoryInitializer.getUserCredentialsDAO();
+        repo.clear().join();
+
+        // Initialization with Dependency Injection
+        authSystem = new AuthenticationSystem(repo);
     }
 
-    /**
-     * Verifies that the repository is empty at the start of testing.
-     */
     @Test
     public void initiallyEmptyRepositoryTest(){
-        Assertions.assertTrue(repo.getUsersCredentials().isEmpty());
+        Assertions.assertTrue(repo.getUsersCredentials().join().isEmpty());
     }
 
-    /**
-     * Verifies that the {@link AuthenticationSystem} correctly implements the Singleton pattern.
-     */
-    @Test
-    public void getInstanceReturnsSameReferencesTest() {
-        AuthenticationSystem sys1 = AuthenticationSystem.getInstance();
-        AuthenticationSystem sys2 = AuthenticationSystem.getInstance();
-        Assertions.assertSame(sys1, sys2);
-    }
-
-    /**
-     * Tests the registration of a new customer.
-     * Validates that all user attributes are correctly persisted in the repository.
-     */
     @Test
     public void registerCustomerStoresUserTest() {
         Date now = new Date();
         EmailAddress email = new EmailAddress("giannis@mail.com");
         authSystem.registerCustomer("giannispap", "Giannis", "pass1234", "Papadopoulos",
-                "697123456", email, "CUST-001", now);
+                "697123456", email, "CUST-001", now).join();
 
-        User storedUser = repo.validateAndGetUser("giannispap", "pass1234");
+        User storedUser = repo.validateAndGetUser("giannispap", "pass1234").join();
         Assertions.assertNotNull(storedUser);
         Assertions.assertTrue(storedUser instanceof Customer);
 
@@ -75,77 +58,87 @@ public class AuthenticationSystemTest {
         Assertions.assertEquals(now, cust.getRegistdateDate());
     }
 
-    /**
-     * Verifies that the system prevents duplicate registrations with the same username.
-     * Expected behavior is to throw an {@link IllegalArgumentException}.
-     */
     @Test
     public void registerCustomerDuplicateUsernameThrowsExceptionTest() {
         Date now = new Date();
         EmailAddress email = new EmailAddress("giannis@mail.com");
-        authSystem.registerCustomer("giannispap", "Giannis", "pass1234", "Papadopoulos",
-                "697123456", email, "Customer1", now);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            authSystem.registerCustomer("giannispap", "Giannis", "pass1234", "Papadopoulos",
-                    "697123456", email, "Customer2", now);
-        });
+        // First register completed successfully
+        authSystem.registerCustomer("giannispap", "Giannis", "pass1234", "Papadopoulos",
+                "697123456", email, "Customer1", now).join();
+
+        // Catch the CompletionException which is caused by .join()
+        CompletionException thrown = Assertions.assertThrows(
+                CompletionException.class,
+                () -> {
+                    authSystem.registerCustomer("giannispap", "Giannis", "pass1234", "Papadopoulos",
+                            "697123456", email, "Customer2", now).join();
+                }
+        );
+
+        // Check with instanceof that the actual cause is the IllegalArgumentException
+        Assertions.assertTrue(thrown.getCause() instanceof IllegalArgumentException,
+                "Η αιτία του σφάλματος πρέπει να είναι IllegalArgumentException");
+        Assertions.assertEquals("Username already exists", thrown.getCause().getMessage());
     }
 
-    /**
-     * Tests a successful login operation using valid credentials.
-     */
     @Test
     public void loginSuccessTest() {
         Date now = new Date();
         EmailAddress email = new EmailAddress("giannis@mail.com");
         authSystem.registerCustomer("giannispap", "Giannis", "pass1234", "Papadopoulos",
-                "697123456", email, "Customer1", now);
+                "697123456", email, "Customer1", now).join();
 
-        User user = authSystem.login("giannispap", "pass1234");
+        User user = authSystem.login("giannispap", "pass1234").join();
         Assertions.assertNotNull(user);
         Assertions.assertEquals("giannispap", user.getUsername());
     }
 
-    /**
-     * Tests login failure behavior when provided with non-existent credentials.
-     * Expected behavior is to throw a {@link SecurityException}.
-     */
     @Test
     public void loginFailureThrowsExceptionTest() {
-        Assertions.assertThrows(SecurityException.class, () -> authSystem.login("unknown", "wrongpass"));
+        CompletionException thrown = Assertions.assertThrows(
+                CompletionException.class,
+                () -> authSystem.login("unknown", "wrongpass").join()
+        );
+
+        Assertions.assertTrue(thrown.getCause() instanceof SecurityException,
+                "Η αιτία του σφάλματος πρέπει να είναι SecurityException");
     }
 
-    /**
-     * Tests the removal of a user account.
-     * Validates that after removal, the user can no longer log in.
-     */
-    @Test(expected = SecurityException.class)
+    @Test
     public void removeUserTest() {
         Date now = new Date();
         EmailAddress email = new EmailAddress("giannis@mail.com");
         authSystem.registerCustomer("giannispap", "Giannis", "pass1234", "Papadopoulos",
-                "697123456", email, "Customer1", now);
+                "697123456", email, "Customer1", now).join();
 
-        authSystem.removeUser("giannispap");
+        // Successful deletion
+        authSystem.removeUser("giannispap").join();
 
-        authSystem.login("giannispap", "pass789");
+        // login attempt after the deletion
+        CompletionException thrown = Assertions.assertThrows(
+                CompletionException.class,
+                () -> authSystem.login("giannispap", "pass789").join()
+        );
+
+        Assertions.assertTrue(thrown.getCause() instanceof SecurityException,
+                "Η αιτία του σφάλματος πρέπει να είναι SecurityException");
     }
 
-    /**
-     * Verifies that attempting to remove a user that does not exist throws an exception.
-     */
     @Test
     public void removeNonExistingUserTest(){
-        Assertions.assertThrows(NoSuchElementException.class,()->{authSystem.removeUser("giannispap");});
+        CompletionException thrown = Assertions.assertThrows(
+                CompletionException.class,
+                () -> authSystem.removeUser("giannispap").join()
+        );
+
+        Assertions.assertTrue(thrown.getCause() instanceof NoSuchElementException,
+                "Η αιτία του σφάλματος πρέπει να είναι NoSuchElementException");
     }
 
-    /**
-     * Cleans up the repositories after each test to ensure test isolation and a clean state.
-     */
     @After
     public void tearDown(){
-        repo.clear();
-        CustomerDAOMemory.getInstance().getCustomers().clear();
+        repo.clear().join();
+        MemoryInitializer.getCustomerDAO().clear().join();
     }
 }

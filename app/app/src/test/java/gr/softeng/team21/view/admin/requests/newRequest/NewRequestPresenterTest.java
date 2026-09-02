@@ -42,10 +42,12 @@ public class NewRequestPresenterTest {
     public void createRequestSuccessfullySubmitsValidData() {
         int initialSize = updateRequestDAO.getUpdateRequests().join().size();
 
-        presenter.createRequest("Τροποποίηση", "Change price", "Existing Product", "PRD-1");
+        presenter.createRequest("Τροποποίηση", "Change price", "G.Skill Trident Z5", "TECH-012");
 
         assertNotNull("Should display success message", viewStub.getSuccessMessage());
         assertEquals(initialSize + 1, updateRequestDAO.getUpdateRequests().join().size());
         assertNull("Should not display error", viewStub.getErrorMessage());
     }
+
+
 }

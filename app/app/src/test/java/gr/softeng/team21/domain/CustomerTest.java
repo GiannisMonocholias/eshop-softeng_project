@@ -9,53 +9,46 @@ import org.junit.After;
 
 import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.contact.EmailAddress;
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
-import gr.softeng.team21.memorydao.OrderDAOMemory;
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.OrderDAO;
+import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.util.Date;
 
 /**
  * Unit tests for the {@link Customer} class.
  * Checks functionality for product search, shopping cart management,
  * checkout process, payment selection and customer account management.
- *
  * @author PAVLOS GRATSANIS
  */
 public class CustomerTest {
     private Customer customer;
     private EmailAddress email;
     private Address address;
-    private ShoppingCart shoppingCart;
     private Order order;
 
-    /**
-     * Sets up the test environment before each test.
-     * Initializes a customer and his details, adds them to the DAO, and creates a  order.
-     */
+    private CustomerDAO customerDAO;
+    private OrderDAO orderDAO;
+
     @Before
     public void setUp() throws Exception {
+        customerDAO = MemoryInitializer.getCustomerDAO();
+        orderDAO = MemoryInitializer.getOrderDAO();
+        customerDAO.clear().join();
+
         email = TestHelper.getEmail();
         address = TestHelper.getAddress();
-        CustomerDAOMemory.getInstance().getCustomers().clear();
 
         customer = new Customer(
                 "giannispap", "Giannis", "pass1234", "Papadopoulos",
                 "697123456", email, "CUST-001", new Date());
 
-        CustomerDAOMemory.getInstance().addCustomer(customer);
+        customerDAO.addCustomer(customer).join();
         customer.setAddress(address);
 
         order = new Order("order001", new Date(), OrderStatusType.NEW, false,
                 PaymentType.CASH, new Date(), new ShoppingCart());
     }
 
-    /**
-     * Tests finding a product by its code.
-     */
-
-
-    /**
-     * Tests adding items to the shopping cart and updating quantity.
-     */
     @Test
     public void addItemToCart() {
         ProductType p = TestHelper.getMonitor();
@@ -69,26 +62,17 @@ public class CustomerTest {
         assertEquals(4, customer.getShoppingCart().getItems().get(1).getQuantity());
     }
 
-    /**
-     * Tests that adding an item with negative quantity throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void addItemToCartWithNegativeQuantity() {
         ProductType p = TestHelper.getMonitor();
         customer.addItemToCart(p, -1);
     }
 
-    /**
-     * Tests that adding a null product throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void addItemToCartWithNullProduct() {
         customer.addItemToCart(null, 2);
     }
 
-    /**
-     * Tests removing items from the shopping cart.
-     */
     @Test
     public void removeItemFromCart() {
         ProductType p1 = TestHelper.getMonitor();
@@ -104,53 +88,35 @@ public class CustomerTest {
         assertFalse(customer.getShoppingCart().getItems().contains(p2.getProductCode()));
     }
 
-    /**
-     * Tests removing item from an empty cart throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void removeItemFromCartwithEmptyShoppingCart() {
         customer.removeItemFromCart(TestHelper.getKeyboard(), 5);
     }
 
-    /**
-     * Tests removing item with negative quantity throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void removeItemWithNegativeQuantity() {
         customer.addItemToCart(TestHelper.getKeyboard(), 5);
         customer.removeItemFromCart(TestHelper.getKeyboard(), -2);
     }
 
-    /**
-     * Tests removing null product throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void removeItemWithNullProduct() {
         customer.addItemToCart(TestHelper.getKeyboard(), 5);
         customer.removeItemFromCart(null, 5);
     }
 
-    /**
-     * Tests removing more quantity than available throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void removeItemWithQuantityTooHigh() {
         customer.addItemToCart(TestHelper.getKeyboard(), 5);
         customer.removeItemFromCart(TestHelper.getKeyboard(), 10);
     }
 
-    /**
-     * Tests removing an item that is not in the cart throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void removeItemWhereNotInCart() {
         customer.addItemToCart(TestHelper.getKeyboard(), 5);
         customer.removeItemFromCart(TestHelper.getLaptop(), 2);
     }
 
-    /**
-     * Tests the checkout process returns a valid Order.
-     */
     @Test
     public void checkout() {
         customer.addItemToCart(TestHelper.getLaptop(), 1);
@@ -160,18 +126,11 @@ public class CustomerTest {
         assertEquals(false, order1.getPaid());
     }
 
-    /**
-     * Tests checkout with empty/null conditions returns null.
-     */
     @Test
     public void checkoutwithNullArguments() {
         assertNull(customer.Checkout());
     }
 
-    /**
-     * Tests that checkout creates a deep copy of the shopping cart for the order.
-     * Modifications to the customer's cart after checkout should not affect the order's cart.
-     */
     @Test
     public void CheckoutCopyShoppingCart() {
         ProductType laptop = TestHelper.getLaptop();
@@ -188,9 +147,6 @@ public class CustomerTest {
         assertEquals(5, customer.getShoppingCart().getItems().get(0).getQuantity());
     }
 
-    /**
-     * Tests selecting a payment type.
-     */
     @Test
     public void selectPaymentType() {
         assertFalse(order.getPaid());
@@ -202,33 +158,21 @@ public class CustomerTest {
         assertEquals(PaymentType.CARD, order.getPaymentmethod());
     }
 
-    /**
-     * Tests selecting payment type with null order throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void selectPaymentTypeWithNullOrder() {
         customer.selectPaymentType(PaymentType.CASH, null, null);
     }
 
-    /**
-     * Tests selecting null payment type throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void selectPaymentTypeWithNullPaymentType() {
         customer.selectPaymentType(null, null, order);
     }
 
-    /**
-     * Tests selecting card payment with invalid format throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void selectPaymentTypeWithInvalidCardFormat() {
         customer.selectPaymentType(PaymentType.CARD, "1234-5678", order);
     }
 
-    /**
-     * Tests confirming an order.
-     */
     @Test
     public void confirm() {
         customer.addItemToCart(TestHelper.getMouse(), 5);
@@ -238,48 +182,32 @@ public class CustomerTest {
         assertNull(customer.getShoppingCart());
     }
 
-    /**
-     * Tests confirming with null order throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void confirmWithNullOrder() {
         customer.Confirm("CONFIRM", null);
     }
 
-    /**
-     * Tests confirming with null choice string throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void confirmWithNullConfirmChoice() {
         customer.Confirm(null, order);
     }
 
-    /**
-     * Tests confirming with empty choice string throws exception.
-     */
     @Test(expected = IllegalArgumentException.class)
     public void confirmWithEmptyConfirmChoice() {
         customer.Confirm("", order);
     }
 
-
-    /**
-     * Cleans up after each test execution.
-     */
     @After
     public void tearDown() throws Exception {
         TestHelper.clear();
-        CustomerDAOMemory.getInstance().getCustomers().clear();
-        OrderDAOMemory.getInstance().getOrders().clear();
+        customerDAO.clear().join();
+        orderDAO.clear().join();
     }
 
-    /**
-     * Cleans up after all tests in the class have run.
-     */
     @AfterClass
     public static void tearDownAfterClass() {
         TestHelper.clear();
-        CustomerDAOMemory.getInstance().getCustomers().clear();
-        OrderDAOMemory.getInstance().getOrders().clear();
+        MemoryInitializer.getCustomerDAO().clear().join();
+        MemoryInitializer.getOrderDAO().clear().join();
     }
 }

@@ -443,7 +443,7 @@ public class MemoryInitializer {
         cart1.addItem(new CartItem(products.getProduct("TECH-001").join(), 1));
         cart1.addItem(new CartItem(products.getProduct("TECH-003").join(), 1));
 
-        Order order1 = new Order("ORD-2023-001", new Date(10, 11, 2023), OrderStatusType.SHIPPED,
+        Order order1 = new Order("ORD-2024-001", new Date(10, 11, 2023), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, new Date(14, 11, 2023), cart1
         );
 

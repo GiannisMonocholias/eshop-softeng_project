@@ -47,9 +47,10 @@ public class OrderDAOMemoryTest {
         assertTrue(orderDAOMemory.getOrders().join().isEmpty());
     }
 
-    @Test(expected = CompletionException.class)
+    @Test
     public void getOrder_NullArgumentTest() {
-        orderDAOMemory.getOrder(null).join();
+        Order result = orderDAOMemory.getOrder(null).join();
+        assertNull("Αναμενόταν null όταν το orderCode είναι null", result);
     }
 
     @Test

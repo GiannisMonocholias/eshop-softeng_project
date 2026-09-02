@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import gr.softeng.team21.memorydao.CustomerDAOMemory;
+import gr.softeng.team21.memorydao.MemoryInitializer;
 
 /**
  * Unit tests for the {@link ShoppingCart} class.
@@ -17,10 +17,6 @@ public class ShoppingCartTest {
     private Customer customer;
     private ProductType p1, p2, p3;
 
-    /**
-     * Sets up the test environment before each test.
-     * Initializes a customer and a shopping cart with two default items.
-     */
     @Before
     public void setUp() throws Exception {
         customer = TestHelper.getCustomer();
@@ -31,9 +27,6 @@ public class ShoppingCartTest {
         shoppingCart.addItem(new CartItem(p2, 3));
     }
 
-    /**
-     * Tests the calculation of total cost when a new product is added to the cart.
-     */
     @Test
     public void getTotalCostWhenAddProduct() {
         p3 = TestHelper.getKeyboard();
@@ -43,9 +36,6 @@ public class ShoppingCartTest {
         assertEquals("€", shoppingCart.getTotalCost().getCurrency());
     }
 
-    /**
-     * Tests the calculation of total cost when a product is removed from the cart.
-     */
     @Test
     public void getTotalCostWhenRemoveProduct() {
         shoppingCart.removeItem(shoppingCart.getItems().get(0));
@@ -54,11 +44,8 @@ public class ShoppingCartTest {
         assertEquals("€", shoppingCart.getTotalCost().getCurrency());
     }
 
-    /**
-     * Cleans up after all tests in the class have run.
-     */
     @AfterClass
     public static void tearDownAfterClass() {
-        CustomerDAOMemory.getInstance().getCustomers().clear();
+        MemoryInitializer.getCustomerDAO().clear().join();
     }
 }

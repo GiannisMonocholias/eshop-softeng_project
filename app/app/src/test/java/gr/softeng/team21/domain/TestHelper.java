@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.contact.EmailAddress;
-import gr.softeng.team21.memorydao.ProductTypeDAOMemory;
+import gr.softeng.team21.dao.ProductTypeDAO;
+import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.util.Money;
 
@@ -29,105 +30,37 @@ public class TestHelper {
             "giannispap", "Giannis", "pass1234", "Papadopoulos",
             "697123456", email, "CUST-001", new Date());
 
-
-    /**
-     * Populates the ProductTypeDAOMemory with a set of predefined products
-     * (Laptop, Mouse, Keyboard, Monitor).
-     * Adds them only if they do not already exist.
-     */
     public static void addProductsManually() {
-        ProductTypeDAOMemory repo = ProductTypeDAOMemory.getInstance();
+        ProductTypeDAO repo = MemoryInitializer.getProductTypeDAO();
 
-        if (repo.getProduct(laptop.getProductCode ()) == null) {
-            repo.addProductType(laptop);
+        if (repo.getProduct(laptop.getProductCode()).join() == null) {
+            repo.addProductType(laptop).join();
         }
-        if (repo.getProduct(mouse.getProductCode ()) == null) {
-            repo.addProductType(mouse);
+        if (repo.getProduct(mouse.getProductCode()).join() == null) {
+            repo.addProductType(mouse).join();
         }
-        if (repo.getProduct(keyboard.getProductCode ()) == null) {
-            repo.addProductType(keyboard);
+        if (repo.getProduct(keyboard.getProductCode()).join() == null) {
+            repo.addProductType(keyboard).join();
         }
-        if (repo.getProduct(monitor.getProductCode ()) == null) {
-            repo.addProductType(monitor);
+        if (repo.getProduct(monitor.getProductCode()).join() == null) {
+            repo.addProductType(monitor).join();
         }
     }
 
-    /**
-     * Clears all data from the ProductTypeDAOMemory.
-     */
     public static void clear(){
-        ProductTypeDAOMemory.getInstance ().clear ();
+        MemoryInitializer.getProductTypeDAO().clear().join();
     }
 
-    /**
-     * Returns the map of products currently stored in the DAO.
-     * @return a HashMap containing the products
-     */
     public static HashMap<String,ProductType> getProducts ( ) {
-        return ProductTypeDAOMemory.getInstance ( ).getProducts ( );
+        return MemoryInitializer.getProductTypeDAO().getProducts().join();
     }
 
-    /**
-     * Returns the price object defined for the laptop.
-     * @return the laptop price
-     */
-    public static Money getPriceLaptop ( ) {
-        return priceLaptop;
-    }
-
-    /**
-     * Returns the test laptop object.
-     * @return the laptop
-     */
-    public static ProductType getLaptop ( ) {
-        return laptop;
-    }
-
-    /**
-     * Returns the test keyboard object.
-     * @return the keyboard
-     */
-    public static ProductType getKeyboard ( ) {
-        return keyboard;
-    }
-
-    /**
-     * Returns the test mouse object.
-     * @return the mouse
-     */
-    public static ProductType getMouse ( ) {
-        return mouse;
-    }
-
-    /**
-     * Returns the test address object.
-     * @return the address
-     */
-    public static Address getAddress ( ) {
-        return address;
-    }
-
-    /**
-     * Returns the test email address object.
-     * @return the email address
-     */
-    public static EmailAddress getEmail ( ) {
-        return email;
-    }
-
-    /**
-     * Returns the test customer object.
-     * @return the customer
-     */
-    public static Customer getCustomer ( ) {
-        return customer;
-    }
-
-    /**
-     * Returns the test monitor object.
-     * @return the monitor
-     */
-    public static ProductType getMonitor ( ) {
-        return monitor;
-    }
+    public static Money getPriceLaptop ( ) { return priceLaptop; }
+    public static ProductType getLaptop ( ) { return laptop; }
+    public static ProductType getKeyboard ( ) { return keyboard; }
+    public static ProductType getMouse ( ) { return mouse; }
+    public static Address getAddress ( ) { return address; }
+    public static EmailAddress getEmail ( ) { return email; }
+    public static Customer getCustomer ( ) { return customer; }
+    public static ProductType getMonitor ( ) { return monitor; }
 }

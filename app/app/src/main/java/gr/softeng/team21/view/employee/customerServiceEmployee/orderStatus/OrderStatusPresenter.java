@@ -16,7 +16,7 @@ import gr.softeng.team21.util.Date;
 /**
  * Presenter for the Order Status screen.
  * Handles the asynchronous retrieval of assigned orders via OrderDAO and the dispatching
- * of notification emails to customers using EmailDAO.
+ * of notification emails to customers using the unified EmailDAO.
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderStatusPresenter {
@@ -113,6 +113,8 @@ public class OrderStatusPresenter {
         }
 
         EmailMessage email = new EmailMessage(loggedInEmployee.getEmailAddress(), customer.getEmailAddress(), subject, msg.toString(), new Date());
-        return CompletableFuture.allOf(emailDAO.saveSentEmails(email), emailDAO.saveInboxEmails(email));
+
+        // ΜΙΑ ενιαία κλήση αποθήκευσης email βάσει της νέας αρχιτεκτονικής
+        return emailDAO.saveEmail(email);
     }
 }

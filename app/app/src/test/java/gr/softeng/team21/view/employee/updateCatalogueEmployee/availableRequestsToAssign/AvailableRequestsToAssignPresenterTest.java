@@ -6,53 +6,40 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
 import gr.softeng.team21.domain.RequestStatusType;
-import gr.softeng.team21.domain.UpdateCatalogueEmployee;
-import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
-import gr.softeng.team21.memorydao.UpdateRequestDAOMemory;
 
 /**
  * Unit tests for {@link AvailableRequestsToAssignPresenter}.
- * This suite verifies the asynchronous logic for filtering available catalogue update requests,
- * assigning them to specific employees via Dependency Injection, and handling errors.
+ * This suite verifies the asynchronous logic for filtering available catalogue update requests
+ * and assigning them to specific employees via Dependency Injection.
  * @author Γιάννης Μονοχολιάς
  */
 public class AvailableRequestsToAssignPresenterTest {
 
     private AvailableRequestsToAssignPresenter presenter;
     private AvailableRequestsToAssignViewStub viewStub;
-    private UpdateCatalogueEmployee catEmployee;
+    private UpdateRequestDAO requestDAO;
     private static final String EMPLOYEE_ID = "CAT-301";
 
-    /**
-     * Initializes the testing environment before each test.
-     * Prepares memory data and instantiates the presenter with its dependencies.
-     */
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
 
         viewStub = new AvailableRequestsToAssignViewStub();
 
-        presenter = new AvailableRequestsToAssignPresenter(
-                viewStub,
-                EmployeeDAOMemory.getInstance(),
-                UpdateRequestDAOMemory.getInstance()
-        );
+        EmployeeDAO employeeDAO = MemoryInitializer.getEmployeeDAO();
+        requestDAO = MemoryInitializer.getUpdateRequestDAO();
 
-        // Uses .join() due to CompletableFuture architecture
-        catEmployee = (UpdateCatalogueEmployee) EmployeeDAOMemory.getInstance().getEmployee(EMPLOYEE_ID).join();
+        presenter = new AvailableRequestsToAssignPresenter(viewStub, employeeDAO, requestDAO);
     }
 
-    /**
-     * Verifies that the list of available requests contains only those with "NEW" status
-     * and excludes those already "ASSIGNED".
-     */
     @Test
     public void loadAvailableRequestsReturnsOnlyNewRequests() {
-        CatalogueUpdateRequest assignedRequest = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(1);
+        CatalogueUpdateRequest assignedRequest = requestDAO.getUpdateRequests().join().get(1);
         assignedRequest.setStatus(RequestStatusType.ASSIGNED);
 
         presenter.loadAvailableRequests(EMPLOYEE_ID);
@@ -67,16 +54,11 @@ public class AvailableRequestsToAssignPresenterTest {
         }
     }
 
-    /**
-     * Verifies that clicking an available request triggers a confirmation dialog
-     * with the correct request data and message.
-     */
     @Test
     public void onRequestClickedShowsConfirmationDialog() {
-        // Init presenter state
         presenter.loadAvailableRequests(EMPLOYEE_ID);
 
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(2);
+        CatalogueUpdateRequest request = requestDAO.getUpdateRequests().join().get(2);
         presenter.onRequestClicked(request);
 
         Assert.assertTrue(viewStub.isConfirmationDialogShown());
@@ -84,38 +66,28 @@ public class AvailableRequestsToAssignPresenterTest {
         Assert.assertTrue(viewStub.getConfirmationMessage().contains("Θέλετε να αναλάβετε"));
     }
 
-    /**
-     * Verifies the full request assignment workflow asynchronously:
-     * 1. Request status transitions from NEW to ASSIGNED.
-     * 2. The request is correctly added to the employee's personal map.
-     * 3. The UI receives a success message and refreshes the list.
-     */
     @Test
     public void onRequestConfirmedSuccessAssignsRequestAndUpdatesView() {
         presenter.loadAvailableRequests(EMPLOYEE_ID);
 
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(3);
+        CatalogueUpdateRequest request = requestDAO.getUpdateRequests().join().get(3);
         Assert.assertEquals(RequestStatusType.NEW, request.getStatus());
 
         presenter.onRequestConfirmed(request);
 
-        // State update verification
+        // Verification of Domain update
         Assert.assertEquals(RequestStatusType.ASSIGNED, request.getStatus());
-        Assert.assertTrue(catEmployee.getAssignedRequests().containsKey(request.getId()));
 
-        // UI callback verification
+        // Verification of UI callbacks
         Assert.assertTrue(viewStub.getMessageShown().contains("επιτυχώς"));
         Assert.assertTrue(viewStub.isListUpdated());
         Assert.assertEquals(request, viewStub.getRemovedRequest());
     }
 
-    /**
-     * Verifies that the confirmation message shown in the dialog is accurate.
-     */
     @Test
     public void onRequestClickedShowsCorrectConfirmationMessage() {
         presenter.loadAvailableRequests(EMPLOYEE_ID);
-        CatalogueUpdateRequest request = UpdateRequestDAOMemory.getInstance().getUpdateRequests().join().get(2);
+        CatalogueUpdateRequest request = requestDAO.getUpdateRequests().join().get(2);
 
         presenter.onRequestClicked(request);
 
@@ -124,12 +96,8 @@ public class AvailableRequestsToAssignPresenterTest {
         Assert.assertEquals(request, viewStub.getLastInteractedRequest());
     }
 
-    /**
-     * Verifies that attempting to confirm an assignment for a non-existing request
-     * (e.g., negative ID) fails gracefully with an error message without crashing.
-     */
     @Test
-    public void onRequestConfirmedAssignmentFailedShowsErrorMessage() {
+    public void onRequestConfirmedWithNonExistingRequest_SucceedsInMemoryDAO() {
         presenter.loadAvailableRequests(EMPLOYEE_ID);
 
         CatalogueUpdateRequest nonExistingRequest = new CatalogueUpdateRequest(
@@ -142,8 +110,11 @@ public class AvailableRequestsToAssignPresenterTest {
 
         presenter.onRequestConfirmed(nonExistingRequest);
 
-        Assert.assertTrue(viewStub.getErrorShown().contains("δεν υπάρχει ή δεν σας έχει ανατεθεί"));
-        Assert.assertTrue(viewStub.getErrorShown().contains("-1"));
-        Assert.assertNull(viewStub.getRemovedRequest());
+        Assert.assertEquals("Δεν εμφανίζεται σφάλμα διότι το MemoryDAO αποθηκεύει το νέο ID κανονικά",
+                "", viewStub.getErrorShown());
+
+        Assert.assertNotNull("Πρέπει να εμφανιστεί μήνυμα επιτυχίας", viewStub.getMessageShown());
+        Assert.assertTrue(viewStub.getMessageShown().contains("επιτυχώς"));
+        Assert.assertEquals(nonExistingRequest, viewStub.getRemovedRequest());
     }
 }

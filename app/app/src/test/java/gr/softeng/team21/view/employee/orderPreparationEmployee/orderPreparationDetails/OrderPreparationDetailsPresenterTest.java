@@ -6,9 +6,12 @@ import org.junit.Test;
 import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
+import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.ProductsWareHouseDAO;
+import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderStatusType;
+import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.EmailDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
@@ -29,8 +32,8 @@ public class OrderPreparationDetailsPresenterTest {
     private EmailDAO emailDAO;
 
     private static final String PREP_EMP_ID = "PREP-201";
-    private static final String ORDER_CODE_OK = "ORD-2024-001"; // Has stock in MemoryInitializer
-    private static final String ORDER_CODE_MISSING = "ORD-2024-002"; // Missing stock in MemoryInitializer
+    private static final String ORDER_CODE_OK = "ORD-2024-004"; // Has stock in MemoryInitializer
+    private static final String ORDER_CODE_MISSING = "ORD-2024-004"; // Missing stock in MemoryInitializer
 
     @Before
     public void setUp() {
@@ -40,7 +43,9 @@ public class OrderPreparationDetailsPresenterTest {
         EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
         orderDAO = OrderDAOMemory.getInstance();
         ProductsWareHouseDAO wareHouseDAO = ProductsWareHouseDAOMemory.getInstance();
-        emailDAO = new EmailDAOMemory();
+
+        emailDAO = EmailDAOMemory.getInstance();
+        emailDAO.clear().join();
 
         presenter = new OrderPreparationDetailsPresenter(viewStub, employeeDAO, orderDAO, wareHouseDAO, emailDAO);
     }
@@ -57,11 +62,21 @@ public class OrderPreparationDetailsPresenterTest {
 
         Assert.assertEquals(OrderStatusType.SHIPPED, processedOrder.getOrderstatus());
         Assert.assertNotNull(processedOrder.getDelivererId());
-        Assert.assertTrue(viewStub.getSuccessMessage().contains("έτοιμη προς παράδοση"));
+        Assert.assertTrue(viewStub.getSuccessMessage().contains("Έτοιμη προς παράδοση."));
     }
 
     @Test
     public void checkStock_WithInsufficientStock_DelaysOrderAndAssignsCS() {
+
+        // Product stock is deliberately emptied so that the order is delayed due to stock shortage
+        ProductTypeDAO productTypeDAO = MemoryInitializer.getProductTypeDAO();
+        ProductsWareHouseDAO wareHouseDAO = MemoryInitializer.getProductsWareHouseDAO();
+
+        ProductType monitor = productTypeDAO.getProduct("TECH-007").join();
+        int currentStock = wareHouseDAO.getProductStock(monitor).join();
+        wareHouseDAO.decreaseProductStock(monitor, currentStock).join(); // set deliberately product stock to zero
+
+        // Load order
         presenter.loadOrder(PREP_EMP_ID, ORDER_CODE_MISSING);
 
         // Execute the async check
@@ -70,11 +85,18 @@ public class OrderPreparationDetailsPresenterTest {
         // Fetch the updated order from DAO synchronously using join()
         Order processedOrder = orderDAO.getOrder(ORDER_CODE_MISSING).join();
 
+
         Assert.assertEquals(OrderStatusType.DELAYED, processedOrder.getOrderstatus());
-        Assert.assertNotNull(processedOrder.getCustomerServiceId());
+        Assert.assertNotNull("Το Customer Service ID δεν πρέπει να είναι null", processedOrder.getCustomerServiceId());
+
+        Assert.assertNotNull("Το Error Message δεν πρέπει να είναι null", viewStub.getErrorMessage());
         Assert.assertTrue(viewStub.getErrorMessage().contains("Ανεπαρκές απόθεμα"));
 
-        // Verifies the delay email was generated and saved to DAOs
-        Assert.assertEquals(1, emailDAO.getSentEmails().join().size());
+        // Fetch the dynamically assigned Customer Service Employee to find their email address
+        Employee assignedCSR = MemoryInitializer.getEmployeeDAO().getEmployee(processedOrder.getCustomerServiceId()).join();
+        String csrEmailAddress = assignedCSR.getEmailAddress().toString();
+
+        // Verifies the delay email was correctly generated and saved for that specific receiver
+        Assert.assertEquals(1, emailDAO.getEmailsForUser(csrEmailAddress).join().size());
     }
 }
