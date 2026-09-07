@@ -36,6 +36,14 @@ public interface EmailDAO {
     CompletableFuture<Void> saveEmail(EmailMessage msg);
 
     /**
+     * Deletes a specific email message from the centralized database collection asynchronously.
+     *
+     * @param msg The email message to be deleted, containing a valid emailId.
+     * @return A CompletableFuture completing when the deletion is successful.
+     */
+    CompletableFuture<Void> deleteEmail(EmailMessage msg);
+
+    /**
      * Updates an existing email message in the centralized database collection asynchronously.
      * Primarily used for state changes (e.g., marking an email as read).
      *

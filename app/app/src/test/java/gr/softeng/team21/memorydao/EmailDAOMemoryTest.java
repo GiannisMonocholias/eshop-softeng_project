@@ -104,6 +104,42 @@ public class EmailDAOMemoryTest {
     }
 
     /**
+     * Verifies that an email is successfully removed from both primary storage
+     * and the recipient index.
+     */
+    @Test
+    public void testDeleteEmailSuccess() {
+        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
+
+        // Save and verify existence
+        dao.saveEmail(msg).join();
+        assertEquals(1, dao.getEmailsForUser(to.getAddress()).join().size());
+
+        // Delete the email
+        dao.deleteEmail(msg).join();
+
+        // Verify it was removed from the index
+        ArrayList<EmailMessage> retrievedEmails = dao.getEmailsForUser(to.getAddress()).join();
+        assertTrue("The email list should be empty after deletion", retrievedEmails.isEmpty());
+    }
+
+    /**
+     * Verifies that attempting to delete an email without a valid database ID
+     * throws an exception.
+     */
+    @Test
+    public void testDeleteEmailWithoutIdThrowsException() {
+        EmailMessage msg = new EmailMessage(from, to, "Subject", "Body", new Date());
+
+        try {
+            dao.deleteEmail(msg).join();
+            fail("Expected an exception because the email lacks a valid emailId.");
+        } catch (Exception e) {
+            assertTrue(e.getCause() instanceof IllegalArgumentException || e instanceof IllegalArgumentException);
+        }
+    }
+
+    /**
      * Cleans up the memory state to ensure strict test isolation.
      */
     @After

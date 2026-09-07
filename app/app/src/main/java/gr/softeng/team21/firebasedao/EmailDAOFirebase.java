@@ -75,6 +75,23 @@ public class EmailDAOFirebase implements EmailDAO {
 
     /** {@inheritDoc} */
     @Override
+    public CompletableFuture<Void> deleteEmail(EmailMessage msg) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        if (msg == null || msg.getEmailId() == null || msg.getEmailId().isEmpty()) {
+            future.completeExceptionally(new IllegalArgumentException("Cannot delete email without a valid emailId."));
+            return future;
+        }
+
+        emailsRef.document(msg.getEmailId()).delete()
+                .addOnSuccessListener(aVoid -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+
+        return future;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public CompletableFuture<Void> updateEmail(EmailMessage msg) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 

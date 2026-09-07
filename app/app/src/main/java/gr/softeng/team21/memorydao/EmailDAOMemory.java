@@ -71,6 +71,30 @@ public class EmailDAOMemory implements EmailDAO {
 
     /** {@inheritDoc} */
     @Override
+    public CompletableFuture<Void> deleteEmail(EmailMessage msg) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        if (msg == null || msg.getEmailId() == null) {
+            future.completeExceptionally(new IllegalArgumentException("Invalid EmailMessage or missing ID"));
+            return future;
+        }
+
+        // Remove from primary storage
+        EmailMessage removed = emailsById.remove(msg.getEmailId());
+
+        // Remove from Receiver Index to maintain consistency
+        if (removed != null && removed.getTo() != null) {
+            String receiverEmail = removed.getTo().getAddress();
+            if (indexByReceiver.containsKey(receiverEmail)) {
+                indexByReceiver.get(receiverEmail).remove(removed);
+            }
+        }
+
+        future.complete(null);
+        return future;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public CompletableFuture<Void> updateEmail(EmailMessage msg) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         if (msg == null || msg.getEmailId() == null || !emailsById.containsKey(msg.getEmailId())) {
