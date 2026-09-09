@@ -2,9 +2,11 @@ package gr.softeng.team21.firebasedao;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.dao.UpdateRequestDAO;
@@ -19,6 +21,7 @@ import gr.softeng.team21.domain.CatalogueUpdateRequest;
 public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
 
     private final FirebaseFirestore db;
+    private final FirebaseFunctions functions;
     private static final String COLLECTION_NAME = "update_requests";
 
     /**
@@ -26,11 +29,10 @@ public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
      */
     public UpdateRequestDAOFirebase() {
         this.db = FirebaseFirestore.getInstance();
+        this.functions = FirebaseFunctions.getInstance();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<CatalogueUpdateRequest> getUpdateRequest(int requestId) {
         CompletableFuture<CatalogueUpdateRequest> future = new CompletableFuture<>();
@@ -40,9 +42,7 @@ public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> addUpdateRequest(CatalogueUpdateRequest request) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -62,9 +62,7 @@ public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> updateRequest(CatalogueUpdateRequest request) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -78,9 +76,7 @@ public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> deleteUpdateRequest(CatalogueUpdateRequest request) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -94,9 +90,7 @@ public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<HashMap<Integer, CatalogueUpdateRequest>> getUpdateRequests() {
         CompletableFuture<HashMap<Integer, CatalogueUpdateRequest>> future = new CompletableFuture<>();
@@ -132,12 +126,21 @@ public class UpdateRequestDAOFirebase implements UpdateRequestDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     * Throws an unsupported exception as bulk document deletion should be handled via Cloud Functions in production.
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> clear() {
-        return new CompletableFuture<>();
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        // Prepare the data to be sent to the Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("collectionPath", COLLECTION_NAME);
+
+        // Call of the Cloud Function 'deleteCollection'
+        functions.getHttpsCallable("deleteCollection")
+                .call(data)
+                .addOnSuccessListener(result -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+
+        return future;
     }
 }

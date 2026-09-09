@@ -1,16 +1,23 @@
 package gr.softeng.team21.firebasedao;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.functions.FirebaseFunctions;
+
 import java.util.concurrent.CompletableFuture;
+import java.util.Map;
+import java.util.HashMap;
+
 import gr.softeng.team21.dao.ProductReviewDao;
 import gr.softeng.team21.domain.ProductReview;
 
 public class ProductReviewDaoFirebase implements ProductReviewDao {
     private final FirebaseFirestore db;
+    private final FirebaseFunctions functions;
     private static final String COLLECTION = "reviews";
 
     public ProductReviewDaoFirebase() {
         this.db = FirebaseFirestore.getInstance();
+        this.functions = FirebaseFunctions.getInstance();
     }
 
 
@@ -54,7 +61,17 @@ public class ProductReviewDaoFirebase implements ProductReviewDao {
     @Override
     public CompletableFuture<Void> clear() {
         CompletableFuture<Void> future = new CompletableFuture<>();
-        future.completeExceptionally(new UnsupportedOperationException("Bulk delete requires Cloud Functions."));
+
+        // Prepare the data to be sent to the Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("collectionPath", COLLECTION);
+
+        // Call of the Cloud Function 'deleteCollection'
+        functions.getHttpsCallable("deleteCollection")
+                .call(data)
+                .addOnSuccessListener(result -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+
         return future;
     }
 }

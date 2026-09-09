@@ -2,9 +2,11 @@ package gr.softeng.team21.firebasedao;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.dao.OrderDAO;
@@ -18,15 +20,17 @@ import gr.softeng.team21.domain.Order;
 public class OrderDAOFirebase implements OrderDAO {
 
     private final FirebaseFirestore db;
+    private final FirebaseFunctions functions;
     private static final String COLLECTION_NAME = "orders";
 
     public OrderDAOFirebase() {
         this.db = FirebaseFirestore.getInstance();
+        this.functions = FirebaseFunctions.getInstance();
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Order> getOrder(String orderCode) {
-        // [Existing implementation remains exactly the same]
         CompletableFuture<Order> future = new CompletableFuture<>();
         db.collection(COLLECTION_NAME).document(orderCode).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) future.complete(documentSnapshot.toObject(Order.class));
@@ -35,9 +39,9 @@ public class OrderDAOFirebase implements OrderDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<HashMap<String, Order>> getOrders() {
-        // [Existing implementation remains exactly the same]
         CompletableFuture<HashMap<String, Order>> future = new CompletableFuture<>();
         db.collection(COLLECTION_NAME).get().addOnSuccessListener(queryDocumentSnapshots -> {
             HashMap<String, Order> ordersMap = new HashMap<>();
@@ -51,6 +55,7 @@ public class OrderDAOFirebase implements OrderDAO {
     }
 
     /**
+     * {@inheritDoc}
      * Uses Firestore native indexes to quickly fetch only the orders for a specific Deliverer.
      * This avoids downloading the entire collection to the client device.
      */
@@ -72,6 +77,7 @@ public class OrderDAOFirebase implements OrderDAO {
     }
 
     /**
+     *{@inheritDoc}
      * Uses Firestore native indexes to quickly fetch only the orders for a specific Preparation Employee.
      */
     @Override
@@ -91,9 +97,9 @@ public class OrderDAOFirebase implements OrderDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> addOrder(Order order) {
-        // [Existing implementation remains exactly the same]
         CompletableFuture<Void> future = new CompletableFuture<>();
         db.collection(COLLECTION_NAME).document(order.getOrdercode()).get().addOnSuccessListener(doc -> {
             if (doc.exists()) future.completeExceptionally(new IllegalArgumentException("Order exists"));
@@ -105,9 +111,7 @@ public class OrderDAOFirebase implements OrderDAO {
         return future;
     }
 
-    /**
-     * Updates an existing order document in Firestore.
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> updateOrder(Order order) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -121,9 +125,21 @@ public class OrderDAOFirebase implements OrderDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> clear() {
-        // [Existing implementation remains exactly the same]
-        return new CompletableFuture<>();
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        // Prepare the data to be sent to the Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("collectionPath", COLLECTION_NAME);
+
+        // Call of the Cloud Function 'deleteCollection'
+        functions.getHttpsCallable("deleteCollection")
+                .call(data)
+                .addOnSuccessListener(result -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+
+        return future;
     }
 }

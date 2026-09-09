@@ -2,8 +2,10 @@ package gr.softeng.team21.firebasedao;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.dao.ProductTypeDAO;
@@ -18,6 +20,7 @@ import gr.softeng.team21.domain.ProductType;
 public class ProductTypeDAOFirebase implements ProductTypeDAO {
 
     private final FirebaseFirestore db;
+    private final FirebaseFunctions functions;
     private static final String COLLECTION_NAME = "product_types";
 
     /**
@@ -25,11 +28,10 @@ public class ProductTypeDAOFirebase implements ProductTypeDAO {
      */
     public ProductTypeDAOFirebase() {
         this.db = FirebaseFirestore.getInstance();
+        this.functions = FirebaseFunctions.getInstance();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<ProductType> getProduct(String productCode) {
         CompletableFuture<ProductType> future = new CompletableFuture<>();
@@ -53,9 +55,7 @@ public class ProductTypeDAOFirebase implements ProductTypeDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> addProductType(ProductType product) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -81,9 +81,7 @@ public class ProductTypeDAOFirebase implements ProductTypeDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> deleteProductType(ProductType product) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -108,9 +106,7 @@ public class ProductTypeDAOFirebase implements ProductTypeDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> processProduct(ProductType updatedProduct) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -136,9 +132,7 @@ public class ProductTypeDAOFirebase implements ProductTypeDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<HashMap<String, ProductType>> getProducts() {
         CompletableFuture<HashMap<String, ProductType>> future = new CompletableFuture<>();
@@ -157,20 +151,19 @@ public class ProductTypeDAOFirebase implements ProductTypeDAO {
         return future;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> clear() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        db.collection(COLLECTION_NAME).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        document.getReference().delete();
-                    }
-                    future.complete(null);
-                })
+        // Prepare the data to be sent to the Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("collectionPath", COLLECTION_NAME);
+
+        // Call of the Cloud Function 'deleteCollection'
+        functions.getHttpsCallable("deleteCollection")
+                .call(data)
+                .addOnSuccessListener(result -> future.complete(null))
                 .addOnFailureListener(future::completeExceptionally);
 
         return future;

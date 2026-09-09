@@ -2,7 +2,9 @@ package gr.softeng.team21.firebasedao;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.functions.FirebaseFunctions;
 
+import java.util.Map;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
@@ -18,6 +20,7 @@ import gr.softeng.team21.domain.Employee;
 public class EmployeeDAOFirebase implements EmployeeDAO {
 
     private final FirebaseFirestore db;
+    private final FirebaseFunctions functions;
     private static final String COLLECTION_NAME = "employees";
 
     /**
@@ -25,6 +28,7 @@ public class EmployeeDAOFirebase implements EmployeeDAO {
      */
     public EmployeeDAOFirebase() {
         this.db = FirebaseFirestore.getInstance();
+        this.functions = FirebaseFunctions.getInstance();
     }
 
 
@@ -133,11 +137,14 @@ public class EmployeeDAOFirebase implements EmployeeDAO {
     public CompletableFuture<Void> clear() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        db.collection(COLLECTION_NAME).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        document.getReference().delete();
-                    }
+        // Prepare the data to be sent to the Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("collectionPath", COLLECTION_NAME);
+
+        // Call of the Cloud Function 'deleteCollection'
+        functions.getHttpsCallable("deleteCollection")
+                .call(data)
+                .addOnSuccessListener(result -> {
                     future.complete(null);
                 })
                 .addOnFailureListener(future::completeExceptionally);

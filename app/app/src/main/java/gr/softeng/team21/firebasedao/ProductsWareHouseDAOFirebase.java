@@ -3,6 +3,7 @@ package gr.softeng.team21.firebasedao;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,14 +16,17 @@ import gr.softeng.team21.domain.ProductType;
 public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
 
     private final FirebaseFirestore db;
+    private final FirebaseFunctions functions;
     private static final String PRODUCTS_COLLECTION = "warehouse_products";
     private static final String CONFIG_COLLECTION = "warehouse_config";
     private static final String CONFIG_DOC = "main_capacity";
 
     public ProductsWareHouseDAOFirebase() {
         this.db = FirebaseFirestore.getInstance();
+        this.functions = FirebaseFunctions.getInstance();
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Integer> getProductStock(ProductType type) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
@@ -45,6 +49,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Double> getCapacityUtilization() {
         return getProductStocks().thenCombine(getMaxCapacity(), (stocks, maxCap) -> {
@@ -53,6 +58,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
         });
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> insertProduct(ProductType type) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -80,6 +86,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> deleteProduct(ProductType type) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -104,6 +111,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Boolean> increaseProductStock(ProductType type, int amount) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
@@ -131,6 +139,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Boolean> decreaseProductStock(ProductType type, int amount) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
@@ -155,16 +164,19 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Boolean> sufficientStock(ProductType type, int amount) {
         return getProductStock(type).thenApply(stock -> stock != null && (stock - amount >= 0));
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Boolean> isValidAmount(int amount) {
         return CompletableFuture.completedFuture(amount > 0);
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<HashMap<ProductType, Integer>> getProductStocks() {
         CompletableFuture<HashMap<ProductType, Integer>> future = new CompletableFuture<>();
@@ -190,6 +202,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
 
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Integer> getMaxCapacity() {
         CompletableFuture<Integer> future = new CompletableFuture<>();
@@ -209,6 +222,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> setMaxCapacity(int maxCapacity) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -222,10 +236,21 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
         return future;
     }
 
+    /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> clear() {
         CompletableFuture<Void> future = new CompletableFuture<>();
-        future.completeExceptionally(new UnsupportedOperationException("Bulk delete requires Cloud Functions."));
+
+        // Prepare the data to be sent to the Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("collectionPath", PRODUCTS_COLLECTION);
+
+        // Call of the Cloud Function 'deleteCollection'
+        functions.getHttpsCallable("deleteCollection")
+                .call(data)
+                .addOnSuccessListener(result -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+
         return future;
     }
 }

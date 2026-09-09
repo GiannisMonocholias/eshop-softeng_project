@@ -4,7 +4,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.functions.FirebaseFunctions;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,6 +24,7 @@ import gr.softeng.team21.dao.EmailDAO;
 public class EmailDAOFirebase implements EmailDAO {
 
     private final CollectionReference emailsRef;
+    private final FirebaseFunctions functions;
 
     /**
      * Initializes the Firestore database reference for the centralized emails collection.
@@ -28,6 +32,7 @@ public class EmailDAOFirebase implements EmailDAO {
     public EmailDAOFirebase() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         emailsRef = db.collection("emails");
+        this.functions = FirebaseFunctions.getInstance();
     }
 
     /**
@@ -112,7 +117,19 @@ public class EmailDAOFirebase implements EmailDAO {
     @Override
     public CompletableFuture<Void> clear() {
         CompletableFuture<Void> future = new CompletableFuture<>();
-        future.completeExceptionally(new UnsupportedOperationException("Bulk delete requires Cloud Functions."));
+
+        // Prepare the data to be sent to the Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("collectionPath", "emails");
+
+        // Call of the Cloud Function 'deleteCollection'
+        functions.getHttpsCallable("deleteCollection")
+                .call(data)
+                .addOnSuccessListener(result -> {
+                    future.complete(null);
+                })
+                .addOnFailureListener(future::completeExceptionally);
+
         return future;
     }
 }
