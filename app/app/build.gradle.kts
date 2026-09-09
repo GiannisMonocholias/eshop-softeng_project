@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.firebase.firestore)
     implementation("androidx.gridlayout:gridlayout:1.0.0")
+    implementation(libs.firebase.functions)
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.ext.junit)

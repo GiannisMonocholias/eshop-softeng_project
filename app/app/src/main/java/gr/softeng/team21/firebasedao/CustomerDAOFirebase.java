@@ -2,8 +2,12 @@ package gr.softeng.team21.firebasedao;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.functions.FirebaseFunctions;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.domain.Customer;
 
@@ -14,11 +18,13 @@ import gr.softeng.team21.domain.Customer;
 public class CustomerDAOFirebase implements CustomerDAO {
 
     private final FirebaseFirestore db;
+    private final FirebaseFunctions functions;
     private static final String COLLECTION = "customers";
 
 
     public CustomerDAOFirebase() {
         this.db = FirebaseFirestore.getInstance();
+        this.functions = FirebaseFunctions.getInstance();
     }
 
 
@@ -89,11 +95,25 @@ public class CustomerDAOFirebase implements CustomerDAO {
         return future;
     }
 
-    /**{@inheritDoc}*/
+    /**
+     * {@inheritDoc}
+     * Clears the collection by invoking a Firebase Cloud Function.
+     * This avoids downloading data to the client and deletes the collection server-side.
+     */
     @Override
     public CompletableFuture<Void> clear() {
         CompletableFuture<Void> future = new CompletableFuture<>();
-        future.completeExceptionally(new UnsupportedOperationException("Bulk delete requires Cloud Functions."));
+
+        // Prepare the data to be sent to the Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("collectionPath", COLLECTION);
+
+        // Call of the Cloud Function 'deleteCollection'
+        functions.getHttpsCallable("deleteCollection")
+                .call(data)
+                .addOnSuccessListener(result -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+
         return future;
     }
 }

@@ -12,6 +12,7 @@ cardview = "1.0.0"
 recyclerview = "1.4.0"
 googleGmsGoogleServices = "4.5.0"
 firebaseFirestore = "26.4.1"
+firebaseFunctions = "22.1.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -25,6 +26,7 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-functions = { group = "com.google.firebase", name = "firebase-functions", version.ref = "firebaseFunctions" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
