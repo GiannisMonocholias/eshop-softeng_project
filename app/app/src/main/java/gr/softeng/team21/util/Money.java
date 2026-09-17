@@ -1,5 +1,7 @@
 package gr.softeng.team21.util;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.math.BigDecimal;
 
 /**
@@ -13,6 +15,8 @@ public class Money {
 
     /** The currency of the monetary amount (e.g $,€)*/
     private String currency;
+
+    public Money() {}
 
     /**
      * Creates a Money object with a BigDecimal amount.
@@ -40,6 +44,7 @@ public class Money {
      * Returns the monetary amount.
      * @return the amount
      */
+    @Exclude
     public BigDecimal getAmount() {
         return amount;
     }
@@ -48,9 +53,13 @@ public class Money {
      * Sets the monetary amount.
      * @param amount the new amount
      */
+    @Exclude
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
+
+
 
     /**
      * Returns the currency of the monetary value.

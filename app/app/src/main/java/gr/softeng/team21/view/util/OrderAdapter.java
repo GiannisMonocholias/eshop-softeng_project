@@ -76,12 +76,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         Order order = orders.get(position);
 
         // Populate basic order details
-        holder.txtOrderIdValue.setText("#" + order.getOrdercode());
+        holder.txtOrderIdValue.setText("#" + order.getOrderCode());
         holder.txtCustomerNameValue.setText(order.getShoppingCart().getCustomer().getLastname() + " " +
                 order.getShoppingCart().getCustomer().getFirstname());
         holder.txtPriceValue.setText(order.getTotal_amount().toString());
         holder.txtDateValue.setText(order.getSubmissiondate().toString());
-        holder.txtStatus.setText(order.getOrderstatus().toString());
+        holder.txtStatus.setText(order.getOrderStatus().toString());
 
         // Configure the action button text based on the adapter's functional context
         switch(type){
@@ -89,9 +89,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 holder.btnItemOrder.setText("Ανάληψη παραγγελίας");
                 break;
             case NOTIFY_ORDER_ADAPTER:
-                if(order.getOrderstatus() == OrderStatusType.DELAYED)
+                if(order.getOrderStatus() == OrderStatusType.DELAYED)
                     holder.btnItemOrder.setText("Ενημέρωση καθυστέρησης");
-                else if (order.getOrderstatus() == OrderStatusType.SHIPPED)
+                else if (order.getOrderStatus() == OrderStatusType.SHIPPED)
                     holder.btnItemOrder.setText("Ενημέρωση ετοιμότητας");
                 break;
             case ASSIGNED_ORDERS_ADAPTER:

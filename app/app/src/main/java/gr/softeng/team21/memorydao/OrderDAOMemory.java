@@ -58,23 +58,23 @@ public class OrderDAOMemory implements OrderDAO {
 
     @Override
     public CompletableFuture<Void> addOrder(Order order) {
-        if (orders.containsKey(order.getOrdercode())) {
+        if (orders.containsKey(order.getOrderCode())) {
             CompletableFuture<Void> future = new CompletableFuture<>();
             future.completeExceptionally(new IllegalArgumentException("Order exists"));
             return future;
         }
-        orders.put(order.getOrdercode(), order);
+        orders.put(order.getOrderCode(), order);
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
     public CompletableFuture<Void> updateOrder(Order order) {
-        if (order == null || order.getOrdercode() == null) {
+        if (order == null || order.getOrderCode() == null) {
             CompletableFuture<Void> future = new CompletableFuture<>();
             future.completeExceptionally(new IllegalArgumentException("Order cannot be null"));
             return future;
         }
-        orders.put(order.getOrdercode(), order);
+        orders.put(order.getOrderCode(), order);
         return CompletableFuture.completedFuture(null);
     }
 

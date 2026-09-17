@@ -36,7 +36,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
             return future;
         }
 
-        db.collection(PRODUCTS_COLLECTION).document(type.getProductname()).get()
+        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists() && doc.contains("stock")) {
                         future.complete(doc.getLong("stock").intValue());
@@ -67,7 +67,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
             future.completeExceptionally(new IllegalArgumentException("Type cannot be null"));
             return future;
         }
-        db.collection(PRODUCTS_COLLECTION).document(type.getProductname()).get()
+        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
                         future.completeExceptionally(new IllegalArgumentException("Product already exists"));
@@ -76,7 +76,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
                         Map<String, Object> data = new HashMap<>();
                         data.put("stock", 0);
 
-                        db.collection(PRODUCTS_COLLECTION).document(type.getProductname()).set(data)
+                        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).set(data)
                                 .addOnSuccessListener(v -> future.complete(null))
                                 .addOnFailureListener(future::completeExceptionally);
                     }
@@ -96,12 +96,12 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
             return future;
         }
 
-        db.collection(PRODUCTS_COLLECTION).document(type.getProductname()).get()
+        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).get()
                 .addOnSuccessListener(doc -> {
                     if (!doc.exists()) {
                         future.completeExceptionally(new NoSuchElementException("Product not in stock"));
                     } else {
-                        db.collection(PRODUCTS_COLLECTION).document(type.getProductname()).delete()
+                        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).delete()
                                 .addOnSuccessListener(v -> future.complete(null))
                                 .addOnFailureListener(future::completeExceptionally);
                     }
@@ -122,12 +122,12 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
                 return;
             }
 
-            db.collection(PRODUCTS_COLLECTION).document(type.getProductname()).get()
+            db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).get()
                     .addOnSuccessListener(doc -> {
                         if (!doc.exists()) {
                             future.complete(false);
                         } else {
-                            db.collection(PRODUCTS_COLLECTION).document(type.getProductname())
+                            db.collection(PRODUCTS_COLLECTION).document(type.getProductName())
                                     .update("stock", FieldValue.increment(amount))
                                     .addOnSuccessListener(v -> future.complete(true))
                                     .addOnFailureListener(e -> future.complete(false));
@@ -150,7 +150,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
                 return null;
             }
 
-            db.collection(PRODUCTS_COLLECTION).document(type.getProductname())
+            db.collection(PRODUCTS_COLLECTION).document(type.getProductName())
                     .update("stock", FieldValue.increment(-amount))
                     .addOnSuccessListener(v -> future.complete(true))
                     .addOnFailureListener(e -> future.complete(false));

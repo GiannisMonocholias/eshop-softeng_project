@@ -48,7 +48,7 @@ public class AvailableOrdersToAssignPresenter {
                     ArrayList<Order> newOrders = new ArrayList<>();
                     for (Order cur_order : ordersMap.values()) {
                         // Ensure order is NEW and not yet assigned to anyone
-                        if (cur_order != null && cur_order.getOrderstatus() == OrderStatusType.NEW && cur_order.getPreparationEmployeeId() == null) {
+                        if (cur_order != null && cur_order.getOrderStatus() == OrderStatusType.NEW && cur_order.getPreparationEmployeeId() == null) {
                             newOrders.add(cur_order);
                         }
                     }
@@ -91,7 +91,7 @@ public class AvailableOrdersToAssignPresenter {
 
         // Apply domain state changes locally using Foreign Keys
         order.setPreparationEmployeeId(loggedInEmployee.getEmployeeId());
-        order.setOrderstatus(OrderStatusType.PROCESSING);
+        order.setOrderStatus(OrderStatusType.PROCESSING);
 
         // Update the order in the database asynchronously (overwrite document)
         orderDAO.updateOrder(order).thenAccept(v -> {

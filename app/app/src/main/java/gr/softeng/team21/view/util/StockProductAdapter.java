@@ -62,7 +62,7 @@ public class StockProductAdapter extends RecyclerView.Adapter<StockProductAdapte
         ProductType product = item.getProductType();
 
         holder.txtCodeValue.setText(product.getProductCode());
-        holder.txtNameValue.setText(product.getProductname());
+        holder.txtNameValue.setText(product.getProductName());
 
         if (product.getPrice() != null) {
             holder.txtPriceValue.setText(product.getPrice().getAmount() + " €");

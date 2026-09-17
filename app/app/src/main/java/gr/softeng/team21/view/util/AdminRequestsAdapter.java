@@ -45,7 +45,7 @@ public class AdminRequestsAdapter extends RecyclerView.Adapter<AdminRequestsAdap
         holder.txtItemReqType.setText(request.getType().toString());
         holder.txtItemReqDate.setText(request.getSubmissionDate().toString());
 
-        String productName = request.getProduct() != null ? request.getProduct().getProductname() : "Άγνωστο Προϊόν";
+        String productName = request.getProduct() != null ? request.getProduct().getProductName() : "Άγνωστο Προϊόν";
         holder.txtItemReqProduct.setText(productName);
 
         holder.txtItemReqDesc.setText(request.getUpdateDescription());

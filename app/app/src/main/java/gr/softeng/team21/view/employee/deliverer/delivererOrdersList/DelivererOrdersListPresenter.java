@@ -49,7 +49,7 @@ public class DelivererOrdersListPresenter {
 
                 // Filter the small subset locally to find only SHIPPED orders
                 for (Order order : orders) {
-                    if (order.getOrderstatus() == OrderStatusType.SHIPPED) {
+                    if (order.getOrderStatus() == OrderStatusType.SHIPPED) {
                         activeOrders.add(order);
                     }
                 }
@@ -66,14 +66,14 @@ public class DelivererOrdersListPresenter {
     }
 
     public void onOrderConfirmed(Order order) {
-        order.setOrderstatus(OrderStatusType.DELIVERED);
+        order.setOrderStatus(OrderStatusType.DELIVERED);
 
         orderDAO.updateOrder(order).thenAccept(v -> {
             if (loggedInEmployee != null) {
                 loggedInEmployee.completeOrder();
             }
             if (view != null) {
-                view.showMessage("Order #" + order.getOrdercode() + " ολοκληρώθηκε!");
+                view.showMessage("Order #" + order.getOrderCode() + " ολοκληρώθηκε!");
                 view.removeOrderFromList(order);
             }
         }).exceptionally(e -> {

@@ -54,7 +54,7 @@ public class AdminDataPresenter {
     public void onSaveClicked() {
         currentAdmin.setUsername(view.getUsername());
         currentAdmin.setPassword(view.getPassword());
-        currentAdmin.setEmailaddress(new EmailAddress(view.getEmail()));
+        currentAdmin.setEmailAddress(new EmailAddress(view.getEmail()));
         currentAdmin.setFirstname(view.getFirstName());
         currentAdmin.setLastname(view.getLastName());
         currentAdmin.setPhonenumber(view.getPhone());

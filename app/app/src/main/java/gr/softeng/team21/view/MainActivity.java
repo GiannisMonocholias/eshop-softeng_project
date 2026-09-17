@@ -2,19 +2,23 @@ package gr.softeng.team21.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.concurrent.CompletableFuture;
+
 import gr.softeng.team21.R;
-import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.view.user.login.LoginActivity;
+import gr.softeng.team21.firebasedao.FirebaseInitializer;
 
 /**
  * The main activity of the application.
- * Initializes the in-memory data and provides navigation to the Login screen.
+ * Initializes the Firebase data and provides navigation to the Login screen.
  * @author PAVLOS GRATSANIS
  */
 public class MainActivity extends AppCompatActivity {
@@ -22,18 +26,6 @@ public class MainActivity extends AppCompatActivity {
     /** Button to navigate to the login screen */
     private Button btnEntrance;
 
-    /** Flag to ensure data is prepared only once across the application lifecycle */
-    private static boolean isDataPrepared = false;
-
-    /**
-     * Called when the activity is first created.
-     * Sets up the UI, initializes the memory data (if not already done),
-     * and configures the entrance button.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after
-     * previously being shut down then this Bundle contains the data it most
-     * recently supplied in onSaveInstanceState(Bundle).
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +38,23 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        if (!isDataPrepared) {
-            MemoryInitializer.prepareData();
-            isDataPrepared = true;
-        }
+
+        // ========================================================
+        // DATABASE INITIALIZATION
+        // ========================================================
+        CompletableFuture.runAsync(() -> {
+            Log.d("FIREBASE_INIT", "Ξεκινάει η μεταφορά δεδομένων στο Firebase. Παρακαλώ περιμένετε...");
+
+            FirebaseInitializer.prepareData();
+
+            Log.d("FIREBASE_INIT", "ΤΕΛΕΙΑ! Τα δεδομένα αρχικοποιήθηκαν επιτυχώς στο Firestore.");
+        }).exceptionally(e -> {
+            Log.e("FIREBASE_INIT", "Σφάλμα κατά την αρχικοποίηση: " + e.getMessage());
+            return null;
+        });
+        // ========================================================
+
+
         btnEntrance = findViewById(R.id.btnMainActivityEntrance);
         btnEntrance.setOnClickListener(v -> Entrance());
     }

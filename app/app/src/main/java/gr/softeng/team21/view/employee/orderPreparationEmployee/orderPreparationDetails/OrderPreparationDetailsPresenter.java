@@ -61,7 +61,7 @@ public class OrderPreparationDetailsPresenter {
                         this.orderToPrepare = order;
                         String customerFullName = order.getShoppingCart().getCustomer().getFirstname() + " " + order.getShoppingCart().getCustomer().getLastname();
                         if (view != null) {
-                            view.setOrderDetails(ordercode, customerFullName, order.getSubmissiondate().toString(), order.getTotal_amount().toString(), order.getOrderstatus());
+                            view.setOrderDetails(ordercode, customerFullName, order.getSubmissiondate().toString(), order.getTotal_amount().toString(), order.getOrderStatus());
                             view.updateCartItems(new ArrayList<>(order.getShoppingCart().getItems()));
                         }
                     } else {
@@ -112,7 +112,7 @@ public class OrderPreparationDetailsPresenter {
 
                 // When stock is decreased, assign Deliverer and complete
                 CompletableFuture.allOf(decreaseFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
-                    orderToPrepare.setOrderstatus(OrderStatusType.SHIPPED);
+                    orderToPrepare.setOrderStatus(OrderStatusType.SHIPPED);
                     loggedInEmployee.incrementOrdersPrepared();
 
                     assignEmployeeAndComplete(Deliverer.class, orderToPrepare.getDelivererId(), (assignedEmployee) -> {
@@ -126,7 +126,7 @@ public class OrderPreparationDetailsPresenter {
 
             } else {
                 // STOCK MISSING -> Assign Customer Service & Delay
-                orderToPrepare.setOrderstatus(OrderStatusType.DELAYED);
+                orderToPrepare.setOrderStatus(OrderStatusType.DELAYED);
                 loggedInEmployee.incrementUpdateReserveRequests();
 
                 assignEmployeeAndComplete(CustomerServiceEmployee.class, orderToPrepare.getCustomerServiceId(), (assignedEmployee) -> {
@@ -176,7 +176,7 @@ public class OrderPreparationDetailsPresenter {
     private void saveOrderAndNotifyView(String message) {
         orderDAO.updateOrder(orderToPrepare).thenAccept(v -> {
             if (view != null) {
-                if (orderToPrepare.getOrderstatus() == OrderStatusType.DELAYED) view.showErrorMessage(message);
+                if (orderToPrepare.getOrderStatus() == OrderStatusType.DELAYED) view.showErrorMessage(message);
                 else view.showSuccessMessage(message);
             }
         }).exceptionally(e -> {
@@ -188,7 +188,7 @@ public class OrderPreparationDetailsPresenter {
     private String buildShortageMessage(Map<ProductType, Integer> insufficientStocks) {
         StringBuilder msg = new StringBuilder("Παρακαλώ ενημερώστε τον πελάτη για καθυστέρηση λόγω έλλειψης:\n");
         for (ProductType type : insufficientStocks.keySet()) {
-            msg.append(type.getProductname()).append(" | Λείπουν: ").append(insufficientStocks.get(type)).append("\n");
+            msg.append(type.getProductName()).append(" | Λείπουν: ").append(insufficientStocks.get(type)).append("\n");
         }
         return msg.toString();
     }

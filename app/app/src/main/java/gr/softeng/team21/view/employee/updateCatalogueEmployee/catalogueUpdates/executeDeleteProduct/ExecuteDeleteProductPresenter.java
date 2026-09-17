@@ -56,7 +56,7 @@ public class ExecuteDeleteProductPresenter {
                                 ? currentRequest.getProduct().getPrice().toString() : "-";
                         if (view != null) {
                             view.setProductDetails(
-                                    currentRequest.getProduct().getProductname(),
+                                    currentRequest.getProduct().getProductName(),
                                     currentRequest.getProduct().getProductCode(),
                                     currentRequest.getProduct().getDescription(),
                                     priceStr

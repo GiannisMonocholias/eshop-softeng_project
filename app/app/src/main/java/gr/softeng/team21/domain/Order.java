@@ -9,12 +9,12 @@ import gr.softeng.team21.util.Money;
  * @author PAVLOS GRATSANIS
  */
 public class Order {
-    private String ordercode;
+    private String orderCode;
     private Date submissiondate;
     private Date deliverydate;
-    private OrderStatusType orderstatus;
+    private OrderStatusType orderStatus;
     private boolean paid;
-    private PaymentType paymentmethod;
+    private PaymentType paymentMethod;
     private ShoppingCart shoppingCart;
     private Money total_amount;
 
@@ -43,12 +43,12 @@ public class Order {
      */
     public Order(String ordercode, Date submissiondate, OrderStatusType orderstatus,
                  boolean paid, PaymentType paymentmethod, Date deliverydate, ShoppingCart shoppingCart) {
-        this.ordercode = ordercode;
+        this.orderCode = ordercode;
         this.submissiondate = submissiondate;
         this.deliverydate = deliverydate;
-        this.orderstatus = orderstatus;
+        this.orderStatus = orderstatus;
         this.paid = paid;
-        this.paymentmethod = paymentmethod;
+        this.paymentMethod = paymentmethod;
         this.shoppingCart = shoppingCart.copy();
     }
 
@@ -64,23 +64,22 @@ public class Order {
     public Money getTotal_amount() { return total_amount; }
     public void setTotal_amount(Money total_amount) { this.total_amount = total_amount; }
 
-    public String getOrdercode() { return ordercode; }
-    public void setOrdercode(String ordercode) { this.ordercode = ordercode; }
+    public String getOrderCode() { return orderCode; }
+    public void setOrderCode(String ordercode) { this.orderCode = ordercode; }
 
     public Date getSubmissiondate() { return submissiondate; }
-    public void setSubmissiondate(Date submissiondate) { this.submissiondate = submissiondate; }
+    public void setSubmissionDate(Date submissiondate) { this.submissiondate = submissiondate; }
 
     public Date getDeliverydate() { return deliverydate; }
-    public void setDeliverydate(Date deliverydate) { this.deliverydate = deliverydate; }
+    public void setDeliveryDate(Date deliverydate) { this.deliverydate = deliverydate; }
 
-    public OrderStatusType getOrderstatus() { return orderstatus; }
-    public void setOrderstatus(OrderStatusType orderstatus) { this.orderstatus = orderstatus; }
-
-    public boolean getPaid() { return paid; }
+    public OrderStatusType getOrderStatus() { return orderStatus; }
+    public void setOrderStatus(OrderStatusType orderstatus) { this.orderStatus = orderstatus; }
+    public boolean isPaid() { return paid; }
     public void setPaid(boolean paid) { this.paid = paid; }
 
-    public PaymentType getPaymentmethod() { return paymentmethod; }
-    public void setPaymentmethod(PaymentType paymentmethod) { this.paymentmethod = paymentmethod; }
+    public PaymentType getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(PaymentType paymentmethod) { this.paymentMethod = paymentmethod; }
 
     public ShoppingCart getShoppingCart() { return shoppingCart; }
     public void setShoppingCart(ShoppingCart shoppingCart) { this.shoppingCart = shoppingCart; }

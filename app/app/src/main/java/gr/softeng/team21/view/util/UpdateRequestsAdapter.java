@@ -78,7 +78,7 @@ public class UpdateRequestsAdapter extends RecyclerView.Adapter<UpdateRequestsAd
         if (request.getType() != null) holder.txtType.setText(request.getType().toString());
 
         if (request.getProduct() != null) {
-            holder.txtProductName.setText(request.getProduct().getProductname());
+            holder.txtProductName.setText(request.getProduct().getProductName());
             holder.txtProductCode.setText("Code: " + request.getProduct().getProductCode());
         }
 

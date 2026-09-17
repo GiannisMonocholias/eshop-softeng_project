@@ -129,7 +129,7 @@ public abstract class User {
     /**
      * @param emailaddress the email address object to set.
      */
-    public void setEmailaddress(EmailAddress emailaddress) {
+    public void setEmailAddress(EmailAddress emailaddress) {
         this.emailaddress = emailaddress;
     }
 }

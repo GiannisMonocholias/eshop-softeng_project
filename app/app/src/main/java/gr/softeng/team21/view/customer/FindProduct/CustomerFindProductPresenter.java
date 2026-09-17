@@ -75,7 +75,7 @@ public class CustomerFindProductPresenter {
         } else {
             String searchText = txt.toLowerCase().trim();
             for (ProductType item : allProducts) {
-                if (item.getProductname().toLowerCase().contains(searchText)) {
+                if (item.getProductName().toLowerCase().contains(searchText)) {
                     filteredList.add(item);
                 }
             }
