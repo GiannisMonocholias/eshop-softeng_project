@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.User;
 
 /**
@@ -117,7 +118,22 @@ public class UserCredentialsDAOFirebase implements UserCredentialsDAO {
         db.collection(COLLECTION_NAME).document(username).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        User user = documentSnapshot.toObject(User.class);
+                        User user =null;
+                        if (user == null) {
+                            if (documentSnapshot.contains("customer_id") ) {
+                                user = documentSnapshot.toObject(Customer.class);
+                            } else if (documentSnapshot.contains("assignedOrdersCount")) {
+                                user = documentSnapshot.toObject(gr.softeng.team21.domain.Deliverer.class);
+                            } else if (documentSnapshot.contains("totalOrdersPreparations")) {
+                                user = documentSnapshot.toObject(gr.softeng.team21.domain.OrderPreparationEmployee.class);
+                            } else if (documentSnapshot.contains("totalCatalogueUpdates") ) {
+                                user = documentSnapshot.toObject(gr.softeng.team21.domain.UpdateCatalogueEmployee.class);
+                            } else if (documentSnapshot.contains("totalResponses")) {
+                                user = documentSnapshot.toObject(gr.softeng.team21.domain.CustomerServiceEmployee.class);
+                            } else {
+                                user = documentSnapshot.toObject(gr.softeng.team21.domain.Admin.class);
+                            }
+                        }
                         if (user != null && user.getPassword().equals(password)) {
                             future.complete(user);
                         } else {

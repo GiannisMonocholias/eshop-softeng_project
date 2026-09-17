@@ -2,6 +2,7 @@ package gr.softeng.team21.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +10,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import gr.softeng.team21.R;
+import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.memorydao.MemoryInitializer;
+import gr.softeng.team21.util.Date;
 import gr.softeng.team21.view.user.login.LoginActivity;
 
 /**
@@ -23,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnEntrance;
 
     /** Flag to ensure data is prepared only once across the application lifecycle */
-    private static boolean isDataPrepared = false;
+//    private static boolean isDataPrepared = false;
 
     /**
      * Called when the activity is first created.
@@ -46,10 +52,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        if (!isDataPrepared) {
-            MemoryInitializer.prepareData();
-            isDataPrepared = true;
-        }
+
+//        if (!isDataPrepared) {
+//            MemoryInitializer.prepareData();
+//            isDataPrepared = true;
+//        }
         btnEntrance = findViewById(R.id.btnMainActivityEntrance);
         btnEntrance.setOnClickListener(v -> Entrance());
     }

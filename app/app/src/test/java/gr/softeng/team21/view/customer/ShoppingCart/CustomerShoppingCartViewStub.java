@@ -13,6 +13,7 @@ import gr.softeng.team21.domain.CartItem;
 public class CustomerShoppingCartViewStub implements CustomerShoppingCartView {
     private String message;
     private int goToPaymentCount = 0;
+    private int goToProductReviewsCount = 0;
     private String TotalPrice;
     private ArrayList<CartItem> CartItems;
     private int showCartItemsCount = 0;
@@ -61,7 +62,9 @@ public class CustomerShoppingCartViewStub implements CustomerShoppingCartView {
     public int getGoToPaymentCount() {
         return goToPaymentCount;
     }
-
+    public int getGoToProductReviewsCount() {
+        return goToProductReviewsCount;
+    }
     /**
      * {@inheritDoc}
      * Stores the message in a variable for verification.
@@ -78,6 +81,11 @@ public class CustomerShoppingCartViewStub implements CustomerShoppingCartView {
     @Override
     public void goToPayment() {
         goToPaymentCount++;
+    }
+
+    @Override
+    public void goToProductReviews() {
+        goToProductReviewsCount++;
     }
 
     /**

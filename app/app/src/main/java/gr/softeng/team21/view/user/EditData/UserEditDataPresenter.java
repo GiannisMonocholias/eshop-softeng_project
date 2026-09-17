@@ -109,7 +109,7 @@ public class UserEditDataPresenter {
 
         currentUser.setUsername(username);
         currentUser.setPassword(password);
-        currentUser.setEmailaddress(new EmailAddress(email));
+        currentUser.setEmailAddress(new EmailAddress(email));
         currentUser.setFirstname(fName);
         currentUser.setLastname(lName);
         currentUser.setPhonenumber(phone);

@@ -12,6 +12,8 @@ public class EmailAddress {
     }
     public void setAddress(String newvalue) {this.value = newvalue;}
 
+    public EmailAddress() {
+    }
 
     @Override
     public boolean equals(Object other) {

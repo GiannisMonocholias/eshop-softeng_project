@@ -1,6 +1,7 @@
 package gr.softeng.team21.firebasedao;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,6 +21,23 @@ public class ProductReviewDaoFirebase implements ProductReviewDao {
         this.functions = FirebaseFunctions.getInstance();
     }
 
+    @Override
+    public CompletableFuture<HashMap<String, ProductReview>> getReviews() {
+        CompletableFuture<HashMap<String, ProductReview>> future = new CompletableFuture<>();
+
+        db.collection(COLLECTION).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    HashMap<String, ProductReview> map = new HashMap<>();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        ProductReview review = doc.toObject(ProductReview.class);
+                        map.put(review.getProductReviewId(), review);
+                    }
+                    future.complete(map);
+                })
+                .addOnFailureListener(future::completeExceptionally);
+
+        return future;
+    }
 
     @Override
     public CompletableFuture<ProductReview> getReview(String id) {
