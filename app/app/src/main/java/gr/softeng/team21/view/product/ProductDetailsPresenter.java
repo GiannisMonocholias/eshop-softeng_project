@@ -125,4 +125,11 @@ public class ProductDetailsPresenter {
             if (view != null) view.showQuantity(1);
         }
     }
+
+    public void productReviewsClicked() {
+        if (view != null) {
+            view.goToProductReviews();
+            view.showMessage("Μετάβαση στις Αξιολογήσεις...");
+        }
+    }
 }

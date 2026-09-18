@@ -9,6 +9,8 @@ package gr.softeng.team21.view.product;
 public class ProductDetailsViewStub implements ProductDetailsView {
 
     private String name, code, price, description;
+    private int goToProductReviewsCount = 0;
+
     private int quantity;
     private String message;
     private int addToCartCount = 0;
@@ -62,6 +64,11 @@ public class ProductDetailsViewStub implements ProductDetailsView {
         this.CartCount++;
     }
 
+    @Override
+    public void goToProductReviews() {
+        goToProductReviewsCount++;
+    }
+
     /**
      * Returns the product name
      * Used for verification in tests.
@@ -110,4 +117,8 @@ public class ProductDetailsViewStub implements ProductDetailsView {
      * @return The cart navigation count.
      */
     public int getCartCount() { return CartCount; }
+    public int getGoToProductReviewsCount() {
+        return goToProductReviewsCount;
+    }
+
 }

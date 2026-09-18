@@ -8,15 +8,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.Map;
 import java.util.HashMap;
 
-import gr.softeng.team21.dao.ProductReviewDao;
+import gr.softeng.team21.dao.ProductReviewsDao;
 import gr.softeng.team21.domain.ProductReview;
 
-public class ProductReviewDaoFirebase implements ProductReviewDao {
+public class ProductReviewsDaoFirebase implements ProductReviewsDao {
     private final FirebaseFirestore db;
     private final FirebaseFunctions functions;
     private static final String COLLECTION = "reviews";
 
-    public ProductReviewDaoFirebase() {
+    public ProductReviewsDaoFirebase() {
         this.db = FirebaseFirestore.getInstance();
         this.functions = FirebaseFunctions.getInstance();
     }
@@ -44,6 +44,25 @@ public class ProductReviewDaoFirebase implements ProductReviewDao {
         CompletableFuture<ProductReview> future = new CompletableFuture<>();
         db.collection(COLLECTION).document(id).get()
                 .addOnSuccessListener(doc -> future.complete(doc.exists() ? doc.toObject(ProductReview.class) : null))
+                .addOnFailureListener(future::completeExceptionally);
+        return future;
+    }
+
+    @Override
+    public CompletableFuture<HashMap<String, ProductReview>> getReviewsByProduct(String productCode) {
+        CompletableFuture<HashMap<String, ProductReview>> future = new CompletableFuture<>();
+
+        db.collection(COLLECTION)
+                .whereEqualTo("productCode", productCode)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    HashMap<String, ProductReview> map = new HashMap<>();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        ProductReview review = doc.toObject(ProductReview.class);
+                        map.put(review.getProductReviewId(), review);
+                    }
+                    future.complete(map);
+                })
                 .addOnFailureListener(future::completeExceptionally);
         return future;
     }

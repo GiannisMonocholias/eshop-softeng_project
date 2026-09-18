@@ -22,7 +22,6 @@ import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;
 import gr.softeng.team21.view.customer.Payment.CustomerPaymentActivity;
-import gr.softeng.team21.view.customer.Reviews.ProductReviewActivity;
 import gr.softeng.team21.view.util.ShoppingCartAdapter;
 
 /**
@@ -106,14 +105,7 @@ public class CustomerShoppingCartActivity extends AppCompatActivity implements S
         });
     }
 
-    @Override
-    public void goToProductReviews() {
-        runOnUiThread(() -> {
-            Intent intent = new Intent(CustomerShoppingCartActivity.this, ProductReviewActivity.class);
-            intent.putExtra("CUSTOMER_ID", customerId);//tha to do
-            startActivity(intent);
-        });
-    }
+
 
     /** {@inheritDoc} */
     @Override

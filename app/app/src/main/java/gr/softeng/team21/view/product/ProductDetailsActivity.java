@@ -2,6 +2,7 @@ package gr.softeng.team21.view.product;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
 import gr.softeng.team21.view.customer.ShoppingCart.CustomerShoppingCartActivity;
+import gr.softeng.team21.view.product.Reviews.ProductReviewsFragment;
 
 /**
  * Activity responsible for displaying the detailed information of a specific product.
@@ -31,10 +33,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
 
     private TextView tvName, tvCode, tvPrice, tvDescription, tvQuantity;
     private ImageView imgProduct;
-    private Button btnAddToCart, btnQuantityminus, btnQuantityplus;
+    private Button btnAddToCart, btnQuantityminus, btnQuantityplus,btnProductReviews;
 
     private ProductDetailsPresenter presenter;
-    private String customerId;
+    private String customerId,productCode;
 
     /**
      * Initializes the activity, sets the UI layout, retrieves the customer and product IDs from the Intent,
@@ -54,7 +56,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         });
 
         customerId = getIntent().getStringExtra("CUSTOMER_ID");
-        String productCode = getIntent().getStringExtra("PRODUCT_CODE");
+         productCode = getIntent().getStringExtra("PRODUCT_CODE");
 
         // Dependency Injection for Firebase DAOs
         CustomerDAO customerDAO = new CustomerDAOFirebase();
@@ -71,13 +73,14 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
         btnAddToCart = findViewById(R.id.btnProductDetailActivityAddCart);
         btnQuantityminus = findViewById(R.id.btnProductDetailActivityQuantityMinus);
         btnQuantityplus = findViewById(R.id.btnProductDetailActivityQuantityPlus);
-
+        btnProductReviews=findViewById(R.id.btnProductDetailViewReviews);
         // Initiate asynchronous loading sequence
         presenter.loadInitialData(customerId, productCode);
 
         btnAddToCart.setOnClickListener(v -> presenter.addToCartClicked());
         btnQuantityplus.setOnClickListener(v -> presenter.plusClicked());
         btnQuantityminus.setOnClickListener(v -> presenter.minusClicked());
+        btnProductReviews.setOnClickListener(v->presenter.productReviewsClicked());
     }
 
     /**
@@ -138,10 +141,19 @@ public class ProductDetailsActivity extends AppCompatActivity implements Product
             Intent intent = new Intent(ProductDetailsActivity.this, CustomerShoppingCartActivity.class);
             intent.putExtra("CUSTOMER_ID", customerId);
             startActivity(intent);
-            // Το μήνυμα καλείται ξεχωριστά από τον presenter μέσω showMessage
         });
     }
-
+    @Override
+    public void goToProductReviews() {
+        runOnUiThread(() -> {
+            findViewById(R.id.fragment_container_reviews).setVisibility(View.VISIBLE);
+            ProductReviewsFragment fragment = ProductReviewsFragment.newInstance(productCode);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container_reviews, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+    }
     /**
      * Helper method for a specific image from the drawable folder based on the product code string.
      * @param code The product code.

@@ -38,4 +38,8 @@ public interface ProductDetailsView {
      * Navigates to the ShoppingCart activity.
      */
     void goToCart();
+    /**
+     * Navigates to the Product Reviews screen.
+     */
+    void goToProductReviews();
 }

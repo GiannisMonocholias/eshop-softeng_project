@@ -20,10 +20,7 @@ public interface CustomerShoppingCartView {
      * Navigates to the payment screen.
      */
     void goToPayment();
-    /**
-     * Navigates to the Product Reviews screen.
-     */
-    void goToProductReviews();
+
 
     /**
      * Displays the calculated total price of the cart.

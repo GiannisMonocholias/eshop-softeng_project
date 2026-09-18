@@ -1,19 +1,26 @@
 package gr.softeng.team21.domain;
 
+import gr.softeng.team21.util.Date;
+
 public class ProductReview {
 
     private int stars;
     private String comment;
-    private String ProductReviewId;
-    private int productId;
-    private int customerId;
+    private String productReviewId;
+    private String productCode;
+    private String customerId;
+    private Date reviewDate;
+
+    public ProductReview() {
+    }
 
 
-    public ProductReview(int stars, int customerId, int productId, String productReviewId, String comment) {
+    public ProductReview(int stars, Date reviewDate, String customerId, String productCode, String productReviewId,String comment) {
         this.stars = stars;
+        this.reviewDate = reviewDate;
         this.customerId = customerId;
-        this.productId = productId;
-        ProductReviewId = productReviewId;
+        this.productCode = productCode;
+        this.productReviewId = productReviewId;
         this.comment = comment;
     }
 
@@ -33,28 +40,37 @@ public class ProductReview {
         this.comment = comment;
     }
 
-
     public String getProductReviewId() {
-        return ProductReviewId;
+        return productReviewId;
     }
 
     public void setProductReviewId(String productReviewId) {
-        ProductReviewId = productReviewId;
+        this.productReviewId = productReviewId;
     }
 
-    public int getProductId() {
-        return productId;
+    public String getProductCode() {
+        return productCode;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
-    public int getCustomerId() {
+    public Date getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(Date reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
+
+
 }

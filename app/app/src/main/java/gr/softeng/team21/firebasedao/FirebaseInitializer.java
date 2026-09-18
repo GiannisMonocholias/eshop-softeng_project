@@ -2,14 +2,6 @@ package gr.softeng.team21.firebasedao;
 
 import java.math.BigDecimal;
 
-import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
-import gr.softeng.team21.firebasedao.EmailDAOFirebase;
-import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
-import gr.softeng.team21.firebasedao.OrderDAOFirebase;
-import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
-import gr.softeng.team21.firebasedao.ProductsWareHouseDAOFirebase;
-import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
-import gr.softeng.team21.firebasedao.UserCredentialsDAOFirebase;
 
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmailDAO;
