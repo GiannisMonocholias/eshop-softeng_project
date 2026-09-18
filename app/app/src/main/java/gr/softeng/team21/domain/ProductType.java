@@ -46,7 +46,7 @@ public class ProductType {
      * Returns the name of the product.
      * @return the product name
      */
-    public String getProductname() {
+    public String getProductName() {
         return productname;
     }
 
@@ -54,7 +54,7 @@ public class ProductType {
      * Sets the name of the product.
      * @param productname the new product name
      */
-    public void setProductname(String productname) {
+    public void setProductName(String productname) {
         this.productname = productname;
     }
 
@@ -102,7 +102,7 @@ public class ProductType {
      * Sets the unique code of the product.
      * @param productcode the new product code
      */
-    public void setProductcode(String productcode) {
+    public void setProductCode(String productcode) {
         this.productcode = productcode;
     }
 

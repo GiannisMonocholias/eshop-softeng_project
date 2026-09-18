@@ -1,21 +1,18 @@
 package gr.softeng.team21.util;
 
+import com.google.firebase.firestore.Exclude;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a date and provides basic date operations.
-
  * @author PAVLOS GRATSANIS
-
  */
 public class Date implements Comparable<Date> {
 
     /** The internal LocalDate representation */
     private LocalDate date;
 
-    /**Creates a Date object initialized to the current system date.*/
+    /** Creates a Date object initialized to the current system date. */
     public Date() {
         this.date = LocalDate.now();
     }
@@ -44,6 +41,7 @@ public class Date implements Comparable<Date> {
      * Returns the day of the month.
      * @return the day
      */
+    @Exclude
     public int getDay() {
         return date.getDayOfMonth();
     }
@@ -52,6 +50,7 @@ public class Date implements Comparable<Date> {
      * Returns the month of the year.
      * @return the month
      */
+    @Exclude
     public int getMonth() {
         return date.getMonthValue();
     }
@@ -60,9 +59,23 @@ public class Date implements Comparable<Date> {
      * Returns the year.
      * @return the year
      */
+    @Exclude
     public int getYear() {
         return date.getYear();
     }
+
+    /** Used exclusively from Firebase for permanent storage.*/
+    public String getFirebaseDate() {
+        return date != null ? date.toString() : null;
+    }
+
+    /** Used exclusively from Firebase for retrieval. */
+    public void setFirebaseDate(String firebaseDate) {
+        if (firebaseDate != null && !firebaseDate.isEmpty()) {
+            this.date = LocalDate.parse(firebaseDate);
+        }
+    }
+    // ========================================================
 
     /**
      * Compares this Date object with another Date.

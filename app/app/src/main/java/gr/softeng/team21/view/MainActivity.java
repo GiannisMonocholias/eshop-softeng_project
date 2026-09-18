@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.concurrent.CompletableFuture;
+
 import gr.softeng.team21.R;
 import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.contact.EmailAddress;
@@ -17,10 +20,11 @@ import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.view.user.login.LoginActivity;
+import gr.softeng.team21.firebasedao.FirebaseInitializer;
 
 /**
  * The main activity of the application.
- * Initializes the in-memory data and provides navigation to the Login screen.
+ * Initializes the Firebase data and provides navigation to the Login screen.
  * @author PAVLOS GRATSANIS
  */
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +61,23 @@ public class MainActivity extends AppCompatActivity {
 //            MemoryInitializer.prepareData();
 //            isDataPrepared = true;
 //        }
+
+        // ========================================================
+        // DATABASE INITIALIZATION
+        // ========================================================
+        CompletableFuture.runAsync(() -> {
+            Log.d("FIREBASE_INIT", "Ξεκινάει η μεταφορά δεδομένων στο Firebase. Παρακαλώ περιμένετε...");
+
+            FirebaseInitializer.prepareData();
+
+            Log.d("FIREBASE_INIT", "ΤΕΛΕΙΑ! Τα δεδομένα αρχικοποιήθηκαν επιτυχώς στο Firestore.");
+        }).exceptionally(e -> {
+            Log.e("FIREBASE_INIT", "Σφάλμα κατά την αρχικοποίηση: " + e.getMessage());
+            return null;
+        });
+        // ========================================================
+
+
         btnEntrance = findViewById(R.id.btnMainActivityEntrance);
         btnEntrance.setOnClickListener(v -> Entrance());
     }

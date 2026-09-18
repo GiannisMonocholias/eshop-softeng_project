@@ -64,7 +64,7 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
     public void onBindViewHolder(@NonNull ChangeQuantityProductsAdapter.ViewHolder holder, int position) {
         ProductType product = products.get(position);
 
-        holder.txtProductName.setText(product.getProductname());
+        holder.txtProductName.setText(product.getProductName());
         holder.txtProductCode.setText("Κωδικός: " + product.getProductCode());
 
         // 1. Display Current Stock

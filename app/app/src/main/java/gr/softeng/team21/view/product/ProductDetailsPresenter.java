@@ -107,7 +107,7 @@ public class ProductDetailsPresenter {
                 this.foundProduct = product;
                 if (foundProduct != null && view != null) {
                     view.showProductDetails(
-                            foundProduct.getProductname(),
+                            foundProduct.getProductName(),
                             foundProduct.getProductCode(),
                             foundProduct.getPrice().toString(),
                             foundProduct.getDescription(),

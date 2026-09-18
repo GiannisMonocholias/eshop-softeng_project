@@ -70,7 +70,7 @@ public class ExecuteProcessProductPresenter {
                         String priceStr = (productToEdit.getPrice() != null) ?
                                 String.valueOf(productToEdit.getPrice().getAmount()) : "";
 
-                        view.setProductData(productToEdit.getProductCode(), productToEdit.getProductname(),
+                        view.setProductData(productToEdit.getProductCode(), productToEdit.getProductName(),
                                 priceStr, productToEdit.getDescription());
                     }
 
@@ -121,8 +121,8 @@ public class ExecuteProcessProductPresenter {
         Money newMoney = new Money(BigDecimal.valueOf(Double.parseDouble(newPriceStr)), "€");
 
         // Apply domain updates
-        productToEdit.setProductcode(newCode);
-        productToEdit.setProductname(newName);
+        productToEdit.setProductCode(newCode);
+        productToEdit.setProductName(newName);
         productToEdit.setDescription(newDesc);
         productToEdit.setPrice(newMoney);
 

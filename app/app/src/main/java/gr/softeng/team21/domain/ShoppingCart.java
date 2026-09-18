@@ -1,5 +1,7 @@
 package gr.softeng.team21.domain;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.ArrayList;
 
 import gr.softeng.team21.util.Money;
@@ -14,7 +16,7 @@ public class ShoppingCart {
     private Customer customer;
 
     /** The total cost of the shopping cart */
-    private Money totalcost;
+    private Money totalCost;
 
     /** The list of cart items in the shopping cart */
     private ArrayList<CartItem> items = new ArrayList<>();
@@ -63,6 +65,10 @@ public class ShoppingCart {
         return items;
     }
 
+    public void setItems(ArrayList<CartItem> items) {
+        this.items = items;
+    }
+
     /**
      * Adds a cart item to the shopping cart.
      * @param item the cart item to add
@@ -91,17 +97,22 @@ public class ShoppingCart {
         } else {
             currency = "$";
         }
-        totalcost = new Money(0, currency);
+        totalCost = new Money(0, currency);
         for (CartItem item : items) {
-            totalcost = totalcost.add(item.getSubtotal_amount());
+            totalCost = totalCost.add(item.getSubtotal_amount());
         }
-        return totalcost;
+        return totalCost;
+    }
+
+    public void setTotalCost(Money totalCost) {
+        this.totalCost = totalCost;
     }
 
     /**
      * Returns the customer who owns this shopping cart.
      * @return the customer
      */
+    @Exclude
     public Customer getCustomer() {
         return customer;
     }
@@ -110,6 +121,7 @@ public class ShoppingCart {
      * Sets the customer who owns this shopping cart.
      * @param customer the new customer
      */
+    @Exclude
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
@@ -118,6 +130,7 @@ public class ShoppingCart {
      * Returns the order associated with this shopping cart.
      * @return the order
      */
+    @Exclude
     public Order getOrder() {
         return order;
     }
@@ -126,6 +139,7 @@ public class ShoppingCart {
      * Sets the order associated with this shopping cart.
      * @param order the new order
      */
+    @Exclude
     public void setOrder(Order order) {
         this.order = order;
     }

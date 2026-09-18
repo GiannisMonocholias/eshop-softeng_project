@@ -63,7 +63,7 @@ public class OrderStatusPresenter {
             return;
         }
 
-        OrderStatusType status = order.getOrderstatus();
+        OrderStatusType status = order.getOrderStatus();
         String confirmationMessage = "";
 
         switch (status) {
@@ -85,7 +85,7 @@ public class OrderStatusPresenter {
         if (loggedInEmployee == null) return;
 
         Customer customer = order.getShoppingCart().getCustomer();
-        boolean isDelay = (order.getOrderstatus() == OrderStatusType.DELAYED);
+        boolean isDelay = (order.getOrderStatus() == OrderStatusType.DELAYED);
 
         sendNotificationEmail(order, customer, isDelay).thenRun(() -> {
             // Remove assignment so it disappears from the queue
@@ -107,9 +107,9 @@ public class OrderStatusPresenter {
         String subject = isDelay ? "Order Delay Notification" : "Order Ready for Delivery";
         StringBuilder msg = new StringBuilder("Dear Customer,\n\n");
         if (isDelay) {
-            msg.append("Your order ").append(order.getOrdercode()).append(" is delayed due to insufficient stock:\n\nWe apologize for the inconvenience.\nCustomer Service Team");
+            msg.append("Your order ").append(order.getOrderCode()).append(" is delayed due to insufficient stock:\n\nWe apologize for the inconvenience.\nCustomer Service Team");
         } else {
-            msg.append("Your order ").append(order.getOrdercode()).append(" is now ready for delivery.\nYou will be contacted by our courier shortly.\n\nBest regards,\nCustomer Service Team");
+            msg.append("Your order ").append(order.getOrderCode()).append(" is now ready for delivery.\nYou will be contacted by our courier shortly.\n\nBest regards,\nCustomer Service Team");
         }
 
         EmailMessage email = new EmailMessage(loggedInEmployee.getEmailAddress(), customer.getEmailAddress(), subject, msg.toString(), new Date());

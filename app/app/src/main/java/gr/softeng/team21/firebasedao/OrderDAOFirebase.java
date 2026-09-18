@@ -47,7 +47,7 @@ public class OrderDAOFirebase implements OrderDAO {
             HashMap<String, Order> ordersMap = new HashMap<>();
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                 Order order = document.toObject(Order.class);
-                ordersMap.put(order.getOrdercode(), order);
+                ordersMap.put(order.getOrderCode(), order);
             }
             future.complete(ordersMap);
         }).addOnFailureListener(future::completeExceptionally);
@@ -101,11 +101,16 @@ public class OrderDAOFirebase implements OrderDAO {
     @Override
     public CompletableFuture<Void> addOrder(Order order) {
         CompletableFuture<Void> future = new CompletableFuture<>();
-        db.collection(COLLECTION_NAME).document(order.getOrdercode()).get().addOnSuccessListener(doc -> {
+        db.collection(COLLECTION_NAME).document(order.getOrderCode()).get().addOnSuccessListener(doc -> {
             if (doc.exists()) future.completeExceptionally(new IllegalArgumentException("Order exists"));
             else {
-                db.collection(COLLECTION_NAME).document(order.getOrdercode()).set(order)
-                        .addOnSuccessListener(aVoid -> future.complete(null)).addOnFailureListener(future::completeExceptionally);
+                try {
+                    db.collection(COLLECTION_NAME).document(order.getOrderCode()).set(order)
+                            .addOnSuccessListener(aVoid -> future.complete(null))
+                            .addOnFailureListener(future::completeExceptionally);
+                } catch (Exception e) {
+                    future.completeExceptionally(e);
+                }
             }
         }).addOnFailureListener(future::completeExceptionally);
         return future;
@@ -115,11 +120,11 @@ public class OrderDAOFirebase implements OrderDAO {
     @Override
     public CompletableFuture<Void> updateOrder(Order order) {
         CompletableFuture<Void> future = new CompletableFuture<>();
-        if (order == null || order.getOrdercode() == null) {
+        if (order == null || order.getOrderCode() == null) {
             future.completeExceptionally(new IllegalArgumentException("Order cannot be null"));
             return future;
         }
-        db.collection(COLLECTION_NAME).document(order.getOrdercode()).set(order)
+        db.collection(COLLECTION_NAME).document(order.getOrderCode()).set(order)
                 .addOnSuccessListener(aVoid -> future.complete(null))
                 .addOnFailureListener(future::completeExceptionally);
         return future;

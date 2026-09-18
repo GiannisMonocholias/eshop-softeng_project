@@ -149,7 +149,7 @@ public class AssignedRequestsToExecuteActivity extends AppCompatActivity impleme
                 intent.putExtra(REQ_DESC, request.getUpdateDescription());
 
                 if (request.getProduct() != null) {
-                    intent.putExtra(PROD_NAME, request.getProduct().getProductname());
+                    intent.putExtra(PROD_NAME, request.getProduct().getProductName());
                     intent.putExtra(PROD_CODE, request.getProduct().getProductCode());
                     intent.putExtra(PROD_DESC, request.getProduct().getDescription());
 

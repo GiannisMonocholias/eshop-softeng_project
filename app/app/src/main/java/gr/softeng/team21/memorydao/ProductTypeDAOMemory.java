@@ -97,7 +97,7 @@ public class ProductTypeDAOMemory implements ProductTypeDAO {
             future.completeExceptionally(new IllegalArgumentException("Product cannot be null"));
         } else if (products.containsKey(updatedProduct.getProductCode())) {
             ProductType existingProduct = products.get(updatedProduct.getProductCode());
-            existingProduct.setProductname(updatedProduct.getProductname());
+            existingProduct.setProductName(updatedProduct.getProductName());
             existingProduct.setPrice(updatedProduct.getPrice());
             existingProduct.setDescription(updatedProduct.getDescription());
             future.complete(null);

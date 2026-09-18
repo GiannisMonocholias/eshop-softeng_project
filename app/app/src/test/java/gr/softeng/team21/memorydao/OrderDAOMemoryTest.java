@@ -73,11 +73,11 @@ public class OrderDAOMemoryTest {
     @Test
     public void updateOrderTestSuccess() {
         orderDAOMemory.addOrder(order1).join();
-        order1.setOrderstatus(OrderStatusType.SHIPPED);
+        order1.setOrderStatus(OrderStatusType.SHIPPED);
         orderDAOMemory.updateOrder(order1).join(); // Overwrites without error
 
         Order fetched = orderDAOMemory.getOrder("order1246").join();
-        assertEquals(OrderStatusType.SHIPPED, fetched.getOrderstatus());
+        assertEquals(OrderStatusType.SHIPPED, fetched.getOrderStatus());
     }
 
     @Test

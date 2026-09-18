@@ -72,7 +72,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         int quantity = item.getQuantity();
         BigDecimal totalPrice = unitPrice.multiply(new BigDecimal(quantity));
 
-        holder.txtName.setText(item.getProductType().getProductname());
+        holder.txtName.setText(item.getProductType().getProductName());
         holder.txtSubTotalPrice.setText(String.format("%.2f %s", totalPrice, currency));
         holder.txtQuantity.setText(String.valueOf(item.getQuantity()));
 

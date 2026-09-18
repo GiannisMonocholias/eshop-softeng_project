@@ -40,13 +40,13 @@ public class OrderTest {
 
     @Test
     public void getOrdercode() {
-        assertEquals("ORD-1001", order.getOrdercode());
+        assertEquals("ORD-1001", order.getOrderCode());
     }
 
     @Test
     public void setOrdercode() {
-        order.setOrdercode("ORD-7");
-        assertEquals("ORD-7", order.getOrdercode());
+        order.setOrderCode("ORD-7");
+        assertEquals("ORD-7", order.getOrderCode());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class OrderTest {
     @Test
     public void setSubmissiondate() {
         Date newDate = new Date();
-        order.setSubmissiondate(newDate);
+        order.setSubmissionDate(newDate);
         assertEquals(newDate, order.getSubmissiondate());
     }
 
@@ -69,41 +69,41 @@ public class OrderTest {
     @Test
     public void setDeliverydate() {
         Date newDate = new Date();
-        order.setDeliverydate(newDate);
+        order.setDeliveryDate(newDate);
         assertEquals(newDate, order.getDeliverydate());
     }
 
     @Test
     public void getOrderstatus() {
-        assertEquals(OrderStatusType.NEW, order.getOrderstatus());
+        assertEquals(OrderStatusType.NEW, order.getOrderStatus());
     }
 
     @Test
     public void setOrderstatus() {
-        order.setOrderstatus(OrderStatusType.DELIVERED);
-        assertEquals(OrderStatusType.DELIVERED, order.getOrderstatus());
+        order.setOrderStatus(OrderStatusType.DELIVERED);
+        assertEquals(OrderStatusType.DELIVERED, order.getOrderStatus());
     }
 
     @Test
     public void getPaid() {
-        assertFalse(order.getPaid());
+        assertFalse(order.isPaid());
     }
 
     @Test
     public void setPaid() {
         order.setPaid(true);
-        assertTrue(order.getPaid());
+        assertTrue(order.isPaid());
     }
 
     @Test
     public void getPaymentmethod() {
-        assertEquals(PaymentType.CASH, order.getPaymentmethod());
+        assertEquals(PaymentType.CASH, order.getPaymentMethod());
     }
 
     @Test
     public void setPaymentmethod() {
-        order.setPaymentmethod(PaymentType.CARD);
-        assertEquals(PaymentType.CARD, order.getPaymentmethod());
+        order.setPaymentMethod(PaymentType.CARD);
+        assertEquals(PaymentType.CARD, order.getPaymentMethod());
     }
 
     @Test

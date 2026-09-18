@@ -75,9 +75,9 @@ public class DelivererOrderAdapter extends RecyclerView.Adapter<DelivererOrderAd
         Order order = orderList.get(position);
 
         // Populate basic order info
-        holder.txtId.setText("Order #" + order.getOrdercode());
-        if(order.getSubmissiondate() != null)
-            holder.txtDate.setText(order.getSubmissiondate().toString());
+        holder.txtId.setText("Order #" + order.getOrderCode());
+        if(order.getSubmissionDate() != null)
+            holder.txtDate.setText(order.getSubmissionDate().toString());
 
         // Format and display total amount
         if (order.getTotal_amount() != null) {
@@ -106,8 +106,8 @@ public class DelivererOrderAdapter extends RecyclerView.Adapter<DelivererOrderAd
         holder.chkDelivered.setOnCheckedChangeListener(null);
 
         // Sync CheckBox states with the current domain model data
-        holder.chkPaid.setChecked(order.getPaid());
-        holder.chkDelivered.setChecked(order.getOrderstatus() == OrderStatusType.DELIVERED);
+        holder.chkPaid.setChecked(order.isPaid());
+        holder.chkDelivered.setChecked(order.getOrderStatus() == OrderStatusType.DELIVERED);
 
         // Initial update of the confirm button state
         updateButtonState(holder);
@@ -120,9 +120,9 @@ public class DelivererOrderAdapter extends RecyclerView.Adapter<DelivererOrderAd
                 order.setPaid(isChecked);
             } else if (id == R.id.chkboxItem_deliverer_order_Delivered) {
                 if (isChecked) {
-                    order.setOrderstatus(OrderStatusType.DELIVERED);
+                    order.setOrderStatus(OrderStatusType.DELIVERED);
                 } else {
-                    order.setOrderstatus(OrderStatusType.SHIPPED);
+                    order.setOrderStatus(OrderStatusType.SHIPPED);
                 }
             }
 

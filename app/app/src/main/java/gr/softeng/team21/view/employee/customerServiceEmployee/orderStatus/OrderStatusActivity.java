@@ -78,7 +78,7 @@ public class OrderStatusActivity extends AppCompatActivity implements OrderStatu
 
     @Override
     public void onOrderSelected(Order order) {
-        runOnUiThread(() -> Toast.makeText(this, "Επιλέχθηκε η παραγγελία: " + order.getOrdercode(), Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> Toast.makeText(this, "Επιλέχθηκε η παραγγελία: " + order.getOrderCode(), Toast.LENGTH_SHORT).show());
     }
 
     @Override

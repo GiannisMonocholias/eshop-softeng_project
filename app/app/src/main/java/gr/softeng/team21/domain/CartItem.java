@@ -25,6 +25,8 @@ public class CartItem {
     /** The type of product associated with this cart item */
     private ProductType productType;
 
+    public CartItem() {}
+
     /**
      * Constructs a CartItem with a given product type and quantity.
      * Automatically assigns an ID and calculates the subtotal.
@@ -80,6 +82,13 @@ public class CartItem {
     }
 
     /**
+     * Sets the subtotal amount for this cart item
+     */
+    public void setSubtotal_amount(Money subtotal_amount) {
+        this.subtotal_amount = subtotal_amount;
+    }
+
+    /**
      * Returns the unique ID of the cart item.
      * @return the cart item ID
      */
@@ -103,6 +112,10 @@ public class CartItem {
         return productType;
     }
 
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
+
     /**
      * Returns a string representation of the cart item.
      * The string includes the product name, the quantity and the subtotal amount.
@@ -110,7 +123,7 @@ public class CartItem {
      */
     @Override
     public String toString() {
-        String productName = productType.getProductname();
+        String productName = productType.getProductName();
         String totalStr = subtotal_amount.toString();
         return productName + " (x" + quantity + ") -- " + totalStr;
     }

@@ -1,0 +1,612 @@
+package gr.softeng.team21.firebasedao;
+
+import java.math.BigDecimal;
+
+import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.EmailDAOFirebase;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.firebasedao.OrderDAOFirebase;
+import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
+import gr.softeng.team21.firebasedao.ProductsWareHouseDAOFirebase;
+import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
+import gr.softeng.team21.firebasedao.UserCredentialsDAOFirebase;
+
+import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmailDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.OrderDAO;
+import gr.softeng.team21.dao.ProductTypeDAO;
+import gr.softeng.team21.dao.ProductsWareHouseDAO;
+import gr.softeng.team21.dao.UpdateRequestDAO;
+import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.domain.Admin;
+import gr.softeng.team21.util.Money;
+import gr.softeng.team21.util.Date;
+import gr.softeng.team21.contact.Address;
+import gr.softeng.team21.domain.AllowedRequest;
+import gr.softeng.team21.domain.AuthenticationSystem;
+import gr.softeng.team21.domain.CartItem;
+import gr.softeng.team21.domain.CatalogueUpdateRequest;
+import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.CustomerServiceEmployee;
+import gr.softeng.team21.domain.Deliverer;
+import gr.softeng.team21.contact.EmailAddress;
+import gr.softeng.team21.domain.EmployeeState;
+import gr.softeng.team21.domain.Order;
+import gr.softeng.team21.domain.OrderPreparationEmployee;
+import gr.softeng.team21.domain.PaymentType;
+import gr.softeng.team21.domain.ProductType;
+import gr.softeng.team21.domain.ShoppingCart;
+import gr.softeng.team21.domain.OrderStatusType;
+import gr.softeng.team21.domain.UpdateCatalogueEmployee;
+
+public class FirebaseInitializer {
+    public static void eraseData() {
+        try {
+            getProductsWareHouseDAO().clear().join();
+            if (!getProductsWareHouseDAO().getProductStocks().join().isEmpty()) {
+                throw new IllegalStateException("Products warehouse was not cleared");
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        // CustomerDAO erase data
+        try {
+            getCustomerDAO().clear().join();
+            if (!getCustomerDAO().getCustomers().join().isEmpty()) {
+                throw new IllegalStateException("Customers repository was not cleared");
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        // EmployeeDAO erase data
+        try {
+            getEmployeeDAO().clear().join();
+            if (!getEmployeeDAO().getEmployees().join().isEmpty()) {
+                throw new IllegalStateException("Employee repository was not cleared");
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        // ProductTypeDAO erase data
+        try {
+            getProductTypeDAO().clear().join();
+            if (!getProductTypeDAO().getProducts().join().isEmpty()) {
+                throw new IllegalStateException("Product types repository was not cleared");
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        // OrderDAO erase data
+        try {
+            getOrderDAO().clear().join();
+            if (!getOrderDAO().getOrders().join().isEmpty()) {
+                throw new IllegalStateException("Orders repository was not cleared");
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        // UpdateRequestDAO erase data
+        try {
+            getUpdateRequestDAO().clear().join();
+            if (!getUpdateRequestDAO().getUpdateRequests().join().isEmpty()) {
+                throw new IllegalStateException("Update requests repository was not cleared");
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+        // UserCredentialsDAO erase data
+        try {
+            getUserCredentialsDAO().clear().join();
+            if (!getUserCredentialsDAO().getUsersCredentials().join().isEmpty()) {
+                throw new IllegalStateException("Users credentials repository was not cleared");
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        try {
+            getEmailDAO().clear().join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void prepareData() {
+
+//        eraseData();
+
+        //=====================================================
+        //START: INITIALIZE CUSTOMERS
+        //=====================================================
+        CustomerDAO customers = getCustomerDAO();
+
+        Address addr1 = new Address("Ερμού", "15", "Αθήνα", "Ελλάδα", "10563");
+        Address addr2 = new Address("Τσιμισκή", "42", "Θεσσαλονίκη", "Ελλάδα", "54623");
+        Address addr3 = new Address("Μαιζώνος", "120", "Πάτρα", "Ελλάδα", "26221");
+        Address addr4 = new Address("Κύπρου", "8", "Λάρισα", "Ελλάδα", "41221");
+
+
+        Customer cust1 = new Customer("nickgeorg", "Νίκος", "pass1234", "Γεωργίου",
+                "6987654321", new EmailAddress("nickgeorg@team21.gr"), "CUST-500", new Date(10, 5, 2022));
+        cust1.setAddress(addr1);
+        customers.addCustomer(cust1).join();
+        getUserCredentialsDAO().addUser(cust1).join();
+
+        Customer cust2 = new Customer("georgepap", "Γιώργος", "pass1235", "Παπαδόπουλος",
+                "6987659483", new EmailAddress("georgepap@team21.gr"), "CUST-501", new Date(19, 3, 2021));
+        cust2.setAddress(addr2);
+        customers.addCustomer(cust2).join();
+        getUserCredentialsDAO().addUser(cust2).join();
+
+        Customer cust3 = new Customer("giannismonoh", "Γιάννης", "pass1236", "Μονοχολιάς",
+                "6987651456", new EmailAddress("giannismonoh@team21.gr"), "CUST-502", new Date(22, 6, 2021));
+        cust3.setAddress(addr3);
+        customers.addCustomer(cust3).join();
+        getUserCredentialsDAO().addUser(cust3).join();
+
+        Customer cust4 = new Customer(
+                "giannis_oik", "Γιάννης", "pass3210", "Οικονόμου", "6944556677",
+                new EmailAddress("giannis.oik@team21.gr"), "CUST-503",new Date(22, 3, 2024)
+        );
+        cust4.setAddress(addr4);
+        customers.addCustomer(cust4).join();
+        getUserCredentialsDAO().addUser(cust4).join();
+        //=====================================================
+        //END: INITIALIZE CUSTOMERS
+        //=====================================================
+
+
+        //=====================================================
+        //START: INITIALIZE EMPLOYEES
+        //=====================================================
+        EmployeeDAO employees = getEmployeeDAO();
+
+        //=====================================================
+        //CUSTOMER SERVICE EMPLOYEES INITIALIZATION
+        //=====================================================
+        EmailAddress emailCs1 = new EmailAddress("m.alexandrou@team21.gr");
+        CustomerServiceEmployee csr1 = new CustomerServiceEmployee(
+                "m_alexandrou", "Μαρία", "pass1237", "Αλεξάνδρου",
+                "6971234567", emailCs1, "CSR-101", 200, 1100, 40, EmployeeState.ACTIVE, new Date(19, 1, 2018)
+        );
+        employees.addEmployee(csr1).join();
+        getUserCredentialsDAO().addUser(csr1).join();
+
+        EmailAddress emailCs2 = new EmailAddress("p.dimitriou@team21.gr");
+        CustomerServiceEmployee csr2 = new CustomerServiceEmployee(
+                "p_dimitriou", "Πέτρος", "pass1238", "Δημητρίου",
+                "6972345678", emailCs2, "CSR-102", 180, 1050, 40, EmployeeState.ACTIVE, new Date(15, 2, 2024)
+        );
+        employees.addEmployee(csr2).join();
+        getUserCredentialsDAO().addUser(csr2).join();
+
+
+        EmailAddress emailCs3 = new EmailAddress("s.konst@team21.gr");
+        CustomerServiceEmployee csr3 = new CustomerServiceEmployee(
+                "s_konstantinou", "Σοφία", "pass1239", "Κωνσταντίνου",
+                "6973456789", emailCs3, "CSR-103", 220, 1150, 40, EmployeeState.ACTIVE, new Date(13, 9, 2019)
+        );
+        employees.addEmployee(csr3).join();
+        getUserCredentialsDAO().addUser(csr3).join();
+
+
+        //=====================================================
+        //ORDER PREPARATION EMPLOYEES INITIALIZATION
+        //=====================================================
+        EmailAddress emailPrep1 = new EmailAddress("g.nikolaou@team21.gr");
+        OrderPreparationEmployee prep1 = new OrderPreparationEmployee(
+                "g_nikolaou", "Γιώργος", "pass1240", "Νικολάου",
+                "6981122334", emailPrep1, "PREP-201", 100, 1200, 40, EmployeeState.ACTIVE, new Date(25, 7, 2023)
+        );
+        employees.addEmployee(prep1).join();
+        getUserCredentialsDAO().addUser(prep1).join();
+
+
+        EmailAddress emailPrep2 = new EmailAddress("a.vasiliou@team21.gr");
+        OrderPreparationEmployee prep2 = new OrderPreparationEmployee(
+                "a_vasiliou", "Άννα", "pass1241", "Βασιλείου",
+                "6982233445", emailPrep2, "PREP-202", 120, 1250, 40, EmployeeState.ACTIVE, new Date(22, 1, 2020)
+        );
+        employees.addEmployee(prep2).join();
+        getUserCredentialsDAO().addUser(prep2).join();
+
+
+        EmailAddress emailPrep3 = new EmailAddress("k.papadakis@team21.gr");
+        OrderPreparationEmployee prep3 = new OrderPreparationEmployee(
+                "k_papadakis", "Κώστας", "pass1242", "Παπαδάκης",
+                "6983344556", emailPrep3, "PREP-203", 100, 1180, 40, EmployeeState.ACTIVE, new Date(27, 8, 2021)
+        );
+        employees.addEmployee(prep3);
+        getUserCredentialsDAO().addUser(prep3).join();
+
+
+        //=====================================================
+        //CATALOGUE UPDATE EMPLOYEES INITIALIZATION
+        //=====================================================
+        EmailAddress emailCat1 = new EmailAddress("d.georgiou@team21.gr");
+        UpdateCatalogueEmployee cat1 = new UpdateCatalogueEmployee(
+                "d_georgiou", "Δήμητρα", "pass1243", "Γεωργίου",
+                "6941112223", emailCat1, "CAT-301", 150, 1300, 40, EmployeeState.ACTIVE, new Date(18, 9, 2022)
+        );
+        employees.addEmployee(cat1).join();
+        getUserCredentialsDAO().addUser(cat1).join();
+
+
+        EmailAddress emailCat2 = new EmailAddress("th.ioannou@team21.gr");
+        UpdateCatalogueEmployee cat2 = new UpdateCatalogueEmployee(
+                "th_ioannou", "Θάνος", "pass1244", "Ιωάννου",
+                "6942223334", emailCat2, "CAT-302", 150, 1300, 40, EmployeeState.ACTIVE, new Date(15, 3, 2018)
+        );
+        employees.addEmployee(cat2).join();
+        getUserCredentialsDAO().addUser(cat2).join();
+
+
+        EmailAddress emailCat3 = new EmailAddress("e.rizos@team21.gr");
+        UpdateCatalogueEmployee cat3 = new UpdateCatalogueEmployee(
+                "e_rizos", "Ελένη", "pass1245", "Ρίζου",
+                "6943334445", emailCat3, "CAT-303", 160, 1350, 40, EmployeeState.ACTIVE, new Date(25, 10, 2022)
+        );
+        employees.addEmployee(cat3).join();
+        getUserCredentialsDAO().addUser(cat3).join();
+
+
+        //=====================================================
+        //DELIVERERS INITIALIZATION
+        //=====================================================
+        EmailAddress emailDel1 = new EmailAddress("n.stamos@team21.gr");
+        Deliverer del1 = new Deliverer(
+                "n_stamos", "Νίκος", "pass1246", "Στάμος",
+                "6955556661", emailDel1, "DEL-401", 300, 900, 40, EmployeeState.ACTIVE, new Date(12, 11, 2024),
+                15, true
+        );
+        getEmployeeDAO().addEmployee(del1).join();
+        getUserCredentialsDAO().addUser(del1).join();
+
+
+        EmailAddress emailDel2 = new EmailAddress("x.panou@team21.gr");
+        Deliverer del2 = new Deliverer(
+                "x_panou", "Χρήστος", "pass1247", "Πάνου",
+                "6955556662", emailDel2, "DEL-402", 280, 900, 40, EmployeeState.ACTIVE, new Date(7, 10, 2023),
+                12, true
+        );
+        getEmployeeDAO().addEmployee(del2).join();
+        getUserCredentialsDAO().addUser(del2).join();
+
+
+        EmailAddress emailDel3 = new EmailAddress("m.lazarou@team21.gr");
+        Deliverer del3 = new Deliverer(
+                "m_lazarou", "Μιχάλης", "pass1248", "Λαζάρου",
+                "6955556663", emailDel3, "DEL-403", 320, 950, 40, EmployeeState.ACTIVE, new Date(10, 9, 2021),
+                20, false
+        );
+        getEmployeeDAO().addEmployee(del3).join();
+        getUserCredentialsDAO().addUser(del3).join();
+        //=====================================================
+        //END: INITIALIZE EMPLOYEES
+        //=====================================================
+
+
+        //=====================================================
+        //START: INITIALIZE ADMIN
+        //=====================================================
+
+        EmailAddress email_Admin = new EmailAddress("geopap@team21.gr");
+        Admin ad = Admin.getInstance("g_papadakis" , "Γεώργιος" , "ppd246" , "Παπαδάκης" , "6908381070" , email_Admin , 2000);
+        getUserCredentialsDAO().addUser(ad).join();
+
+        //=====================================================
+        //END: INITIALIZE ADMIN
+        //=====================================================
+
+
+        //=====================================================
+        //START: INITIALIZE PRODUCT TYPES
+        //=====================================================
+
+        ProductTypeDAO products = getProductTypeDAO();
+
+        // --- 1. Laptops ---
+        ProductType laptop1 = new ProductType("Dell XPS 15", "Φορητός υπολογιστής υψηλών επιδόσεων με οθόνη αφής 4K.", new Money(BigDecimal.valueOf(1850.00), "€"), "TECH-001");
+        products.addProductType(laptop1).join();
+
+        ProductType laptop2 = new ProductType("MacBook Air M2", "Ελαφρύ και κομψό laptop της Apple με κορυφαία αυτονομία.", new Money(BigDecimal.valueOf(1299.90), "€"), "TECH-002");
+        products.addProductType(laptop2).join();
+
+        // --- 2. Mice ---
+        ProductType mouse1 = new ProductType("Logitech MX Master 3S", "Ασύρματο ποντίκι εργονομικής σχεδίασης με αθόρυβα κλικ.", new Money(BigDecimal.valueOf(99.90), "€"), "TECH-003");
+        products.addProductType(mouse1).join();
+
+        ProductType mouse2 = new ProductType("Razer DeathAdder V3", "Ενσύρματο ποντίκι gaming με εξαιρετικά ελαφρύ σχεδιασμό.", new Money(BigDecimal.valueOf(79.90), "€"), "TECH-004");
+        products.addProductType(mouse2).join();
+
+        // --- 3. Keyboards ---
+        ProductType keyboard1 = new ProductType("Corsair K70 RGB", "Μηχανικό πληκτρολόγιο gaming με διακόπτες Cherry MX.", new Money(BigDecimal.valueOf(169.90), "€"), "TECH-005");
+        products.addProductType(keyboard1).join();
+
+        ProductType keyboard2 = new ProductType("Logitech MX Keys", "Ασύρματο πληκτρολόγιο χαμηλού προφίλ με έξυπνο φωτισμό.", new Money(BigDecimal.valueOf(119.00), "€"), "TECH-006");
+        products.addProductType(keyboard2).join();
+
+        // --- 4. Monitors ---
+        ProductType monitor1 = new ProductType("LG UltraGear 27\"", "Gaming οθόνη 27 ιντσών με ρυθμό ανανέωσης 144Hz.", new Money(BigDecimal.valueOf(349.00), "€"), "TECH-007");
+        products.addProductType(monitor1).join();
+
+        ProductType monitor2 = new ProductType("Dell UltraSharp 32\"", "Επαγγελματική οθόνη 4K με εξαιρετική πιστότητα χρωμάτων.", new Money(BigDecimal.valueOf(750.00), "€"), "TECH-008");
+        products.addProductType(monitor2).join();
+
+        // --- 5. CPUs ---
+        ProductType cpu1 = new ProductType("Intel Core i9-14900K", "Κορυφαίος επεξεργαστής desktop με 24 πυρήνες.", new Money(BigDecimal.valueOf(680.00), "€"), "TECH-009");
+        products.addProductType(cpu1).join();
+
+        ProductType cpu2 = new ProductType("AMD Ryzen 7 7800X3D", "Ο καλύτερος επεξεργαστής για gaming με τεχνολογία 3D V-Cache.", new Money(BigDecimal.valueOf(420.00), "€"), "TECH-010");
+        products.addProductType(cpu2).join();
+
+        // --- 6. RAM ---
+        ProductType ram1 = new ProductType("Corsair Vengeance 32GB", "Σετ μνήμης RAM DDR5 υψηλής ταχύτητας με RGB.", new Money(BigDecimal.valueOf(145.00), "€"), "TECH-011");
+        products.addProductType(ram1).join();
+
+        ProductType ram2 = new ProductType("G.Skill Trident Z5", "Μνήμη RAM εξαιρετικά χαμηλής καθυστέρησης για overclocking.", new Money(BigDecimal.valueOf(180.00), "€"), "TECH-012");
+        products.addProductType(ram2).join();
+
+        // --- 7. GPUs ---
+        ProductType gpu1 = new ProductType("Nvidia RTX 4070", "Κάρτα γραφικών νέας γενιάς με υποστήριξη DLSS 3.", new Money(BigDecimal.valueOf(650.00), "€"), "TECH-013");
+        products.addProductType(gpu1).join();
+
+        ProductType gpu2 = new ProductType("AMD Radeon RX 7800 XT", "Ισχυρή κάρτα γραφικών με 16GB μνήμης VRAM.", new Money(BigDecimal.valueOf(540.00), "€"), "TECH-014");
+        products.addProductType(gpu2).join();
+
+        // --- 8. Storage ---
+        ProductType storage1 = new ProductType("Samsung 990 Pro 1TB", "Δίσκος SSD NVMe M.2 με απίστευτες ταχύτητες.", new Money(BigDecimal.valueOf(109.90), "€"), "TECH-015");
+        products.addProductType(storage1).join();
+
+        ProductType storage2 = new ProductType("WD Blue 4TB HDD", "Κλασικός σκληρός δίσκος μεγάλης χωρητικότητας.", new Money(BigDecimal.valueOf(85.00), "€"), "TECH-016");
+        products.addProductType(storage2).join();
+
+        // --- 9. Accessories ---
+        ProductType accessory1 = new ProductType("Sony WH-1000XM5", "Ασύρματα ακουστικά με κορυφαία ακύρωση θορύβου.", new Money(BigDecimal.valueOf(329.00), "€"), "TECH-017");
+        products.addProductType(accessory1).join();
+
+        ProductType accessory2 = new ProductType("Razer Kraken", "Ενσύρματα gaming ακουστικά με ήχο 7.1 Surround, οδηγούς 50mm και μαξιλαράκια Cooling Gel για μέγιστη άνεση.", new Money(BigDecimal.valueOf(79.90), "€"), "TECH-018");
+        products.addProductType(accessory2).join();
+
+        ProductType accessory3 = new ProductType("Logitech C920 HD Pro", "Web κάμερα υψηλής ευκρίνειας 1080p.", new Money(BigDecimal.valueOf(65.50), "€"), "TECH-019");
+        products.addProductType(accessory3).join();
+
+        ProductType accessory4 = new ProductType("iPad Air 5th Gen", "Tablet με επεξεργαστή M1 και οθόνη Liquid Retina.", new Money(BigDecimal.valueOf(679.00), "€"), "TECH-020");
+        products.addProductType(accessory4).join();
+
+        ProductType applewatch = new ProductType("AppleWatch SE 44mm" , "Έξυπνο ρολοι με λειτουργικό iOS" , new Money(BigDecimal.valueOf(299.00) , "€") , "TECH-021");
+
+        ProductType airTag = new ProductType("Apple AirTag" , "Tag για πανεύκολο εντοπισμό αντικειμένων" , new Money(BigDecimal.valueOf(29.00) , "€") , "TECH-022");
+
+
+        //=====================================================
+        //END: INITIALIZE PRODUCT TYPES
+        //=====================================================
+
+        //=====================================================
+        //START: PRODUCTS WARAHOUSE FILLING
+        //=====================================================
+        ProductsWareHouseDAO warehouse = getProductsWareHouseDAO();
+
+        try {
+            // Initialize the products in the warehouse with storage 0
+            for (ProductType pt : products.getProducts().join().values()) {
+                warehouse.insertProduct(pt).join();
+            }
+
+            warehouse.increaseProductStock(products.getProduct("TECH-001").join(), 10).join(); // Dell XPS
+            warehouse.increaseProductStock(products.getProduct("TECH-002").join(), 8).join();  // MacBook Air
+
+            // --- Mice ---
+            warehouse.increaseProductStock(products.getProduct("TECH-003").join(), 45).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-004").join(), 30).join();
+
+            // --- Keyboards ---
+            warehouse.increaseProductStock(products.getProduct("TECH-005").join(), 25).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-006").join(), 35).join();
+
+            // --- Monitors ---
+            warehouse.increaseProductStock(products.getProduct("TECH-007").join(), 15).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-008").join(), 10).join();
+
+            // --- CPUs ---
+            warehouse.increaseProductStock(products.getProduct("TECH-009").join(), 12).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-010").join(), 12).join();
+
+            // --- RAM ---
+            warehouse.increaseProductStock(products.getProduct("TECH-011").join(), 50).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-012").join(), 40).join();
+
+            // --- GPUs ---
+            warehouse.increaseProductStock(products.getProduct("TECH-013").join(), 6).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-014").join(), 8).join();
+
+            // --- Storage ---
+            warehouse.increaseProductStock(products.getProduct("TECH-015").join(), 60).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-016").join(), 40).join();
+
+            // --- Accessories ---
+            warehouse.increaseProductStock(products.getProduct("TECH-017").join(), 20).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-018").join(), 25).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-019").join(), 30).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-020").join(), 15).join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //=====================================================
+        //END: PRODUCTS WARAHOUSE FILLING
+        //=====================================================
+
+
+        //=====================================================
+        //START: INITIALIZE ORDERS
+        //=====================================================
+        OrderDAO orders = getOrderDAO();
+
+
+        //ORDER 1
+        ShoppingCart cart1 = new ShoppingCart(cust1);
+        cart1.addItem(new CartItem(products.getProduct("TECH-001").join(), 1));
+        cart1.addItem(new CartItem(products.getProduct("TECH-003").join(), 1));
+
+        Order order1 = new Order("ORD-2024-001", new Date(10, 11, 2023), OrderStatusType.SHIPPED,
+                true, PaymentType.CARD, new Date(14, 11, 2023), cart1
+        );
+
+        order1.setTotal_amount(cart1.getTotalCost());
+        cust1.Confirm("CONFIRM",order1);
+        orders.addOrder(order1).join();
+
+
+        //ORDER 2
+        ShoppingCart cart2 = new ShoppingCart(cust2);
+        // CPU (1), GPU (1), RAM (2)
+        cart2.addItem(new CartItem(products.getProduct("TECH-009").join(), 1));
+        cart2.addItem(new CartItem(products.getProduct("TECH-013").join(), 1));
+        cart2.addItem(new CartItem(products.getProduct("TECH-011").join(), 2));
+
+        Order order2 = new Order("ORD-2024-002", new Date(5, 1, 2024), OrderStatusType.NEW,
+                false, PaymentType.CASH, null, cart2
+        );
+        order2.setTotal_amount(cart2.getTotalCost());
+        cust2.Confirm("CONFIRM",order2);
+        orders.addOrder(order2).join();
+
+
+        //ORDER 3
+        ShoppingCart cart3 = new ShoppingCart(cust3);
+        // Headphones (1) + Webcam (1)
+        cart3.addItem(new CartItem(products.getProduct("TECH-017").join(), 1));
+        cart3.addItem(new CartItem(products.getProduct("TECH-019").join(), 1));
+
+        Order order3 = new Order("ORD-2024-003", new Date(12, 1, 2024), OrderStatusType.SHIPPED,
+                false, PaymentType.CASH, null, cart3
+        );
+        order3.setTotal_amount(cart3.getTotalCost());
+        cust3.Confirm("CONFIRM",order3);
+        orders.addOrder(order3).join();
+
+
+        //ORDER 4
+        ShoppingCart cart4 = new ShoppingCart(cust1);
+        cart4.addItem(new CartItem(products.getProduct("TECH-007").join(), 2));
+
+        Order order4 = new Order("ORD-2024-004", new Date(15, 1, 2024), OrderStatusType.DELAYED,
+                false, PaymentType.CASH, null, cart4
+        );
+
+        order4.setTotal_amount(cart4.getTotalCost());
+        cust1.Confirm("CONFIRM",order4);
+        orders.addOrder(order4).join();
+
+
+        //ORDER 5
+        ShoppingCart cart5 = new ShoppingCart(cust2);
+        cart5.addItem(new CartItem(products.getProduct("TECH-020").join(), 1));
+
+        Order order5 = new Order("ORD-2024-005", new Date(20, 1, 2024), OrderStatusType.SHIPPED,
+                true, PaymentType.CARD, null, cart5
+        );
+
+        order5.setTotal_amount(cart5.getTotalCost());
+        cust2.Confirm("CONFIRM",order5);
+        orders.addOrder(order5).join();
+
+        //=====================================================
+        //END: INITIALIZE ORDERS
+        //=====================================================
+
+
+        //=====================================================
+        //START: INITIALIZE CATALOGUE UPDATE REQUESTS
+        //=====================================================
+
+        UpdateRequestDAO requests = getUpdateRequestDAO();
+
+
+        // Request 1
+        CatalogueUpdateRequest req1 = new CatalogueUpdateRequest(new Date(15, 1, 2024), "Αύξηση τιμής κατά 50€ λόγω νέας παρτίδας.",
+                products.getProduct("TECH-001").join(), AllowedRequest.PROCESS_PRODUCT, 1
+        );
+        requests.addUpdateRequest(req1).join();
+
+
+        // Request 2
+        CatalogueUpdateRequest req2 = new CatalogueUpdateRequest(new Date(16, 1, 2024), "Διόρθωση τυπογραφικού λάθους στα DPI του αισθητήρα.",
+                products.getProduct("TECH-004").join(), AllowedRequest.PROCESS_PRODUCT, 2
+        );
+        requests.addUpdateRequest(req2).join();
+
+
+        // Request 3
+        CatalogueUpdateRequest req3 = new CatalogueUpdateRequest(new Date(18, 1, 2024), "Εφαρμογή έκπτωσης 10% για προωθητική ενέργεια.",
+                products.getProduct("TECH-017").join(), AllowedRequest.PROCESS_PRODUCT, 3
+        );
+        requests.addUpdateRequest(req3).join();
+
+
+        // Request 4
+        CatalogueUpdateRequest req4 = new CatalogueUpdateRequest(new Date(20, 1, 2024), "Το προϊόν καταργήθηκε από τον προμηθευτή, παρακαλώ να αφαιρεθεί.",
+                products.getProduct("TECH-015").join(), AllowedRequest.DELETE_PRODUCT, 4
+        );
+        requests.addUpdateRequest(req4).join();
+
+
+        // Request 5
+        ProductType newPrinter = new ProductType("Canon Pixma TS3450", "Πολυμηχάνημα Inkjet έγχρωμο με WiFi.",
+                new Money(BigDecimal.valueOf(55.90), "€"), "TECH-NEW-01"
+        );
+
+        CatalogueUpdateRequest req5 = new CatalogueUpdateRequest(new Date(22, 1, 2024), "Εισαγωγή νέου κωδικού εκτυπωτή στον κατάλογο.",
+                newPrinter, AllowedRequest.INSERT_PRODUCT, 5
+        );
+        requests.addUpdateRequest(req5).join();
+
+        //=====================================================
+        //END: INITIALIZE CATALOGUE UPDATE REQUESTS
+        //=====================================================
+
+        //Initialize Authentication System
+        AuthenticationSystem authSystem = new AuthenticationSystem(getUserCredentialsDAO());
+
+    }
+
+
+    public static CustomerDAO getCustomerDAO() {
+        return new CustomerDAOFirebase();
+    }
+
+    public static EmployeeDAO getEmployeeDAO() {
+        return new EmployeeDAOFirebase();
+    }
+
+    public static OrderDAO getOrderDAO() {
+        return new OrderDAOFirebase();
+    }
+
+    public static ProductsWareHouseDAO getProductsWareHouseDAO() {
+        return new ProductsWareHouseDAOFirebase();
+    }
+
+    public static ProductTypeDAO getProductTypeDAO() {
+        return new ProductTypeDAOFirebase();
+    }
+
+    public static UpdateRequestDAO getUpdateRequestDAO() {
+        return new UpdateRequestDAOFirebase();
+    }
+
+    public static UserCredentialsDAO getUserCredentialsDAO() {
+        return new UserCredentialsDAOFirebase();
+    }
+
+    public static EmailDAO getEmailDAO() {
+        return new EmailDAOFirebase();
+    }
+}

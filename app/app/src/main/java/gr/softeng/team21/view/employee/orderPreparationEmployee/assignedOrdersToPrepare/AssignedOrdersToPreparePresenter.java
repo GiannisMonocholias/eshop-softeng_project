@@ -45,7 +45,7 @@ public class AssignedOrdersToPreparePresenter {
 
                     // Filter the small subset locally to find only NEW status orders
                     for (Order order : orders) {
-                        if (order.getOrderstatus() == OrderStatusType.NEW) {
+                        if (order.getOrderStatus() == OrderStatusType.NEW) {
                             pendingOrders.add(order);
                         }
                     }
@@ -65,7 +65,7 @@ public class AssignedOrdersToPreparePresenter {
 
     public void onClickOrder(Order order){
         if (loggedInEmployee != null && view != null) {
-            view.navigateToOrderPreparationDetails(loggedInEmployee.getEmployeeId(), order.getOrdercode());
+            view.navigateToOrderPreparationDetails(loggedInEmployee.getEmployeeId(), order.getOrderCode());
         } else if (view != null) {
             view.showError("Δεν υπάρχει ενεργή συνεδρία υπαλλήλου.");
         }

@@ -190,7 +190,7 @@ public class Customer extends User {
             if (!cardNumber.matches("\\d{4}-\\d{4}-\\d{4}-\\d{4}"))
                 throw new IllegalArgumentException("Invalid card number format");
             else {
-                order.setPaymentmethod(PaymentType.CARD);
+                order.setPaymentMethod(PaymentType.CARD);
                 order.setPaid(true);
             }
         }

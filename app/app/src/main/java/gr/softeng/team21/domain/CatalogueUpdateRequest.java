@@ -22,6 +22,7 @@ public class CatalogueUpdateRequest {
     // Foreign Key for the assigned employee
     private String assignedEmployeeId = null;
 
+
     /**
      * Default constructor required for framework instantiation (e.g., Firebase).
      */
