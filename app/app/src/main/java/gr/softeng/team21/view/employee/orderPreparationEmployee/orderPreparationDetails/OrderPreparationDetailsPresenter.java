@@ -61,7 +61,7 @@ public class OrderPreparationDetailsPresenter {
                         this.orderToPrepare = order;
                         String customerFullName = order.getShoppingCart().getCustomer().getFirstname() + " " + order.getShoppingCart().getCustomer().getLastname();
                         if (view != null) {
-                            view.setOrderDetails(ordercode, customerFullName, order.getSubmissiondate().toString(), order.getTotal_amount().toString(), order.getOrderStatus());
+                            view.setOrderDetails(ordercode, customerFullName, order.getSubmissionDate().toString(), order.getTotal_amount().toString(), order.getOrderStatus());
                             view.updateCartItems(new ArrayList<>(order.getShoppingCart().getItems()));
                         }
                     } else {

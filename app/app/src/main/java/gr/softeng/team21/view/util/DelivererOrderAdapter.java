@@ -76,8 +76,8 @@ public class DelivererOrderAdapter extends RecyclerView.Adapter<DelivererOrderAd
 
         // Populate basic order info
         holder.txtId.setText("Order #" + order.getOrderCode());
-        if(order.getSubmissiondate() != null)
-            holder.txtDate.setText(order.getSubmissiondate().toString());
+        if(order.getSubmissionDate() != null)
+            holder.txtDate.setText(order.getSubmissionDate().toString());
 
         // Format and display total amount
         if (order.getTotal_amount() != null) {

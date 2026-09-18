@@ -104,8 +104,13 @@ public class OrderDAOFirebase implements OrderDAO {
         db.collection(COLLECTION_NAME).document(order.getOrderCode()).get().addOnSuccessListener(doc -> {
             if (doc.exists()) future.completeExceptionally(new IllegalArgumentException("Order exists"));
             else {
-                db.collection(COLLECTION_NAME).document(order.getOrderCode()).set(order)
-                        .addOnSuccessListener(aVoid -> future.complete(null)).addOnFailureListener(future::completeExceptionally);
+                try {
+                    db.collection(COLLECTION_NAME).document(order.getOrderCode()).set(order)
+                            .addOnSuccessListener(aVoid -> future.complete(null))
+                            .addOnFailureListener(future::completeExceptionally);
+                } catch (Exception e) {
+                    future.completeExceptionally(e);
+                }
             }
         }).addOnFailureListener(future::completeExceptionally);
         return future;

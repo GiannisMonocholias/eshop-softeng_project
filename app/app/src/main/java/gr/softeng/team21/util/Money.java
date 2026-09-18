@@ -16,7 +16,9 @@ public class Money {
     /** The currency of the monetary amount (e.g $,€)*/
     private String currency;
 
-    public Money() {}
+    public Money() {
+        this.amount = BigDecimal.ZERO;
+    }
 
     /**
      * Creates a Money object with a BigDecimal amount.
@@ -25,7 +27,7 @@ public class Money {
      * @param currency the currency
      */
     public Money(BigDecimal amount, String currency) {
-        this.amount = amount;
+        this.amount = amount != null ? amount : BigDecimal.ZERO;
         this.currency = currency;
     }
 
@@ -55,10 +57,8 @@ public class Money {
      */
     @Exclude
     public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+        this.amount = amount != null ? amount : BigDecimal.ZERO;
     }
-
-
 
 
     /**

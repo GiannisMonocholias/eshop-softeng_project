@@ -80,7 +80,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.txtCustomerNameValue.setText(order.getShoppingCart().getCustomer().getLastname() + " " +
                 order.getShoppingCart().getCustomer().getFirstname());
         holder.txtPriceValue.setText(order.getTotal_amount().toString());
-        holder.txtDateValue.setText(order.getSubmissiondate().toString());
+        holder.txtDateValue.setText(order.getSubmissionDate().toString());
         holder.txtStatus.setText(order.getOrderStatus().toString());
 
         // Configure the action button text based on the adapter's functional context

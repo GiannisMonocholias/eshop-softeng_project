@@ -36,12 +36,12 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
             return future;
         }
 
-        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).get()
+        db.collection(PRODUCTS_COLLECTION).document(type.getProductCode()).get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists() && doc.contains("stock")) {
                         future.complete(doc.getLong("stock").intValue());
                     } else {
-                        future.complete(null); // Δεν βρέθηκε το προϊόν
+                        future.complete(null);
                     }
                 })
                 .addOnFailureListener(future::completeExceptionally);
@@ -67,16 +67,15 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
             future.completeExceptionally(new IllegalArgumentException("Type cannot be null"));
             return future;
         }
-        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).get()
+        db.collection(PRODUCTS_COLLECTION).document(type.getProductCode()).get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
                         future.completeExceptionally(new IllegalArgumentException("Product already exists"));
                     } else {
-                        // Αν δεν υπάρχει, το δημιουργούμε με stock = 0
                         Map<String, Object> data = new HashMap<>();
                         data.put("stock", 0);
 
-                        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).set(data)
+                        db.collection(PRODUCTS_COLLECTION).document(type.getProductCode()).set(data)
                                 .addOnSuccessListener(v -> future.complete(null))
                                 .addOnFailureListener(future::completeExceptionally);
                     }
@@ -96,12 +95,12 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
             return future;
         }
 
-        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).get()
+        db.collection(PRODUCTS_COLLECTION).document(type.getProductCode()).get()
                 .addOnSuccessListener(doc -> {
                     if (!doc.exists()) {
                         future.completeExceptionally(new NoSuchElementException("Product not in stock"));
                     } else {
-                        db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).delete()
+                        db.collection(PRODUCTS_COLLECTION).document(type.getProductCode()).delete()
                                 .addOnSuccessListener(v -> future.complete(null))
                                 .addOnFailureListener(future::completeExceptionally);
                     }
@@ -122,12 +121,12 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
                 return;
             }
 
-            db.collection(PRODUCTS_COLLECTION).document(type.getProductName()).get()
+            db.collection(PRODUCTS_COLLECTION).document(type.getProductCode()).get()
                     .addOnSuccessListener(doc -> {
                         if (!doc.exists()) {
                             future.complete(false);
                         } else {
-                            db.collection(PRODUCTS_COLLECTION).document(type.getProductName())
+                            db.collection(PRODUCTS_COLLECTION).document(type.getProductCode())
                                     .update("stock", FieldValue.increment(amount))
                                     .addOnSuccessListener(v -> future.complete(true))
                                     .addOnFailureListener(e -> future.complete(false));
@@ -150,7 +149,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
                 return null;
             }
 
-            db.collection(PRODUCTS_COLLECTION).document(type.getProductName())
+            db.collection(PRODUCTS_COLLECTION).document(type.getProductCode())
                     .update("stock", FieldValue.increment(-amount))
                     .addOnSuccessListener(v -> future.complete(true))
                     .addOnFailureListener(e -> future.complete(false));
@@ -212,7 +211,7 @@ public class ProductsWareHouseDAOFirebase implements ProductsWareHouseDAO {
                     if (doc.exists() && doc.contains("maxCapacity")) {
                         future.complete(doc.getLong("maxCapacity").intValue());
                     } else {
-                        future.complete(1000); // Προεπιλογή, όπως ακριβώς στην in-memory
+                        future.complete(1000);
                     }
                 })
                 .addOnFailureListener(e -> {

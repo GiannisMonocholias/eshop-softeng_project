@@ -394,46 +394,47 @@ public class FirebaseInitializer {
         ProductsWareHouseDAO warehouse = getProductsWareHouseDAO();
 
         try {
-            if (warehouse.getProductStocks().join().size() != products.getProducts().join().size()) {
-                throw new IllegalStateException("Products warehouse does not have all productTypes");
+            // Initialize the products in the warehouse with storage 0
+            for (ProductType pt : products.getProducts().join().values()) {
+                warehouse.insertProduct(pt).join();
             }
-            // --- Laptops (Ακριβά είδη - Λίγο απόθεμα) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-001").join(), 10); // Dell XPS
-            warehouse.increaseProductStock(products.getProduct("TECH-002").join(), 8);  // MacBook Air
 
-            // --- Mice (Περιφερειακά - Αρκετό απόθεμα) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-003").join(), 45); // Logitech MX
-            warehouse.increaseProductStock(products.getProduct("TECH-004").join(), 30); // Razer Mouse
+            warehouse.increaseProductStock(products.getProduct("TECH-001").join(), 10).join(); // Dell XPS
+            warehouse.increaseProductStock(products.getProduct("TECH-002").join(), 8).join();  // MacBook Air
+
+            // --- Mice ---
+            warehouse.increaseProductStock(products.getProduct("TECH-003").join(), 45).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-004").join(), 30).join();
 
             // --- Keyboards ---
-            warehouse.increaseProductStock(products.getProduct("TECH-005").join(), 25); // Corsair
-            warehouse.increaseProductStock(products.getProduct("TECH-006").join(), 35); // Logitech Keys
+            warehouse.increaseProductStock(products.getProduct("TECH-005").join(), 25).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-006").join(), 35).join();
 
-            // --- Monitors (Ογκώδη είδη) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-007").join(), 15); // LG Monitor
-            warehouse.increaseProductStock(products.getProduct("TECH-008").join(), 10); // Dell Monitor
+            // --- Monitors ---
+            warehouse.increaseProductStock(products.getProduct("TECH-007").join(), 15).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-008").join(), 10).join();
 
-            // --- CPUs (Υψηλή ζήτηση) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-009").join(), 12); // Intel i9
-            warehouse.increaseProductStock(products.getProduct("TECH-010").join(), 12); // Ryzen 7
+            // --- CPUs ---
+            warehouse.increaseProductStock(products.getProduct("TECH-009").join(), 12).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-010").join(), 12).join();
 
-            // --- RAM (Συχνή αγορά) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-011").join(), 50); // Corsair RAM
-            warehouse.increaseProductStock(products.getProduct("TECH-012").join(), 40); // G.Skill RAM
+            // --- RAM ---
+            warehouse.increaseProductStock(products.getProduct("TECH-011").join(), 50).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-012").join(), 40).join();
 
-            // --- GPUs (Πολύ ακριβά - Περιορισμένο απόθεμα) ---
-            warehouse.increaseProductStock(products.getProduct("TECH-013").join(), 6);  // Nvidia 4070
-            warehouse.increaseProductStock(products.getProduct("TECH-014").join(), 8);  // AMD 7800 XT
+            // --- GPUs ---
+            warehouse.increaseProductStock(products.getProduct("TECH-013").join(), 6).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-014").join(), 8).join();
 
             // --- Storage ---
-            warehouse.increaseProductStock(products.getProduct("TECH-015").join(), 60); // Samsung SSD
-            warehouse.increaseProductStock(products.getProduct("TECH-016").join(), 40); // WD HDD
+            warehouse.increaseProductStock(products.getProduct("TECH-015").join(), 60).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-016").join(), 40).join();
 
             // --- Accessories ---
-            warehouse.increaseProductStock(products.getProduct("TECH-017").join(), 20); // Sony Headphones
-            warehouse.increaseProductStock(products.getProduct("TECH-018").join(), 25); // Razer Headset
-            warehouse.increaseProductStock(products.getProduct("TECH-019").join(), 30); // Webcam
-            warehouse.increaseProductStock(products.getProduct("TECH-020").join(), 15); // iPad Air
+            warehouse.increaseProductStock(products.getProduct("TECH-017").join(), 20).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-018").join(), 25).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-019").join(), 30).join();
+            warehouse.increaseProductStock(products.getProduct("TECH-020").join(), 15).join();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -460,7 +461,7 @@ public class FirebaseInitializer {
 
         order1.setTotal_amount(cart1.getTotalCost());
         cust1.Confirm("CONFIRM",order1);
-        orders.addOrder(order1); // <--- ΑΠΟΘΗΚΕΥΣΗ
+        orders.addOrder(order1).join();
 
 
         //ORDER 2
@@ -475,7 +476,7 @@ public class FirebaseInitializer {
         );
         order2.setTotal_amount(cart2.getTotalCost());
         cust2.Confirm("CONFIRM",order2);
-        orders.addOrder(order2); // <--- ΑΠΟΘΗΚΕΥΣΗ
+        orders.addOrder(order2).join();
 
 
         //ORDER 3
@@ -489,7 +490,7 @@ public class FirebaseInitializer {
         );
         order3.setTotal_amount(cart3.getTotalCost());
         cust3.Confirm("CONFIRM",order3);
-        orders.addOrder(order3); // <--- ΑΠΟΘΗΚΕΥΣΗ
+        orders.addOrder(order3).join();
 
 
         //ORDER 4
@@ -502,7 +503,7 @@ public class FirebaseInitializer {
 
         order4.setTotal_amount(cart4.getTotalCost());
         cust1.Confirm("CONFIRM",order4);
-        orders.addOrder(order4); // <--- ΑΠΟΘΗΚΕΥΣΗ
+        orders.addOrder(order4).join();
 
 
         //ORDER 5
@@ -515,7 +516,7 @@ public class FirebaseInitializer {
 
         order5.setTotal_amount(cart5.getTotalCost());
         cust2.Confirm("CONFIRM",order5);
-        orders.addOrder(order5); // <--- ΑΠΟΘΗΚΕΥΣΗ
+        orders.addOrder(order5).join();
 
         //=====================================================
         //END: INITIALIZE ORDERS
@@ -533,28 +534,28 @@ public class FirebaseInitializer {
         CatalogueUpdateRequest req1 = new CatalogueUpdateRequest(new Date(15, 1, 2024), "Αύξηση τιμής κατά 50€ λόγω νέας παρτίδας.",
                 products.getProduct("TECH-001").join(), AllowedRequest.PROCESS_PRODUCT, 1
         );
-        requests.addUpdateRequest(req1); // Ή requests.save(req1)
+        requests.addUpdateRequest(req1).join();
 
 
         // Request 2
         CatalogueUpdateRequest req2 = new CatalogueUpdateRequest(new Date(16, 1, 2024), "Διόρθωση τυπογραφικού λάθους στα DPI του αισθητήρα.",
                 products.getProduct("TECH-004").join(), AllowedRequest.PROCESS_PRODUCT, 2
         );
-        requests.addUpdateRequest(req2);
+        requests.addUpdateRequest(req2).join();
 
 
         // Request 3
         CatalogueUpdateRequest req3 = new CatalogueUpdateRequest(new Date(18, 1, 2024), "Εφαρμογή έκπτωσης 10% για προωθητική ενέργεια.",
                 products.getProduct("TECH-017").join(), AllowedRequest.PROCESS_PRODUCT, 3
         );
-        requests.addUpdateRequest(req3);
+        requests.addUpdateRequest(req3).join();
 
 
         // Request 4
         CatalogueUpdateRequest req4 = new CatalogueUpdateRequest(new Date(20, 1, 2024), "Το προϊόν καταργήθηκε από τον προμηθευτή, παρακαλώ να αφαιρεθεί.",
                 products.getProduct("TECH-015").join(), AllowedRequest.DELETE_PRODUCT, 4
         );
-        requests.addUpdateRequest(req4);
+        requests.addUpdateRequest(req4).join();
 
 
         // Request 5
@@ -565,7 +566,7 @@ public class FirebaseInitializer {
         CatalogueUpdateRequest req5 = new CatalogueUpdateRequest(new Date(22, 1, 2024), "Εισαγωγή νέου κωδικού εκτυπωτή στον κατάλογο.",
                 newPrinter, AllowedRequest.INSERT_PRODUCT, 5
         );
-        requests.addUpdateRequest(req5);
+        requests.addUpdateRequest(req5).join();
 
         //=====================================================
         //END: INITIALIZE CATALOGUE UPDATE REQUESTS
@@ -576,7 +577,6 @@ public class FirebaseInitializer {
 
     }
 
-    // --- ΟΙ ΝΕΕΣ ΜΕΘΟΔΟΙ ΠΟΥ ΕΠΙΣΤΡΕΦΟΥΝ FIREBASE DAOS ---
 
     public static CustomerDAO getCustomerDAO() {
         return new CustomerDAOFirebase();
