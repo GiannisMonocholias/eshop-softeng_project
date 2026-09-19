@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import java.util.ArrayList;
 
 import gr.softeng.team21.R;
@@ -60,7 +60,7 @@ public class CustomerServiceEmployeeEmailListActivity extends AppCompatActivity 
         adapter = new EmailAdapter(new ArrayList<>(), email -> presenter.onEmailSelected(email, employeeId));
         recyclerView.setAdapter(adapter);
 
-        FloatingActionButton emailMsgComposition = findViewById(R.id.fabNewEmail);
+        ExtendedFloatingActionButton emailMsgComposition = findViewById(R.id.fabNewEmail);
         emailMsgComposition.setOnClickListener(v -> presenter.onCreateNewMsgSelected(employeeId));
 
         presenter.loadInbox(employeeId);

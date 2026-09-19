@@ -65,16 +65,16 @@ public class MainActivity extends AppCompatActivity {
         // ========================================================
         // DATABASE INITIALIZATION
         // ========================================================
-        CompletableFuture.runAsync(() -> {
-            Log.d("FIREBASE_INIT", "Ξεκινάει η μεταφορά δεδομένων στο Firebase. Παρακαλώ περιμένετε...");
-
-            FirebaseInitializer.prepareData();
-
-            Log.d("FIREBASE_INIT", "ΤΕΛΕΙΑ! Τα δεδομένα αρχικοποιήθηκαν επιτυχώς στο Firestore.");
-        }).exceptionally(e -> {
-            Log.e("FIREBASE_INIT", "Σφάλμα κατά την αρχικοποίηση: " + e.getMessage());
-            return null;
-        });
+//        CompletableFuture.runAsync(() -> {
+//            Log.d("FIREBASE_INIT", "Ξεκινάει η μεταφορά δεδομένων στο Firebase. Παρακαλώ περιμένετε...");
+//
+//            FirebaseInitializer.prepareData();
+//
+//            Log.d("FIREBASE_INIT", "ΤΕΛΕΙΑ! Τα δεδομένα αρχικοποιήθηκαν επιτυχώς στο Firestore.");
+//        }).exceptionally(e -> {
+//            Log.e("FIREBASE_INIT", "Σφάλμα κατά την αρχικοποίηση: " + e.getMessage());
+//            return null;
+//        });
         // ========================================================
 
 
