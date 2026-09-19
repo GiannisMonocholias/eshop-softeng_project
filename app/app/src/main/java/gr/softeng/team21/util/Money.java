@@ -42,6 +42,8 @@ public class Money {
         this.currency = currency;
     }
 
+
+    // SEEN FROM JAVA, IGNORED BY FIREBASE
     /**
      * Returns the monetary amount.
      * @return the amount
@@ -60,6 +62,15 @@ public class Money {
         this.amount = amount != null ? amount : BigDecimal.ZERO;
     }
 
+    // SEEN EXCLUSIVELY FROM FIREBASE
+    // Firebase has a double field value instead of BigDecimal (which is incompatible)
+    public double getValue() {
+        return amount != null ? amount.doubleValue() : 0.0;
+    }
+
+    public void setValue(double value) {
+        this.amount = BigDecimal.valueOf(value);
+    }
 
     /**
      * Returns the currency of the monetary value.

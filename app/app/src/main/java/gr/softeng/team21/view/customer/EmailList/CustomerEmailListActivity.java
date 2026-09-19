@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -38,7 +38,8 @@ public class CustomerEmailListActivity extends AppCompatActivity implements Cust
     private CustomerEmailListPresenter presenter;
     private static final String CUSTOMER_ID_EXTRA = "CUSTOMER_ID";
     private RecyclerView recyclerView;
-    private FloatingActionButton emailMsgComposition;
+    private ExtendedFloatingActionButton emailMsgComposition;
+
     private SearchView searchView;
     private EmailAdapter adapter;
     private String customerId;
