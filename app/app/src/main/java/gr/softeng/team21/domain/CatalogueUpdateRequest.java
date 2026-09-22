@@ -52,6 +52,11 @@ public class CatalogueUpdateRequest {
     public int getId() { return requestId; }
 
     /**
+     * @param requestId the unique identifier for this request.
+     */
+    public void setId(int requestId) { this.requestId = requestId; }
+
+    /**
      * @return the current status of the request (e.g., NEW, ASSIGNED, SERVED).
      */
     public RequestStatusType getStatus() {

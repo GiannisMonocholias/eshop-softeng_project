@@ -26,7 +26,8 @@ public class AvailableRequestsToAssignPresenter {
     }
 
     public void loadAvailableRequests(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+        employeeDAO.getEmployee(employeeId, gr.softeng.team21.domain.EmployeeRole.UPDATE_CATALOGUE).thenAccept(employee -> {
+
             if (employee instanceof UpdateCatalogueEmployee) {
                 this.loggedInEmployee = (UpdateCatalogueEmployee) employee;
 
@@ -43,7 +44,7 @@ public class AvailableRequestsToAssignPresenter {
                     return null;
                 });
             } else {
-                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
+                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
         }).exceptionally(e -> {
             if (view != null) view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());

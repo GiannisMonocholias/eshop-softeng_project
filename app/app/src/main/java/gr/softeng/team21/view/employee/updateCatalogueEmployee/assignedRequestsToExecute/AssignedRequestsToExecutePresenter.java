@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
+import gr.softeng.team21.domain.EmployeeRole;
 import gr.softeng.team21.domain.RequestStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
@@ -37,13 +38,15 @@ public class AssignedRequestsToExecutePresenter {
 
     /**
      * Asynchronously loads the requests currently assigned to the logged-in employee.
+     * Explicitly requests the UPDATE_CATALOGUE role to ensure the correct subclass is loaded.
      * Utilizes database indexing to fetch records directly and filters locally to display
      * only active (ASSIGNED) tasks.
      *
      * @param employeeId The unique identifier of the logged-in catalogue employee.
      */
     public void loadAssignedRequests(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+        employeeDAO.getEmployee(employeeId, EmployeeRole.UPDATE_CATALOGUE).thenAccept(employee -> {
+
             if (employee instanceof UpdateCatalogueEmployee) {
                 this.loggedInEmployee = (UpdateCatalogueEmployee) employee;
 
@@ -58,17 +61,19 @@ public class AssignedRequestsToExecutePresenter {
                     }
                     if (view != null) view.updateAssignedRequestsList(activeRequests);
                 }).exceptionally(e -> {
-                    if (view != null) view.showError("Σφάλμα ανάκτησης: " + e.getMessage());
+                    if (view != null) view.showError("Σφάλμα ανάκτησης αιτημάτων: " + e.getMessage());
                     return null;
                 });
             } else {
-                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
+                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
+
         }).exceptionally(e -> {
             if (view != null) view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
             return null;
         });
     }
+
 
     /**
      * Handles user interaction when a specific request is clicked in the list.

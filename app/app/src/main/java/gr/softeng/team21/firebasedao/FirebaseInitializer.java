@@ -458,11 +458,10 @@ public class FirebaseInitializer {
         Order order1 = new Order("ORD-2024-001", new Date(10, 11, 2023), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, new Date(14, 11, 2023), cart1
         );
-
+        order1.setDelivererId("DEL-402");
         order1.setTotal_amount(cart1.getTotalCost());
         cust1.Confirm("CONFIRM",order1);
         orders.addOrder(order1).join();
-
 
         //ORDER 2
         ShoppingCart cart2 = new ShoppingCart(cust2);
@@ -478,7 +477,6 @@ public class FirebaseInitializer {
         cust2.Confirm("CONFIRM",order2);
         orders.addOrder(order2).join();
 
-
         //ORDER 3
         ShoppingCart cart3 = new ShoppingCart(cust3);
         // Headphones (1) + Webcam (1)
@@ -488,10 +486,10 @@ public class FirebaseInitializer {
         Order order3 = new Order("ORD-2024-003", new Date(12, 1, 2024), OrderStatusType.SHIPPED,
                 false, PaymentType.CASH, null, cart3
         );
+        order3.setDelivererId("DEL-401");
         order3.setTotal_amount(cart3.getTotalCost());
         cust3.Confirm("CONFIRM",order3);
         orders.addOrder(order3).join();
-
 
         //ORDER 4
         ShoppingCart cart4 = new ShoppingCart(cust1);
@@ -513,7 +511,7 @@ public class FirebaseInitializer {
         Order order5 = new Order("ORD-2024-005", new Date(20, 1, 2024), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, null, cart5
         );
-
+        order2.setDelivererId("DEL-403");
         order5.setTotal_amount(cart5.getTotalCost());
         cust2.Confirm("CONFIRM",order5);
         orders.addOrder(order5).join();
