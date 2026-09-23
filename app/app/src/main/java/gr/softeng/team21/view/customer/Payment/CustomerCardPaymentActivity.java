@@ -15,8 +15,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 import gr.softeng.team21.firebasedao.OrderDAOFirebase;
 import gr.softeng.team21.util.Money;
 import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
@@ -50,8 +52,9 @@ public class CustomerCardPaymentActivity extends AppCompatActivity implements Cu
         // Dependency Injection with Firebase DAOs
         CustomerDAO customerDAO = new CustomerDAOFirebase();
         OrderDAO orderDAO = new OrderDAOFirebase();
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
 
-        presenter = new CustomerCardPaymentPresenter(this, customerDAO, orderDAO);
+        presenter = new CustomerCardPaymentPresenter(this, customerDAO, orderDAO, employeeDAO);
 
         eTCardNumber = findViewById(R.id.edittxtCustomerCardPaymentActivityCardNumber);
         btnPay = findViewById(R.id.btnCustomerCardPaymentActivityPayment);

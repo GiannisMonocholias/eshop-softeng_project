@@ -1,5 +1,7 @@
 package gr.softeng.team21.firebasedao;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.functions.FirebaseFunctions;
@@ -90,6 +92,7 @@ public class ProductTypeDAOFirebase implements ProductTypeDAO {
             future.completeExceptionally(new IllegalArgumentException("Product cannot be null"));
             return future;
         }
+
 
         db.collection(COLLECTION_NAME).document(product.getProductCode()).get()
                 .addOnSuccessListener(documentSnapshot -> {

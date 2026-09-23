@@ -50,12 +50,12 @@ public class AssignedRequestsToExecutePresenter {
             if (employee instanceof UpdateCatalogueEmployee) {
                 this.loggedInEmployee = (UpdateCatalogueEmployee) employee;
 
-                // Optimized DAO call relying on Foreign Keys
                 updateRequestDAO.getRequestsByEmployeeId(employeeId).thenAccept(requests -> {
                     ArrayList<CatalogueUpdateRequest> activeRequests = new ArrayList<>();
-                    // Filter locally to display only ASSIGNED requests (hide SERVED ones)
+
                     for (CatalogueUpdateRequest req : requests) {
-                        if (req.getStatus() == RequestStatusType.ASSIGNED) {
+                        // Προσθήκη null-check για αποφυγή NullPointerException!
+                        if (req != null && req.getStatus() != null && req.getStatus() == RequestStatusType.ASSIGNED) {
                             activeRequests.add(req);
                         }
                     }
@@ -73,7 +73,6 @@ public class AssignedRequestsToExecutePresenter {
             return null;
         });
     }
-
 
     /**
      * Handles user interaction when a specific request is clicked in the list.

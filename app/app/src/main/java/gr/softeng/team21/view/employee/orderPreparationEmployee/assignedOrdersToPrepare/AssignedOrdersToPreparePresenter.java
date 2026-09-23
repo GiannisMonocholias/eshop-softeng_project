@@ -53,7 +53,7 @@ public class AssignedOrdersToPreparePresenter {
                     ArrayList<Order> pendingOrders = new ArrayList<>();
 
                     for (Order order : orders) {
-                        if (order.getOrderStatus() == OrderStatusType.NEW) {
+                        if (order.getOrderStatus() == OrderStatusType.PROCESSING) {
                             pendingOrders.add(order);
                         }
                     }
