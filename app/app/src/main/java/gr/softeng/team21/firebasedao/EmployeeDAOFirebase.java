@@ -9,7 +9,12 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.domain.CustomerServiceEmployee;
+import gr.softeng.team21.domain.Deliverer;
 import gr.softeng.team21.domain.Employee;
+import gr.softeng.team21.domain.EmployeeRole;
+import gr.softeng.team21.domain.OrderPreparationEmployee;
+import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
 /**
  * Firebase implementation of the {@link EmployeeDAO} interface.
@@ -41,7 +46,27 @@ public class EmployeeDAOFirebase implements EmployeeDAO {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     HashMap<String, Employee> employeesMap = new HashMap<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Employee employee = document.toObject(Employee.class);
+                        Employee employee;
+
+                        // existing fields check to determine the type of the employee
+
+                        if (document.contains("max_quantity") || document.contains("assignedOrdersCount")) {
+                            employee = document.toObject(Deliverer.class);
+                        }
+                        else if (document.contains("totalResponses")) {
+                            employee = document.toObject(CustomerServiceEmployee.class);
+                        }
+                        else if (document.contains("totalOrdersPreparations") || document.contains("totalUpdateReserveRequests")) {
+                            employee = document.toObject(OrderPreparationEmployee.class);
+                        }
+                        else if (document.contains("totalCatalogueUpdates")) {
+                            employee = document.toObject(UpdateCatalogueEmployee.class);
+                        }
+                        else {
+                            // Fallback αν δεν ταιριάζει πουθενά
+                            employee = document.toObject(Employee.class);
+                        }
+
                         employeesMap.put(employee.getEmployeeId(), employee);
                     }
                     future.complete(employeesMap);
@@ -74,6 +99,50 @@ public class EmployeeDAOFirebase implements EmployeeDAO {
 
         return future;
     }
+
+    /**{@inheritDoc}*/
+    public CompletableFuture<Employee> getEmployee(String id, EmployeeRole role) {
+        CompletableFuture<Employee> future = new CompletableFuture<>();
+
+        if (id == null || id.isEmpty()) {
+            future.completeExceptionally(new IllegalArgumentException("ID cannot be null or empty"));
+            return future;
+        }
+
+        db.collection(COLLECTION_NAME).document(id).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Employee employee;
+
+                        // Dynamically instantiate the subclass based on the Enum role
+                        switch (role) {
+                            case ORDER_PREPARATION:
+                                employee = documentSnapshot.toObject(OrderPreparationEmployee.class);
+                                break;
+                            case CUSTOMER_SERVICE:
+                                employee = documentSnapshot.toObject(CustomerServiceEmployee.class);
+                                break;
+                            case UPDATE_CATALOGUE:
+                                employee = documentSnapshot.toObject(UpdateCatalogueEmployee.class);
+                                break;
+                            case DELIVERY:
+                                employee = documentSnapshot.toObject(Deliverer.class);
+                                break;
+                            default:
+                                employee = documentSnapshot.toObject(Employee.class);
+                                break;
+                        }
+
+                        future.complete(employee);
+                    } else {
+                        future.complete(null);
+                    }
+                })
+                .addOnFailureListener(future::completeExceptionally);
+
+        return future;
+    }
+
 
     /**{@inheritDoc}*/
     @Override

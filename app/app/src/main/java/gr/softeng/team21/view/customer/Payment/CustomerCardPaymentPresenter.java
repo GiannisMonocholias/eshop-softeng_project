@@ -1,8 +1,14 @@
 package gr.softeng.team21.view.customer.Payment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.CustomerServiceEmployee;
+import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.PaymentType;
 
@@ -17,6 +23,7 @@ public class CustomerCardPaymentPresenter {
     private final CustomerCardPaymentView view;
     private final CustomerDAO customerDAO;
     private final OrderDAO orderDAO;
+    private final EmployeeDAO employeeDAO;
 
     private Customer customer;
     private Order order;
@@ -27,10 +34,11 @@ public class CustomerCardPaymentPresenter {
      * @param customerDAO The data access object for customer information.
      * @param orderDAO The data access object for saving orders.
      */
-    public CustomerCardPaymentPresenter(CustomerCardPaymentView view, CustomerDAO customerDAO, OrderDAO orderDAO) {
+    public CustomerCardPaymentPresenter(CustomerCardPaymentView view, CustomerDAO customerDAO, OrderDAO orderDAO, EmployeeDAO employeeDAO) {
         this.view = view;
         this.customerDAO = customerDAO;
         this.orderDAO = orderDAO;
+        this.employeeDAO = employeeDAO;
     }
 
     /**
@@ -52,7 +60,8 @@ public class CustomerCardPaymentPresenter {
 
     /**
      * Validates the card number and initiates the checkout process.
-     * If successful, prompts the view to show a confirmation dialog.
+     * Fetches all employees, filters the Customer Service ones, and performs
+     * hash-based load balancing for the order.
      * @param cardNumber The card number entered by the user.
      */
     public void CardPaymentClicked(String cardNumber) {
@@ -66,14 +75,29 @@ public class CustomerCardPaymentPresenter {
             return;
         }
 
-        order = customer.Checkout();
-        if (order == null) {
-            if (view != null) view.showMessage("Το καλάθι είναι άδειο!");
-            return;
-        }
+        employeeDAO.getEmployees().thenAccept(employeesMap -> {
+            List<String> activeCsEmployeeIds = new ArrayList<>();
 
-        customer.selectPaymentType(PaymentType.CARD, cardNumber, order);
-        if (view != null) view.showConfirmation(order.getTotal_amount());
+            for (Employee emp : employeesMap.values()) {
+                if (emp instanceof CustomerServiceEmployee) {
+                    activeCsEmployeeIds.add(emp.getEmployeeId());
+                }
+            }
+
+            order = customer.Checkout(activeCsEmployeeIds);
+
+            if (order == null) {
+                if (view != null) view.showMessage("Το καλάθι είναι άδειο!");
+                return;
+            }
+
+            customer.selectPaymentType(PaymentType.CARD, cardNumber, order);
+            if (view != null) view.showConfirmation(order.getTotal_amount());
+
+        }).exceptionally(e -> {
+            if (view != null) view.showMessage("Σφάλμα κατά την ανάθεση υπαλλήλου: " + e.getMessage());
+            return null;
+        });
     }
 
     /**

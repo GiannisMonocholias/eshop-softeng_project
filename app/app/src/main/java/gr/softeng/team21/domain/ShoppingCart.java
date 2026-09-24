@@ -112,7 +112,6 @@ public class ShoppingCart {
      * Returns the customer who owns this shopping cart.
      * @return the customer
      */
-    @Exclude
     public Customer getCustomer() {
         return customer;
     }
@@ -121,7 +120,6 @@ public class ShoppingCart {
      * Sets the customer who owns this shopping cart.
      * @param customer the new customer
      */
-    @Exclude
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

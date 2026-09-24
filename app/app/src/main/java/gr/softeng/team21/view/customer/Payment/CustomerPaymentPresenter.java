@@ -1,8 +1,14 @@
 package gr.softeng.team21.view.customer.Payment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.CustomerServiceEmployee;
+import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.PaymentType;
 
@@ -16,6 +22,7 @@ public class CustomerPaymentPresenter {
     private final CustomerPaymentView view;
     private final CustomerDAO customerDAO;
     private final OrderDAO orderDAO;
+    private final EmployeeDAO employeeDAO;
 
     private Customer customer;
     private Order order;
@@ -26,10 +33,11 @@ public class CustomerPaymentPresenter {
      * @param customerDAO The data access object for customers.
      * @param orderDAO The data access object for orders.
      */
-    public CustomerPaymentPresenter(CustomerPaymentView view, CustomerDAO customerDAO, OrderDAO orderDAO) {
+    public CustomerPaymentPresenter(CustomerPaymentView view, CustomerDAO customerDAO, OrderDAO orderDAO, EmployeeDAO employeeDAO) {
         this.view = view;
         this.customerDAO = customerDAO;
         this.orderDAO = orderDAO;
+        this.employeeDAO = employeeDAO;
     }
 
     /**
@@ -66,13 +74,33 @@ public class CustomerPaymentPresenter {
         }
 
         if (cashCheck) {
-            order = customer.Checkout();
-            if (order == null) {
-                if (view != null) view.showMessage("Το καλάθι είναι άδειο!");
-                return;
-            }
-            customer.selectPaymentType(PaymentType.CASH, "", order);
-            if (view != null) view.showConfirmation(order.getTotal_amount());
+            // Fetch all employees from the DB
+            employeeDAO.getEmployees().thenAccept(employeesMap -> {
+                List<String> activeCsEmployeeIds = new ArrayList<>();
+
+                // Filter only CustomerServiceEmployee
+                for (Employee emp : employeesMap.values()) {
+                    if (emp instanceof CustomerServiceEmployee) {
+                        activeCsEmployeeIds.add(emp.getEmployeeId());
+                    }
+                }
+
+                // Δημιουργία παραγγελίας με Load Balancing
+                order = customer.Checkout(activeCsEmployeeIds);
+
+                if (order == null) {
+                    if (view != null) view.showMessage("Το καλάθι είναι άδειο!");
+                    return;
+                }
+
+                customer.selectPaymentType(PaymentType.CASH, "", order);
+                if (view != null) view.showConfirmation(order.getTotal_amount());
+
+            }).exceptionally(e -> {
+                if (view != null) view.showMessage("Σφάλμα κατά την ανάθεση υπαλλήλου: " + e.getMessage());
+                return null;
+            });
+
         } else {
             if (view != null) view.goToToCardPayment();
         }

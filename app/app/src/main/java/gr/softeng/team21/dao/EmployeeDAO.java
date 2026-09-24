@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.domain.Employee;
+import gr.softeng.team21.domain.EmployeeRole;
 
 /**
  * Interface for Employee Data Access Object.
@@ -31,6 +32,20 @@ public interface EmployeeDAO {
       * @return A CompletableFuture containing the Employee object, or null if no such ID exists.
       */
      CompletableFuture<Employee> getEmployee(String id);
+
+     /**
+      * Retrieves an employee by ID and dynamically casts it to the specified role subclass.
+      * Firebase implementations override this to handle Firestore's lack of polymorphism.
+      * Memory implementations inherit this default behavior to simply return the stored object.
+      *
+      * @param id The unique identifier of the employee.
+      * @param role The role of the employee (e.g., "OrderPreparation").
+      * @return A CompletableFuture containing the Employee object.
+      */
+     default CompletableFuture<Employee> getEmployee(String id, EmployeeRole role) {
+          return getEmployee(id);
+     }
+
 
      /**
       * Adds a new employee to the repository asynchronously.

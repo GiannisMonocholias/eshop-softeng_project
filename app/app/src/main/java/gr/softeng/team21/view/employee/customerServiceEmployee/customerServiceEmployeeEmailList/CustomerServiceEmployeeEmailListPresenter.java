@@ -31,7 +31,7 @@ public class CustomerServiceEmployeeEmailListPresenter {
      */
     public void loadInbox(String employeeId) {
         employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
-            if (employee instanceof CustomerServiceEmployee && employee.getEmailAddress() != null) {
+            if (employee.getEmailAddress() != null) {
 
                 String employeeEmailAddress = employee.getEmailAddress().toString();
 
@@ -44,7 +44,7 @@ public class CustomerServiceEmployeeEmailListPresenter {
                 });
 
             } else {
-                if (view != null) view.showError("Employee not found or missing email address.");
+                if (view != null) view.showError("Missing Employee email address.");
             }
         }).exceptionally(e -> {
             if (view != null) view.showError("Error identifying employee: " + e.getMessage());

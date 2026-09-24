@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
+import gr.softeng.team21.domain.Employee;
+import gr.softeng.team21.domain.EmployeeRole;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.OrderStatusType;
@@ -22,6 +24,9 @@ public class AssignedOrdersToPreparePresenter {
 
     /**
      * Initializes the presenter with injected DAOs.
+     * @param view The view interface for UI updates.
+     * @param employeeDAO The data access object for employee operations.
+     * @param orderDAO The data access object for order operations.
      */
     public AssignedOrdersToPreparePresenter(AssignedOrdersToPrepareView view, EmployeeDAO employeeDAO, OrderDAO orderDAO){
         this.view = view;
@@ -30,22 +35,25 @@ public class AssignedOrdersToPreparePresenter {
     }
 
     /**
-     * Asynchronously loads the logged-in employee and performs a highly optimized
-     * database query to fetch ONLY the orders assigned to their specific ID.
+     * Asynchronously loads the logged-in employee by explicitly requesting the ORDER_PREPARATION enum role.
+     * Performs a highly optimized database query to fetch ONLY the orders assigned to their specific ID.
      * @param employeeId The unique ID of the employee.
      */
     public void loadAssignedOrders(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+
+        // Pass the strict Enum role to the DAO to trigger the subclass mapping
+        employeeDAO.getEmployee(employeeId, EmployeeRole.ORDER_PREPARATION).thenAccept(employee -> {
+
             if (employee instanceof OrderPreparationEmployee) {
+                // Safe cast since the DAO instantiated the correct subclass
                 this.loggedInEmployee = (OrderPreparationEmployee) employee;
 
                 // Optimized DB Query: Fetch ONLY orders for this employee
                 orderDAO.getOrdersByPreparationEmployeeId(employeeId).thenAccept(orders -> {
                     ArrayList<Order> pendingOrders = new ArrayList<>();
 
-                    // Filter the small subset locally to find only NEW status orders
                     for (Order order : orders) {
-                        if (order.getOrderStatus() == OrderStatusType.NEW) {
+                        if (order.getOrderStatus() == OrderStatusType.PROCESSING) {
                             pendingOrders.add(order);
                         }
                     }
@@ -63,6 +71,11 @@ public class AssignedOrdersToPreparePresenter {
         });
     }
 
+    /**
+     * Handles the user interaction when an order item is clicked.
+     * Validates the active employee session and navigates to the order details screen.
+     * @param order The order object that was clicked.
+     */
     public void onClickOrder(Order order){
         if (loggedInEmployee != null && view != null) {
             view.navigateToOrderPreparationDetails(loggedInEmployee.getEmployeeId(), order.getOrderCode());

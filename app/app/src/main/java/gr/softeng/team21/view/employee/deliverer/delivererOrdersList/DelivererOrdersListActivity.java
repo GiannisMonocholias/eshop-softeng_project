@@ -1,6 +1,7 @@
 package gr.softeng.team21.view.employee.deliverer.delivererOrdersList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;

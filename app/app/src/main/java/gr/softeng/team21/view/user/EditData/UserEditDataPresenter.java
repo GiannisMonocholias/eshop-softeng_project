@@ -84,9 +84,11 @@ public class UserEditDataPresenter {
 
     /**
      * Validates and saves the user inputs to the domain model.
+     * Updates the persistent data in Firebase based on the user's role.
      */
     public void onSaveClicked(String username, String password, String email, String fName, String lName, String phone,
                               String street, String streetNo, String city, String zip, String country) {
+
         if (currentUser == null) {
             if (view != null) view.showMessage("Σφάλμα: Δεν έχει φορτωθεί ο χρήστης.");
             return;
@@ -107,6 +109,7 @@ public class UserEditDataPresenter {
             return;
         }
 
+        // Update the local domain object with new data
         currentUser.setUsername(username);
         currentUser.setPassword(password);
         currentUser.setEmailAddress(new EmailAddress(email));
@@ -114,10 +117,8 @@ public class UserEditDataPresenter {
         currentUser.setLastname(lName);
         currentUser.setPhonenumber(phone);
 
-        if (!street.isEmpty() || !city.isEmpty()) {
-            Address newAddress = new Address(street, streetNo, city, country, zip);
-            currentUser.setAddress(newAddress);
-        }
+        Address newAddress = new Address(street, streetNo, city, country, zip);
+        currentUser.setAddress(newAddress);
 
         // Update the snapshot so the Back button won't trigger the unsaved changes warning
         origUsername = username; origPassword = password; origEmail = email;
@@ -125,9 +126,27 @@ public class UserEditDataPresenter {
         origStreet = street; origStreetNo = streetNo; origCity = city;
         origZip = zip; origCountry = country;
 
-        if (view != null) {
-            view.showMessage("Τα στοιχεία σας ενημερώθηκαν επιτυχώς!");
-            view.finishView();
+        // Save to Firebase
+        if (currentUser instanceof gr.softeng.team21.domain.Customer) {
+            customerDAO.addCustomer((gr.softeng.team21.domain.Customer) currentUser).thenAccept(aVoid -> {
+                if (view != null) {
+                    view.showMessage("Τα στοιχεία σας ενημερώθηκαν επιτυχώς!");
+                    view.finishView();
+                }
+            }).exceptionally(e -> {
+                if (view != null) view.showMessage("Σφάλμα αποθήκευσης: " + e.getMessage());
+                return null;
+            });
+        } else if (currentUser instanceof gr.softeng.team21.domain.Employee) {
+            employeeDAO.addEmployee((gr.softeng.team21.domain.Employee) currentUser).thenAccept(aVoid -> {
+                if (view != null) {
+                    view.showMessage("Τα στοιχεία σας ενημερώθηκαν επιτυχώς!");
+                    view.finishView();
+                }
+            }).exceptionally(e -> {
+                if (view != null) view.showMessage("Σφάλμα αποθήκευσης: " + e.getMessage());
+                return null;
+            });
         }
     }
 

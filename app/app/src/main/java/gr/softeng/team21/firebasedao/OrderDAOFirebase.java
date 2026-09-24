@@ -1,5 +1,7 @@
 package gr.softeng.team21.firebasedao;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.functions.FirebaseFunctions;
@@ -68,7 +70,9 @@ public class OrderDAOFirebase implements OrderDAO {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     ArrayList<Order> assignedOrders = new ArrayList<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        assignedOrders.add(document.toObject(Order.class));
+                        Order current_order = document.toObject(Order.class);
+                        Log.d("Deliverer orders message",current_order.getDelivererId());
+                        assignedOrders.add(current_order);
                     }
                     future.complete(assignedOrders);
                 })

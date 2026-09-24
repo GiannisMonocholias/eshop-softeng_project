@@ -3,6 +3,7 @@ package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrders
 import java.util.ArrayList;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
+import gr.softeng.team21.domain.EmployeeRole;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.OrderStatusType;
@@ -34,13 +35,18 @@ public class AvailableOrdersToAssignPresenter {
     }
 
     /**
-     * Asynchronously loads the employee data and then fetches all orders,
-     * filtering for those that have a status of NEW and are unassigned, before updating the view.
+     * Asynchronously loads the employee data by explicitly requesting the ORDER_PREPARATION enum role.
+     * Then fetches all orders, filtering for those that have a status of NEW and are unassigned,
+     * before updating the view.
      * @param employeeId The unique ID of the employee browsing the list.
      */
     public void loadAvailableOrders(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+
+        // Pass the strict Enum role to the DAO to trigger the subclass mapping
+        employeeDAO.getEmployee(employeeId, EmployeeRole.ORDER_PREPARATION).thenAccept(employee -> {
+
             if (employee instanceof OrderPreparationEmployee) {
+                // Safe cast since the DAO instantiated the correct subclass based on the Enum
                 this.loggedInEmployee = (OrderPreparationEmployee) employee;
 
                 // Fetch orders asynchronously

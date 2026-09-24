@@ -9,6 +9,7 @@ import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
+import gr.softeng.team21.domain.EmployeeRole;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderStatusType;
 import gr.softeng.team21.util.Date;
@@ -34,7 +35,9 @@ public class OrderStatusPresenter {
     }
 
     public void loadOrders(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+        // 1. Explicitly request the CUSTOMER_SERVICE role to ensure correct subclass instantiation
+        employeeDAO.getEmployee(employeeId, EmployeeRole.CUSTOMER_SERVICE).thenAccept(employee -> {
+
             if (employee instanceof CustomerServiceEmployee) {
                 this.loggedInEmployee = (CustomerServiceEmployee) employee;
 
@@ -47,9 +50,12 @@ public class OrderStatusPresenter {
                         }
                     }
                     if (view != null) view.updateOrders(assignedOrders);
+                }).exceptionally(e -> {
+                    if (view != null) view.showError("Σφάλμα ανάκτησης παραγγελιών: " + e.getMessage());
+                    return null;
                 });
             } else {
-                if (view != null) view.showError("Ο υπάλληλος δεν ανήκει στην εξυπηρέτηση πελατών");
+                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν ανήκει στην εξυπηρέτηση πελατών.");
             }
         }).exceptionally(e -> {
             if (view != null) view.showError("Σφάλμα: " + e.getMessage());

@@ -16,8 +16,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
+import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 import gr.softeng.team21.firebasedao.OrderDAOFirebase;
 import gr.softeng.team21.util.Money;
 import gr.softeng.team21.view.customer.homePage.CustomerHomePageActivity;
@@ -61,7 +63,9 @@ public class CustomerPaymentActivity extends AppCompatActivity implements Custom
         // Dependency Injection with Firebase DAOs
         CustomerDAO customerDAO = new CustomerDAOFirebase();
         OrderDAO orderDAO = new OrderDAOFirebase();
-        presenter = new CustomerPaymentPresenter(this, customerDAO, orderDAO);
+        EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
+
+        presenter = new CustomerPaymentPresenter(this, customerDAO, orderDAO, employeeDAO);
 
         btnPay.setOnClickListener(v -> presenter.paymentClicked(rbCash.isChecked()));
 

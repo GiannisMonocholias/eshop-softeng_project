@@ -16,6 +16,7 @@ import gr.softeng.team21.domain.CartItem;
 import gr.softeng.team21.domain.CustomerServiceEmployee;
 import gr.softeng.team21.domain.Deliverer;
 import gr.softeng.team21.domain.Employee;
+import gr.softeng.team21.domain.EmployeeRole;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderPreparationEmployee;
 import gr.softeng.team21.domain.OrderStatusType;
@@ -53,15 +54,24 @@ public class OrderPreparationDetailsPresenter {
      * Asynchronously loads the employee and order data, preparing the view for display.
      */
     public void loadOrder(String employeeId, String ordercode) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+        employeeDAO.getEmployee(employeeId, EmployeeRole.ORDER_PREPARATION).thenAccept(employee -> {
+
             if (employee instanceof OrderPreparationEmployee) {
                 this.loggedInEmployee = (OrderPreparationEmployee) employee;
+
                 orderDAO.getOrder(ordercode).thenAccept(order -> {
                     if (order != null) {
                         this.orderToPrepare = order;
-                        String customerFullName = order.getShoppingCart().getCustomer().getFirstname() + " " + order.getShoppingCart().getCustomer().getLastname();
+
+                        String customerFullName = "Άγνωστος Πελάτης";
+                        if (order.getShoppingCart() != null && order.getShoppingCart().getCustomer() != null) {
+                            String first = order.getShoppingCart().getCustomer().getFirstname();
+                            String last = order.getShoppingCart().getCustomer().getLastname();
+                            customerFullName = (first != null ? first : "") + " " + (last != null ? last : "");
+                        }
+
                         if (view != null) {
-                            view.setOrderDetails(ordercode, customerFullName, order.getSubmissionDate().toString(), order.getTotal_amount().toString(), order.getOrderStatus());
+                            view.setOrderDetails(ordercode, customerFullName.trim(), order.getSubmissionDate().toString(), order.getTotal_amount().toString(), order.getOrderStatus());
                             view.updateCartItems(new ArrayList<>(order.getShoppingCart().getItems()));
                         }
                     } else {
@@ -69,7 +79,7 @@ public class OrderPreparationDetailsPresenter {
                     }
                 });
             } else {
-                if (view != null) view.showErrorMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
+                if (view != null) view.showErrorMessage("Σφάλμα: Ο υπάλληλος δεν έχει ρόλο προετοιμασίας παραγγελιών.");
             }
         }).exceptionally(e -> {
             if (view != null) view.showErrorMessage("Σφάλμα ανάκτησης: " + e.getMessage());
@@ -115,7 +125,7 @@ public class OrderPreparationDetailsPresenter {
                     orderToPrepare.setOrderStatus(OrderStatusType.SHIPPED);
                     loggedInEmployee.incrementOrdersPrepared();
 
-                    assignEmployeeAndComplete(Deliverer.class, orderToPrepare.getDelivererId(), (assignedEmployee) -> {
+                    assignEmployeeAndComplete(Deliverer.class, orderToPrepare.getDelivererId(), orderToPrepare.getOrderCode(), (assignedEmployee) -> {
                         orderToPrepare.setDelivererId(assignedEmployee.getEmployeeId());
                         saveOrderAndNotifyView("Ο έλεγχος αποθέματος ολοκληρώθηκε! Έτοιμη προς παράδοση.");
                     });
@@ -129,7 +139,7 @@ public class OrderPreparationDetailsPresenter {
                 orderToPrepare.setOrderStatus(OrderStatusType.DELAYED);
                 loggedInEmployee.incrementUpdateReserveRequests();
 
-                assignEmployeeAndComplete(CustomerServiceEmployee.class, orderToPrepare.getCustomerServiceId(), (assignedEmployee) -> {
+                assignEmployeeAndComplete(CustomerServiceEmployee.class, orderToPrepare.getCustomerServiceId(), orderToPrepare.getOrderCode(),(assignedEmployee) -> {
                     orderToPrepare.setCustomerServiceId(assignedEmployee.getEmployeeId());
 
                     String msg = buildShortageMessage(insufficientStocks);
@@ -152,9 +162,14 @@ public class OrderPreparationDetailsPresenter {
 
     /**
      * Resolves the assigned employee. If an ID exists, it fetches them via getEmployee(id).
-     * If null, it fetches all employees, filters by class, and picks a random one.
+     * If null, it fetches all employees, filters by class, and assigns one using hash-based load balancing.
+     *
+     * @param type The Class of the employee (e.g., Deliverer.class)
+     * @param existingId The assigned ID, if it already exists
+     * @param taskIdentifier A unique ID of the task (e.g., orderCode or requestId) used for hashing
+     * @param onComplete Callback to execute with the selected employee
      */
-    private <T extends Employee> void assignEmployeeAndComplete(Class<T> type, String existingId, java.util.function.Consumer<T> onComplete) {
+    private <T extends Employee> void assignEmployeeAndComplete(Class<T> type, String existingId, String taskIdentifier, java.util.function.Consumer<T> onComplete) {
         if (existingId != null && !existingId.isEmpty()) {
             employeeDAO.getEmployee(existingId).thenAccept(emp -> onComplete.accept(type.cast(emp)));
         } else {
@@ -163,9 +178,14 @@ public class OrderPreparationDetailsPresenter {
                 for (Employee e : map.values()) {
                     if (type.isInstance(e)) candidates.add(type.cast(e));
                 }
+
                 if (!candidates.isEmpty()) {
-                    T randomEmployee = candidates.get(new Random().nextInt(candidates.size()));
-                    onComplete.accept(randomEmployee);
+                    // Hash-based Load Balancing
+                    int hash = Math.abs(taskIdentifier.hashCode());
+                    int assignedIndex = hash % candidates.size();
+
+                    T selectedEmployee = candidates.get(assignedIndex);
+                    onComplete.accept(selectedEmployee);
                 } else {
                     if (view != null) view.showErrorMessage("Δεν βρέθηκε διαθέσιμος υπάλληλος τύπου " + type.getSimpleName());
                 }

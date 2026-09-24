@@ -1,4 +1,6 @@
 package gr.softeng.team21.domain;
+import com.google.firebase.firestore.Exclude;
+
 import java.util.*;
 import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.util.Date;
@@ -77,6 +79,7 @@ public class Customer extends User {
      *
      * @return the shopping cart
      */
+    @Exclude
     public ShoppingCart getShoppingCart() {
         return shoppingCart;
     }
@@ -86,6 +89,7 @@ public class Customer extends User {
      *
      * @param shoppingCart the new shopping cart
      */
+    @Exclude
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
@@ -157,19 +161,32 @@ public class Customer extends User {
 
     /**
      * Creates a new order based on the current shopping cart contents.
-     * The order is assigned a new unique code and a delivery date 30 days from now.
-     * The order has cash as the default payment method and is considered unpaid.
+     * The order is assigned a new unique code, a delivery date 30 days from now,
+     * and is automatically assigned to a Customer Service Employee using a Hash function.
      *
+     * @param activeCsEmployeeIds the list of IDs of available customer service employees
      * @return the created order, or null if the shopping cart is null
      */
-    public Order Checkout() {
+    public Order Checkout(List<String> activeCsEmployeeIds) {
         if (shoppingCart == null) return null;
 
         Date deliverydate = new Date();
         deliverydate.changeDays(30);
         String orderCode = "ORD-" + UUID.randomUUID().toString();
+
         Order neworder = new Order(orderCode, new Date(), OrderStatusType.NEW, false, PaymentType.CASH, deliverydate, shoppingCart);
         neworder.setTotal_amount(shoppingCart.getTotalCost());
+
+        // --- Hash-based Load Balancing ---
+        if (activeCsEmployeeIds != null && !activeCsEmployeeIds.isEmpty()) {
+
+            int hash = Math.abs(orderCode.hashCode());
+            int assignedIndex = hash % activeCsEmployeeIds.size();
+
+            String selectedEmployeeId = activeCsEmployeeIds.get(assignedIndex);
+            neworder.setCustomerServiceId(selectedEmployeeId);
+        }
+
         return neworder;
     }
 

@@ -14,6 +14,8 @@ public class Admin extends User {
     private static Admin instance;
     int salary;
 
+    public Admin(){}
+
     /**
      * Constructs a new Admin instance with the specified personal and professional details.
      * Note: While the constructor is public, instantiation should generally be handled

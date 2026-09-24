@@ -2,6 +2,8 @@ package gr.softeng.team21.view.employee.deliverer.delivererMenu;
 
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
+import gr.softeng.team21.domain.Deliverer;
+import gr.softeng.team21.domain.EmployeeRole;
 
 /**
  * Presenter for the Deliverer Menu.
@@ -29,15 +31,25 @@ public class DelivererMenuPresenter {
 
     /**
      * Prepares the view by fetching and displaying employee details asynchronously.
+     * Explicitly requests the DELIVERY role to ensure subclass instantiation.
      * @param employeeId The unique ID of the deliverer.
      */
     public void onViewCreated(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
-            if (employee != null) {
-                view.showEmployeeName(employee.getFirstname() + " " + employee.getLastname());
+        // Explicitly request the specific role
+        employeeDAO.getEmployee(employeeId, EmployeeRole.DELIVERY).thenAccept(employee -> {
+
+            // Validate the subclass and cast
+            if (employee instanceof Deliverer) {
+                Deliverer deliverer = (Deliverer) employee;
+                if (view != null) {
+                    view.showEmployeeName(deliverer.getFirstname() + " " + deliverer.getLastname());
+                }
+            } else {
+                if (view != null) view.showMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
+
         }).exceptionally(e -> {
-            view.showMessage("Σφάλμα φόρτωσης στοιχείων: " + e.getMessage());
+            if (view != null) view.showMessage("Σφάλμα φόρτωσης στοιχείων: " + e.getMessage());
             return null;
         });
     }
@@ -67,29 +79,38 @@ public class DelivererMenuPresenter {
 
     /**
      * Permanently removes the Deliverer from the system asynchronously.
-     * Sequentially clears credentials from UserCredentialsDAO and the record from EmployeeDAO.
+     * Explicitly verifies the deliverer role before sequentially clearing credentials and records.
      * @param employeeId The ID of the employee to be deleted.
      */
     public void onDeleteAccountConfirmed(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
-            if (employee != null) {
-                userCredentialsDAO.removeUser(employee.getUsername()).thenAccept(v1 -> {
-                    employeeDAO.removeEmployee(employee).thenAccept(v2 -> {
-                        view.showMessage("Ο λογαριασμός διαγράφηκε επιτυχώς.");
-                        view.navigateToLogin();
+        // Explicitly request the specific role
+        employeeDAO.getEmployee(employeeId, EmployeeRole.DELIVERY).thenAccept(employee -> {
+
+            // Validate the subclass and cast
+            if (employee instanceof Deliverer) {
+                Deliverer deliverer = (Deliverer) employee;
+
+                userCredentialsDAO.removeUser(deliverer.getUsername()).thenAccept(v1 -> {
+                    employeeDAO.removeEmployee(deliverer).thenAccept(v2 -> {
+                        if (view != null) {
+                            view.showMessage("Ο λογαριασμός διαγράφηκε επιτυχώς.");
+                            view.navigateToLogin();
+                        }
                     }).exceptionally(e -> {
-                        view.showMessage("Σφάλμα κατά τη διαγραφή προφίλ: " + e.getMessage());
+                        if (view != null) view.showMessage("Σφάλμα κατά τη διαγραφή προφίλ: " + e.getMessage());
                         return null;
                     });
                 }).exceptionally(e -> {
-                    view.showMessage("Σφάλμα κατά τη διαγραφή κωδικών: " + e.getMessage());
+                    if (view != null) view.showMessage("Σφάλμα κατά τη διαγραφή κωδικών: " + e.getMessage());
                     return null;
                 });
+
             } else {
-                view.showMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
+                if (view != null) view.showMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
+
         }).exceptionally(e -> {
-            view.showMessage("Σφάλμα ανάκτησης δεδομένων: " + e.getMessage());
+            if (view != null) view.showMessage("Σφάλμα ανάκτησης δεδομένων: " + e.getMessage());
             return null;
         });
     }

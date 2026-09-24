@@ -1,5 +1,8 @@
 package gr.softeng.team21.domain;
 
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.PropertyName;
+
 import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.util.Date;
 
@@ -52,6 +55,7 @@ public class Deliverer extends Employee {
     /**
      * @return the maximum number of orders this deliverer is allowed to carry.
      */
+    @PropertyName("max_quantity")
     public int getQuantity() {
         return max_quantity;
     }
@@ -68,6 +72,7 @@ public class Deliverer extends Employee {
      * Calculates the deliverer's availability dynamically.
      * @return true if the current number of assigned orders is less than the maximum capacity.
      */
+    @Exclude
     public boolean getAvailability() {
         return assignedOrdersCount < max_quantity;
     }
@@ -92,6 +97,15 @@ public class Deliverer extends Employee {
      */
     public int getAssignedOrdersCount() {
         return assignedOrdersCount;
+    }
+
+
+    /**
+     * Updates the currently assigned orders count of the deliverer
+     * @param assignedOrdersCount the new assigned orders count value
+     */
+    public void setAssignedOrdersCount(int assignedOrdersCount) {
+        this.assignedOrdersCount = assignedOrdersCount;
     }
 
     /**

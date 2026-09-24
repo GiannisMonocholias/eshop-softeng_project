@@ -1,9 +1,11 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequestsToAssign;
 
 import java.util.ArrayList;
+
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
+import gr.softeng.team21.domain.EmployeeRole; // Σωστό Import
 import gr.softeng.team21.domain.RequestStatusType;
 import gr.softeng.team21.domain.UpdateCatalogueEmployee;
 
@@ -26,7 +28,8 @@ public class AvailableRequestsToAssignPresenter {
     }
 
     public void loadAvailableRequests(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+        employeeDAO.getEmployee(employeeId, EmployeeRole.UPDATE_CATALOGUE).thenAccept(employee -> {
+
             if (employee instanceof UpdateCatalogueEmployee) {
                 this.loggedInEmployee = (UpdateCatalogueEmployee) employee;
 
@@ -43,7 +46,7 @@ public class AvailableRequestsToAssignPresenter {
                     return null;
                 });
             } else {
-                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
+                if (view != null) view.showError("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
         }).exceptionally(e -> {
             if (view != null) view.showError("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
@@ -56,22 +59,16 @@ public class AvailableRequestsToAssignPresenter {
             if (view != null) view.showError("Δεν υπάρχει ενεργή συνεδρία υπαλλήλου.");
             return;
         }
-        if (view != null) view.showConfirmationDialog(request, "Θέλετε να αναλάβετε αυτή την παραγγελία;");
+
+        if (view != null) view.showConfirmationDialog(request, "Θέλετε να αναλάβετε αυτό το αίτημα;");
     }
 
-    /**
-     * Finalizes the assignment by updating the Foreign Key and saving to the database.
-     */
     public void onRequestConfirmed(CatalogueUpdateRequest request) {
         if (loggedInEmployee == null) return;
 
-        // Apply Domain State Changes using Foreign Key
         request.setStatus(RequestStatusType.ASSIGNED);
-
-        // ΣΗΜΕΙΩΣΗ: Πρέπει να προσθέσεις τη μέθοδο setAssignedEmployeeId στο CatalogueUpdateRequest!
         request.setAssignedEmployeeId(loggedInEmployee.getEmployeeId());
 
-        // Save asynchronously via DAO
         updateRequestDAO.updateRequest(request).thenAccept(v -> {
             if (view != null) {
                 view.showMessage("Το αίτημα ανατέθηκε επιτυχώς!");

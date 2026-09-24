@@ -462,11 +462,11 @@ public class FirebaseInitializer {
         Order order1 = new Order("ORD-2024-001", new Date(10, 11, 2023), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, new Date(14, 11, 2023), cart1
         );
-
+        order1.setDelivererId("DEL-402");
+        order1.setCustomerServiceId("CSR-102");
         order1.setTotal_amount(cart1.getTotalCost());
         cust1.Confirm("CONFIRM",order1);
         orders.addOrder(order1).join();
-
 
         //ORDER 2
         ShoppingCart cart2 = new ShoppingCart(cust2);
@@ -479,9 +479,9 @@ public class FirebaseInitializer {
                 false, PaymentType.CASH, null, cart2
         );
         order2.setTotal_amount(cart2.getTotalCost());
+        order2.setCustomerServiceId("CSR-101");
         cust2.Confirm("CONFIRM",order2);
         orders.addOrder(order2).join();
-
 
         //ORDER 3
         ShoppingCart cart3 = new ShoppingCart(cust3);
@@ -492,10 +492,11 @@ public class FirebaseInitializer {
         Order order3 = new Order("ORD-2024-003", new Date(12, 1, 2024), OrderStatusType.SHIPPED,
                 false, PaymentType.CASH, null, cart3
         );
+        order3.setDelivererId("DEL-401");
+        order3.setCustomerServiceId("CSR-103");
         order3.setTotal_amount(cart3.getTotalCost());
         cust3.Confirm("CONFIRM",order3);
         orders.addOrder(order3).join();
-
 
         //ORDER 4
         ShoppingCart cart4 = new ShoppingCart(cust1);
@@ -504,7 +505,7 @@ public class FirebaseInitializer {
         Order order4 = new Order("ORD-2024-004", new Date(15, 1, 2024), OrderStatusType.DELAYED,
                 false, PaymentType.CASH, null, cart4
         );
-
+        order4.setCustomerServiceId("CSR-101");
         order4.setTotal_amount(cart4.getTotalCost());
         cust1.Confirm("CONFIRM",order4);
         orders.addOrder(order4).join();
@@ -517,7 +518,8 @@ public class FirebaseInitializer {
         Order order5 = new Order("ORD-2024-005", new Date(20, 1, 2024), OrderStatusType.SHIPPED,
                 true, PaymentType.CARD, null, cart5
         );
-
+        order5.setDelivererId("DEL-403");
+        order5.setCustomerServiceId("CSR-102");
         order5.setTotal_amount(cart5.getTotalCost());
         cust2.Confirm("CONFIRM",order5);
         orders.addOrder(order5).join();

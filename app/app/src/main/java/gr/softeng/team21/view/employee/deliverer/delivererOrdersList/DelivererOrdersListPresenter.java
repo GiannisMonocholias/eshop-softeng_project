@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Deliverer;
+import gr.softeng.team21.domain.EmployeeRole;
 import gr.softeng.team21.domain.Order;
 import gr.softeng.team21.domain.OrderStatusType;
 
@@ -32,32 +33,33 @@ public class DelivererOrdersListPresenter {
     /**
      * Asynchronously verifies the deliverer and performs a highly optimized
      * database query to fetch ONLY the orders assigned to their specific ID.
+     * Explicitly requests the DELIVERY role to ensure subclass instantiation.
      * @param employeeId The unique identifier of the deliverer.
      */
     public void loadShippedOrders(String employeeId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
-            this.loggedInEmployee = (Deliverer) employee;
+        employeeDAO.getEmployee(employeeId, EmployeeRole.DELIVERY).thenAccept(employee -> {
 
-            if (loggedInEmployee == null) {
-                if (view != null) view.showError("Σφάλμα: Ο διανομέας δεν βρέθηκε.");
-                return;
-            }
+            if (employee instanceof Deliverer) {
+                this.loggedInEmployee = (Deliverer) employee;
 
-            // Optimized DB Query: Fetch ONLY orders for this deliverer
-            orderDAO.getOrdersByDelivererId(employeeId).thenAccept(orders -> {
-                ArrayList<Order> activeOrders = new ArrayList<>();
+                // Optimized DB Query: Fetch ONLY orders for this deliverer
+                orderDAO.getOrdersByDelivererId(employeeId).thenAccept(orders -> {
+                    ArrayList<Order> activeOrders = new ArrayList<>();
 
-                // Filter the small subset locally to find only SHIPPED orders
-                for (Order order : orders) {
-                    if (order.getOrderStatus() == OrderStatusType.SHIPPED) {
-                        activeOrders.add(order);
+                    // Filter the small subset locally to find only SHIPPED orders
+                    for (Order order : orders) {
+                        if (order.getOrderStatus() == OrderStatusType.SHIPPED) {
+                            activeOrders.add(order);
+                        }
                     }
-                }
-                if (view != null) view.updateOrdersList(activeOrders);
-            }).exceptionally(e -> {
-                if (view != null) view.showError("Σφάλμα ανάκτησης παραγγελιών: " + e.getMessage());
-                return null;
-            });
+                    if (view != null) view.updateOrdersList(activeOrders);
+                }).exceptionally(e -> {
+                    if (view != null) view.showError("Σφάλμα ανάκτησης παραγγελιών: " + e.getMessage());
+                    return null;
+                });
+            } else {
+                if (view != null) view.showError("Σφάλμα: Ο διανομέας δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
+            }
 
         }).exceptionally(e -> {
             if (view != null) view.showError("Σφάλμα ανάκτησης δεδομένων: " + e.getMessage());
@@ -71,6 +73,16 @@ public class DelivererOrdersListPresenter {
         orderDAO.updateOrder(order).thenAccept(v -> {
             if (loggedInEmployee != null) {
                 loggedInEmployee.completeOrder();
+
+                employeeDAO.addEmployee(loggedInEmployee).thenAccept(v2 -> {
+                    if (view != null) {
+                        view.showMessage("Order #" + order.getOrderCode() + " ολοκληρώθηκε!");
+                        view.removeOrderFromList(order);
+                    }
+                }).exceptionally(e -> {
+                    if (view != null) view.showError("Σφάλμα κατά την ενημέρωση διαθεσιμότητας διανομέα: " + e.getMessage());
+                    return null;
+                });
             }
             if (view != null) {
                 view.showMessage("Order #" + order.getOrderCode() + " ολοκληρώθηκε!");

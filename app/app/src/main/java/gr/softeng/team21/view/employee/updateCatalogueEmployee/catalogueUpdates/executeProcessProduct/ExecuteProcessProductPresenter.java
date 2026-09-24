@@ -5,6 +5,7 @@ import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.domain.CatalogueUpdateRequest;
+import gr.softeng.team21.domain.EmployeeRole;
 import gr.softeng.team21.util.Money;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.domain.RequestStatusType;
@@ -49,11 +50,11 @@ public class ExecuteProcessProductPresenter {
      * @param requestId  The unique ID of the specific process request.
      */
     public void loadRequestDetails(String employeeId, int requestId) {
-        employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
+
+        employeeDAO.getEmployee(employeeId, EmployeeRole.UPDATE_CATALOGUE).thenAccept(employee -> {
             if (employee instanceof UpdateCatalogueEmployee) {
                 this.loggedInEmployee = (UpdateCatalogueEmployee) employee;
 
-                // Optimized specific document fetch
                 updateRequestDAO.getUpdateRequest(requestId).thenAccept(request -> {
                     this.currentRequest = request;
 

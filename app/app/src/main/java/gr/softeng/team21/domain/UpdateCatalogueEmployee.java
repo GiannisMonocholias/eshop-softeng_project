@@ -34,6 +34,10 @@ public class UpdateCatalogueEmployee extends Employee {
         return totalCatalogueUpdates;
     }
 
+    public void setTotalCatalogueUpdates(int totalCatalogueUpdates) {
+        this.totalCatalogueUpdates = totalCatalogueUpdates;
+    }
+
     /**
      * Increments the total number of successful catalogue updates.
      */

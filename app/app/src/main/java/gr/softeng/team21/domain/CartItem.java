@@ -1,10 +1,11 @@
 package gr.softeng.team21.domain;
+
 import gr.softeng.team21.util.Money;
 
 /**
  * Represents an item in the shopping cart.
  * Each CartItem corresponds to a specific product type
- * and a quantity, and maintains a subtotal amount.
+ * and a quantity, and maintains a subtotal amount dynamically.
  *
  * @author PAVLOS GRATSANIS
  */
@@ -25,11 +26,14 @@ public class CartItem {
     /** The type of product associated with this cart item */
     private ProductType productType;
 
+    /**
+     * Default constructor required for framework instantiation (e.g., Firebase).
+     */
     public CartItem() {}
 
     /**
      * Constructs a CartItem with a given product type and quantity.
-     * Automatically assigns an ID and calculates the subtotal.
+     * Automatically assigns an ID.
      * @param productType the product type
      * @param quantity the quantity of the product
      */
@@ -37,7 +41,6 @@ public class CartItem {
         this.productType = productType;
         this.quantity = quantity;
         this.id = ++counter;
-        calculateSubtotal();
     }
 
     /**
@@ -57,7 +60,9 @@ public class CartItem {
     }
 
     /**
-     * Sets the quantity of the product and calculates again the subtotal.
+     * Sets the quantity of the product.
+     * Simply assigns the value without triggering calculations to ensure
+     * safe asynchronous loading from Firebase.
      *
      * @param quantity the new quantity
      */
@@ -67,21 +72,39 @@ public class CartItem {
 
     /**
      * Calculates the subtotal amount based on product price and quantity.
+     * Retained for compatibility, includes null-checks to prevent NPEs.
      */
     public void calculateSubtotal() {
-        this.subtotal_amount = productType.getPrice().multiply(quantity);
+        if (this.productType != null && this.productType.getPrice() != null) {
+            this.subtotal_amount = this.productType.getPrice().multiply(quantity);
+        } else {
+            this.subtotal_amount = new Money(0, "€");
+        }
     }
 
     /**
-     * Returns the subtotal amount for this cart item.
+     * Returns the subtotal amount for this cart item dynamically (On-Demand).
+     * Calculates the subtotal only when requested to avoid exceptions from
+     * incomplete Firebase data.
+     *
      * @return the subtotal amount
      */
     public Money getSubtotal_amount() {
-        return subtotal_amount;
+        // Calculate the accurate amount on-demand if data is fully loaded
+        if (this.productType != null && this.productType.getPrice() != null) {
+            return this.productType.getPrice().multiply(this.quantity);
+        }
+
+        // Return pre-existing or default value if called before full instantiation
+        if (this.subtotal_amount != null) {
+            return this.subtotal_amount;
+        }
+        return new Money(0, "€");
     }
 
     /**
-     * Sets the subtotal amount for this cart item
+     * Sets the subtotal amount for this cart item.
+     * @param subtotal_amount the new subtotal amount
      */
     public void setSubtotal_amount(Money subtotal_amount) {
         this.subtotal_amount = subtotal_amount;
@@ -111,6 +134,13 @@ public class CartItem {
         return productType;
     }
 
+    /**
+     * Sets the product type associated with this cart item.
+     * Simply assigns the value without triggering calculations to ensure
+     * safe asynchronous loading from Firebase.
+     *
+     * @param productType the new product type
+     */
     public void setProductType(ProductType productType) {
         this.productType = productType;
     }
@@ -122,8 +152,13 @@ public class CartItem {
      */
     @Override
     public String toString() {
-        String productName = productType.getProductName();
-        String totalStr = subtotal_amount.toString();
+        // Safe access to product name to avoid NPE
+        String productName = (productType != null && productType.getProductName() != null) ? productType.getProductName() : "Unknown Product";
+
+        // Use the on-demand dynamic calculation
+        Money currentSubtotal = getSubtotal_amount();
+        String totalStr = (currentSubtotal != null) ? currentSubtotal.toString() : "0.00 €";
+
         return productName + " (x" + quantity + ") -- " + totalStr;
     }
 }
