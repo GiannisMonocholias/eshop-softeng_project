@@ -26,10 +26,9 @@ import gr.softeng.team21.view.util.ReviewAdapter;
  */
 public class ProductReviewsFragment extends Fragment implements ProductReviewsView {
 
-    private String productCode;
     private RecyclerView recyclerView;
-    private ProductReviewsPresenter presenter;
     private ReviewAdapter adapter;
+    private ArrayList<ProductReview> reviewsList;
 
 
     public ProductReviewsFragment() {
@@ -42,10 +41,10 @@ public class ProductReviewsFragment extends Fragment implements ProductReviewsVi
      * @return A new instance of fragment ProductReviewsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProductReviewsFragment newInstance(String productCode) {
+    public static ProductReviewsFragment newInstance(ArrayList<ProductReview> reviews) {
         ProductReviewsFragment fragment = new ProductReviewsFragment();
         Bundle args = new Bundle();
-        args.putString("PRODUCT_CODE", productCode);
+        args.putSerializable("REVIEWS_LIST", reviews);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,10 +53,9 @@ public class ProductReviewsFragment extends Fragment implements ProductReviewsVi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            productCode = getArguments().getString("PRODUCT_CODE");
+            reviewsList = (ArrayList<ProductReview>) getArguments().getSerializable("REVIEWS_LIST");
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,12 +64,17 @@ public class ProductReviewsFragment extends Fragment implements ProductReviewsVi
         view.setFocusable(true);
 
         recyclerView = view.findViewById(R.id.recyclerViewReviews);
-        ProductReviewsDao productReviewsDao=new ProductReviewsDaoFirebase();
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        presenter = new ProductReviewsPresenter(this, productReviewsDao);
-        presenter.loadReviews(productCode);
+        if (reviewsList != null && !reviewsList.isEmpty()) {
+            showReviews(reviewsList);
+        } else {
+            showMessage("Δεν υπάρχουν αξιολογήσεις για αυτό το προϊόν.");
+        }
+
         return view;
     }
+
+
 
     @Override
     public void showReviews(ArrayList<ProductReview> reviews) {

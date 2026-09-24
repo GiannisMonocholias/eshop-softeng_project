@@ -1,8 +1,12 @@
 package gr.softeng.team21.view.product;
 
+import java.util.ArrayList;
+
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.ProductReviewsDao;
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.ProductReview;
 import gr.softeng.team21.domain.ProductType;
 
 /**
@@ -15,10 +19,12 @@ public class ProductDetailsPresenter {
     private final ProductDetailsView view;
     private final CustomerDAO customerDAO;
     private final ProductTypeDAO productDAO;
+    private final ProductReviewsDao productReviewsDao;
 
     private Customer customer;
     private ProductType foundProduct;
     private int currentQuantity = 1;
+    private ArrayList<ProductReview> reviews = new ArrayList<>();
 
     /**
      * Initializes the presenter with the view and data access objects.
@@ -26,10 +32,11 @@ public class ProductDetailsPresenter {
      * @param customerDAO The customer data access object.
      * @param productDAO The product data access object.
      */
-    public ProductDetailsPresenter(ProductDetailsView view, CustomerDAO customerDAO, ProductTypeDAO productDAO) {
+    public ProductDetailsPresenter(ProductDetailsView view, CustomerDAO customerDAO, ProductTypeDAO productDAO, ProductReviewsDao productReviewsDao) {
         this.view = view;
         this.customerDAO = customerDAO;
         this.productDAO = productDAO;
+        this.productReviewsDao=productReviewsDao;
     }
 
     /**
@@ -47,6 +54,23 @@ public class ProductDetailsPresenter {
             }
         }).exceptionally(e -> {
             if (view != null) view.showMessage("Σφάλμα σύνδεσης: " + e.getMessage());
+            return null;
+        });
+        productReviewsDao.getReviewsByProduct(productCode).thenAccept(reviewsMap -> {
+                    reviews = new ArrayList<>(reviewsMap.values());
+            if (reviews.isEmpty()) {
+                if (view != null) view.showAverageRating(0f);
+                return;
+            }
+
+            float sum = 0;
+            for (ProductReview review : reviews) {
+                sum += review.getStars();
+            }
+            float average = sum / reviews.size();
+
+            if (view != null) view.showAverageRating(average);
+        }).exceptionally(e -> {
             return null;
         });
     }
@@ -81,7 +105,14 @@ public class ProductDetailsPresenter {
 
         try {
             customer.addItemToCart(foundProduct, currentQuantity);
-            if (view != null) view.showAddToCartSuccess();
+            customerDAO.updateShoppingCart(customer.getCustomer_id(), customer.getShoppingCart())
+                    .thenRun(() -> {
+                        if (view != null) view.showAddToCartSuccess();
+                    })
+                    .exceptionally(e -> {
+                        if (view != null) view.showMessage("Σφάλμα: " + e.getMessage());
+                        return null;
+                    });
         } catch (Exception e) {
             if (view != null) view.showMessage("Σφάλμα: " + e.getMessage());
         }
@@ -128,7 +159,7 @@ public class ProductDetailsPresenter {
 
     public void productReviewsClicked() {
         if (view != null) {
-            view.goToProductReviews();
+            view.goToProductReviews(reviews);
             view.showMessage("Μετάβαση στις Αξιολογήσεις...");
         }
     }

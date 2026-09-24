@@ -30,6 +30,7 @@ public interface CustomerHomePageView {
      */
     void goToInbox(String customerId);
 
+    void goToOrderHistory(String customerId);
     /**
      * Displays a confirmation dialog for account deletion.
      */

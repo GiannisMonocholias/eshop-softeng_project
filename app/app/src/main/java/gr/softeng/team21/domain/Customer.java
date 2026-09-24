@@ -109,6 +109,7 @@ public class Customer extends User {
             if (item.getProductType().getProductCode().equals(productType.getProductCode())) {
                 currentQty = item.getQuantity();
                 item.setQuantity(currentQty + quantity);
+                item.calculateSubtotal();
                 return;
             }
         }
@@ -148,6 +149,7 @@ public class Customer extends User {
             shoppingCart.removeItem(targetItem);
         } else if (quantity < currentquantity) {
             targetItem.setQuantity(currentquantity - quantity);
+            targetItem.calculateSubtotal();
         } else {
             throw new IllegalArgumentException("There is no available quantity to deduct the amount given");
         }

@@ -1,24 +1,26 @@
 package gr.softeng.team21.domain;
 
+import java.io.Serializable;
+
 import gr.softeng.team21.util.Date;
 
-public class ProductReview {
+public class ProductReview implements Serializable {
 
     private int stars;
     private String comment;
     private String productReviewId;
     private String productCode;
-    private String customerId;
+    private String customerName;
     private Date reviewDate;
 
     public ProductReview() {
     }
 
 
-    public ProductReview(int stars, Date reviewDate, String customerId, String productCode, String productReviewId,String comment) {
+    public ProductReview(int stars, Date reviewDate, String customerName, String productCode, String productReviewId,String comment) {
         this.stars = stars;
         this.reviewDate = reviewDate;
-        this.customerId = customerId;
+        this.customerName = customerName;
         this.productCode = productCode;
         this.productReviewId = productReviewId;
         this.comment = comment;
@@ -64,13 +66,11 @@ public class ProductReview {
         this.reviewDate = reviewDate;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
-
-
 }

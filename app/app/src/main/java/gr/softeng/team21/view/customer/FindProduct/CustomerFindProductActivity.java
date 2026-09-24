@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -25,6 +28,7 @@ import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
 import gr.softeng.team21.view.customer.ShoppingCart.CustomerShoppingCartActivity;
 import gr.softeng.team21.view.product.ProductDetailsActivity;
+import gr.softeng.team21.view.util.ProductAdapter;
 
 /**
  * Activity responsible for searching and listing products for the customer.
@@ -34,8 +38,8 @@ import gr.softeng.team21.view.product.ProductDetailsActivity;
 public class CustomerFindProductActivity extends AppCompatActivity implements CustomerFindProductView {
 
     private SearchView searchView;
-    private ListView listView;
-    private ArrayAdapter<ProductType> adapter;
+    private RecyclerView listView;
+    private ProductAdapter adapter;
     private CustomerFindProductPresenter presenter;
     private String customerId;
     private ImageButton btnShoppingCart;
@@ -54,7 +58,8 @@ public class CustomerFindProductActivity extends AppCompatActivity implements Cu
         });
 
         searchView = findViewById(R.id.searchCustomerFindProductActivity);
-        listView = findViewById(R.id.ViewlistCustomerFindProductActivity);
+        listView = findViewById(R.id.recyclerCustomerFindProductActivity);
+        listView.setLayoutManager(new GridLayoutManager(this,2));
         btnShoppingCart = findViewById(R.id.btnCustomerFindProductActivityShoppingCart);
         txtShoppingCartQuantity = findViewById(R.id.txtCustomerFindProductActivityShoppingCartQuantity);
 
@@ -67,7 +72,6 @@ public class CustomerFindProductActivity extends AppCompatActivity implements Cu
 
         btnShoppingCart.setOnClickListener(v -> presenter.openShoppingCartClicked());
 
-        // Εκκίνηση της ασύγχρονης φόρτωσης (Αλυσίδα Πελάτης -> Προϊόντα)
         presenter.loadInitialData(customerId);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -78,13 +82,6 @@ public class CustomerFindProductActivity extends AppCompatActivity implements Cu
             public boolean onQueryTextChange(String newText) {
                 presenter.filter(newText);
                 return true;
-            }
-        });
-
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            if (adapter != null) {
-                ProductType selectedProduct = adapter.getItem(position);
-                presenter.ProductClicked(selectedProduct);
             }
         });
     }
@@ -101,7 +98,9 @@ public class CustomerFindProductActivity extends AppCompatActivity implements Cu
     @Override
     public void showProducts(ArrayList<ProductType> products) {
         runOnUiThread(() -> {
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products);
+            adapter = new ProductAdapter( products,selectedProduct -> {
+                presenter.ProductClicked(selectedProduct);
+            });
             listView.setAdapter(adapter);
         });
     }

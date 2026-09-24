@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.ShoppingCart;
 
 /**
  * In-memory implementation of the {@link CustomerDAO} interface.
@@ -126,5 +127,10 @@ public class CustomerDAOMemory implements CustomerDAO {
     public CompletableFuture<Void> clear() {
         customers.clear();
         return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
+    public CompletableFuture<Void> updateShoppingCart(String customerId, ShoppingCart shoppingCart) {
+        return null;
     }
 }

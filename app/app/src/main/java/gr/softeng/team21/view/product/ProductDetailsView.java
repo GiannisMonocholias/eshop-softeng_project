@@ -1,5 +1,9 @@
 package gr.softeng.team21.view.product;
 
+import java.util.ArrayList;
+
+import gr.softeng.team21.domain.ProductReview;
+
 /**
  * Interface for the Product Details.
  * Defines the methods for displaying product information, quantity updates, and shopping cart navigation.
@@ -41,5 +45,7 @@ public interface ProductDetailsView {
     /**
      * Navigates to the Product Reviews screen.
      */
-    void goToProductReviews();
+    void goToProductReviews(ArrayList<ProductReview> reviews);
+    void showAverageRating (float average);
+
 }

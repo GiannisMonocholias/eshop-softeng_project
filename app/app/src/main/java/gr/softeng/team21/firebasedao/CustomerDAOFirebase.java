@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.ShoppingCart;
 
 /**
  * Firebase Firestore implementation of the {@link CustomerDAO}.
@@ -116,4 +117,19 @@ public class CustomerDAOFirebase implements CustomerDAO {
 
         return future;
     }
+
+    @Override
+    public CompletableFuture<Void> updateShoppingCart(String customerId, ShoppingCart shoppingCart) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        if (shoppingCart == null)
+            future.completeExceptionally(new IllegalArgumentException("Customer's shopping cart cannot be null"));
+        else {
+            db.collection("customers").document(customerId)
+                    .update("shoppingCart", shoppingCart)
+                    .addOnSuccessListener(v -> future.complete(null))
+                    .addOnFailureListener(future::completeExceptionally);
+        }
+        return future;
+    }
+
 }

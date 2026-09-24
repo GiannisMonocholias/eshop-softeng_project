@@ -21,6 +21,7 @@ public class Order {
     // Foreign Keys for Employee Assignments (null initially)
     private String delivererId = null;
     private String customerServiceId = null;
+    private String customerId=null;
     private String preparationEmployeeId = null;
 
     /**
@@ -48,7 +49,10 @@ public class Order {
         this.orderStatus = orderStatus;
         this.paid = paid;
         this.paymentMethod = paymentMethod;
-        this.shoppingCart = shoppingCart.copy();
+        this.shoppingCart = shoppingCart.copy();if (shoppingCart != null && shoppingCart.getCustomer() != null) {
+            this.customerId = shoppingCart.getCustomer().getCustomer_id();
+        }
+
     }
 
     public String getDelivererId() { return delivererId; }
@@ -82,4 +86,12 @@ public class Order {
 
     public ShoppingCart getShoppingCart() { return shoppingCart; }
     public void setShoppingCart(ShoppingCart shoppingCart) { this.shoppingCart = shoppingCart; }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
 }
