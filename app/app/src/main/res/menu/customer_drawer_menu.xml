@@ -27,12 +27,12 @@
         <menu>
             <item
                 android:id="@+id/btnCustomerHomePageDeleteaccount"
-                android:icon="@drawable/baseline_delete_24"
+                android:icon="@drawable/ic_delete"
                 android:title="Διαγραφή Λογαριασμού" />
 
             <item
                 android:id="@+id/btnCustomerHomePageLogout"
-                android:icon="@drawable/account_logout"
+                android:icon="@drawable/ic_logout"
                 android:title="Αποσύνδεση" />
         </menu>
     </item>

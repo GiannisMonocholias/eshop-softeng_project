@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?android:attr/windowBackground"
     android:clickable="true"
     android:focusable="true"
     tools:context=".view.product.Reviews.ProductReviewsFragment">
-
 
     <TextView
         android:id="@+id/txtReviewsTitle"
@@ -16,7 +15,7 @@
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="24dp"
         android:text="Αξιολογήσεις Πελατών"
-        android:textColor="#009688"
+        android:textColor="?attr/colorPrimary"
         android:textSize="22sp"
         android:textStyle="bold" />
 

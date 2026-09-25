@@ -18,10 +18,10 @@
             android:id="@+id/txtRegisterHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="24dp"
             android:text="Εγγραφή Νέου Πελάτη"
-            android:textColor="?attr/colorMenuButton"
-            android:textSize="28sp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="26sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             app:cardBackgroundColor="?attr/colorSurface"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +53,7 @@
                     android:layout_height="wrap_content"
                     app:boxBackgroundColor="?attr/colorSurface"
                     app:boxStrokeColor="?attr/colorPrimary"
+                    app:startIconDrawable="@drawable/ic_person"
                     android:hint="Username">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -71,6 +72,7 @@
                     app:boxBackgroundColor="?attr/colorSurface"
                     app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Κωδικός πρόσβασης"
+                    app:startIconDrawable="@drawable/ic_lock"
                     app:endIconMode="password_toggle"
                     app:endIconTint="?attr/colorOnSurfaceVariant">
 
@@ -132,6 +134,7 @@
                     android:layout_marginTop="12dp"
                     app:boxBackgroundColor="?attr/colorSurface"
                     app:boxStrokeColor="?attr/colorPrimary"
+                    app:startIconDrawable="@drawable/ic_email"
                     android:hint="Email">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -149,6 +152,7 @@
                     android:layout_marginTop="12dp"
                     app:boxBackgroundColor="?attr/colorSurface"
                     app:boxStrokeColor="?attr/colorPrimary"
+                    app:startIconDrawable="@drawable/ic_phone"
                     android:hint="Τηλέφωνο">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -162,14 +166,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:text="Διεύθυνση"
-                    android:textColor="?attr/colorMenuButton"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -186,6 +191,7 @@
                             android:id="@+id/edtRegisterStreet"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="textPostalAddress"
                             android:textColor="?attr/colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -203,6 +209,7 @@
                             android:id="@+id/edtRegisterNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="number"
                             android:textColor="?attr/colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -210,7 +217,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -254,12 +261,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="?attr/colorMenuButton"
+                    app:backgroundTint="?attr/colorPrimary"
                     android:textColor="?attr/colorOnPrimary"
                     android:text="ΕΓΓΡΑΦΗ"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
-                    app:cornerRadius="30dp" />
+                    app:cornerRadius="12dp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -287,7 +294,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="Σύνδεση"
-            android:textColor="?attr/colorMenuButton"
+            android:textColor="?attr/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtLoginPrompt"

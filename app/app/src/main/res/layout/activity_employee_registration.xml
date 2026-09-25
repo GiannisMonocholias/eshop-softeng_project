@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Εγγραφή Υπαλλήλου"
-            android:textColor="?attr/colorSecondary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="26sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
                         android:padding="2dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_person"
-                        app:strokeColor="?attr/colorSecondary"
+                        app:strokeColor="?attr/colorPrimary"
                         app:strokeWidth="2dp"
                         app:shapeAppearanceOverlay="@style/CircleImage" />
 
@@ -73,7 +73,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:text="Αλλαγή Φωτογραφίας"
-                        android:textColor="?attr/colorSecondary"
+                        android:textColor="?attr/colorPrimary"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -82,13 +82,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="Προσωπικά Στοιχεία"
-                    android:textColor="?attr/colorSecondary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Username"
                     app:startIconDrawable="@drawable/ic_person">
 
@@ -96,6 +98,7 @@
                         android:id="@+id/edtRegUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,6 +107,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Κωδικός"
                     app:endIconMode="password_toggle"
                     app:startIconDrawable="@drawable/ic_lock">
@@ -112,6 +117,7 @@
                         android:id="@+id/edtRegPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,12 +133,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Όνομα">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,12 +151,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Επίθετο">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegSurname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -157,6 +169,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Email"
                     app:startIconDrawable="@drawable/ic_email">
 
@@ -164,6 +178,7 @@
                         android:id="@+id/edtRegEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
                         android:inputType="textEmailAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -174,7 +189,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="Επαγγελματικά Στοιχεία"
-                    android:textColor="?attr/colorSecondary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -188,12 +203,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Μισθός (€)">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegSalary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -203,12 +221,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Ώρες/Εβδ.">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegHours"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -221,12 +242,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:visibility="gone"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Μέγιστος Αριθμός Παραγγελιών">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtRegMaxQuantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -235,9 +259,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="?attr/colorPrimary"
+                    app:backgroundTint="?attr/colorPrimary"
                     android:text="ΔΗΜΙΟΥΡΓΙΑ ΥΠΑΛΛΗΛΟΥ"
-                    android:textColor="#FFFFFF"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:cornerRadius="12dp" />

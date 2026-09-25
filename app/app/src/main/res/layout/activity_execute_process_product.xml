@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    tools:context=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteProcessProductActivity">
+    android:background="?android:attr/windowBackground"
+    tools:context=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeProcessProduct.ExecuteProcessProductActivity">
 
     <ScrollView
         android:layout_width="0dp"
@@ -29,7 +29,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:text="Επεξεργασία Προϊόντος"
-                android:textColor="#1976D2"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="16dp"
-                android:background="#E3F2FD"
+                android:background="?attr/colorPrimaryContainer"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ΟΔΗΓΙΕΣ ΤΡΟΠΟΠΟΙΗΣΗΣ:"
-                    android:textColor="#0D47A1"
+                    android:textColor="?attr/colorOnPrimaryContainer"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Παρακαλώ αλλάξτε την τιμή στα 500€..."
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorOnPrimaryContainer"
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
                 android:layout_marginTop="18dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="25dp"
-                app:cardBackgroundColor="#FFFFFF"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp"
                 app:layout_constraintBottom_toTopOf="@+id/btnexecuteProcessProductSave"
@@ -98,7 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ΣΤΟΙΧΕΙΑ ΠΡΟΣ ΕΠΕΞΕΡΓΑΣΙΑ"
-                        android:textColor="#757575"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -110,6 +110,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Κωδικός Προϊόντος"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -119,6 +121,7 @@
                             android:id="@+id/edtexecuteProcessProductDataCodeInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:enabled="true"
                             android:inputType="textCapCharacters" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -129,6 +132,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Όνομα Προϊόντος"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -138,6 +143,7 @@
                             android:id="@+id/edtexecuteProcessProductDataNameInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="textCapWords" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,6 +153,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Τιμή"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -157,6 +165,7 @@
                             android:id="@+id/edtexecuteProcessProductDataPriceInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,6 +175,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Περιγραφή Προϊόντος"
                         app:counterEnabled="true"
                         app:counterMaxLength="300"
@@ -177,6 +188,7 @@
                             android:id="@+id/edtexecuteProcessProductDataDescriptionInput"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:gravity="top|start"
                             android:inputType="textMultiLine|textCapSentences"
                             android:minLines="5"
@@ -186,15 +198,20 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnexecuteProcessProductSave"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="10dp"
-                android:backgroundTint="#1976D2"
+                app:backgroundTint="?attr/colorPrimary"
+                app:icon="@drawable/ic_save"
+                app:iconSize="24dp"
+                app:iconTint="?attr/colorOnPrimary"
+                app:iconGravity="textStart"
                 android:text="ΑΠΟΘΗΚΕΥΣΗ ΑΛΛΑΓΩΝ"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:cornerRadius="8dp"

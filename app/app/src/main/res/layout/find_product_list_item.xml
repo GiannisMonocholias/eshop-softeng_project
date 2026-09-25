@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="#FFFFFF"
+    android:background="?attr/colorSurface"
     android:elevation="4dp"
     android:padding="16dp">
 
@@ -14,12 +14,13 @@
         android:id="@+id/imgProductItem"
         android:layout_width="125dp"
         android:layout_height="99dp"
-        android:background="#F5F5F5"
+        android:background="?attr/colorSurfaceVariant"
         android:padding="16dp"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txtProductNameItem"
         android:layout_width="0dp"
@@ -27,7 +28,7 @@
         android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="Όνομα Προϊόντος"
-        android:textColor="#333333"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="0.00 €"
-        android:textColor="#009688"
+        android:textColor="?attr/colorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,4 +52,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtProductNameItem"
         app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

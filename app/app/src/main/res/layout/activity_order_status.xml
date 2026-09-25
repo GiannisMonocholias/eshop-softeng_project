@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.employee.customerServiceEmployee.OrderStatusActivity">
+    android:background="?android:attr/windowBackground"
+    tools:context=".view.employee.customerServiceEmployee.orderStatus.OrderStatusActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewOrders"

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
@@ -18,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="REQ #1024"
-            android:textColor="#757575"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="29 Δεκ 2023"
-            android:textColor="#757575"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,12 +41,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:paddingStart="8dp"
             android:paddingTop="4dp"
-            android:paddingEnd="8dp"
             android:paddingBottom="4dp"
             android:text="ΑΛΛΑΓΗ ΤΙΜΗΣ"
-            android:textColor="#2196F3"
+            android:textColor="?attr/colorPrimary"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Dell XPS 15 Laptop"
-            android:textColor="#000000"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Κωδικός: DELL-001"
-            android:textColor="#616161"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtItemRequestProductName" />
@@ -78,7 +78,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="#E0E0E0"
+            android:background="?attr/colorSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtItemRequestProductCode" />
@@ -91,23 +91,27 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Αίτημα για αλλαγή της τιμής από 1200€ σε 1450€ λόγω νέας παραλαβής."
-            android:textColor="#424242"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="13sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dividerLine" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnItemOrderAssignOrder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="12dp"
+            app:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:text="Ανάληψη αιτήματος"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtItemRequestDesc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -49,9 +49,9 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
         android:text="Σύνθεση"
-        app:icon="@android:drawable/ic_menu_edit"
+        app:icon="@drawable/ic_edit"
         app:backgroundTint="?attr/colorSecondaryContainer"
         app:iconTint="?attr/colorOnSecondaryContainer"
-        app:titleTextColor="?attr/colorOnSecondaryContainer" />
+        app:titleTextColor="?attr/colorOnPrimary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

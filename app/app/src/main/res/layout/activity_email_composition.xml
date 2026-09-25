@@ -5,156 +5,146 @@
     android:id="@+id/viewEmailCompsition"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".view.user.EmailCompositionActivity">
+    android:background="?android:attr/windowBackground"
+    tools:context=".view.user.emailComposition.EmailCompositionActivity">
 
+    <!-- Header & Send Button -->
+    <TextView
+        android:id="@+id/txtNewEmailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Νέο Μήνυμα"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEmailSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:backgroundTint="?attr/colorPrimary"
+        android:text="Αποστολή"
+        android:textColor="?attr/colorOnPrimary"
+        app:icon="@drawable/send_email_icon"
+        app:iconTint="?attr/colorOnPrimary"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtNewEmailTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtNewEmailTitle" />
+
+    <View
+        android:id="@+id/headerDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/colorSurfaceVariant"
+        app:layout_constraintTop_toBottomOf="@+id/txtNewEmailTitle" />
+
+    <!-- Sender Info -->
     <TextView
         android:id="@+id/txtEmailDetailsFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:text="Από: "
-        android:textColor="#424242"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtEmailDetailsReceiver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
-        android:text="Προς: "
-        android:textColor="#424242"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsFrom" />
-
-    <TextView
-        android:id="@+id/txtEmailDetailsEmailSubject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
-        android:text="Θέμα: "
-        android:textColor="#424242"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsReceiver" />
+        app:layout_constraintTop_toBottomOf="@id/headerDivider" />
 
     <TextView
         android:id="@+id/txtEmailDetailsSenderName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginStart="8dp"
         android:text="Όνομα αποστολέα"
-        android:textColor="#000000"
-        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txtEmailDetailsFrom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom" />
 
     <TextView
         android:id="@+id/txtEmailDetailsSenderEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="13dp"
-        android:layout_marginStart="13dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="email αποστολέα"
-        android:textColor="#000000"
-        android:textSize="10sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsFrom"
         app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderName" />
 
-    <EditText
-        android:id="@+id/edtEmailDetailsReceiver"
-        android:layout_width="335dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="27dp"
-        android:ems="10"
-        android:hint="Διεύθυνση παραλήπτη"
-        android:inputType="text"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsReceiver"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail" />
-
-    <EditText
-        android:id="@+id/edtEmailSubject"
-        android:layout_width="335dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="27dp"
-        android:ems="10"
-        android:hint="Θέμα μηνύματος"
-        android:inputType="text"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/txtEmailDetailsEmailSubject"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver" />
-
-    <View
-        android:id="@+id/viewEmailDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="3dp"
-        android:layout_marginTop="14dp"
-        android:background="#E0E0E0"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <View
-        android:id="@+id/view2EmailDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="3dp"
-        android:layout_marginTop="14dp"
-        android:background="#E0E0E0"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailDetailsReceiver"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <View
-        android:id="@+id/view3EmailDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="3dp"
-        android:layout_marginTop="14dp"
-        android:background="#E0E0E0"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailSubject"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <Button
-        android:id="@+id/btnEmailSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="10dp"
-        android:backgroundTint="#2196F3"
-        android:drawableLeft="@drawable/send_email_icon"
-        android:text="Αποστολή"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+    <!-- Receiver Input -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="409dp"
+        android:id="@+id/tilReceiver"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="449dp" />
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:hint="Προς (Email παραλήπτη)"
+        app:boxBackgroundColor="?attr/colorSurface"
+        app:boxStrokeColor="?attr/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmailDetailsSenderEmail">
 
-    <EditText
-        android:id="@+id/edtEmailBody"
-        android:layout_width="400dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtEmailDetailsReceiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColor="?attr/colorOnSurface" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Subject Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSubject"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Σύνταξη email"
-        android:inputType="textMultiLine"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/view3EmailDetails" />
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="12dp"
+        android:hint="Θέμα"
+        app:boxBackgroundColor="?attr/colorSurface"
+        app:boxStrokeColor="?attr/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/tilReceiver">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtEmailSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="?attr/colorOnSurface" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Body Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilBody"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="24dp"
+        android:hint="Μήνυμα"
+        app:boxBackgroundColor="?attr/colorSurface"
+        app:boxStrokeColor="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilSubject">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtEmailBody"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:textColor="?attr/colorOnSurface" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

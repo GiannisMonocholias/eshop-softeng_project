@@ -76,6 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Εξυπηρέτηση"
+                        android:textColor="?attr/colorOnSurface"
                         android:textAlignment="center"
                         android:textStyle="bold" />
 
@@ -86,7 +87,7 @@
                         android:layout_marginTop="4dp"
                         android:text="Φόρτωση..."
                         android:textSize="12sp"
-                        android:textColor="?attr/colorSecondary" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -122,6 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Παραγγελίες"
+                        android:textColor="?attr/colorOnSurface"
                         android:textAlignment="center"
                         android:textStyle="bold" />
 
@@ -132,7 +134,7 @@
                         android:layout_marginTop="4dp"
                         android:text="Φόρτωση..."
                         android:textSize="12sp"
-                        android:textColor="?attr/colorSecondary" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -168,6 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Κατάλογος"
+                        android:textColor="?attr/colorOnSurface"
                         android:textAlignment="center"
                         android:textStyle="bold" />
 
@@ -178,7 +181,7 @@
                         android:layout_marginTop="4dp"
                         android:text="Φόρτωση..."
                         android:textSize="12sp"
-                        android:textColor="?attr/colorSecondary" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -214,6 +217,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Διανομέας"
+                        android:textColor="?attr/colorOnSurface"
                         android:textAlignment="center"
                         android:textStyle="bold" />
 
@@ -224,7 +228,7 @@
                         android:layout_marginTop="4dp"
                         android:text="Φόρτωση..."
                         android:textSize="12sp"
-                        android:textColor="?attr/colorSecondary" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

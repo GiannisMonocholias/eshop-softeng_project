@@ -5,17 +5,17 @@
     android:id="@+id/delivererOrdersList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.employee.deliverer.DelivererOrdersListActivity">
+    android:background="?android:attr/windowBackground"
+    tools:context=".view.employee.deliverer.delivererOrdersList.DelivererOrdersListActivity">
 
     <TextView
         android:id="@+id/txtDelivererOrders"
-        android:layout_width="239dp"
-        android:layout_height="19dp"
-        android:layout_marginStart="86dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="86dp"
         android:text="ΠΑΡΑΓΓΕΛΙΕΣ ΠΡΟΣ ΠΑΡΑΔΟΣΗ"
-        android:textSize="16dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,12 +23,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDelivererOrders"
-        android:layout_width="409dp"
-        android:layout_height="694dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="5dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDelivererOrders" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,8 +5,9 @@
     android:id="@+id/executeProcessProduct"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     android:padding="20dp"
-    tools:context=".view.employee.updateCatalogueEmployee.catalogueUpdates.ExecuteDeleteProductActivity">
+    tools:context=".view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct.ExecuteDeleteProductActivity">
 
     <TextView
         android:id="@+id/txtexecuteDeleteProductHeader"
@@ -15,7 +16,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:text="Διαγραφή Προϊόντος"
-        android:textColor="#D32F2F"
+        android:textColor="?attr/colorError"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +29,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
-        android:background="#FFEBEE"
+        android:background="?attr/colorErrorContainer"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="#D32F2F" />
+            app:tint="?attr/colorOnErrorContainer" />
 
         <TextView
             android:id="@+id/txtexecuteDeleteProductWarningMessage"
@@ -50,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Η διαγραφή θα είναι οριστική και το προϊόν θα αφαιρεθεί από τον κατάλογο."
-            android:textColor="#B71C1C"
+            android:textColor="?attr/colorOnErrorContainer"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +60,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/executeDeleteProductCardView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -67,6 +68,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="25dp"
+        app:cardBackgroundColor="?attr/colorSurface"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toTopOf="@+id/btnExecuteDeleteProductConfirmDelete"
@@ -89,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ΚΩΔΙΚΟΣ ΠΡΟΪΟΝΤΟΣ"
-                    android:textColor="#757575"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="DELL-XPS-15"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"
                     app:layout_constraintTop_toBottomOf="@+id/txtexecuteDeleteProductCode" />
 
@@ -111,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="ΟΝΟΜΑ ΠΡΟΪΟΝΤΟΣ"
-                    android:textColor="#757575"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Dell XPS 15 Laptop"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@+id/txtexecuteDeleteProductName" />
@@ -134,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="ΤΡΕΧΟΥΣΑ ΤΙΜΗ"
-                    android:textColor="#757575"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="1200.00 €"
-                    android:textColor="#000000"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"
                     app:layout_constraintTop_toBottomOf="@+id/txtexecuteDeleteProductPrice" />
 
@@ -155,7 +157,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
-                    android:background="#E0E0E0"
+                    android:background="?attr/colorSurfaceVariant"
                     app:layout_constraintTop_toBottomOf="@+id/txtexecuteDeleteProductPriceValue" />
 
                 <TextView
@@ -164,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="ΠΕΡΙΓΡΑΦΗ"
-                    android:textColor="#757575"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -176,24 +178,28 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Laptop υψηλών επιδόσεων.."
-                    android:textColor="#424242"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="16sp"
                     app:layout_constraintTop_toBottomOf="@+id/txtexecuteDeleteProductDescription"
                     tools:layout_editor_absoluteX="20dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnExecuteDeleteProductConfirmDelete"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:backgroundTint="#D32F2F"
-        android:drawableLeft="@drawable/baseline_delete_24"
+        app:backgroundTint="?attr/colorError"
+        app:icon="@drawable/ic_delete"
+        app:iconSize="24dp"
+        app:iconTint="?attr/colorOnError"
+        app:iconGravity="textStart"
         android:text="ΟΡΙΣΤΙΚΗ ΔΙΑΓΡΑΦΗ"
+        android:textColor="?attr/colorOnError"
         android:textSize="16sp"
         android:textStyle="bold"
         app:cornerRadius="8dp"

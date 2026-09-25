@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?android:attr/windowBackground"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Όνομα Προϊόντος"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,28 +40,26 @@
 
         <TextView
             android:id="@+id/txtProductDetailActivityCode"
-            android:layout_width="112dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="CODE: TECH-XXX"
-            android:textColor="#666666"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityName" />
 
-
         <RatingBar
             android:id="@+id/ratingBarProductDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:isIndicator="true"
             android:numStars="5"
-            android:progressTint="#FFC107"
+            android:progressTint="?attr/colorPrimary"
             android:stepSize="0.1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityCode" />
 
@@ -69,13 +67,12 @@
             android:id="@+id/txtProductDetailActivityPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:text="0.00 €"
-            android:textColor="#009688"
-            android:textSize="26sp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ratingBarProductDetail" />
 
@@ -83,10 +80,9 @@
             android:id="@+id/divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="36dp"
-            android:background="#CCCCCC"
+            android:layout_marginTop="24dp"
+            android:background="?attr/colorSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityPrice" />
 
@@ -94,8 +90,9 @@
             android:id="@+id/txtProductDetailActivityLabelDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="24dp"
             android:text="Περιγραφή:"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,12 +102,12 @@
             android:id="@+id/txtProductDetailActivityDetailDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:lineSpacingExtra="4dp"
             android:text="Εδώ θα εμφανιστούν οι αναλυτικές πληροφορίες..."
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityLabelDescription" />
 
@@ -118,22 +115,23 @@
             android:id="@+id/txtProductDetailActivityLabelQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="32dp"
             android:text="Ποσότητα:"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityDetailDescription" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnProductDetailActivityQuantityMinus"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            android:backgroundTint="#DDDDDD"
+            app:backgroundTint="?attr/colorSurfaceVariant"
             android:padding="0dp"
             android:text="-"
-            android:textColor="#000000"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="24sp"
             android:textStyle="bold"
             app:cornerRadius="8dp"
@@ -147,20 +145,21 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="1"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/btnProductDetailActivityQuantityMinus"
             app:layout_constraintStart_toEndOf="@+id/btnProductDetailActivityQuantityMinus"
             app:layout_constraintTop_toTopOf="@+id/btnProductDetailActivityQuantityMinus" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnProductDetailActivityQuantityPlus"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:backgroundTint="#DDDDDD"
+            app:backgroundTint="?attr/colorSurfaceVariant"
             android:padding="0dp"
             android:text="+"
-            android:textColor="#000000"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="24sp"
             android:textStyle="bold"
             app:cornerRadius="8dp"
@@ -168,51 +167,59 @@
             app:layout_constraintStart_toEndOf="@+id/txtProductDetailActivityQuantity"
             app:layout_constraintTop_toTopOf="@+id/txtProductDetailActivityQuantity" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnProductDetailViewReviews"
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="10dp"
-            android:backgroundTint="#009688"
-            android:drawableStart="@android:drawable/btn_star_big_off"
+            app:backgroundTint="?attr/colorPrimary"
+            app:icon="@android:drawable/btn_star_big_off"
+            app:iconSize="24dp"
+            app:iconTint="?attr/colorOnPrimary"
+            app:iconGravity="textStart"
             android:text="Προβολή Αξιολογήσεων"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:cornerRadius="8dp"
+            app:cornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProductDetailActivityLabelQuantity" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnProductDetailActivityAddCart"
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="24dp"
-            android:backgroundTint="#009688"
-            android:drawableLeft="@drawable/outline_add_shopping_cart_24"
+            app:backgroundTint="?attr/colorPrimary"
+            app:icon="@drawable/outline_add_shopping_cart_24"
+            app:iconSize="24dp"
+            app:iconTint="?attr/colorOnPrimary"
+            app:iconGravity="textStart"
             android:text="Προσθήκη στο Καλάθι"
-            android:textSize="18sp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:cornerRadius="8dp"
+            app:cornerRadius="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnProductDetailViewReviews"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/btnProductDetailViewReviews" />
 
+        <!--
+        Το fragment_container_reviews το αφήνουμε όπως είναι για να μην σπάσει
+        η λογική του κώδικά σου (fragment transactions). Του έβαλα δυναμικό φόντο.
+        -->
         <FrameLayout
             android:id="@+id/fragment_container_reviews"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#FFFFFF"
+            android:background="?android:attr/windowBackground"
             android:clickable="true"
             android:elevation="20dp"
             android:focusable="true"

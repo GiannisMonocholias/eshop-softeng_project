@@ -22,18 +22,21 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <!-- Μοντέρνο Dropdown Menu (αντί για Spinner) -->
+        <!-- Μοντέρνο Dropdown Menu -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            app:boxBackgroundColor="?attr/colorSurface"
+            app:boxStrokeColor="?attr/colorPrimary"
             android:hint="Επιλέξτε Ενέργεια">
 
             <AutoCompleteTextView
                 android:id="@+id/spinnerAction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,12 +46,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            app:boxBackgroundColor="?attr/colorSurface"
+            app:boxStrokeColor="?attr/colorPrimary"
             android:hint="Όνομα Προϊόντος">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtRequestProductName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,12 +64,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            app:boxBackgroundColor="?attr/colorSurface"
+            app:boxStrokeColor="?attr/colorPrimary"
             android:hint="Κωδικός Προϊόντος (ID)">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtRequestProductId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,6 +82,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
+            app:boxBackgroundColor="?attr/colorSurface"
+            app:boxStrokeColor="?attr/colorPrimary"
             android:hint="Περιγραφή Αιτήματος">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -80,16 +91,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:gravity="top|start"
+                android:textColor="?attr/colorOnSurface"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCreateRequest"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="60dp"
+            app:backgroundTint="?attr/colorPrimary"
             android:text="ΥΠΟΒΟΛΗ ΑΙΤΗΜΑΤΟΣ"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:icon="@drawable/send_email_icon"
+            app:iconSize="24dp"
+            app:iconTint="?attr/colorOnPrimary"
+            app:iconGravity="textStart"
             app:cornerRadius="12dp" />
 
     </LinearLayout>

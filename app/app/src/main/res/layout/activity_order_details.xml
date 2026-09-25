@@ -4,170 +4,178 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/order_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp">
-
-        <TextView
-            android:id="@+id/txtOrderDetailsOrderPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:text="Τιμή:"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderSubmissionDate" />
-
-        <TextView
-            android:id="@+id/txtOrderDetailsOrderSubmissionDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:text="Ημερομηνία υποβολής:"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderCustomerName" />
+        android:paddingBottom="24dp">
 
         <TextView
             android:id="@+id/txtOrderDetailsOrderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
             android:text="Κωδικός παραγγελίας:"
-            android:textColor="#000000"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/txtOrderDetailsOrderIdValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Order #5501"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/txtOrderDetailsOrderId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtOrderDetailsOrderId" />
+
+        <TextView
             android:id="@+id/txtOrderDetailsOrderCustomerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             android:text="Όνομα πελάτη:"
-            android:textColor="#000000"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderId" />
 
         <TextView
-            android:id="@+id/txtOrderDetailsOrderIdValue"
-            android:layout_width="wrap_content"
+            android:id="@+id/txtOrderDetailsOrderCustomerNameValue"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:text="Order #5501"
-            android:textColor="#000000"
+            android:layout_marginEnd="16dp"
+            android:text="Γιώργος Παπαδόπουλος"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/txtOrderDetailsOrderId"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/txtOrderDetailsOrderCustomerName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtOrderDetailsOrderCustomerName" />
+
+        <TextView
+            android:id="@+id/txtOrderDetailsOrderSubmissionDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="Ημερομηνία υποβολής:"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderCustomerName" />
+
+        <TextView
+            android:id="@+id/txtOrderDetailsOrderSubmissionDateValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="27 Δεκ 2023"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/txtOrderDetailsOrderSubmissionDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtOrderDetailsOrderSubmissionDate" />
+
+        <TextView
+            android:id="@+id/txtOrderDetailsOrderPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="Τιμή:"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderSubmissionDate" />
+
+        <TextView
+            android:id="@+id/txtOrderDetailsOrderPriceValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="€ 1,250.00"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/txtOrderDetailsOrderPrice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtOrderDetailsOrderPrice" />
 
         <TextView
             android:id="@+id/txtOrderDetailsOrderStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="16dp"
             android:text="ΣΕ ΑΝΑΜΟΝΗ"
-            android:textColor="#FF9800"
-            android:textSize="13sp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderPriceValue" />
 
-        <TextView
-            android:id="@+id/txtOrderDetailsOrderCustomerNameValue"
-            android:layout_width="166dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Γιώργος Παπαδόπουλος"
-            android:textColor="#424242"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/txtOrderDetailsOrderCustomerName"
-            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderIdValue" />
-
-        <TextView
-            android:id="@+id/txtOrderDetailsOrderSubmissionDateValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="3dp"
-            android:text="27 Δεκ 2023"
-            android:textColor="#757575"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/txtOrderDetailsOrderSubmissionDate"
-            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderCustomerNameValue" />
-
-        <TextView
-            android:id="@+id/txtOrderDetailsOrderPriceValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="€ 1,250.00"
-            android:textColor="#757575"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/txtOrderDetailsOrderPrice"
-            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderSubmissionDateValue" />
+        <View
+            android:id="@+id/OrderDetailsdivider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="?attr/colorSurfaceVariant"
+            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderStatus" />
 
         <TextView
             android:id="@+id/txtOrderDetailsProductsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
             android:text="ΠΡΟΪΟΝΤΑ"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.511"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/OrderDetailsdivider3" />
 
-        <View
-            android:id="@+id/OrderDetailsdivider3"
-            android:layout_width="0dp"
-            android:layout_height="3dp"
-            android:layout_marginTop="10dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsOrderStatus" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvOrderDetailsProducts"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="12dp"
             android:nestedScrollingEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtOrderDetailsProductsHeader" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnOrderDetailsStockCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:text="Έλεγχος αποθέματος παραγγελίας"
-            android:textSize="13sp"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            app:backgroundTint="?attr/colorPrimary"
+            android:text="Έλεγχος αποθέματος"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_inventory"
+            app:iconSize="24dp"
+            app:iconTint="?attr/colorOnPrimary"
+            app:iconGravity="textStart"
+            app:cornerRadius="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
