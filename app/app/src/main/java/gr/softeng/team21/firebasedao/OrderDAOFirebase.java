@@ -101,6 +101,7 @@ public class OrderDAOFirebase implements OrderDAO {
         return future;
     }
 
+
     /**{@inheritDoc}*/
     @Override
     public CompletableFuture<Void> addOrder(Order order) {
@@ -149,6 +150,23 @@ public class OrderDAOFirebase implements OrderDAO {
                 .addOnSuccessListener(result -> future.complete(null))
                 .addOnFailureListener(future::completeExceptionally);
 
+        return future;
+    }
+
+    @Override
+    public CompletableFuture<ArrayList<Order>> getOrdersByCustomerId(String customerId) {
+        CompletableFuture<ArrayList<Order>> future = new CompletableFuture<>();
+        db.collection(COLLECTION_NAME)
+                .whereEqualTo("customerId",customerId )
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    ArrayList<Order> customerOrders = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        customerOrders.add(document.toObject(Order.class));
+                    }
+                    future.complete(customerOrders);
+                })
+                .addOnFailureListener(future::completeExceptionally);
         return future;
     }
 }

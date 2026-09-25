@@ -25,6 +25,7 @@ import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.firebasedao.UserCredentialsDAOFirebase;
 import gr.softeng.team21.memorydao.UserCredentialsDAOMemory;
 import gr.softeng.team21.view.customer.FindProduct.CustomerFindProductActivity;
+import gr.softeng.team21.view.customer.OrdersHistoric.CustomerOrderHistoryFragment;
 import gr.softeng.team21.view.user.EditData.UserEditDataActivity;
 import gr.softeng.team21.view.user.login.LoginActivity;
 
@@ -90,7 +91,7 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
                 } else if (id == R.id.btnCustomerHomePageMessages) {
                     presenter.InboxClicked();
                 } else if (id == R.id.btnCustomerHomePageΟrderΗistory) {
-                    // Προσθήκη λογικής αργότερα
+                    presenter.OrderHistoryClicked();
                 } else if (id == R.id.btnCustomerHomePageDeleteaccount) {
                     presenter.DeleteClicked();
                 } else if (id == R.id.btnCustomerHomePageLogout) {
@@ -149,6 +150,17 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
             Intent intent = new Intent(this, gr.softeng.team21.view.customer.EmailList.CustomerEmailListActivity.class);
             intent.putExtra("CUSTOMER_ID", customerId);
             startActivity(intent);
+        });
+    }
+
+    @Override
+    public void goToOrderHistory(String customerId) {
+        runOnUiThread(() -> {
+            CustomerOrderHistoryFragment fragment = CustomerOrderHistoryFragment.newInstance(customerId);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(android.R.id.content, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 

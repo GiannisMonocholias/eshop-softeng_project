@@ -115,4 +115,10 @@ public class CustomerHomePagePresenter {
             view.goToInbox(customer.getCustomer_id());
         }
     }
+
+    public void OrderHistoryClicked() {
+        if (customer != null) {
+            view.goToOrderHistory(customer.getCustomer_id());
+        }
+    }
 }

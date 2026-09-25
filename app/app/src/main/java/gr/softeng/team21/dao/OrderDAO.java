@@ -57,4 +57,11 @@ public interface OrderDAO {
       * Clears all orders from the database.
       */
      CompletableFuture<Void> clear();
+
+    /**
+     * Efficiently queries the database for all orders belonging to a specific customer.
+     * @param customerId The unique ID of the customer.
+     * @return A CompletableFuture containing a list of the customer's orders.
+     */
+    CompletableFuture<ArrayList<Order>> getOrdersByCustomerId(String customerId);
 }

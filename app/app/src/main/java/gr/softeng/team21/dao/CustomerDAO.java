@@ -3,6 +3,7 @@ package gr.softeng.team21.dao;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.ShoppingCart;
 
 /**
  * Data Access Object (DAO) interface for managing {@link Customer} entities.
@@ -49,4 +50,5 @@ public interface CustomerDAO {
       * @return A CompletableFuture representing the completion of the bulk deletion.
       */
      CompletableFuture<Void> clear();
+    CompletableFuture<Void> updateShoppingCart(String customerId,ShoppingCart shoppingCart);
 }

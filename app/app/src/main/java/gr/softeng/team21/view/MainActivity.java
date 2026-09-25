@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnEntrance;
 
     /** Flag to ensure data is prepared only once across the application lifecycle */
-//    private static boolean isDataPrepared = false;
+ //private static boolean isDataPrepared = false;
 
     /**
      * Called when the activity is first created.
@@ -57,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        if (!isDataPrepared) {
+//     if (!isDataPrepared) {
 //            MemoryInitializer.prepareData();
 //            isDataPrepared = true;
 //        }
-
-        // ========================================================
-        // DATABASE INITIALIZATION
-        // ========================================================
+//
+//         //========================================================
+//        // DATABASE INITIALIZATION
+//        // ========================================================
 //        CompletableFuture.runAsync(() -> {
 //            Log.d("FIREBASE_INIT", "Ξεκινάει η μεταφορά δεδομένων στο Firebase. Παρακαλώ περιμένετε...");
 //
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 //            Log.e("FIREBASE_INIT", "Σφάλμα κατά την αρχικοποίηση: " + e.getMessage());
 //            return null;
 //        });
-        // ========================================================
 
 
         btnEntrance = findViewById(R.id.btnMainActivityEntrance);

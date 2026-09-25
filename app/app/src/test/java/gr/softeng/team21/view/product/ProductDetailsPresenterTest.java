@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.ProductReviewsDao;
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
@@ -41,7 +42,7 @@ public class ProductDetailsPresenterTest {
         cart = new ShoppingCart(customer);
         view = new ProductDetailsViewStub();
 
-        presenter = new ProductDetailsPresenter(view, customerDAO, productDAO);
+        presenter = new ProductDetailsPresenter(view, customerDAO, productDAO,null);
         product = productDAO.getProduct("TECH-020").join();
     }
 

@@ -2,24 +2,18 @@ package gr.softeng.team21.firebasedao;
 
 import java.math.BigDecimal;
 
-import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
-import gr.softeng.team21.firebasedao.EmailDAOFirebase;
-import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
-import gr.softeng.team21.firebasedao.OrderDAOFirebase;
-import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
-import gr.softeng.team21.firebasedao.ProductsWareHouseDAOFirebase;
-import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
-import gr.softeng.team21.firebasedao.UserCredentialsDAOFirebase;
 
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmailDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.dao.ProductTypeDAO;
+import gr.softeng.team21.dao.ProductReviewsDao;
 import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
 import gr.softeng.team21.domain.Admin;
+import gr.softeng.team21.domain.ProductReview;
 import gr.softeng.team21.util.Money;
 import gr.softeng.team21.util.Date;
 import gr.softeng.team21.contact.Address;
@@ -114,7 +108,17 @@ public class FirebaseInitializer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // ProductReviewsDaoDAO erase data
+        try {
+            getProductReviewsDao().clear().join();
+            if (!getProductReviewsDao().getReviews().join().isEmpty()) {
+                throw new IllegalStateException("Products Reviews repository was not cleared");
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
+
 
     public static void prepareData() {
 
@@ -574,6 +578,95 @@ public class FirebaseInitializer {
         //END: INITIALIZE CATALOGUE UPDATE REQUESTS
         //=====================================================
 
+
+        //=====================================================
+        //START: INITIALIZE PRODUCTS REVIEWS
+        //=====================================================
+        ProductReviewsDao reviewsDao = new ProductReviewsDaoFirebase();
+
+        // --- Laptops ---
+        reviewsDao.addReview(new ProductReview(5, new Date(15, 2, 2024), "nickgeorg", "TECH-001", "REV-001", "Απίστευτη οθόνη 4K και κορυφαία ταχύτητα. Αξίζει κάθε ευρώ!")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(18, 2, 2024), "georgepap", "TECH-001", "REV-002", "Πολύ δυνατό μηχάνημα, αλλά τα ανεμιστηράκια ακούγονται αρκετά σε βαρύ gaming.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(10, 3, 2024), "giannismonoh", "TECH-002", "REV-003", "Η μπαταρία απλά δεν τελειώνει ποτέ! Το πιο ελαφρύ και γρήγορο laptop που είχα ποτέ.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(12, 3, 2024), "giannis_oik", "TECH-002", "REV-004", "Πανέμορφο σχεδιαστικά, αλλά μου λείπουν οι κλασικές θύρες USB-A.")).join();
+
+        // --- Mice ---
+        reviewsDao.addReview(new ProductReview(5, new Date(5, 4, 2024), "nickgeorg", "TECH-003", "REV-005", "Ό,τι καλύτερο για παραγωγικότητα. Εντελώς αθόρυβο και το scroll wheel είναι μαγικό.")).join();
+        reviewsDao.addReview(new ProductReview(3, new Date(10, 4, 2024), "georgepap", "TECH-003", "REV-006", "Καλή ποιότητα, αλλά είναι λίγο βαρύ και μεγάλο για τα δικά μου χέρια.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(12, 1, 2024), "giannismonoh", "TECH-004", "REV-007", "Πανάλαφρο! Ο αισθητήρας είναι αλάνθαστος για FPS games.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(15, 1, 2024), "giannis_oik", "TECH-004", "REV-008", "Πολύ καλό, αλλά το καλώδιο θα μπορούσε να είναι λίγο πιο μαλακό.")).join();
+
+        // --- Keyboards ---
+        reviewsDao.addReview(new ProductReview(5, new Date(20, 3, 2024), "nickgeorg", "TECH-005", "REV-009", "Οι διακόπτες Cherry MX κάνουν φοβερή αίσθηση. Ο RGB φωτισμός τα σπάει.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(22, 3, 2024), "georgepap", "TECH-005", "REV-010", "Στιβαρή κατασκευή, αν και κάνει αρκετό θόρυβο κατά την πληκτρολόγηση.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(10, 5, 2024), "giannismonoh", "TECH-006", "REV-011", "Απίστευτα βολικό για γράψιμο. Η εναλλαγή μεταξύ συσκευών γίνεται αστραπιαία.")).join();
+        reviewsDao.addReview(new ProductReview(5, new Date(12, 5, 2024), "giannis_oik", "TECH-006", "REV-012", "Το καλύτερο low-profile πληκτρολόγιο της αγοράς.")).join();
+
+        // --- Monitors ---
+        reviewsDao.addReview(new ProductReview(5, new Date(22, 1, 2024), "nickgeorg", "TECH-007", "REV-013", "Τα 144Hz κάνουν τεράστια διαφορά στα e-sports. Η εικόνα ρέει σαν νερό.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(25, 1, 2024), "georgepap", "TECH-007", "REV-014", "Τέλεια χρώματα χάρη στο IPS panel, αλλά η βάση της πιάνει πολύ χώρο.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(5, 6, 2024), "giannismonoh", "TECH-008", "REV-015", "Ασύγκριτη ακρίβεια χρωμάτων για επεξεργασία φωτογραφίας. Εξαιρετική 4K ανάλυση.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(8, 6, 2024), "giannis_oik", "TECH-008", "REV-016", "Πολύ καλή οθόνη, αλλά η τιμή της είναι λίγο τσιμπημένη.")).join();
+
+        // --- CPUs ---
+        reviewsDao.addReview(new ProductReview(5, new Date(11, 2, 2024), "nickgeorg", "TECH-009", "REV-017", "Τέρας επιδόσεων. Το rendering γίνεται στο μισό χρόνο σε σχέση με πριν.")).join();
+        reviewsDao.addReview(new ProductReview(3, new Date(14, 2, 2024), "georgepap", "TECH-009", "REV-018", "Φοβερά γρήγορος, αλλά χρειάζεται πολύ καλή υδρόψυξη γιατί ανεβάζει θερμοκρασίες.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(1, 3, 2024), "giannismonoh", "TECH-010", "REV-019", "Απλά ο Βασιλιάς του Gaming. Η τεχνολογία 3D V-Cache απογειώνει τα FPS.")).join();
+        reviewsDao.addReview(new ProductReview(5, new Date(3, 3, 2024), "giannis_oik", "TECH-010", "REV-020", "Εξαιρετική απόδοση και κρατάει χαμηλές θερμοκρασίες.")).join();
+
+        // --- RAM ---
+        reviewsDao.addReview(new ProductReview(5, new Date(18, 4, 2024), "nickgeorg", "TECH-011", "REV-021", "Ταχύτατη DDR5 μνήμη και ο φωτισμός συγχρονίζεται άψογα με το iCUE.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(20, 4, 2024), "georgepap", "TECH-011", "REV-022", "Κάνει τη δουλειά της, αλλά το software για τον φωτισμό καμιά φορά κολλάει.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(25, 4, 2024), "giannismonoh", "TECH-012", "REV-023", "Ό,τι καλύτερο για overclocking. Πολύ σταθερή.")).join();
+        reviewsDao.addReview(new ProductReview(5, new Date(28, 4, 2024), "giannis_oik", "TECH-012", "REV-024", "Τέλεια ποιότητα κατασκευής και πανέμορφο heatsink.")).join();
+
+        // --- GPUs ---
+        reviewsDao.addReview(new ProductReview(5, new Date(2, 5, 2024), "nickgeorg", "TECH-013", "REV-025", "Παίζει τα πάντα σε Ultra και 1440p χωρίς να ζορίζεται. Το DLSS 3 κάνει θαύματα!")).join();
+        reviewsDao.addReview(new ProductReview(5, new Date(15, 5, 2024), "georgepap", "TECH-013", "REV-026", "Αθόρυβη και δεν ανεβάζει θερμοκρασίες. Αξίζει την αναβάθμιση.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(10, 6, 2024), "giannismonoh", "TECH-014", "REV-027", "Απίστευτο value for money. Τα 16GB VRAM εξασφαλίζουν το μέλλον.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(12, 6, 2024), "giannis_oik", "TECH-014", "REV-028", "Πολύ δυνατή κάρτα, αν και έχει λίγο μεγαλύτερη κατανάλωση ρεύματος.")).join();
+
+        // --- Storage ---
+        reviewsDao.addReview(new ProductReview(5, new Date(5, 7, 2024), "nickgeorg", "TECH-015", "REV-029", "Αστραπιαίες ταχύτητες. Τα Windows boot-άρουν σε 3 δευτερόλεπτα.")).join();
+        reviewsDao.addReview(new ProductReview(5, new Date(7, 7, 2024), "georgepap", "TECH-015", "REV-030", "Αξιόπιστος και γρήγορος. Ιδανικός και για PS5.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(15, 8, 2024), "giannismonoh", "TECH-016", "REV-031", "Τεράστια χωρητικότητα σε πολύ καλή τιμή. Ιδανικός για αποθήκευση ταινιών.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(18, 8, 2024), "giannis_oik", "TECH-016", "REV-032", "Κάνει λίγο θόρυβο κατά την εγγραφή δεδομένων, αλλά είναι λογικό για HDD.")).join();
+
+        // --- Accessories ---
+        reviewsDao.addReview(new ProductReview(5, new Date(22, 9, 2024), "nickgeorg", "TECH-017", "REV-033", "Το Noise Cancelling είναι από άλλο πλανήτη. Απομονώνει τα πάντα.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(25, 9, 2024), "georgepap", "TECH-017", "REV-034", "Πολύ καλά ακουστικά, αλλά τα μαξιλαράκια ιδρώνουν λίγο το καλοκαίρι.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(2, 10, 2024), "giannismonoh", "TECH-018", "REV-035", "Πολύ καθαρός ήχος και το μικρόφωνο είναι εξαιρετικό για το Discord.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(5, 10, 2024), "giannis_oik", "TECH-018", "REV-036", "Άνετα στο κεφάλι, αλλά το μπάσο είναι λίγο υπερβολικό για τα γούστα μου.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(12, 11, 2024), "nickgeorg", "TECH-019", "REV-037", "Κρυστάλλινη εικόνα για τηλεδιασκέψεις. Το autofocus λειτουργεί άψογα.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(15, 11, 2024), "georgepap", "TECH-019", "REV-038", "Κλασική και αξιόπιστη αξία, αν και σε χαμηλό φωτισμό χάνει λίγο.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(20, 11, 2024), "giannismonoh", "TECH-020", "REV-039", "Ο M1 επεξεργαστής το κάνει να πετάει. Τέλεια οθόνη για διάβασμα.")).join();
+        reviewsDao.addReview(new ProductReview(5, new Date(22, 11, 2024), "giannis_oik", "TECH-020", "REV-040", "Το ιδανικό μέγεθος tablet. Η μπαταρία κρατάει μέρες.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(1, 12, 2024), "nickgeorg", "TECH-021", "REV-041", "Συνδέεται αμέσως με το iPhone. Πολύ χρήσιμο για ειδοποιήσεις και γυμναστική.")).join();
+        reviewsDao.addReview(new ProductReview(4, new Date(3, 12, 2024), "georgepap", "TECH-021", "REV-042", "Όμορφο, αλλά πρέπει να το φορτίζεις κάθε μέρα.")).join();
+
+        reviewsDao.addReview(new ProductReview(5, new Date(10, 1, 2025), "giannismonoh", "TECH-022", "REV-043", "Με έσωσε! Βρήκα τα κλειδιά μου χάρη σε αυτό.")).join();
+        reviewsDao.addReview(new ProductReview(5, new Date(12, 1, 2025), "giannis_oik", "TECH-022", "REV-044", "Μικρό, διακριτικό και η εφαρμογή λειτουργεί τέλεια.")).join();
+
+        // --- Printers ---
+        reviewsDao.addReview(new ProductReview(4, new Date(15, 2, 2025), "nickgeorg", "TECH-NEW-01", "REV-045", "Εκτυπώνει γρήγορα, αλλά τα μελάνια τελειώνουν κάπως γρήγορα.")).join();
+        reviewsDao.addReview(new ProductReview(5, new Date(18, 2, 2025), "georgepap", "TECH-NEW-01", "REV-046", "Πολύ εύκολη η ασύρματη εκτύπωση από το κινητό. Για τα λεφτά του είναι άψογος.")).join();
+
+        //=====================================================
+        //END: INITIALIZE  PRODUCTS REVIEWS
+        //=====================================================
+
         //Initialize Authentication System
         AuthenticationSystem authSystem = new AuthenticationSystem(getUserCredentialsDAO());
 
@@ -611,4 +704,5 @@ public class FirebaseInitializer {
     public static EmailDAO getEmailDAO() {
         return new EmailDAOFirebase();
     }
+    public static ProductReviewsDao getProductReviewsDao(){return new ProductReviewsDaoFirebase();}
 }

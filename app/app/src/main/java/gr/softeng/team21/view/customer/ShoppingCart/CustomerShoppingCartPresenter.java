@@ -36,7 +36,7 @@ public class CustomerShoppingCartPresenter {
         customerDAO.getCustomer(customerId).thenAccept(loadedCustomer -> {
             if (loadedCustomer != null) {
                 this.customer = loadedCustomer;
-                refreshClicked(); // Φορτώνει τα δεδομένα στο UI μόλις έρθει ο πελάτης
+                refreshClicked();
             } else {
                 if (view != null) view.showMessage("Ο πελάτης δεν βρέθηκε.");
             }
@@ -66,7 +66,12 @@ public class CustomerShoppingCartPresenter {
         if (customer == null || item == null) return;
         try {
             customer.addItemToCart(item.getProductType(), 1);
-            refreshClicked();
+            customerDAO.updateShoppingCart(customer.getCustomer_id(),customer.getShoppingCart()).thenRun(() -> {
+                if (view != null) refreshClicked();
+            }).exceptionally(e -> {
+                if (view != null) view.showMessage("Σφάλμα αποθήκευσης: " + e.getMessage());
+                return null;
+            });
         } catch (Exception e) {
             if (view != null) view.showMessage(e.getMessage());
         }
@@ -80,7 +85,12 @@ public class CustomerShoppingCartPresenter {
         if (customer == null || item == null) return;
         try {
             customer.removeItemFromCart(item.getProductType(), 1);
-            refreshClicked();
+            customerDAO.updateShoppingCart(customer.getCustomer_id(),customer.getShoppingCart()).thenRun(() -> {
+                if (view != null) refreshClicked();
+            }).exceptionally(e -> {
+                if (view != null) view.showMessage("Σφάλμα αποθήκευσης: " + e.getMessage());
+                return null;
+            });
         } catch (Exception e) {
             if (view != null) view.showMessage(e.getMessage());
         }
@@ -94,7 +104,12 @@ public class CustomerShoppingCartPresenter {
         if (customer == null || item == null) return;
         try {
             customer.removeItemFromCart(item.getProductType(), item.getQuantity());
-            refreshClicked();
+            customerDAO.updateShoppingCart(customer.getCustomer_id(),customer.getShoppingCart()).thenRun(() -> {
+                if (view != null) refreshClicked();
+            }).exceptionally(e -> {
+                if (view != null) view.showMessage("Σφάλμα αποθήκευσης: " + e.getMessage());
+                return null;
+            });
             if (view != null) view.showMessage("Αφαιρέθηκε");
         } catch (Exception e) {
             if (view != null) view.showMessage(e.getMessage());

@@ -12,7 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Team21">
         <activity
-            android:name=".view.customer.Reviews.ProductReviewActivity"
+            android:name=".view.product.Reviews.ProductReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.customer.Review.CustomerReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.customer.Review.ProductReviewActivity"
             android:exported="false" />
         <activity
             android:name=".view.admin.requests.requestDetails.RequestDetailsActivity"

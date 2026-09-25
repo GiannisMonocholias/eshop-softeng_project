@@ -83,4 +83,9 @@ public class OrderDAOMemory implements OrderDAO {
         orders.clear();
         return CompletableFuture.completedFuture(null);
     }
+
+    @Override
+    public CompletableFuture<ArrayList<Order>> getOrdersByCustomerId(String customerId) {
+        return null;
+    }
 }
