@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="?android:attr/windowBackground"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Εγγραφή Νέου Πελάτη"
-            android:textColor="#009688"
+            android:textColor="?attr/colorMenuButton"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="20dp"
             app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,12 +51,15 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Username">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtRegisterUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,13 +68,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Κωδικός πρόσβασης"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="?attr/colorOnSurfaceVariant">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtRegisterPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,12 +94,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Όνομα">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegisterName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,12 +112,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Επίθετο">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegisterSurname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -117,12 +130,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Email">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtRegisterEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
                         android:inputType="textEmailAddress" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -131,12 +147,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     android:hint="Τηλέφωνο">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtRegisterPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurface"
                         android:inputType="phone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Διεύθυνση"
-                    android:textColor="#009688"
+                    android:textColor="?attr/colorMenuButton"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -159,12 +178,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:layout_marginEnd="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Οδός">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegisterStreet"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -173,12 +195,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Αριθμός">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegisterNumber"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -194,12 +219,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Πόλη">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegisterCity"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -208,12 +236,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="4dp"
+                        app:boxBackgroundColor="?attr/colorSurface"
+                        app:boxStrokeColor="?attr/colorPrimary"
                         android:hint="Τ.Κ.">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edtRegisterZip"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorOnSurface"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -223,7 +254,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="#009688"
+                    android:backgroundTint="?attr/colorMenuButton"
+                    android:textColor="?attr/colorOnPrimary"
                     android:text="ΕΓΓΡΑΦΗ"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -239,7 +271,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:text="Έχεις ήδη λογαριασμό; "
-            android:textColor="#555555"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/txtLoginLink"
@@ -255,7 +287,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="Σύνδεση"
-            android:textColor="#009688"
+            android:textColor="?attr/colorMenuButton"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/txtLoginPrompt"

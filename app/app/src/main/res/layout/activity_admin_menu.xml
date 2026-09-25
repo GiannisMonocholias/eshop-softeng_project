@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?android:attr/windowBackground"
     tools:context=".view.admin.adminMenu.AdminMenuActivity">
 
     <!-- Header -->
@@ -21,7 +21,7 @@
         android:textStyle="bold"
         android:fontFamily="sans-serif-black"
         android:textAlignment="center"
-        android:textColor="#009688"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -34,13 +34,13 @@
         android:layout_marginTop="8dp"
         android:text="Επιλέξτε ενέργεια"
         android:textSize="18sp"
-        android:textColor="#333333"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintTop_toBottomOf="@id/txtAdminHeader"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Edit Data -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEditData"
         android:layout_width="0dp"
         android:layout_height="60dp"
@@ -49,72 +49,97 @@
         android:text="Τροποποίηση Στοιχείων"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:backgroundTint="#009688"
+        android:textColor="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorPrimary"
         app:cornerRadius="12dp"
+        app:icon="@drawable/ic_edit"
+        app:iconSize="24dp"
+        app:iconTint="?attr/colorOnPrimary"
+        app:iconGravity="textStart"
         app:layout_constraintTop_toBottomOf="@id/txtActChoice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Stats -->
-    <Button
+    <!-- Stats / Quantities -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnQuantities"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#009688"
         android:text="Ανανέωση αποθέματος"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:backgroundTint="?attr/colorPrimary"
         app:cornerRadius="12dp"
+        app:icon="@drawable/ic_inventory"
+        app:iconSize="24dp"
+        app:iconTint="?attr/colorOnPrimary"
+        app:iconGravity="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnEditData" />
 
-    <!-- Requests -->
-    <Button
+    <!-- Requests-->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRequests"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="32dp"
         android:text="Διαχείριση Αιτημάτων"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:backgroundTint="#009688"
+        app:backgroundTint="?attr/colorPrimary"
         app:cornerRadius="12dp"
+        app:icon="@drawable/ic_assignment"
+        app:iconSize="24dp"
+        app:iconTint="?attr/colorOnPrimary"
+        app:iconGravity="textStart"
         app:layout_constraintTop_toBottomOf="@id/btnQuantities"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Create Employee -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCreateEmp"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="32dp"
         android:text="Δημιουργία Υπαλλήλου"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:backgroundTint="#009688"
+        app:backgroundTint="?attr/colorPrimary"
         app:cornerRadius="12dp"
+        app:icon="@drawable/ic_person_add"
+        app:iconSize="24dp"
+        app:iconTint="?attr/colorOnPrimary"
+        app:iconGravity="textStart"
         app:layout_constraintTop_toBottomOf="@id/btnRequests"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Delete Employee -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDeleteEmp"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#BF211D"
         android:text="Διαγραφή Υπαλλήλου"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:backgroundTint="?attr/colorError"
         app:cornerRadius="12dp"
+        app:icon="@drawable/ic_delete"
+        app:iconSize="24dp"
+        app:iconTint="?attr/colorOnPrimary"
+        app:iconGravity="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnCreateEmp" />

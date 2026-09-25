@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="?android:attr/windowBackground"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="#009688" />
+            app:tint="?attr/colorMenuButton" />
 
         <TextView
             android:id="@+id/txtloginShopName"
@@ -33,7 +33,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-black"
             android:text="TechPoint"
-            android:textColor="#009688"
+            android:textColor="?attr/colorMenuButton"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Ο κόσμος της τεχνολογίας στα χέρια σου"
-            android:textColor="#555555"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="20dp"
             app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,12 +77,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="Username"
-                    app:boxBackgroundColor="@android:color/white"
+                    app:boxBackgroundColor="?attr/colorSurface"
                     app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusTopStart="12dp"
-                    app:boxStrokeColor="#1565C0"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -93,9 +93,10 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_person"
                         android:drawablePadding="12dp"
+                        android:drawableTint="?attr/colorOnSurfaceVariant"
                         android:inputType="textEmailAddress"
                         android:paddingStart="12dp"
-                        android:textColor="#333333" />
+                        android:textColor="?attr/colorOnSurface" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -105,13 +106,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:hint="Κωδικός πρόσβασης"
-                    app:boxBackgroundColor="@android:color/white"
+                    app:boxBackgroundColor="?attr/colorSurface"
                     app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusTopStart="12dp"
-                    app:boxStrokeColor="#1565C0"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:endIconMode="password_toggle"
+                    app:endIconTint="?attr/colorOnSurfaceVariant"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/loginusernameInputLayout">
@@ -122,9 +124,10 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_lock"
                         android:drawablePadding="12dp"
+                        android:drawableTint="?attr/colorOnSurfaceVariant"
                         android:inputType="textPassword"
                         android:paddingStart="12dp"
-                        android:textColor="#333333" />
+                        android:textColor="?attr/colorOnSurface" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -132,8 +135,9 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="#009688"
+                    android:backgroundTint="?attr/colorMenuButton"
                     android:text="ΣΥΝΔΕΣΗ"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:cornerRadius="30dp"
@@ -146,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:indeterminateTint="#1565C0"
+                    android:indeterminateTint="?attr/colorPrimary"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -161,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Νέος στο TechPoint; "
-            android:textColor="#555555"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/loginregisterTxtView"
@@ -178,7 +182,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="Δημιουργία Λογαριασμού"
-            android:textColor="#1565C0"
+            android:textColor="?attr/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/logintxtViewNewUser"

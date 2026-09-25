@@ -5,7 +5,8 @@
     android:id="@+id/executeProcessProduct"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.employee.updateCatalogueEmployee.AssignedRequestsToExecuteActivity">
+    android:background="?android:attr/windowBackground"
+    tools:context=".view.employee.updateCatalogueEmployee.assignedRequestsToExecute.AssignedRequestsToExecuteActivity">
 
     <TextView
         android:id="@+id/txtRequestsToExecuteListHeader"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="ΑΙΤΗΜΑΤΑ ΠΡΟΣ ΕΚΤΕΛΕΣΗ"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +25,7 @@
         android:id="@+id/rvRequestsAssigned"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -12,7 +12,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/customer_home_page_1">
+        android:background="@drawable/img_customer_home_page">
 
         <ImageButton
             android:id="@+id/btnMenu"
@@ -26,7 +26,7 @@
             android:src="@android:drawable/ic_menu_agenda"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="#00BCD4" />
+            app:tint="?attr/colorPrimary" />
 
         <TextView
             android:id="@+id/txtCustomerHomePageHeader"
@@ -38,7 +38,7 @@
             android:gravity="center"
             android:text="E-Shop"
             android:textAlignment="center"
-            android:textColor="#00BCD4"
+            android:textColor="?attr/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/btnMenu"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:background="#EEEEEE"
+            android:background="?attr/colorSurfaceVariant"
             app:layout_constraintTop_toBottomOf="@+id/btnMenu" />
 
         <TextView
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Επιλέξτε μια λειτουργία από το μενού"
-            android:textColor="#00BCD4"
+            android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.161"
@@ -74,9 +74,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#FFFFFF"
-        app:itemIconTint="#009688"
-        app:itemTextColor="#333333"
+        android:background="?attr/colorSurface"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorOnSurface"
         app:menu="@menu/customer_drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

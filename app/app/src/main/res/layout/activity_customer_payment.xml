@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?android:attr/windowBackground"
     android:padding="24dp"
     tools:context=".view.customer.Payment.CustomerPaymentActivity">
 
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Ολοκλήρωση Αγοράς"
-        android:textColor="#009688"
+        android:textColor="?attr/colorPrimary"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Σύνολο: 0.00 €"
-        android:textColor="#000000"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="20dp"
-        android:background="#EEEEEE"
+        android:background="?attr/colorSurfaceVariant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCustomerPaymentActivityFinalAmount" />
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Στοιχεία Αποστολής"
-        android:textColor="#333333"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="Όνομα Επώνυμο"
-        android:textColor="#000000"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Διεύθυνση, Πόλη"
-        android:textColor="#555555"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Τηλέφωνο"
-        android:textColor="#555555"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="20dp"
-        android:background="#EEEEEE"
+        android:background="?attr/colorSurfaceVariant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCustomerPaymentActivityShippingPhone" />
@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Επιλέξτε Τρόπο Πληρωμής"
-        android:textColor="#333333"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,34 +123,45 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/txtCustomerPaymentActivityPayMethodLabel">
 
+        <!-- Προσθήκη εικονιδίου για μετρητά και drawableTint -->
         <RadioButton
             android:id="@+id/rbCustomerPaymentActivityCash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnSurface"
             android:padding="12dp"
+            android:drawableEnd="@drawable/ic_money"
+            android:drawableTint="?attr/colorOnSurface"
             android:text="Αντικαταβολή (Μετρητά)"
             android:textSize="16sp" />
 
+        <!-- Προσθήκη drawableTint στο εικονίδιο κάρτας -->
         <RadioButton
             android:id="@+id/rbCustomerPaymentActivityCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnSurface"
             android:padding="12dp"
             android:drawableEnd="@drawable/outline_credit_card_24"
+            android:drawableTint="?attr/colorOnSurface"
             android:text="Πιστωτική / Χρεωστική Κάρτα"
             android:textSize="16sp" />
     </RadioGroup>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCustomerPaymentActivityPayment"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#009688"
+        app:backgroundTint="?attr/colorPrimary"
         android:text="Πληρωμή"
-        android:textColor="#FFFFFF"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:icon="@drawable/ic_payment"
+        app:iconSize="24dp"
+        app:iconTint="?attr/colorOnPrimary"
+        app:iconGravity="textStart"
         app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
