@@ -1,5 +1,7 @@
 package gr.softeng.team21.view.employee.updateCatalogueEmployee.catalogueUpdates.executeDeleteProduct;
 
+import android.util.Log;
+
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
@@ -100,6 +102,8 @@ public class ExecuteDeleteProductPresenter {
      */
     public void onDeleteConfirmed() {
         if (currentRequest == null || loggedInEmployee == null) return;
+
+
 
         productTypeDAO.deleteProductType(currentRequest.getProduct()).thenAccept(v1 -> {
             // Update domain properties locally

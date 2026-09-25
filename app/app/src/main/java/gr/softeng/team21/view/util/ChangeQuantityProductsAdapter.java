@@ -21,9 +21,12 @@ import gr.softeng.team21.dao.ProductsWareHouseDAO;
 import gr.softeng.team21.domain.ProductType;
 
 /**
- * RecyclerView Adapter responsible for rendering the list of products and handling
- * user interactions to modify warehouse stock quantities dynamically.
- * Features a modern, distinct dual-button (+/-) UI pattern.
+ * A sophisticated RecyclerView Adapter responsible for rendering the inventory list
+ * and handling dynamic quantity adjustments (add/remove) for each product.
+ *
+ * It interacts directly with the {@link ProductsWareHouseDAO} to fetch current stock
+ * levels asynchronously and applies user-requested modifications in real-time.
+ *
  * @author Αλέξανδρος Δρακάκης, Γιάννης Μονοχολιάς
  */
 public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQuantityProductsAdapter.ViewHolder> {
@@ -32,8 +35,10 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
     private final ProductsWareHouseDAO wareHouseDAO;
 
     /**
-     * Constructs the adapter with a provided list of products.
-     * @param products The dataset of ProductType objects to display.
+     * Constructs the adapter with a predefined list of products and a Data Access Object.
+     *
+     * @param products     The collection of {@link ProductType} objects to be displayed.
+     * @param wareHouseDAO The DAO interface handling the asynchronous warehouse stock operations.
      */
     public ChangeQuantityProductsAdapter(List<ProductType> products, ProductsWareHouseDAO wareHouseDAO) {
         this.products = products;
@@ -41,10 +46,12 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
     }
 
     /**
-     * Inflates the custom XML layout for individual list items.
-     * @param parent   The ViewGroup into which the new View will be added.
+     * Called when the RecyclerView needs a new {@link ViewHolder} of the given type to represent an item.
+     * Inflates the custom XML layout specifically designed for the product quantity UI.
+     *
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to an adapter position.
      * @param viewType The view type of the new View.
-     * @return A new instance of {@link ViewHolder}.
+     * @return A newly created {@link ViewHolder} that holds a View of the given view type.
      */
     @NonNull
     @Override
@@ -55,57 +62,69 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
     }
 
     /**
-     * Binds data to the views inside the ViewHolder and sets up the event listeners
-     * for adjusting product stock using the memory DAO.
-     * @param holder   The ViewHolder to update.
+     * Called by the RecyclerView to display the data at the specified position.
+     * This method updates the contents of the {@link ViewHolder#itemView} to reflect the item at the given position.
+     * It also attaches the necessary click listeners for the add and remove stock operations.
+     *
+     * @param holder   The ViewHolder which should be updated to represent the contents of the item at the given position.
      * @param position The position of the item within the adapter's data set.
      */
     @Override
     public void onBindViewHolder(@NonNull ChangeQuantityProductsAdapter.ViewHolder holder, int position) {
         ProductType product = products.get(position);
 
+        // Bind static product information
         holder.txtProductName.setText(product.getProductName());
         holder.txtProductCode.setText("Κωδικός: " + product.getProductCode());
 
-        // 1. Display Current Stock
+        // Fetch and display the initial current stock from the database asynchronously
         wareHouseDAO.getProductStock(product).thenAccept(currentStock -> {
             int stock = (currentStock != null) ? currentStock : 0;
             runOnMainThread(() -> holder.txtCurrentStock.setText(stock + " τεμ."));
         });
 
-        // 2. Remove Stock Button Logic (-)
-        int changeAmt = getAmountFromInput(holder.edtChangeAmount);
+        // Setup interaction logic for the "Remove Stock" (-) button
+        holder.btnApplyRemove.setOnClickListener(v -> {
+            int changeAmt = getAmountFromInput(holder.edtChangeAmount);
 
-        wareHouseDAO.decreaseProductStock(product, changeAmt).thenAccept(success -> {
-            if (success) {
-                wareHouseDAO.getProductStock(product).thenAccept(newStock -> {
-                    runOnMainThread(() -> {
-                        holder.txtCurrentStock.setText(newStock + " τεμ.");
-                        holder.edtChangeAmount.setText("1");
+            wareHouseDAO.decreaseProductStock(product, changeAmt).thenAccept(success -> {
+                if (success) {
+                    // Re-fetch the updated stock to ensure UI synchronization with the backend
+                    wareHouseDAO.getProductStock(product).thenAccept(newStock -> {
+                        runOnMainThread(() -> {
+                            holder.txtCurrentStock.setText(newStock + " τεμ.");
+                            holder.edtChangeAmount.setText("1"); // Reset input field to default
+                        });
                     });
-                });
-            } else {
-                runOnMainThread(() -> Toast.makeText(holder.itemView.getContext(), "Μη επαρκές απόθεμα για αφαίρεση!", Toast.LENGTH_SHORT).show());
-            }
+                } else {
+                    // Display error if stock goes below zero
+                    runOnMainThread(() -> Toast.makeText(holder.itemView.getContext(), "Μη επαρκές απόθεμα για αφαίρεση!", Toast.LENGTH_SHORT).show());
+                }
+            });
         });
 
-        // 3. Add Stock Button Logic (+)
-        changeAmt = getAmountFromInput(holder.edtChangeAmount);
+        // Setup interaction logic for the "Add Stock" (+) button
+        holder.btnApplyAdd.setOnClickListener(v -> {
+            int changeAmt = getAmountFromInput(holder.edtChangeAmount);
 
-        wareHouseDAO.increaseProductStock(product, changeAmt).thenAccept(success -> {
-            if (success) {
-                wareHouseDAO.getProductStock(product).thenAccept(newStock -> {
-                    runOnMainThread(() -> {
-                        holder.txtCurrentStock.setText(newStock + " τεμ.");
-                        holder.edtChangeAmount.setText("1");
+            wareHouseDAO.increaseProductStock(product, changeAmt).thenAccept(success -> {
+                if (success) {
+                    // Re-fetch the updated stock to ensure UI synchronization with the backend
+                    wareHouseDAO.getProductStock(product).thenAccept(newStock -> {
+                        runOnMainThread(() -> {
+                            holder.txtCurrentStock.setText(newStock + " τεμ.");
+                            holder.edtChangeAmount.setText("1"); // Reset input field to default
+                        });
                     });
-                });
-            }
+                }
+            });
         });
     }
 
     /**
-     * @return The total number of items in the data set held by the adapter.
+     * Returns the total number of items in the data set held by the adapter.
+     *
+     * @return The size of the products list, or 0 if the list is null.
      */
     @Override
     public int getItemCount() {
@@ -113,20 +132,21 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
     }
 
     /**
-     * Helper method to safely execute UI updates on the main thread from within an Adapter.
-     * Acts as a replacement for Activity's runOnUiThread().
+     * A thread-safe utility method designed to execute UI-related operations on the main thread.
+     * Crucial for updating Android UI components from within asynchronous DAO callbacks.
      *
-     * @param action The runnable task to execute on the main thread.
+     * @param action The specific task or UI update to be executed.
      */
     private void runOnMainThread(Runnable action) {
-        new android.os.Handler(android.os.Looper.getMainLooper()).post(action);
+        new Handler(Looper.getMainLooper()).post(action);
     }
 
     /**
-     * Helper method to safely parse the input from the EditText.
-     * Prevents crashes by defaulting to 1 if the input is empty or invalid.
-     * @param edt The EditText instance to read from.
-     * @return The parsed positive integer, defaulting to 1.
+     * Safely extracts and parses the user input from the quantity text field.
+     * In the event of an empty field or non-numeric input, it gracefully falls back to a default value of 1.
+     *
+     * @param edt The {@link EditText} component containing the user's requested quantity change.
+     * @return The parsed positive integer value, defaulting to 1 if invalid.
      */
     private int getAmountFromInput(EditText edt) {
         String input = edt.getText().toString().trim();
@@ -141,16 +161,33 @@ public class ChangeQuantityProductsAdapter extends RecyclerView.Adapter<ChangeQu
     }
 
     /**
-     * ViewHolder pattern for caching view references and optimizing list rendering.
+     * The ViewHolder class which caches the views associated with a single item in the RecyclerView.
+     * This pattern improves scrolling performance by avoiding repeated runtime findViewById() calls.
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtProductName, txtProductCode, txtCurrentStock;
+
+        /** TextView displaying the product's name. */
+        TextView txtProductName;
+
+        /** TextView displaying the product's unique code. */
+        TextView txtProductCode;
+
+        /** TextView displaying the currently available stock quantity. */
+        TextView txtCurrentStock;
+
+        /** EditText allowing the user to specify the amount to add or remove. */
         EditText edtChangeAmount;
-        MaterialButton btnApplyRemove, btnApplyAdd;
+
+        /** Button triggering the stock decrement operation. */
+        MaterialButton btnApplyRemove;
+
+        /** Button triggering the stock increment operation. */
+        MaterialButton btnApplyAdd;
 
         /**
-         * Binds the XML components to their respective Java object references.
-         * @param itemView The View containing the item layout.
+         * Initializes the ViewHolder components by mapping them to their XML layout IDs.
+         *
+         * @param itemView The instantiated View of the XML layout for a single item.
          */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

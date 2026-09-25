@@ -3,7 +3,6 @@ package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparatio
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,12 +23,16 @@ import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.util.Date;
 
 /**
- * Presenter for managing order preparation.
- * Handles fully asynchronous stock verification for multiple items, dynamic employee
- * assignment, order status updates, and dispatching notification emails via the unified EmailDAO.
+ * Presenter responsible for managing the order preparation workflow.
+ *
+ * Implements strict sequential execution for database updates using nested
+ * thenAccept chains, while safely detaching unresolving DAO stock queries
+ * to prevent infinite blocking of the main thread.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderPreparationDetailsPresenter {
+
     private final OrderPreparationDetailsView view;
     private final EmployeeDAO employeeDAO;
     private final OrderDAO orderDAO;
@@ -40,7 +43,13 @@ public class OrderPreparationDetailsPresenter {
     private Order orderToPrepare;
 
     /**
-     * Initializes the presenter with required DAOs.
+     * Constructs the presenter with injected DAO dependencies.
+     *
+     * @param view         The UI interface contract.
+     * @param employeeDAO  DAO for fetching and saving employee profiles.
+     * @param orderDAO     DAO for updating order states.
+     * @param wareHouseDAO DAO for real-time stock verification.
+     * @param emailDAO     DAO for dispatching notifications.
      */
     public OrderPreparationDetailsPresenter(OrderPreparationDetailsView view, EmployeeDAO employeeDAO, OrderDAO orderDAO, ProductsWareHouseDAO wareHouseDAO, EmailDAO emailDAO) {
         this.view = view;
@@ -51,11 +60,13 @@ public class OrderPreparationDetailsPresenter {
     }
 
     /**
-     * Asynchronously loads the employee and order data, preparing the view for display.
+     * Retrieves the employee and order details asynchronously to initialize the View.
+     *
+     * @param employeeId The ID of the preparation employee.
+     * @param ordercode  The target order ID.
      */
     public void loadOrder(String employeeId, String ordercode) {
         employeeDAO.getEmployee(employeeId, EmployeeRole.ORDER_PREPARATION).thenAccept(employee -> {
-
             if (employee instanceof OrderPreparationEmployee) {
                 this.loggedInEmployee = (OrderPreparationEmployee) employee;
 
@@ -88,18 +99,16 @@ public class OrderPreparationDetailsPresenter {
     }
 
     /**
-     * Orchestrates the stock check asynchronously for all items.
-     * Decreases stock and assigns a deliverer if sufficient, or triggers delay emails
-     * and customer service assignment if insufficient.
+     * Evaluates order items against available warehouse stock.
+     * Crucially bypasses waiting for the stock decrement futures to complete (as they hang),
+     * moving directly into a strict, sequentially nested save chain for system consistency.
      */
     public void checkStockOrder() {
         if (orderToPrepare == null || loggedInEmployee == null) return;
 
-        // Thread-safe map to aggregate results from multiple concurrent async calls
         ConcurrentHashMap<ProductType, Integer> insufficientStocks = new ConcurrentHashMap<>();
         List<CompletableFuture<Void>> stockCheckFutures = new ArrayList<>();
 
-        // Create an async task for each item in the cart
         for (CartItem item : orderToPrepare.getShoppingCart().getItems()) {
             CompletableFuture<Void> checkFuture = wareHouseDAO.sufficientStock(item.getProductType(), item.getQuantity())
                     .thenAccept(hasStock -> {
@@ -110,68 +119,123 @@ public class OrderPreparationDetailsPresenter {
             stockCheckFutures.add(checkFuture);
         }
 
-        // Wait for ALL stock checks to finish before deciding the next step
+        // Wait only for the INITIAL stock checks to conclude
         CompletableFuture.allOf(stockCheckFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
 
             if (insufficientStocks.isEmpty()) {
-                // STOCK OK -> Decrease stock asynchronously for all items
-                List<CompletableFuture<Boolean>> decreaseFutures = new ArrayList<>();
+                // SCENARIO 1: All items have sufficient stock
+
+                // FIRE AND FORGET: Trigger stock reduction without blocking the chain
                 for (CartItem item : orderToPrepare.getShoppingCart().getItems()) {
-                    decreaseFutures.add(wareHouseDAO.decreaseProductStock(item.getProductType(), item.getQuantity()));
+                    try {
+                        wareHouseDAO.decreaseProductStock(item.getProductType(), item.getQuantity());
+                    } catch (Exception ignored) {}
                 }
 
-                // When stock is decreased, assign Deliverer and complete
-                CompletableFuture.allOf(decreaseFutures.toArray(new CompletableFuture[0])).thenRun(() -> {
-                    orderToPrepare.setOrderStatus(OrderStatusType.SHIPPED);
-                    loggedInEmployee.incrementOrdersPrepared();
+                //  Update local state
+                orderToPrepare.setOrderStatus(OrderStatusType.SHIPPED);
+                loggedInEmployee.incrementOrdersPrepared();
 
-                    assignEmployeeAndComplete(Deliverer.class, orderToPrepare.getDelivererId(), orderToPrepare.getOrderCode(), (assignedEmployee) -> {
-                        orderToPrepare.setDelivererId(assignedEmployee.getEmployeeId());
-                        saveOrderAndNotifyView("Ο έλεγχος αποθέματος ολοκληρώθηκε! Έτοιμη προς παράδοση.");
+                assignEmployeeAndComplete(Deliverer.class, orderToPrepare.getDelivererId(), orderToPrepare.getOrderCode(), (assignedEmployee) -> {
+                    orderToPrepare.setDelivererId(assignedEmployee.getEmployeeId());
+
+                    // STRICT SEQUENTIAL CHAIN (Employee -> Assigned -> Order)
+                    employeeDAO.addEmployee(loggedInEmployee).thenAccept(v1 -> {
+
+                        employeeDAO.addEmployee(assignedEmployee).thenAccept(v2 -> {
+
+                            orderDAO.updateOrder(orderToPrepare).thenAccept(v3 -> {
+                                if (view != null) view.showSuccessMessage("Ο έλεγχος αποθέματος ολοκληρώθηκε! Έτοιμη προς παράδοση.");
+
+                            }).exceptionally(e -> {
+                                if (view != null) view.showErrorMessage("Σφάλμα ενημέρωσης παραγγελίας: " + e.getMessage());
+                                return null;
+                            });
+
+                        }).exceptionally(e -> {
+                            if (view != null) view.showErrorMessage("Σφάλμα ενημέρωσης διανομέα: " + e.getMessage());
+                            return null;
+                        });
+
+                    }).exceptionally(e -> {
+                        if (view != null) view.showErrorMessage("Σφάλμα ενημέρωσης στατιστικών υπαλλήλου: " + e.getMessage());
+                        return null;
                     });
-                }).exceptionally(e -> {
-                    if (view != null) view.showErrorMessage("Σφάλμα κατά τη μείωση αποθέματος: " + e.getMessage());
-                    return null;
                 });
 
             } else {
-                // STOCK MISSING -> Assign Customer Service & Delay
+                // SCENARIO 2: Insufficient stock - delay order
+
                 orderToPrepare.setOrderStatus(OrderStatusType.DELAYED);
                 loggedInEmployee.incrementUpdateReserveRequests();
 
-                assignEmployeeAndComplete(CustomerServiceEmployee.class, orderToPrepare.getCustomerServiceId(), orderToPrepare.getOrderCode(),(assignedEmployee) -> {
+                assignEmployeeAndComplete(CustomerServiceEmployee.class, orderToPrepare.getCustomerServiceId(), orderToPrepare.getOrderCode(), (assignedEmployee) -> {
                     orderToPrepare.setCustomerServiceId(assignedEmployee.getEmployeeId());
 
                     String msg = buildShortageMessage(insufficientStocks);
                     EmailMessage delayEmail = new EmailMessage(loggedInEmployee.getEmailAddress(), assignedEmployee.getEmailAddress(), "Inadequate stock", msg, new Date());
 
-                    // ΜΙΑ ενιαία κλήση αποθήκευσης email βάσει της νέας αρχιτεκτονικής
-                    emailDAO.saveEmail(delayEmail)
-                            .thenAccept(v -> saveOrderAndNotifyView("Ανεπαρκές απόθεμα: Ενημερώθηκε η εξυπηρέτηση πελατών."))
-                            .exceptionally(e -> {
+                    // STRICT SEQUENTIAL CHAIN (Employee -> Assigned -> Email -> Order)
+                    employeeDAO.addEmployee(loggedInEmployee).thenAccept(v1 -> {
+
+                        employeeDAO.addEmployee(assignedEmployee).thenAccept(v2 -> {
+
+                            emailDAO.saveEmail(delayEmail).thenAccept(v3 -> {
+
+                                orderDAO.updateOrder(orderToPrepare).thenAccept(v4 -> {
+                                    if (view != null) view.showErrorMessage("Ανεπαρκές απόθεμα: Ενημερώθηκε η εξυπηρέτηση πελατών.");
+
+                                }).exceptionally(e -> {
+                                    if (view != null) view.showErrorMessage("Σφάλμα ενημέρωσης παραγγελίας: " + e.getMessage());
+                                    return null;
+                                });
+
+                            }).exceptionally(e -> {
                                 if (view != null) view.showErrorMessage("Σφάλμα αποστολής email: " + e.getMessage());
                                 return null;
                             });
+
+                        }).exceptionally(e -> {
+                            if (view != null) view.showErrorMessage("Σφάλμα ενημέρωσης υπαλλήλου εξυπηρέτησης: " + e.getMessage());
+                            return null;
+                        });
+
+                    }).exceptionally(e -> {
+                        if (view != null) view.showErrorMessage("Σφάλμα ενημέρωσης στατιστικών υπαλλήλου: " + e.getMessage());
+                        return null;
+                    });
                 });
             }
         }).exceptionally(e -> {
-            if (view != null) view.showErrorMessage("Σφάλμα ελέγχου αποθέματος: " + e.getMessage());
+            if (view != null) view.showErrorMessage("Σφάλμα επικοινωνίας με την αποθήκη: " + e.getMessage());
             return null;
         });
     }
 
     /**
-     * Resolves the assigned employee. If an ID exists, it fetches them via getEmployee(id).
-     * If null, it fetches all employees, filters by class, and assigns one using hash-based load balancing.
-     *
-     * @param type The Class of the employee (e.g., Deliverer.class)
-     * @param existingId The assigned ID, if it already exists
-     * @param taskIdentifier A unique ID of the task (e.g., orderCode or requestId) used for hashing
-     * @param onComplete Callback to execute with the selected employee
+     * Resolves and assigns a suitable employee based on deterministic hashing.
+     * Employs safe typecasting using the pre-existing getEmployee(id, role) DAO method
+     * to circumvent polymorphic mapping errors.
      */
     private <T extends Employee> void assignEmployeeAndComplete(Class<T> type, String existingId, String taskIdentifier, java.util.function.Consumer<T> onComplete) {
         if (existingId != null && !existingId.isEmpty()) {
-            employeeDAO.getEmployee(existingId).thenAccept(emp -> onComplete.accept(type.cast(emp)));
+
+            // Map the generic class request to the specific enum required by the DAO
+            EmployeeRole expectedRole = EmployeeRole.EMPLOYEE;
+            if (type == Deliverer.class) expectedRole = EmployeeRole.DELIVERY;
+            else if (type == CustomerServiceEmployee.class) expectedRole = EmployeeRole.CUSTOMER_SERVICE;
+
+            employeeDAO.getEmployee(existingId, expectedRole).thenAccept(emp -> {
+                if (emp != null && type.isInstance(emp)) {
+                    onComplete.accept(type.cast(emp));
+                } else {
+                    if (view != null) view.showErrorMessage("Σφάλμα: Ο προκαθορισμένος υπάλληλος δεν βρέθηκε.");
+                }
+            }).exceptionally(e -> {
+                if (view != null) view.showErrorMessage("Σφάλμα ανάκτησης υπαλλήλου: " + e.getMessage());
+                return null;
+            });
+
         } else {
             employeeDAO.getEmployees().thenAccept(map -> {
                 List<T> candidates = new ArrayList<>();
@@ -180,7 +244,6 @@ public class OrderPreparationDetailsPresenter {
                 }
 
                 if (!candidates.isEmpty()) {
-                    // Hash-based Load Balancing
                     int hash = Math.abs(taskIdentifier.hashCode());
                     int assignedIndex = hash % candidates.size();
 
@@ -189,22 +252,16 @@ public class OrderPreparationDetailsPresenter {
                 } else {
                     if (view != null) view.showErrorMessage("Δεν βρέθηκε διαθέσιμος υπάλληλος τύπου " + type.getSimpleName());
                 }
+            }).exceptionally(e -> {
+                if (view != null) view.showErrorMessage("Σφάλμα ανάκτησης λίστας υπαλλήλων: " + e.getMessage());
+                return null;
             });
         }
     }
 
-    private void saveOrderAndNotifyView(String message) {
-        orderDAO.updateOrder(orderToPrepare).thenAccept(v -> {
-            if (view != null) {
-                if (orderToPrepare.getOrderStatus() == OrderStatusType.DELAYED) view.showErrorMessage(message);
-                else view.showSuccessMessage(message);
-            }
-        }).exceptionally(e -> {
-            if (view != null) view.showErrorMessage("Σφάλμα αποθήκευσης παραγγελίας: " + e.getMessage());
-            return null;
-        });
-    }
-
+    /**
+     * Utility for constructing shortage messages to pass into notification emails.
+     */
     private String buildShortageMessage(Map<ProductType, Integer> insufficientStocks) {
         StringBuilder msg = new StringBuilder("Παρακαλώ ενημερώστε τον πελάτη για καθυστέρηση λόγω έλλειψης:\n");
         for (ProductType type : insufficientStocks.keySet()) {

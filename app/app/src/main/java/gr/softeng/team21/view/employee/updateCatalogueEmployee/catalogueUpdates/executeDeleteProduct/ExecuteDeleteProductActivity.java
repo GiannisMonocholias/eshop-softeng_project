@@ -16,6 +16,7 @@ import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.ProductTypeDAO;
 import gr.softeng.team21.dao.UpdateRequestDAO;
 import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.firebasedao.ProductTypeDAOFirebase;
 import gr.softeng.team21.firebasedao.UpdateRequestDAOFirebase;
 import gr.softeng.team21.memorydao.ProductTypeDAOMemory; // Placeholder until Firebase equivalent is ready
 
@@ -54,7 +55,7 @@ public class ExecuteDeleteProductActivity extends AppCompatActivity implements E
         // DEPENDENCY INJECTION: Connect Presenter to DAOs
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
         UpdateRequestDAO updateRequestDAO = new UpdateRequestDAOFirebase();
-        ProductTypeDAO productTypeDAO = ProductTypeDAOMemory.getInstance(); // Or new ProductTypeDAOFirebase() when migrated
+        ProductTypeDAO productTypeDAO = new ProductTypeDAOFirebase();
 
         presenter = new ExecuteDeleteProductPresenter(this, employeeDAO, updateRequestDAO, productTypeDAO);
 

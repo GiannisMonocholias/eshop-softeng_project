@@ -88,22 +88,14 @@ public class ProductTypeDAOFirebase implements ProductTypeDAO {
     public CompletableFuture<Void> deleteProductType(ProductType product) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
-        if (product == null) {
-            future.completeExceptionally(new IllegalArgumentException("Product cannot be null"));
+        if (product == null || product.getProductCode() == null) {
+            future.completeExceptionally(new IllegalArgumentException("Product or ProductCode cannot be null"));
             return future;
         }
 
-
-        db.collection(COLLECTION_NAME).document(product.getProductCode()).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        db.collection(COLLECTION_NAME).document(product.getProductCode()).delete()
-                                .addOnSuccessListener(aVoid -> future.complete(null))
-                                .addOnFailureListener(future::completeExceptionally);
-                    } else {
-                        future.completeExceptionally(new IllegalArgumentException("The given product type is not registered in the repository"));
-                    }
-                })
+        db.collection(COLLECTION_NAME).document(product.getProductCode())
+                .delete()
+                .addOnSuccessListener(aVoid -> future.complete(null))
                 .addOnFailureListener(future::completeExceptionally);
 
         return future;

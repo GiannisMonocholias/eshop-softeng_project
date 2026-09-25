@@ -43,26 +43,34 @@ public class NewRequestPresenter {
      */
     public void createRequest(String choice, String description, String productName, String productId) {
 
-        if (choice.isEmpty() || description.isEmpty() || productId.isEmpty()) {
+        if (choice == null || choice.isEmpty() || description == null || description.isEmpty() || productId == null || productId.isEmpty()) {
             if (view != null) view.showError("Παρακαλώ συμπληρώστε όλα τα πεδία.");
             return;
         }
 
-        // Asynchronously check product existence
         productTypeDAO.getProducts().thenAccept(productsMap -> {
             ProductType product = null;
 
             for (ProductType p : productsMap.values()) {
-                if (p.getProductCode().equals(productId)) {
+                if (p.getProductCode() != null && p.getProductCode().equals(productId)) {
                     product = p;
                     break;
                 }
             }
 
-            // Allow null product only for new Insertions
-            if (product == null && !choice.equals("Εισαγωγή")) {
-                if (view != null) view.showError("Το προϊόν με κωδικό " + productId + " δεν βρέθηκε.");
-                return;
+            String finalDescription = description;
+
+            if (product == null) {
+                if (choice.equals("Εισαγωγή")) {
+                    String safeName = (productName != null && !productName.isEmpty()) ? productName : "Νέο Προϊόν";
+
+                    finalDescription += "\n\n[Στοιχεία Εισαγωγής]\nΌνομα: " + safeName + "\nΚωδικός: " + productId;
+
+                    product = new ProductType(safeName, "Εκκρεμεί καταχώρηση", null, productId);
+                } else {
+                    if (view != null) view.showError("Το προϊόν με κωδικό " + productId + " δεν βρέθηκε.");
+                    return;
+                }
             }
 
             AllowedRequest type = AllowedRequest.INSERT_PRODUCT;
@@ -71,7 +79,7 @@ public class NewRequestPresenter {
 
             int reqId = (int) (System.currentTimeMillis() % 10000);
 
-            CatalogueUpdateRequest newRequest = new CatalogueUpdateRequest(new Date(), description, product, type, reqId);
+            CatalogueUpdateRequest newRequest = new CatalogueUpdateRequest(new Date(), finalDescription, product, type, reqId);
 
             updateRequestDAO.addUpdateRequest(newRequest);
 

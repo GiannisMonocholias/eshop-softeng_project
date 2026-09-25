@@ -7,5 +7,6 @@ public enum EmployeeRole {
     ORDER_PREPARATION,
     CUSTOMER_SERVICE,
     UPDATE_CATALOGUE,
-    DELIVERY
+    DELIVERY,
+    EMPLOYEE
 }
