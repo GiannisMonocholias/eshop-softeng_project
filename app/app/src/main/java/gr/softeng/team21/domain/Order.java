@@ -49,7 +49,8 @@ public class Order {
         this.orderStatus = orderStatus;
         this.paid = paid;
         this.paymentMethod = paymentMethod;
-        this.shoppingCart = shoppingCart.copy();if (shoppingCart != null && shoppingCart.getCustomer() != null) {
+        this.shoppingCart = shoppingCart.copy();
+        if (shoppingCart != null && shoppingCart.getCustomer() != null) {
             this.customerId = shoppingCart.getCustomer().getCustomer_id();
         }
 

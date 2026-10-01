@@ -2,6 +2,7 @@ package gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrders
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;

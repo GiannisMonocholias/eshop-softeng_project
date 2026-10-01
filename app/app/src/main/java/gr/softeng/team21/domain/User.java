@@ -5,7 +5,7 @@ import gr.softeng.team21.contact.EmailAddress;
 
 /**
  * An abstract base class representing a generic user in the system.
- * It provides common profile attributes (credentials, contact details).
+ * It provides common profile attributes (credentials, contact details, profile image).
  * As a pure domain entity, it does not handle data persistence or messaging logic directly.
  *
  * @author Γιάννης Μονοχολιάς, PAVLOS GRATSANIS
@@ -18,6 +18,9 @@ public abstract class User {
     protected String phoneNumber;
     protected EmailAddress emailaddress;
     protected Address address;
+
+    // Προσθήκη για την αποθήκευση του URL της εικόνας προφίλ από το Firebase Cloud Storage
+    protected String profileImageUrl;
 
     /**
      * Default constructor for the User class.
@@ -41,6 +44,15 @@ public abstract class User {
         this.lastname = lastname;
         this.phoneNumber = phoneNumber;
         this.emailaddress = emailaddress;
+        this.profileImageUrl = null; // Αρχικά δεν υπάρχει εικόνα
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     /**

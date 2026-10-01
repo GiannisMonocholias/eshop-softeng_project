@@ -10,7 +10,7 @@ public interface UserEditDataView {
      */
     void showUserData(String username, String password, String email, String firstName,
                       String lastName, String phone, String street, String streetNo,
-                      String city, String zip, String country);
+                      String city, String zip, String country, String profileImageUrl);
 
     /**
      * Displays a general feedback message (error or success) to the user.

@@ -44,6 +44,8 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation(libs.firebase.functions)
+    implementation(libs.firebase.storage)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.ext.junit)

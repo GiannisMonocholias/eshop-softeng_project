@@ -13,6 +13,11 @@ public class UserEditDataStateViewModel extends ViewModel {
     /** Flag to indicate if the data has already been fetched from the database. */
     public boolean isDataLoaded = false;
 
+    /** Flag to indicate if the user requested to remove their profile photo. */
+    public boolean isPhotoRemoved = false;
+
+    public String profileImageUrl = null;
+
     // Fields to hold the temporary UI state of the EditTexts
     public String username = "";
     public String password = "";

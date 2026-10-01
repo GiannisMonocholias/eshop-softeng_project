@@ -79,7 +79,6 @@ public class Customer extends User {
      *
      * @return the shopping cart
      */
-    @Exclude
     public ShoppingCart getShoppingCart() {
         return shoppingCart;
     }
@@ -89,7 +88,6 @@ public class Customer extends User {
      *
      * @param shoppingCart the new shopping cart
      */
-    @Exclude
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
@@ -176,6 +174,7 @@ public class Customer extends User {
 
         Order neworder = new Order(orderCode, new Date(), OrderStatusType.NEW, false, PaymentType.CASH, deliverydate, shoppingCart);
         neworder.setTotal_amount(shoppingCart.getTotalCost());
+        neworder.setCustomerId(this.getCustomer_id());
 
         // --- Hash-based Load Balancing ---
         if (activeCsEmployeeIds != null && !activeCsEmployeeIds.isEmpty()) {

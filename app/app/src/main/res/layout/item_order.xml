@@ -47,12 +47,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text="ID πελάτη:"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderId"
-        android:text="Όνομα πελάτη:" />
+        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderId" />
 
     <TextView
         android:id="@+id/txtItemOrderIdValue"
@@ -85,12 +85,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="CUST_ID"
         android:textColor="?attr/colorOnSurface"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtItemOrderCustomerName"
-        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderIdValue"
-        android:text="Γιώργος Παπαδόπουλος" />
+        app:layout_constraintTop_toBottomOf="@+id/txtItemOrderIdValue" />
 
     <TextView
         android:id="@+id/txtItemOrderSubmissionDateValue"

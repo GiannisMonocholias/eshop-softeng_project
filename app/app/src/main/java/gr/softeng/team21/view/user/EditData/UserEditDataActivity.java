@@ -16,13 +16,19 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.ImageStorageDAO;
 import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
+import gr.softeng.team21.firebasedao.ImageStorageDAOFirebase;
+
+import com.bumptech.glide.Glide;
 
 /**
  * Activity responsible for displaying and updating a user's unified personal data profile.
@@ -42,6 +48,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
     private ImageView ivAddressToggleArrow;
     private LinearLayout layoutAddressContainer;
 
+    private ShapeableImageView ivProfileImage;
+    private FloatingActionButton fabEditPhoto;
+    private android.net.Uri selectedImageUri = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +66,14 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
 
         initializeViews();
         setupAddressToggle();
+        setupPhotoEditMenu();
 
         // Initialize MVP components
         CustomerDAO customerDAO = new CustomerDAOFirebase();
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
-        presenter = new UserEditDataPresenter(this, customerDAO, employeeDAO);
+        ImageStorageDAO imageStorageDAO = new ImageStorageDAOFirebase();
+
+        presenter = new UserEditDataPresenter(this, customerDAO, employeeDAO, imageStorageDAO);
 
         // Initialize ViewModel (State Holder)
         stateViewModel = new ViewModelProvider(this).get(UserEditDataStateViewModel.class);
@@ -79,7 +92,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         btnSave.setOnClickListener(v -> presenter.onSaveClicked(
                 getVal(etUsername), getVal(etPassword), getVal(etEmail),
                 getVal(etFirstName), getVal(etLastName), getVal(etPhone),
-                getVal(etStreet), getVal(etStreetNo), getVal(etCity), getVal(etZip), getVal(etCountry)
+                getVal(etStreet), getVal(etStreetNo), getVal(etCity), getVal(etZip), getVal(etCountry),
+                stateViewModel.isPhotoRemoved,
+                selectedImageUri,
+                userId
         ));
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -112,6 +128,32 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         ivAddressToggleArrow = findViewById(R.id.ivAddressToggleArrow);
         layoutAddressContainer = findViewById(R.id.layoutAddressContainer);
         btnSave = findViewById(R.id.btnSaveData);
+
+        ivProfileImage = findViewById(R.id.ivProfileImage);
+        fabEditPhoto = findViewById(R.id.fabEditPhoto);
+    }
+
+    /**
+     * Appears the choice menu for the profile picture when the user taps the FloatingActionButton.
+     */
+    private void setupPhotoEditMenu() {
+        fabEditPhoto.setOnClickListener(v -> {
+            String[] options = {"Επιλογή από τη Συλλογή", "Αφαίρεση Φωτογραφίας"};
+
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Επεξεργασία Φωτογραφίας")
+                    .setItems(options, (dialog, which) -> {
+                        if (which == 0) {
+                            // Εδώ στο μέλλον θα προσθέσεις τον κώδικα για να ανοίγει η συλλογή (Gallery)
+                            Toast.makeText(this, "Η λειτουργία θα προστεθεί σύντομα", Toast.LENGTH_SHORT).show();
+                        } else if (which == 1) {
+                            // Προσωρινή αφαίρεση εικόνας στο UI
+                            ivProfileImage.setImageResource(R.drawable.ic_person);
+                            stateViewModel.isPhotoRemoved = true;
+                        }
+                    })
+                    .show();
+        });
     }
 
     private void setupAddressToggle() {
@@ -146,6 +188,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         stateViewModel.country = getVal(etCountry);
     }
 
+
+    /**
+     * Restores the UI state from the ViewModel after a configuration change (e.g., rotation).
+     */
     private void restoreUiFromViewModel() {
         etUsername.setText(stateViewModel.username);
         etPassword.setText(stateViewModel.password);
@@ -158,12 +204,23 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         etCity.setText(stateViewModel.city);
         etZip.setText(stateViewModel.zip);
         etCountry.setText(stateViewModel.country);
+
+        if (stateViewModel.isPhotoRemoved) {
+            ivProfileImage.setImageResource(R.drawable.ic_person);
+        } else if (selectedImageUri != null) {
+            ivProfileImage.setImageURI(selectedImageUri);
+        } else if (stateViewModel.profileImageUrl != null && !stateViewModel.profileImageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(stateViewModel.profileImageUrl)
+                    .placeholder(R.drawable.ic_person)
+                    .into(ivProfileImage);
+        }
     }
 
     @Override
     public void showUserData(String username, String password, String email, String firstName,
                              String lastName, String phone, String street, String streetNo,
-                             String city, String zip, String country) {
+                             String city, String zip, String country, String profileImageUrl) {
         runOnUiThread(() -> {
             etUsername.setText(username);
             etPassword.setText(password);
@@ -177,8 +234,17 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
             etZip.setText(zip);
             etCountry.setText(country);
 
-            // Mark data as loaded in the ViewModel
             stateViewModel.isDataLoaded = true;
+            stateViewModel.profileImageUrl = profileImageUrl;
+
+            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                Glide.with(this)
+                        .load(profileImageUrl)
+                        .placeholder(R.drawable.ic_person)
+                        .into(ivProfileImage);
+            } else {
+                ivProfileImage.setImageResource(R.drawable.ic_person);
+            }
         });
     }
 

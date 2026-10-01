@@ -32,19 +32,32 @@
             android:id="@+id/txtCustomerHomePageHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:text="E-Shop"
-            android:textAlignment="center"
             android:textColor="?attr/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/btnMenu"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgCustomerProfile"
             app:layout_constraintStart_toEndOf="@+id/btnMenu"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/btnMenu" />
+
+        <!-- Εικονίδιο Προφίλ Πελάτη -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgCustomerProfile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/colorSurfaceVariant"
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person"
+            app:shapeAppearanceOverlay="@style/CircleImage"
+            app:tint="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/btnMenu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnMenu" />
 
         <View
             android:id="@+id/headerDivider"
@@ -63,7 +76,6 @@
             android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.161"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/headerDivider" />
 

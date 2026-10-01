@@ -16,37 +16,40 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- Image Placeholder -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Ρεαλιστική Διάταξη Εικόνας με Εικονίδιο Επεξεργασίας -->
+        <FrameLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="24dp"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivProfileImage"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:src="@drawable/ic_person"
                 android:padding="4dp"
                 android:scaleType="centerCrop"
                 app:strokeWidth="3dp"
                 app:strokeColor="?attr/colorPrimary"
-                app:shapeAppearanceOverlay="@style/CircleImage" />
+                app:shapeAppearanceOverlay="@style/CircleImage"
+                app:tint="?attr/colorPrimary" />
 
-            <TextView
-                android:id="@+id/tvChangePhoto"
+            <!-- Μικρό κουμπί στην κάτω δεξιά γωνία -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabEditPhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Αλλαγή Φωτογραφίας"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="bold"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true" />
-        </LinearLayout>
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
+                app:fabCustomSize="36dp"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                app:tint="?attr/colorOnPrimary"
+                app:backgroundTint="?attr/colorPrimary"
+                app:elevation="4dp"
+                android:contentDescription="Επεξεργασία Φωτογραφίας" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"

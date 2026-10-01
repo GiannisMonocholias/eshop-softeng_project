@@ -77,11 +77,30 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         // Populate basic order details
         holder.txtOrderIdValue.setText("#" + order.getOrderCode());
-        holder.txtCustomerNameValue.setText(order.getShoppingCart().getCustomer().getLastname() + " " +
-                order.getShoppingCart().getCustomer().getFirstname());
-        holder.txtPriceValue.setText(order.getTotal_amount().toString());
-        holder.txtDateValue.setText(order.getSubmissionDate().toString());
-        holder.txtStatus.setText(order.getOrderStatus().toString());
+
+        // SAFE CHECK: Check if the Customer object exists (due to Firebase @Exclude)
+        if (order.getShoppingCart() != null && order.getShoppingCart().getCustomer() != null) {
+            holder.txtCustomerNameValue.setText(order.getShoppingCart().getCustomer().getLastname() + " " +
+                    order.getShoppingCart().getCustomer().getFirstname());
+        } else {
+            // If it is null, use the customerId stored within the order
+            holder.txtCustomerNameValue.setText(order.getCustomerId() != null ? order.getCustomerId() : "Άγνωστος Πελάτης");
+        }
+
+        // Safe checks for the remaining fields
+        if (order.getTotal_amount() != null) {
+            holder.txtPriceValue.setText(order.getTotal_amount().toString());
+        } else {
+            holder.txtPriceValue.setText("0.00 €");
+        }
+
+        if (order.getSubmissionDate() != null) {
+            holder.txtDateValue.setText(order.getSubmissionDate().toString());
+        }
+
+        if (order.getOrderStatus() != null) {
+            holder.txtStatus.setText(order.getOrderStatus().toString());
+        }
 
         // Configure the action button text based on the adapter's functional context
         switch(type){
