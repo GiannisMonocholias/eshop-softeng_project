@@ -10,6 +10,9 @@ public class UserEditDataViewStub implements UserEditDataView {
     private String username, password, email, firstName, lastName, phone;
     private String street, streetNo, city, zip, country;
 
+    // Προσθήκη για την εικόνα
+    private String profileImageUrl;
+
     private String message = "";
     private boolean finishCalled = false;
     private boolean unsavedDialogCalled = false;
@@ -17,7 +20,7 @@ public class UserEditDataViewStub implements UserEditDataView {
     @Override
     public void showUserData(String username, String password, String email, String firstName,
                              String lastName, String phone, String street, String streetNo,
-                             String city, String zip, String country) {
+                             String city, String zip, String country, String profileImageUrl) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -29,6 +32,8 @@ public class UserEditDataViewStub implements UserEditDataView {
         this.city = city;
         this.zip = zip;
         this.country = country;
+
+        this.profileImageUrl = profileImageUrl;
     }
 
     @Override
@@ -50,6 +55,9 @@ public class UserEditDataViewStub implements UserEditDataView {
     public String getUsername() { return username; }
     public String getPassword() { return password; }
     public String getMessage() { return message; }
+
+    public String getProfileImageUrl() { return profileImageUrl; }
+
     public boolean isFinishCalled() { return finishCalled; }
     public boolean isUnsavedDialogCalled() { return unsavedDialogCalled; }
 }

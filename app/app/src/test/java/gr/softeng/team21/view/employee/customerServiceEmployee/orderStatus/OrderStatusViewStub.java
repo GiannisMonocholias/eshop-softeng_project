@@ -34,7 +34,7 @@ public class OrderStatusViewStub implements OrderStatusView {
      */
     @Override
     public void onOrderSelected(Order order) {
-        this.selectedOrderCode = order.getOrdercode();
+        this.selectedOrderCode = order.getOrderCode();
     }
 
     /**

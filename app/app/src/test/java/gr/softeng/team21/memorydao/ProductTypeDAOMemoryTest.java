@@ -152,7 +152,7 @@ public class ProductTypeDAOMemoryTest {
         typesRepository.processProduct(updatedProduct).join();
 
         ProductType updatedProductTest = typesRepository.getProduct("product1245").join();
-        assertEquals("p2", updatedProductTest.getProductname());
+        assertEquals("p2", updatedProductTest.getProductName());
         assertEquals(1500, updatedProductTest.getPrice().getAmount().intValue());
         assertEquals("€", updatedProductTest.getPrice().getCurrency());
         assertEquals("Gaming Laptop", updatedProductTest.getDescription());

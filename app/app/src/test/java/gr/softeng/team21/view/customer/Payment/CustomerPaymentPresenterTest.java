@@ -7,8 +7,10 @@ import org.junit.Test;
 import java.math.BigDecimal;
 
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Customer;
+import gr.softeng.team21.domain.Employee;
 import gr.softeng.team21.domain.ProductType;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
@@ -26,19 +28,24 @@ public class CustomerPaymentPresenterTest {
     private Customer customer;
     private boolean payWithCash;
 
+    CustomerDAO customerDAO;
+    OrderDAO orderDAO;
+    EmployeeDAO employeeDAO;
+
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         view = new CustomerPaymentViewStub();
 
-        CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
-        OrderDAO orderDAO = OrderDAOMemory.getInstance();
+        CustomerDAO customerDAO = MemoryInitializer.getCustomerDAO();
+        OrderDAO orderDAO = MemoryInitializer.getOrderDAO();
+        EmployeeDAO employeeDAO = MemoryInitializer.getEmployeeDAO();
 
         customer = customerDAO.getCustomer("CUST-501").join();
         ProductType product = MemoryInitializer.getProductTypeDAO().getProduct("TECH-020").join();
         customer.addItemToCart(product, 1);
 
-        presenter = new CustomerPaymentPresenter(view, customerDAO, orderDAO);
+        presenter = new CustomerPaymentPresenter(view, customerDAO, orderDAO, employeeDAO);
         presenter.loadInitialData("CUST-501");
 
         payWithCash = true;

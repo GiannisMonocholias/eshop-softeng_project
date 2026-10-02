@@ -60,7 +60,7 @@ public class OrderPreparationDetailsPresenterTest {
         // Fetch the updated order from DAO synchronously using join()
         Order processedOrder = orderDAO.getOrder(ORDER_CODE_OK).join();
 
-        Assert.assertEquals(OrderStatusType.SHIPPED, processedOrder.getOrderstatus());
+        Assert.assertEquals(OrderStatusType.SHIPPED, processedOrder.getOrderStatus());
         Assert.assertNotNull(processedOrder.getDelivererId());
         Assert.assertTrue(viewStub.getSuccessMessage().contains("Έτοιμη προς παράδοση."));
     }
@@ -86,7 +86,7 @@ public class OrderPreparationDetailsPresenterTest {
         Order processedOrder = orderDAO.getOrder(ORDER_CODE_MISSING).join();
 
 
-        Assert.assertEquals(OrderStatusType.DELAYED, processedOrder.getOrderstatus());
+        Assert.assertEquals(OrderStatusType.DELAYED, processedOrder.getOrderStatus());
         Assert.assertNotNull("Το Customer Service ID δεν πρέπει να είναι null", processedOrder.getCustomerServiceId());
 
         Assert.assertNotNull("Το Error Message δεν πρέπει να είναι null", viewStub.getErrorMessage());

@@ -4,6 +4,7 @@ package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparatio
  * View contract for the Order Preparation Employee main menu.
  * Defines the navigation methods and UI interactions available from the dashboard.
  * Acts as the contract between the Presenter and the Activity for asynchronous operations.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public interface OrdersPreparationEmployeeMenuView {
@@ -13,6 +14,12 @@ public interface OrdersPreparationEmployeeMenuView {
      * @param fullName The employee's full name.
      */
     void showEmployeeName(String fullName);
+
+    /**
+     * Asynchronously loads and displays the employee's profile image.
+     * @param profileImageUrl The download URL of the profile image stored in Cloud Storage.
+     */
+    void loadProfileImage(String profileImageUrl);
 
     /**
      * Navigates to the list of orders already assigned to this employee.

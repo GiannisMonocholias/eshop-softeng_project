@@ -1,24 +1,33 @@
 package gr.softeng.team21.view.user.EditData;
 
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.File;
 
 import gr.softeng.team21.R;
 import gr.softeng.team21.dao.CustomerDAO;
@@ -28,11 +37,11 @@ import gr.softeng.team21.firebasedao.CustomerDAOFirebase;
 import gr.softeng.team21.firebasedao.EmployeeDAOFirebase;
 import gr.softeng.team21.firebasedao.ImageStorageDAOFirebase;
 
-import com.bumptech.glide.Glide;
-
 /**
  * Activity responsible for displaying and updating a user's unified personal data profile.
- * Implements MVP for logic and uses a ViewModel strictly as a State Holder for rotations.
+ * Implements MVP for business logic and uses a ViewModel strictly as a State Holder for configuration changes.
+ * Integrates camera and gallery functionalities for profile picture management.
+ *
  * @author PAVLOS GRATSANIS
  */
 public class UserEditDataActivity extends AppCompatActivity implements UserEditDataView {
@@ -50,7 +59,14 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
 
     private ShapeableImageView ivProfileImage;
     private FloatingActionButton fabEditPhoto;
-    private android.net.Uri selectedImageUri = null;
+
+    // Variables for image selection
+    private Uri selectedImageUri = null;
+    private Uri cameraUri = null; // Holds the URI for the image captured by the camera
+
+    // Launchers for handling external app results (Gallery and Camera)
+    private ActivityResultLauncher<String> galleryLauncher;
+    private ActivityResultLauncher<Uri> cameraLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +82,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
 
         initializeViews();
         setupAddressToggle();
-        setupPhotoEditMenu();
+        setupLaunchers(); // Initialize Camera & Gallery launchers
+        setupPhotoEditMenu(); // Setup the PopupMenu for the FAB
 
-        // Initialize MVP components
+        // Initialize MVP components with Firebase DAOs
         CustomerDAO customerDAO = new CustomerDAOFirebase();
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
         ImageStorageDAO imageStorageDAO = new ImageStorageDAOFirebase();
@@ -80,7 +97,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
 
         String userId = getIntent().getStringExtra("user_id");
 
-        // Logic to prevent re-fetching on rotation
+        // Logic to prevent re-fetching data on screen rotation
         if (!stateViewModel.isDataLoaded) {
             if (userId != null) {
                 presenter.loadUserData(userId);
@@ -98,6 +115,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
                 userId
         ));
 
+        // Handle native back button press to check for unsaved changes
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -110,6 +128,9 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         });
     }
 
+    /**
+     * Binds UI components to their respective views in the XML layout.
+     */
     private void initializeViews() {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
@@ -134,28 +155,83 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
     }
 
     /**
-     * Appears the choice menu for the profile picture when the user taps the FloatingActionButton.
+     * Initializes the ActivityResultLaunchers responsible for opening the device's Camera and Gallery,
+     * and handling the image returned by the user.
+     */
+    private void setupLaunchers() {
+        // Gallery Mode Launcher
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        selectedImageUri = uri;
+                        stateViewModel.isPhotoRemoved = false;
+                        ivProfileImage.setImageURI(uri);
+                    }
+                }
+        );
+
+        // Camera Mode Launcher
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.TakePicture(),
+                success -> {
+                    if (success && cameraUri != null) {
+                        selectedImageUri = cameraUri;
+                        stateViewModel.isPhotoRemoved = false;
+                        ivProfileImage.setImageURI(cameraUri);
+                    }
+                }
+        );
+    }
+
+    /**
+     * Displays a PopupMenu with options to take a photo, select from gallery, or remove the photo
+     * when the FloatingActionButton is clicked.
      */
     private void setupPhotoEditMenu() {
         fabEditPhoto.setOnClickListener(v -> {
-            String[] options = {"Επιλογή από τη Συλλογή", "Αφαίρεση Φωτογραφίας"};
+            PopupMenu popup = new PopupMenu(this, v);
+            popup.getMenuInflater().inflate(R.menu.photo_menu, popup.getMenu());
 
-            new MaterialAlertDialogBuilder(this)
-                    .setTitle("Επεξεργασία Φωτογραφίας")
-                    .setItems(options, (dialog, which) -> {
-                        if (which == 0) {
-                            // Εδώ στο μέλλον θα προσθέσεις τον κώδικα για να ανοίγει η συλλογή (Gallery)
-                            Toast.makeText(this, "Η λειτουργία θα προστεθεί σύντομα", Toast.LENGTH_SHORT).show();
-                        } else if (which == 1) {
-                            // Προσωρινή αφαίρεση εικόνας στο UI
-                            ivProfileImage.setImageResource(R.drawable.ic_person);
-                            stateViewModel.isPhotoRemoved = true;
-                        }
-                    })
-                    .show();
+            // Force icons to show in the PopupMenu (Required for Android 10+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                popup.setForceShowIcon(true);
+            }
+
+            popup.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.action_camera) {
+                    launchCamera();
+                    return true;
+                } else if (id == R.id.action_gallery) {
+                    galleryLauncher.launch("image/*");
+                    return true;
+                } else if (id == R.id.action_remove) {
+                    ivProfileImage.setImageResource(R.drawable.ic_person);
+                    stateViewModel.isPhotoRemoved = true;
+                    selectedImageUri = null;
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
         });
     }
 
+    /**
+     * Creates a temporary file in the cache directory and launches the Camera application
+     * using a secure FileProvider URI.
+     */
+    private void launchCamera() {
+        File photoFile = new File(getCacheDir(), "camera_photo_" + System.currentTimeMillis() + ".jpg");
+        // Generate secure URI via FileProvider
+        cameraUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", photoFile);
+        cameraLauncher.launch(cameraUri);
+    }
+
+    /**
+     * Sets up the expandable/collapsible layout for the address section.
+     */
     private void setupAddressToggle() {
         cardToggleAddress.setOnClickListener(v -> {
             if (layoutAddressContainer.getVisibility() == View.GONE) {
@@ -170,7 +246,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
 
     /**
      * Standard Android lifecycle method. Called right before screen rotation or activity stop.
-     * Saves all current UI text inputs into the ViewModel.
+     * Saves all current UI text inputs and states into the ViewModel.
      */
     @Override
     protected void onPause() {
@@ -188,7 +264,6 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         stateViewModel.country = getVal(etCountry);
     }
 
-
     /**
      * Restores the UI state from the ViewModel after a configuration change (e.g., rotation).
      */
@@ -205,6 +280,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         etZip.setText(stateViewModel.zip);
         etCountry.setText(stateViewModel.country);
 
+        // Restore the profile image state based on user actions or fetched URL
         if (stateViewModel.isPhotoRemoved) {
             ivProfileImage.setImageResource(R.drawable.ic_person);
         } else if (selectedImageUri != null) {
@@ -234,9 +310,11 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
             etZip.setText(zip);
             etCountry.setText(country);
 
+            // Update ViewModel state
             stateViewModel.isDataLoaded = true;
             stateViewModel.profileImageUrl = profileImageUrl;
 
+            // Asynchronously load the profile image using Glide if a URL exists
             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                 Glide.with(this)
                         .load(profileImageUrl)
@@ -269,6 +347,12 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         runOnUiThread(this::finish);
     }
 
+    /**
+     * Helper method to retrieve text from a TextInputEditText safely.
+     *
+     * @param et The TextInputEditText to extract text from.
+     * @return The trimmed string value or an empty string if the view is null or empty.
+     */
     private String getVal(TextInputEditText et) {
         return et.getText() != null ? et.getText().toString().trim() : "";
     }

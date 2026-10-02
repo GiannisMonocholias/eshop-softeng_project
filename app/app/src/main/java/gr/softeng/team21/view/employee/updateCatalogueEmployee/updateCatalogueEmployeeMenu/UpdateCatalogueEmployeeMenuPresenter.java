@@ -7,6 +7,7 @@ import gr.softeng.team21.dao.UserCredentialsDAO;
  * Presenter for the Update Catalogue Employee Menu.
  * Coordinates asynchronous data retrieval for the employee profile and handles the logic
  * for navigation and account management transactions using Dependency Injection.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class UpdateCatalogueEmployeeMenuPresenter {
@@ -28,12 +29,17 @@ public class UpdateCatalogueEmployeeMenuPresenter {
 
     /**
      * Asynchronously prepares the view with the employee's information upon UI creation.
+     * Fetches both the full name and the profile image URL.
+     *
      * @param employeeId The ID of the currently logged-in employee.
      */
     public void onViewCreated(String employeeId) {
         employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
             if (employee != null) {
+                // Update Name
                 view.showEmployeeName(employee.getFirstname() + " " + employee.getLastname());
+                // Update Profile Image
+                view.loadProfileImage(employee.getProfileImageUrl());
             }
         }).exceptionally(e -> {
             view.showMessage("Σφάλμα φόρτωσης στοιχείων: " + e.getMessage());

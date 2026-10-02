@@ -40,7 +40,7 @@ public class AssignedOrdersToPreparePresenterTest {
         Order orderToAssign = orderDAO.getOrder("ORD-2024-001").join(); // Ensure this ID exists in MemoryInitializer
         if (orderToAssign != null) {
             orderToAssign.setPreparationEmployeeId(EMPLOYEE_ID);
-            orderToAssign.setOrderstatus(OrderStatusType.NEW);
+            orderToAssign.setOrderStatus(OrderStatusType.NEW);
             orderDAO.updateOrder(orderToAssign).join();
         }
     }
@@ -53,7 +53,7 @@ public class AssignedOrdersToPreparePresenterTest {
         Assert.assertNotNull(result);
         Assert.assertFalse(result.isEmpty());
         Assert.assertEquals(EMPLOYEE_ID, result.get(0).getPreparationEmployeeId());
-        Assert.assertEquals(OrderStatusType.NEW, result.get(0).getOrderstatus());
+        Assert.assertEquals(OrderStatusType.NEW, result.get(0).getOrderStatus());
     }
 
     @Test
@@ -71,6 +71,6 @@ public class AssignedOrdersToPreparePresenterTest {
 
         Assert.assertTrue(viewStub.isNavigationCalled());
         Assert.assertEquals(EMPLOYEE_ID, viewStub.getNavigatedEmployeeId());
-        Assert.assertEquals(order.getOrdercode(), viewStub.getNavigatedOrderCode());
+        Assert.assertEquals(order.getOrderCode(), viewStub.getNavigatedOrderCode());
     }
 }

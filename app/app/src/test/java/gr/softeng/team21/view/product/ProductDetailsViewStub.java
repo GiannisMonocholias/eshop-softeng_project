@@ -1,5 +1,8 @@
 package gr.softeng.team21.view.product;
 
+import java.util.ArrayList;
+import gr.softeng.team21.domain.ProductReview;
+
 /**
  * Stub implementation of {@link ProductDetailsView} for testing purposes.
  * It provides a mechanism to capture UI feedback (messages, quantity updates) and
@@ -10,6 +13,10 @@ public class ProductDetailsViewStub implements ProductDetailsView {
 
     private String name, code, price, description;
     private int goToProductReviewsCount = 0;
+
+    // Προσθήκη μεταβλητών για αποθήκευση των νέων δεδομένων από τον Presenter
+    private ArrayList<ProductReview> passedReviews;
+    private float averageRating = 0.0f;
 
     private int quantity;
     private String message;
@@ -64,9 +71,17 @@ public class ProductDetailsViewStub implements ProductDetailsView {
         this.CartCount++;
     }
 
+    // Διόρθωση της μεθόδου ώστε να δέχεται το όρισμα ArrayList<ProductReview>
     @Override
-    public void goToProductReviews() {
+    public void goToProductReviews(ArrayList<ProductReview> reviews) {
         goToProductReviewsCount++;
+        this.passedReviews = reviews; // Αποθήκευση για έλεγχο στο Test
+    }
+
+    // Υλοποίηση της νέας μεθόδου που έλειπε
+    @Override
+    public void showAverageRating(float average) {
+        this.averageRating = average;
     }
 
     /**
@@ -117,8 +132,11 @@ public class ProductDetailsViewStub implements ProductDetailsView {
      * @return The cart navigation count.
      */
     public int getCartCount() { return CartCount; }
-    public int getGoToProductReviewsCount() {
-        return goToProductReviewsCount;
-    }
 
+    public int getGoToProductReviewsCount() { return goToProductReviewsCount; }
+
+    // Getters για επαλήθευση (asserts) στα tests
+    public ArrayList<ProductReview> getPassedReviews() { return passedReviews; }
+
+    public float getAverageRating() { return averageRating; }
 }

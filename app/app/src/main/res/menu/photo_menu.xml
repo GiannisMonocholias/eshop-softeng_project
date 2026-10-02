@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_camera"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Λήψη Φωτογραφίας" />
+    <item
+        android:id="@+id/action_gallery"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="Επιλογή από Συλλογή" />
+    <item
+        android:id="@+id/action_remove"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Αφαίρεση Φωτογραφίας" />
+</menu>

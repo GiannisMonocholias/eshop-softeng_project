@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.domain.ProductType;
@@ -28,13 +29,18 @@ public class CustomerCardPaymentPresenterTest {
     private Customer customer;
     private String cardNumber;
 
+    CustomerDAO customerDAO;
+    OrderDAO orderDAO;
+    EmployeeDAO employeeDAO;
+
     @Before
     public void setUp() throws Exception {
         MemoryInitializer.prepareData();
         view = new CustomerCardPaymentViewStub();
 
-        CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
-        OrderDAO orderDAO = OrderDAOMemory.getInstance();
+        CustomerDAO customerDAO = MemoryInitializer.getCustomerDAO();
+        OrderDAO orderDAO = MemoryInitializer.getOrderDAO();
+        EmployeeDAO employeeDAO = MemoryInitializer.getEmployeeDAO();
 
         // Asynchronous resolution logic wrapped for tests via .join()
         customer = customerDAO.getCustomer("CUST-500").join();
@@ -45,7 +51,7 @@ public class CustomerCardPaymentPresenterTest {
 
         cardNumber = "1234-5678-9012-3456";
 
-        presenter = new CustomerCardPaymentPresenter(view, customerDAO, orderDAO);
+        presenter = new CustomerCardPaymentPresenter(view, customerDAO, orderDAO, employeeDAO);
         presenter.loadInitialData("CUST-500");
     }
 

@@ -13,6 +13,10 @@ public class CustomerHomePageViewStub implements CustomerHomePageView {
     private int findProductCount = 0;
     private int inboxCount = 0;
     private int deleteCount = 0;
+
+    // ΠΡΟΣΘΗΚΗ: Μετρητής για το Order History
+    private int orderHistoryCount = 0;
+
     private String message = "";
     private String passedCustomerId = null; // Νέα μεταβλητή για έλεγχο στο Test
 
@@ -26,6 +30,9 @@ public class CustomerHomePageViewStub implements CustomerHomePageView {
     public String getMessage() { return message; }
     public int getDeleteCount() { return deleteCount; }
     public int getInboxCount() { return inboxCount; }
+
+    // ΠΡΟΣΘΗΚΗ: Getter για το Order History
+    public int getOrderHistoryCount() { return orderHistoryCount; }
 
     /**
      * Επιστρέφει το ID που περάστηκε στην τελευταία πλοήγηση.
@@ -52,6 +59,13 @@ public class CustomerHomePageViewStub implements CustomerHomePageView {
     @Override
     public void goToInbox(String customerId) {
         inboxCount++;
+        passedCustomerId = customerId;
+    }
+
+    // ΠΡΟΣΘΗΚΗ: Υλοποίηση της νέας μεθόδου που έλειπε
+    @Override
+    public void goToOrderHistory(String customerId) {
+        orderHistoryCount++;
         passedCustomerId = customerId;
     }
 

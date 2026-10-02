@@ -1,17 +1,20 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import gr.softeng.team21.R;
@@ -29,6 +32,7 @@ import gr.softeng.team21.view.employee.orderPreparationEmployee.availableOrdersT
  * Manages UI components and implements the {@link OrdersPreparationEmployeeMenuView} interface
  * to handle navigation and user feedback via runOnUiThread.
  * Uses Material Design components and incorporates Dependency Injection.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity implements OrdersPreparationEmployeeMenuView {
@@ -36,6 +40,12 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
     private OrdersPreparationEmployeeMenuPresenter presenter;
     private static final String EMP_ID = "ORDER_PREPARATION_EMPLOYEE_ID";
     private String employeeId;
+
+    // UI Reference for the Profile Image
+    private ImageView ivProfileImage;
+
+    // Launcher used to detect when the user returns from the Edit Data screen
+    private ActivityResultLauncher<Intent> editProfileLauncher;
 
     /**
      * Sets up the activity layout, injects DAOs into the presenter, and
@@ -54,6 +64,9 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
             return insets;
         });
 
+        // Initialize Image View mapping to the XML ID
+        ivProfileImage = findViewById(R.id.imgUserProfile);
+
         // DEPENDENCY INJECTION
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
         UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOMemory.getInstance(); // Replace with Firebase equivalent later
@@ -63,6 +76,9 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         employeeId = getIntent().getStringExtra(EMP_ID);
 
         presenter.onViewCreated(employeeId);
+
+        // Setup the ActivityResultLauncher
+        setupLaunchers();
 
         // Listeners
         findViewById(R.id.btnOrdPrepEmpAssignedOrders).setOnClickListener(v ->
@@ -86,12 +102,47 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
     }
 
     /**
+     * Registers the ActivityResultLauncher to listen for the result of the UserEditDataActivity.
+     * Triggers a data refresh when returning from that specific screen.
+     */
+    private void setupLaunchers() {
+        editProfileLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (employeeId != null && presenter != null) {
+                        presenter.onViewCreated(employeeId);
+                    }
+                }
+        );
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void showEmployeeName(String fullName) {
         runOnUiThread(() -> {
             ((TextView) findViewById(R.id.txtCustomerServiceEmployeeMenuName)).setText(fullName);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     * Uses Glide library to load the profile image asynchronously and cache it.
+     */
+    @Override
+    public void loadProfileImage(String profileImageUrl) {
+        runOnUiThread(() -> {
+            if (ivProfileImage != null) {
+                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(profileImageUrl)
+                            .placeholder(R.drawable.ic_person)
+                            .into(ivProfileImage);
+                } else {
+                    ivProfileImage.setImageResource(R.drawable.ic_person);
+                }
+            }
         });
     }
 
@@ -158,7 +209,8 @@ public class OrderPreparationEmployeeMenuActivity extends AppCompatActivity impl
         runOnUiThread(() -> {
             Intent intent = new Intent(this, UserEditDataActivity.class);
             intent.putExtra("user_id", employeeId);
-            startActivity(intent);
+            // Launch using the editProfileLauncher to trigger refresh on return
+            editProfileLauncher.launch(intent);
         });
     }
 

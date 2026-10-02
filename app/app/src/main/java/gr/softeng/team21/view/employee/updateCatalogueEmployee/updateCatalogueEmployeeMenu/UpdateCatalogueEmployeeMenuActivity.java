@@ -2,15 +2,19 @@ package gr.softeng.team21.view.employee.updateCatalogueEmployee.updateCatalogueE
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import gr.softeng.team21.R;
@@ -28,13 +32,20 @@ import gr.softeng.team21.view.employee.updateCatalogueEmployee.availableRequests
  * Provides the interface for navigating to assigned or available requests
  * and managing account settings. Secures UI updates using runOnUiThread
  * and incorporates Dependency Injection.
- * @author Γιάννης Μονοχολιάς
+ *
+ * @author Giannis Monocholias
  */
 public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity implements UpdateCatalogueEmployeeMenuView {
 
     private UpdateCatalogueEmployeeMenuPresenter presenter;
     private static final String EMP_ID_EXTRA = "UPDATE_CATALOGUE_EMPLOYEE_ID";
     private String employeeId;
+
+    // UI Reference for the Profile Image
+    private ImageView ivProfileImage;
+
+    // Launcher used specifically to detect when the user returns from the Edit Data screen
+    private ActivityResultLauncher<Intent> editProfileLauncher;
 
     /**
      * Configures the layout, attaches listeners to menu buttons,
@@ -53,14 +64,19 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
             return insets;
         });
 
+        ivProfileImage = findViewById(R.id.imgUserProfile);
+
         // DEPENDENCY INJECTION: Connect Presenter to Firebase DAOs
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
-        UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOMemory.getInstance(); // Replace with Firebase equivalent later
+        UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOMemory.getInstance();
 
         presenter = new UpdateCatalogueEmployeeMenuPresenter(this, employeeDAO, userCredentialsDAO);
 
         employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
         presenter.onViewCreated(employeeId);
+
+        // Initialize the launcher for the Edit Data activity
+        setupLaunchers();
 
         // Listeners
         findViewById(R.id.btnUptCatEmpMenuAssignedRequests).setOnClickListener(v -> presenter.onClickAssignedRequests(employeeId));
@@ -73,11 +89,48 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
     }
 
     /**
+     * Registers the ActivityResultLauncher to listen for the result of the UserEditDataActivity.
+     * When the user returns from that specific screen, it triggers a data refresh.
+     */
+    private void setupLaunchers() {
+        editProfileLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // This block executes ONLY when returning from UserEditDataActivity
+                    // in order to refresh the employee's data
+                    if (employeeId != null && presenter != null) {
+                        presenter.onViewCreated(employeeId);
+                    }
+                }
+        );
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void showEmployeeName(String fullName) {
         runOnUiThread(() -> ((TextView) findViewById(R.id.txtUptCatEmpMenuName)).setText(fullName));
+    }
+
+    /**
+     * {@inheritDoc}
+     * Uses Glide library to load the image asynchronously and caches it.
+     */
+    @Override
+    public void loadProfileImage(String profileImageUrl) {
+        runOnUiThread(() -> {
+            if (ivProfileImage != null) {
+                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(profileImageUrl)
+                            .placeholder(R.drawable.ic_person)
+                            .into(ivProfileImage);
+                } else {
+                    ivProfileImage.setImageResource(R.drawable.ic_person);
+                }
+            }
+        });
     }
 
     /**
@@ -88,7 +141,7 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         runOnUiThread(() -> {
             Intent intent = new Intent(UpdateCatalogueEmployeeMenuActivity.this, AssignedRequestsToExecuteActivity.class);
             intent.putExtra(EMP_ID_EXTRA, employeeId);
-            startActivity(intent);
+            startActivity(intent); // Simple start, no refresh needed on return
         });
     }
 
@@ -100,7 +153,7 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         runOnUiThread(() -> {
             Intent intent = new Intent(UpdateCatalogueEmployeeMenuActivity.this, AvailableRequestsToAssignActivity.class);
             intent.putExtra(EMP_ID_EXTRA, employeeId);
-            startActivity(intent);
+            startActivity(intent); // Simple start, no refresh needed on return
         });
     }
 
@@ -142,7 +195,9 @@ public class UpdateCatalogueEmployeeMenuActivity extends AppCompatActivity imple
         runOnUiThread(() -> {
             Intent intent = new Intent(this, UserEditDataActivity.class);
             intent.putExtra("user_id", employeeId);
-            startActivity(intent);
+
+            // The Launcher's code will execute after returning from the activity.
+            editProfileLauncher.launch(intent);
         });
     }
 

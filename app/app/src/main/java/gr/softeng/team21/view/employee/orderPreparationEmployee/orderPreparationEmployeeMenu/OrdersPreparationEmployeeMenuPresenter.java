@@ -1,5 +1,7 @@
 package gr.softeng.team21.view.employee.orderPreparationEmployee.orderPreparationEmployeeMenu;
 
+import android.util.Log;
+
 import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
 
@@ -8,6 +10,7 @@ import gr.softeng.team21.dao.UserCredentialsDAO;
  * Mediates between the domain logic and the menu view, handling asynchronous profile loading,
  * navigation requests, and account deletion transactions.
  * Utilizes Dependency Injection to decouple data sources from presentation logic.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class OrdersPreparationEmployeeMenuPresenter {
@@ -29,13 +32,16 @@ public class OrdersPreparationEmployeeMenuPresenter {
     }
 
     /**
-     * Asynchronously fetches employee data to display the user's name upon view initialization.
+     * Asynchronously fetches employee data to display the user's name and profile image upon view initialization.
      * @param employeeId The ID of the employee to load.
      */
     public void onViewCreated(String employeeId) {
         employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
             if (employee != null) {
+                // Update Name
                 view.showEmployeeName(employee.getFirstname() + " " + employee.getLastname());
+                // Update Profile Image
+                view.loadProfileImage(employee.getProfileImageUrl());
             }
         }).exceptionally(e -> {
             view.showMessage("Σφάλμα φόρτωσης στοιχείων: " + e.getMessage());

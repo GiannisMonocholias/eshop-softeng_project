@@ -147,7 +147,7 @@ public class ExecuteProcessProductPresenterTest {
 
         // Verify catalogue persistence asynchronously with .join()
         ProductType updatedProduct = ProductTypeDAOMemory.getInstance().getProduct(PRODUCT_CODE).join();
-        Assert.assertEquals(newName, updatedProduct.getProductname());
+        Assert.assertEquals(newName, updatedProduct.getProductName());
         Assert.assertEquals(newDesc, updatedProduct.getDescription());
         Assert.assertEquals(1100.0, updatedProduct.getPrice().getAmount().doubleValue(), 0.001);
 

@@ -81,7 +81,7 @@ public class UserTest {
     @Test
     public void testEmailAddressGetterSetter() {
         EmailAddress newAddress = new EmailAddress("new@example.com");
-        customer.setEmailaddress(newAddress);
+        customer.setEmailAddress(newAddress);
         assertEquals(newAddress, customer.getEmailAddress());
     }
 

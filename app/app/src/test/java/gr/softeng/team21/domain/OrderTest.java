@@ -5,6 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.util.Date;
 
@@ -20,12 +24,18 @@ public class OrderTest {
     private Date delDate;
     private ShoppingCart cart;
 
+    private List<String> employeeIds;
+    private EmployeeDAO employeeDAO;
+
+
     @Before
     public void setUp() throws Exception {
         subDate = new Date();
         delDate = new Date();
         delDate.changeDays(20);
         cart = new ShoppingCart();
+
+        employeeDAO = MemoryInitializer.getEmployeeDAO();
 
         order = new Order(
                 "ORD-1001",
@@ -36,6 +46,10 @@ public class OrderTest {
                 delDate,
                 cart
         );
+
+        employeeIds = employeeDAO.getEmployees().join().values().stream()
+                .map(Employee::getUsername)
+                .collect(Collectors.toList());
     }
 
     @Test
@@ -51,26 +65,26 @@ public class OrderTest {
 
     @Test
     public void getSubmissiondate() {
-        assertEquals(subDate, order.getSubmissiondate());
+        assertEquals(subDate, order.getSubmissionDate());
     }
 
     @Test
     public void setSubmissiondate() {
         Date newDate = new Date();
         order.setSubmissionDate(newDate);
-        assertEquals(newDate, order.getSubmissiondate());
+        assertEquals(newDate, order.getSubmissionDate());
     }
 
     @Test
     public void getDeliverydate() {
-        assertEquals(delDate, order.getDeliverydate());
+        assertEquals(delDate, order.getDeliveryDate());
     }
 
     @Test
     public void setDeliverydate() {
         Date newDate = new Date();
         order.setDeliveryDate(newDate);
-        assertEquals(newDate, order.getDeliverydate());
+        assertEquals(newDate, order.getDeliveryDate());
     }
 
     @Test
@@ -126,12 +140,13 @@ public class OrderTest {
         c.addItemToCart(TestHelper.getLaptop(), 5);
         c.addItemToCart(TestHelper.getMonitor(), 6);
 
-        Order order1 = c.Checkout();
+        Order order1 = c.Checkout(employeeIds);
         assertEquals(cart1.getTotalCost(), order1.getTotal_amount());
     }
 
     @AfterClass
     public static void tearDownAfterClass() {
         MemoryInitializer.getCustomerDAO().clear().join();
+        MemoryInitializer.getEmployeeDAO().clear().join();
     }
 }

@@ -106,7 +106,7 @@ public class ExecuteInsertProductPresenterTest {
         // Domain persistence verification using synchronous join()
         ProductType newProduct = ProductTypeDAOMemory.getInstance().getProduct("TECH-NEW-01").join();
         Assert.assertNotNull("Το νέο προϊόν έπρεπε να υπάρχει στο DAO", newProduct);
-        Assert.assertEquals("Canon Pixma TS3450", newProduct.getProductname());
+        Assert.assertEquals("Canon Pixma TS3450", newProduct.getProductName());
         Assert.assertEquals(55.90, newProduct.getPrice().getAmount().doubleValue(), 0.001);
 
         // Request lifecycle verification

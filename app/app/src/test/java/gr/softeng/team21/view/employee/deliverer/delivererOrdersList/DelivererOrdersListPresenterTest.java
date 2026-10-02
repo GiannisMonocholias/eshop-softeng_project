@@ -58,7 +58,7 @@ public class DelivererOrdersListPresenterTest {
         // Adapt to new architecture: Set Foreign Key and increment local workload counter
         if (shippedOrder != null) {
             shippedOrder.setDelivererId(DELIVERER_ID);
-            shippedOrder.setOrderstatus(OrderStatusType.SHIPPED);
+            shippedOrder.setOrderStatus(OrderStatusType.SHIPPED);
             orderDAO.updateOrder(shippedOrder).join(); // Save explicitly
 
             deliverer.assignOrder();
@@ -76,7 +76,7 @@ public class DelivererOrdersListPresenterTest {
 
         Assert.assertNotNull(orders);
         Assert.assertFalse(orders.isEmpty());
-        Assert.assertEquals(ORDER_CODE, orders.get(0).getOrdercode());
+        Assert.assertEquals(ORDER_CODE, orders.get(0).getOrderCode());
     }
 
     /**
@@ -88,7 +88,7 @@ public class DelivererOrdersListPresenterTest {
         presenter.loadShippedOrders("INVALID_ID");
 
         Assert.assertNull(viewStub.getLoadedOrders());
-        Assert.assertEquals("Σφάλμα: Ο διανομέας δεν βρέθηκε.", viewStub.getErrorShown());
+        Assert.assertEquals("Σφάλμα: Ο διανομέας δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.", viewStub.getErrorShown());
     }
 
     /**
@@ -102,12 +102,12 @@ public class DelivererOrdersListPresenterTest {
         presenter.loadShippedOrders(DELIVERER_ID);
         int initialWorkload = deliverer.getAssignedOrdersCount();
 
-        Assert.assertEquals(OrderStatusType.SHIPPED, shippedOrder.getOrderstatus());
+        Assert.assertEquals(OrderStatusType.SHIPPED, shippedOrder.getOrderStatus());
 
         presenter.onOrderConfirmed(shippedOrder);
 
         // State update verification
-        Assert.assertEquals(OrderStatusType.DELIVERED, shippedOrder.getOrderstatus());
+        Assert.assertEquals(OrderStatusType.DELIVERED, shippedOrder.getOrderStatus());
 
         // Domain counter update verification
         Assert.assertEquals(initialWorkload - 1, deliverer.getAssignedOrdersCount());

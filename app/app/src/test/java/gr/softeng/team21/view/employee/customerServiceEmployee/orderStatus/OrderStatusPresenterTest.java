@@ -54,7 +54,7 @@ public class OrderStatusPresenterTest {
 
         Assert.assertNotNull(orders);
         Assert.assertFalse(orders.isEmpty());
-        Assert.assertEquals("ORD-2024-004", orders.get(0).getOrdercode());
+        Assert.assertEquals("ORD-2024-004", orders.get(0).getOrderCode());
     }
 
     @Test

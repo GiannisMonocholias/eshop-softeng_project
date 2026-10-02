@@ -1,14 +1,18 @@
 package gr.softeng.team21.view.user.EditData;
 
+import android.net.Uri;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.EmployeeDAO;
+import gr.softeng.team21.dao.ImageStorageDAO;
 import gr.softeng.team21.domain.Customer;
 import gr.softeng.team21.memorydao.CustomerDAOMemory;
 import gr.softeng.team21.memorydao.EmployeeDAOMemory;
+import gr.softeng.team21.memorydao.ImageStorageDAOMemory;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 
 /**
@@ -28,10 +32,15 @@ public class UserEditDataPresenterTest {
         CustomerDAO customerDAO = CustomerDAOMemory.getInstance();
         EmployeeDAO employeeDAO = EmployeeDAOMemory.getInstance();
 
+        // Δημιουργία του In-Memory Storage DAO
+        ImageStorageDAO imageStorageDAO = new ImageStorageDAOMemory();
+
         testCustomer = customerDAO.getCustomer("CUST-500").join();
 
         viewStub = new UserEditDataViewStub();
-        presenter = new UserEditDataPresenter(viewStub, customerDAO, employeeDAO);
+
+        // Πέρασμα του νέου DAO στον Presenter
+        presenter = new UserEditDataPresenter(viewStub, customerDAO, employeeDAO, imageStorageDAO);
     }
 
     @Test
@@ -47,9 +56,10 @@ public class UserEditDataPresenterTest {
         presenter.loadUserData("CUST-500");
 
         presenter.onSaveClicked("", "", "", "Name", "Surname", "6999999999",
-                "Street", "1", "City", "12345", "Greece");
+                "Street", "1", "City", "12345", "Greece",
+                false, null, "CUST-500"); // Προσθήκη των νέων παραμέτρων της μεθόδου
 
-        Assert.assertEquals("Συμπληρώστε τα υποχρεωτικά πεδία (Όνομα Χρήστη, Κωδικός, Email).", viewStub.getMessage());
+        Assert.assertEquals("Please fill in the required fields (Username, Password, Email).", viewStub.getMessage());
     }
 
     @Test
@@ -57,7 +67,8 @@ public class UserEditDataPresenterTest {
         presenter.loadUserData("CUST-500");
 
         presenter.onSaveClicked("NewUser", "NewPass123", "new@mail.com", "Nick", "Georgiou", "6911111111",
-                "Ermou", "10", "Athens", "10000", "Greece");
+                "Ermou", "10", "Athens", "10000", "Greece",
+                false, null, "CUST-500"); // Προσθήκη των νέων παραμέτρων
 
         Assert.assertEquals("Τα στοιχεία σας ενημερώθηκαν επιτυχώς!", viewStub.getMessage());
         Assert.assertTrue(viewStub.isFinishCalled());

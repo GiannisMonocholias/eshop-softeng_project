@@ -92,7 +92,7 @@ public class AvailableRequestsToAssignPresenterTest {
         presenter.onRequestClicked(request);
 
         Assert.assertTrue(viewStub.isConfirmationDialogShown());
-        Assert.assertEquals("Θέλετε να αναλάβετε αυτή την παραγγελία;", viewStub.getConfirmationMessage());
+        Assert.assertEquals("Θέλετε να αναλάβετε αυτό το αίτημα;", viewStub.getConfirmationMessage());
         Assert.assertEquals(request, viewStub.getLastInteractedRequest());
     }
 

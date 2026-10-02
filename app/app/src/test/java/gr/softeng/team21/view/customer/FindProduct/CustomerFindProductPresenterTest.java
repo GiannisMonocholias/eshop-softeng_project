@@ -64,7 +64,7 @@ public class CustomerFindProductPresenterTest {
         presenter.filter("Dell");
         ArrayList<ProductType> results = view.getShowedProducts();
         Assert.assertTrue("Η λίστα δεν πρέπει να είναι άδεια", results.size() > 0);
-        Assert.assertTrue("Το προϊόν πρέπει να περιέχει 'Dell'", results.get(0).getProductname().toLowerCase().contains("dell"));
+        Assert.assertTrue("Το προϊόν πρέπει να περιέχει 'Dell'", results.get(0).getProductName().toLowerCase().contains("dell"));
 
         presenter.filter("");
         Assert.assertEquals(MemoryInitializer.getProductTypeDAO().getProducts().join().size(), view.getShowedProducts().size());

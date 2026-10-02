@@ -7,9 +7,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.dao.CustomerDAO;
+import gr.softeng.team21.dao.EmployeeDAO;
 import gr.softeng.team21.dao.OrderDAO;
 import gr.softeng.team21.memorydao.MemoryInitializer;
 import gr.softeng.team21.util.Date;
@@ -29,9 +34,14 @@ public class CustomerTest {
     private CustomerDAO customerDAO;
     private OrderDAO orderDAO;
 
+    private EmployeeDAO employeeDAO;
+
+    private List<String> employeeIds;
+
     @Before
     public void setUp() throws Exception {
         customerDAO = MemoryInitializer.getCustomerDAO();
+        employeeDAO = MemoryInitializer.getEmployeeDAO();
         orderDAO = MemoryInitializer.getOrderDAO();
         customerDAO.clear().join();
 
@@ -47,6 +57,10 @@ public class CustomerTest {
 
         order = new Order("order001", new Date(), OrderStatusType.NEW, false,
                 PaymentType.CASH, new Date(), new ShoppingCart());
+
+        employeeIds = employeeDAO.getEmployees().join().values().stream()
+                .map(Employee::getUsername)
+                .collect(Collectors.toList());
     }
 
     @Test
@@ -120,22 +134,24 @@ public class CustomerTest {
     @Test
     public void checkout() {
         customer.addItemToCart(TestHelper.getLaptop(), 1);
-        Order order1 = customer.Checkout();
-        assertEquals(OrderStatusType.NEW, order1.getOrderstatus());
-        assertEquals(PaymentType.CASH, order1.getPaymentmethod());
-        assertEquals(false, order1.getPaid());
+
+
+        Order order1 = customer.Checkout(employeeIds);
+        assertEquals(OrderStatusType.NEW, order1.getOrderStatus());
+        assertEquals(PaymentType.CASH, order1.getPaymentMethod());
+        assertEquals(false, order1.isPaid());
     }
 
     @Test
     public void checkoutwithNullArguments() {
-        assertNull(customer.Checkout());
+        assertNull(customer.Checkout(null));
     }
 
     @Test
     public void CheckoutCopyShoppingCart() {
         ProductType laptop = TestHelper.getLaptop();
         customer.addItemToCart(laptop, 1);
-        Order order2 = customer.Checkout();
+        Order order2 = customer.Checkout(employeeIds);
 
         customer.setShoppingCart(new ShoppingCart(customer));
         customer.addItemToCart(laptop, 5);
@@ -149,13 +165,13 @@ public class CustomerTest {
 
     @Test
     public void selectPaymentType() {
-        assertFalse(order.getPaid());
-        assertEquals(PaymentType.CASH, order.getPaymentmethod());
+        assertFalse(order.isPaid());
+        assertEquals(PaymentType.CASH, order.getPaymentMethod());
 
         customer.selectPaymentType(PaymentType.CARD, "1234-5678-9123-4567", order);
 
-        assertTrue(order.getPaid());
-        assertEquals(PaymentType.CARD, order.getPaymentmethod());
+        assertTrue(order.isPaid());
+        assertEquals(PaymentType.CARD, order.getPaymentMethod());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -176,7 +192,7 @@ public class CustomerTest {
     @Test
     public void confirm() {
         customer.addItemToCart(TestHelper.getMouse(), 5);
-        Order order1 = customer.Checkout();
+        Order order1 = customer.Checkout(employeeIds);
         customer.Confirm("CONFIRM", order1);
 
         assertNull(customer.getShoppingCart());
@@ -209,5 +225,6 @@ public class CustomerTest {
         TestHelper.clear();
         MemoryInitializer.getCustomerDAO().clear().join();
         MemoryInitializer.getOrderDAO().clear().join();
+        MemoryInitializer.getEmployeeDAO().clear().join();
     }
 }

@@ -54,8 +54,8 @@ public class AvailableOrdersToAssignPresenterTest {
 
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals("ORD-2024-002", result.get(0).getOrdercode());
-        Assert.assertEquals(OrderStatusType.NEW, result.get(0).getOrderstatus());
+        Assert.assertEquals("ORD-2024-002", result.get(0).getOrderCode());
+        Assert.assertEquals(OrderStatusType.NEW, result.get(0).getOrderStatus());
         Assert.assertNull(result.get(0).getPreparationEmployeeId());
     }
 
@@ -89,7 +89,7 @@ public class AvailableOrdersToAssignPresenterTest {
         presenter.loadAvailableOrders(EMPLOYEE_ID);
 
         Order orderToAssign = OrderDAOMemory.getInstance().getOrder("ORD-2024-002").join();
-        Assert.assertEquals(OrderStatusType.NEW, orderToAssign.getOrderstatus());
+        Assert.assertEquals(OrderStatusType.NEW, orderToAssign.getOrderStatus());
 
         presenter.onOrderConfirmed(orderToAssign);
 
@@ -97,7 +97,7 @@ public class AvailableOrdersToAssignPresenterTest {
         Order updatedOrder = OrderDAOMemory.getInstance().getOrder("ORD-2024-002").join();
 
         // Domain state verification
-        Assert.assertEquals(OrderStatusType.PROCESSING, updatedOrder.getOrderstatus());
+        Assert.assertEquals(OrderStatusType.PROCESSING, updatedOrder.getOrderStatus());
         Assert.assertEquals(EMPLOYEE_ID, updatedOrder.getPreparationEmployeeId());
 
         // View feedback verification via stub

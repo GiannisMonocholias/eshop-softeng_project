@@ -32,8 +32,7 @@
                 android:scaleType="centerCrop"
                 app:strokeWidth="3dp"
                 app:strokeColor="?attr/colorPrimary"
-                app:shapeAppearanceOverlay="@style/CircleImage"
-                app:tint="?attr/colorPrimary" />
+                app:shapeAppearanceOverlay="@style/CircleImage"/>
 
             <!-- Μικρό κουμπί στην κάτω δεξιά γωνία -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton

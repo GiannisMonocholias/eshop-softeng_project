@@ -124,7 +124,7 @@ public class DelivererMenuPresenterTest {
     public void onDeleteAccountConfirmedInvalidIdShowsError() {
         presenter.onDeleteAccountConfirmed("INVALID_ID");
 
-        Assert.assertEquals("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.", viewStub.getMessageShown());
+        Assert.assertEquals("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.", viewStub.getMessageShown());
         Assert.assertFalse(viewStub.isNavigateToLoginCalled());
     }
 }
