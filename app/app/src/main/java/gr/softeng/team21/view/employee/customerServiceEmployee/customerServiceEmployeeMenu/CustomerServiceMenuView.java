@@ -3,7 +3,8 @@ package gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceE
 /**
  * Defines methods to be implemented for displaying profile information, handling navigation
  * to various functional modules, and managing account-related alerts.
- * Defines the contract between the Presenter and the UI.
+ * Defines the contract between the Presenter and the UI for asynchronous operations.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public interface CustomerServiceMenuView {
@@ -13,6 +14,12 @@ public interface CustomerServiceMenuView {
      * @param fullName The concatenated first and last name to be displayed.
      */
     void showEmployeeName(String fullName);
+
+    /**
+     * Asynchronously loads and displays the employee's profile image.
+     * @param profileImageUrl The download URL of the profile image stored in Cloud Storage.
+     */
+    void loadProfileImage(String profileImageUrl);
 
     /**
      * Navigates the user to the Order Status notification screen.

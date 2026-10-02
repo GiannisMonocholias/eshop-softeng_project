@@ -13,6 +13,12 @@ public interface CustomerHomePageView {
     void goToLogin();
 
     /**
+     * Asynchronously loads and displays the customer's profile image.
+     * @param profileImageUrl The download URL of the profile image stored in Cloud Storage.
+     */
+    void loadProfileImage(String profileImageUrl);
+
+    /**
      * Navigates to the user data editing screen.
      * @param customerId The ID of the current customer.
      */
@@ -31,6 +37,7 @@ public interface CustomerHomePageView {
     void goToInbox(String customerId);
 
     void goToOrderHistory(String customerId);
+
     /**
      * Displays a confirmation dialog for account deletion.
      */

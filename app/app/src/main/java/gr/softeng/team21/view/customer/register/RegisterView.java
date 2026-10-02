@@ -3,6 +3,7 @@ package gr.softeng.team21.view.customer.register;
 /**
  * Defines the essential UI feedback and management operations for the
  * account creation process.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public interface RegisterView {
@@ -23,4 +24,9 @@ public interface RegisterView {
      * Resets all input fields to their default state and refocuses the first field.
      */
     void clearInputFields();
+
+    /**
+     * Clears the selected profile image preview and sets it back to the default icon.
+     */
+    void clearImagePreview();
 }

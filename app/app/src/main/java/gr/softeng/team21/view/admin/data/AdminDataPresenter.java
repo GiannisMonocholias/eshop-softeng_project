@@ -1,5 +1,7 @@
 package gr.softeng.team21.view.admin.data;
 
+import android.net.Uri;
+
 import gr.softeng.team21.contact.Address;
 import gr.softeng.team21.contact.EmailAddress;
 import gr.softeng.team21.domain.Admin;
@@ -7,8 +9,9 @@ import gr.softeng.team21.domain.Admin;
 /**
  * Presenter handling the logic for loading and saving the Administrator's profile data.
  * It tracks unsaved changes to prevent accidental data loss upon pressing the back button.
- * Interacts directly with the Admin Singleton.
- * @author Αλέξανδρος Δρακάκης
+ * Interacts directly with the Admin Singleton and handles profile image updates.
+ *
+ * @author Alexandros Drakakis
  */
 public class AdminDataPresenter {
 
@@ -18,6 +21,7 @@ public class AdminDataPresenter {
     // Snapshot of original data for comparison
     private String origUsername = "", origPassword = "", origEmail = "", origFirstName = "", origLastName = "", origPhone = "";
     private String origStreet = "", origStreetNo = "", origCity = "", origZip = "";
+    private String origProfileImageUrl = "";
 
     public AdminDataPresenter(AdminDataView view) {
         this.view = view;
@@ -35,6 +39,7 @@ public class AdminDataPresenter {
         origFirstName = currentAdmin.getFirstname() != null ? currentAdmin.getFirstname() : "";
         origLastName = currentAdmin.getLastname() != null ? currentAdmin.getLastname() : "";
         origPhone = currentAdmin.getPhonenumber() != null ? currentAdmin.getPhonenumber() : "";
+        origProfileImageUrl = currentAdmin.getProfileImageUrl() != null ? currentAdmin.getProfileImageUrl() : "";
 
         if (currentAdmin.getAddress() != null) {
             origStreet = currentAdmin.getAddress().getStreet() != null ? currentAdmin.getAddress().getStreet() : "";
@@ -45,13 +50,18 @@ public class AdminDataPresenter {
 
         view.setAdminData(origUsername, origPassword, origEmail, origFirstName, origLastName, origPhone,
                 origStreet, origStreetNo, origCity, origZip);
+
+        // Load the image into the view
+        view.loadProfileImage(origProfileImageUrl);
     }
 
     /**
      * Validates and saves the updated data to the Singleton.
      * Updates the internal snapshot upon success so the back button doesn't trigger a warning.
+     *
+     * @param selectedImageUri The new image URI if the admin changed their photo, or null.
      */
-    public void onSaveClicked() {
+    public void onSaveClicked(Uri selectedImageUri) {
         currentAdmin.setUsername(view.getUsername());
         currentAdmin.setPassword(view.getPassword());
         currentAdmin.setEmailAddress(new EmailAddress(view.getEmail()));
@@ -65,6 +75,11 @@ public class AdminDataPresenter {
         newAddress.setCity(view.getCity());
         newAddress.setZipcode(view.getZip());
         currentAdmin.setAddress(newAddress);
+
+        if (selectedImageUri != null) {
+            currentAdmin.setProfileImageUrl(selectedImageUri.toString());
+            origProfileImageUrl = selectedImageUri.toString();
+        }
 
         // Update snapshot to prevent "unsaved changes" dialog after successful save
         origUsername = view.getUsername();
@@ -84,8 +99,10 @@ public class AdminDataPresenter {
     /**
      * Checks if current input differs from the snapshot.
      * Triggers a warning dialog if changes are detected; otherwise, closes the view.
+     *
+     * @param selectedImageUri The URI of the currently selected image, to detect unsaved photo changes.
      */
-    public void onBackPressed() {
+    public void onBackPressed(Uri selectedImageUri) {
         boolean hasChanges = !view.getUsername().equals(origUsername) ||
                 !view.getPassword().equals(origPassword) ||
                 !view.getEmail().equals(origEmail) ||
@@ -96,6 +113,11 @@ public class AdminDataPresenter {
                 !view.getStreetNo().equals(origStreetNo) ||
                 !view.getCity().equals(origCity) ||
                 !view.getZip().equals(origZip);
+
+        // If the user selected a new image but hasn't saved yet, it's considered an unsaved change
+        if (selectedImageUri != null) {
+            hasChanges = true;
+        }
 
         if (hasChanges) {
             view.showUnsavedChangesDialog();

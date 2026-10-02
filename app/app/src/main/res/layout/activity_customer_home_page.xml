@@ -54,7 +54,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_person"
             app:shapeAppearanceOverlay="@style/CircleImage"
-            app:tint="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/btnMenu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnMenu" />

@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
 import gr.softeng.team21.R;
@@ -38,11 +42,16 @@ import gr.softeng.team21.view.user.login.LoginActivity;
 public class CustomerHomePageActivity extends AppCompatActivity implements CustomerHomePageView {
 
     private CustomerHomePagePresenter presenter;
+    private String customerId; // Stored as a member variable to be accessible by the launcher[cite: 19]
 
-    // UI Components για το Menu
+    // UI Components for the Menu[cite: 19]
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ImageButton btnMenu;
+    private ImageView imgCustomerProfile; // Added for the profile image[cite: 22]
+
+    // Launcher to detect return from Edit Data and refresh the profile image[cite: 19]
+    private ActivityResultLauncher<Intent> editProfileLauncher;
 
     /**
      * Initializes the activity, sets up the Drawer layout, retrieves the customer ID,
@@ -61,14 +70,14 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
             return insets;
         });
 
-        String customerId = getIntent().getStringExtra("CUSTOMER_ID");
+        customerId = getIntent().getStringExtra("CUSTOMER_ID");
         if (customerId == null) {
             showMessage("Προσοχή: Ο πελάτης δεν βρέθηκε!");
             goToLogin();
             return;
         }
 
-        // Connection to Firebase
+        // Connection to Firebase[cite: 19]
         CustomerDAO customerDAO = new CustomerDAOFirebase();
         UserCredentialsDAO userCredentialsDAO = new UserCredentialsDAOFirebase();
 
@@ -77,8 +86,12 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         btnMenu = findViewById(R.id.btnMenu);
+        imgCustomerProfile = findViewById(R.id.imgCustomerProfile); // Map to the XML[cite: 22]
 
         btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+
+        // Setup the ActivityResultLauncher[cite: 19]
+        setupLaunchers();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -105,6 +118,42 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
     }
 
     /**
+     * Registers the ActivityResultLauncher to listen for the result of the UserEditDataActivity.
+     * Triggers a profile data reload (including the image) upon returning.
+     */
+    private void setupLaunchers() {
+        editProfileLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // Reload customer data when returning from the Edit Profile screen[cite: 19]
+                    if (presenter != null && customerId != null) {
+                        presenter.reloadCustomer(customerId); // We add a reload method to the presenter[cite: 20]
+                    }
+                }
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     * Uses Glide to load the profile image asynchronously.
+     */
+    @Override
+    public void loadProfileImage(String profileImageUrl) {
+        runOnUiThread(() -> {
+            if (imgCustomerProfile != null) {
+                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(profileImageUrl)
+                            .placeholder(R.drawable.ic_person)
+                            .into(imgCustomerProfile);
+                } else {
+                    imgCustomerProfile.setImageResource(R.drawable.ic_person);
+                }
+            }
+        });
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -125,7 +174,8 @@ public class CustomerHomePageActivity extends AppCompatActivity implements Custo
         runOnUiThread(() -> {
             Intent intent = new Intent(this, UserEditDataActivity.class);
             intent.putExtra("user_id", customerId);
-            startActivity(intent);
+            // Launch using the editProfileLauncher to trigger refresh on return[cite: 19]
+            editProfileLauncher.launch(intent);
         });
     }
 

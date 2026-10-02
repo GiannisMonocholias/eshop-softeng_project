@@ -38,14 +38,31 @@ public class CustomerHomePagePresenter {
         customerDAO.getCustomer(customerId).thenAccept(loadedCustomer -> {
             if (loadedCustomer != null) {
                 this.customer = loadedCustomer;
+                // Instruct the view to load the profile image safely[cite: 20]
+                if (view != null) {
+                    view.loadProfileImage(loadedCustomer.getProfileImageUrl());
+                }
             } else {
-                view.showMessage("Προσοχή: Ο πελάτης δεν βρέθηκε!");
-                view.goToLogin();
+                if (view != null) {
+                    view.showMessage("Προσοχή: Ο πελάτης δεν βρέθηκε!");
+                    view.goToLogin();
+                }
             }
         }).exceptionally(e -> {
-            view.showMessage("Σφάλμα φόρτωσης πελάτη: " + e.getMessage());
+            e.printStackTrace(); // Logs the exact error location in Logcat for debugging[cite: 20]
+            if (view != null) {
+                view.showMessage("Σφάλμα φόρτωσης πελάτη: " + e.getMessage());
+            }
             return null;
         });
+    }
+
+    /**
+     * Reloads customer data, intended to be called when returning from profile edit.
+     * @param customerId The ID of the customer to reload.
+     */
+    public void reloadCustomer(String customerId) {
+        loadCustomer(customerId); // Re-use the existing load logic[cite: 20]
     }
 
     /**
@@ -87,24 +104,24 @@ public class CustomerHomePagePresenter {
      * Removes the user from both credentials and customer repositories.
      */
     public void DeleteConfirm() {
-
         if (customer != null) {
             // First delete customer's credentials
             userCredentialsDAO.removeUser(customer.getUsername()).thenAccept(v1 -> {
                 // Subsequently customer itself
                 customerDAO.removeCustomer(customer).thenAccept(v2 -> {
-                    view.showMessage("Ο λογαριασμός σας διαγράφηκε.");
-                    view.goToLogin();
+                    if (view != null) {
+                        view.showMessage("Ο λογαριασμός σας διαγράφηκε.");
+                        view.goToLogin();
+                    }
                 }).exceptionally(e -> {
-                    view.showMessage("Σφάλμα διαγραφής προφίλ: " + e.getMessage());
+                    if (view != null) view.showMessage("Σφάλμα διαγραφής προφίλ: " + e.getMessage());
                     return null;
                 });
             }).exceptionally(e -> {
-                view.showMessage("Σφάλμα διαγραφής κωδικών: " + e.getMessage());
+                if (view != null) view.showMessage("Σφάλμα διαγραφής κωδικών: " + e.getMessage());
                 return null;
             });
         }
-
     }
 
     /**

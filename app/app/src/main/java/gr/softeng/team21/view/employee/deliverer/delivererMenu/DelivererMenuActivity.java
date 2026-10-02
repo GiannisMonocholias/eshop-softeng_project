@@ -1,17 +1,20 @@
 package gr.softeng.team21.view.employee.deliverer.delivererMenu;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import gr.softeng.team21.R;
@@ -28,6 +31,7 @@ import gr.softeng.team21.view.user.login.LoginActivity;
  * Manages UI interactions and implements the {@link DelivererMenuView}
  * to handle navigation and feedback asynchronously using runOnUiThread.
  * Uses Material Design components for dialogs and incorporates Dependency Injection.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class DelivererMenuActivity extends AppCompatActivity implements DelivererMenuView {
@@ -35,6 +39,12 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
     private DelivererMenuPresenter presenter;
     private static final String EMP_ID_EXTRA = "DELIVERER_ID";
     private String employeeId;
+
+    // UI Reference for the Profile Image
+    private ImageView ivProfileImage;
+
+    // Launcher used to detect when the user returns from the Edit Data screen
+    private ActivityResultLauncher<Intent> editProfileLauncher;
 
     /**
      * Initializes the layout, injects DAOs into the presenter, binds UI listeners,
@@ -53,6 +63,9 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
             return insets;
         });
 
+        // Initialize Image View mapping to the XML ID
+        ivProfileImage = findViewById(R.id.imgUserProfile);
+
         // DEPENDENCY INJECTION
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
         UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOMemory.getInstance(); // Will be replaced by Firebase equivalent later
@@ -62,6 +75,9 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
         employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
 
         presenter.onViewCreated(employeeId);
+
+        // Setup the ActivityResultLauncher for the Edit Data activity
+        setupLaunchers();
 
         findViewById(R.id.btnDelivererMenuOrdersList).setOnClickListener(v ->
                 presenter.onOrdersListSelected(employeeId)
@@ -81,12 +97,47 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
     }
 
     /**
+     * Registers the ActivityResultLauncher to listen for the result of the UserEditDataActivity.
+     * Triggers a data refresh when returning from that specific screen.
+     */
+    private void setupLaunchers() {
+        editProfileLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (employeeId != null && presenter != null) {
+                        presenter.onViewCreated(employeeId);
+                    }
+                }
+        );
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void showEmployeeName(String fullname) {
         runOnUiThread(() -> {
             ((TextView) findViewById(R.id.txtDelivererMenuName)).setText(fullname);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     * Uses Glide library to load the profile image asynchronously.
+     */
+    @Override
+    public void loadProfileImage(String profileImageUrl) {
+        runOnUiThread(() -> {
+            if (ivProfileImage != null) {
+                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(profileImageUrl)
+                            .placeholder(R.drawable.ic_person)
+                            .into(ivProfileImage);
+                } else {
+                    ivProfileImage.setImageResource(R.drawable.ic_person);
+                }
+            }
         });
     }
 
@@ -140,7 +191,8 @@ public class DelivererMenuActivity extends AppCompatActivity implements Delivere
         runOnUiThread(() -> {
             Intent intent = new Intent(this, UserEditDataActivity.class);
             intent.putExtra("user_id", employeeId);
-            startActivity(intent);
+            // Launch using the editProfileLauncher to trigger refresh on return
+            editProfileLauncher.launch(intent);
         });
     }
 

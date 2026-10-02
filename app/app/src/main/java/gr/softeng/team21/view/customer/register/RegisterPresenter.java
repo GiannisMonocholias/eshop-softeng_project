@@ -1,5 +1,6 @@
 package gr.softeng.team21.view.customer.register;
 
+import android.net.Uri;
 import java.util.UUID;
 import gr.softeng.team21.dao.CustomerDAO;
 import gr.softeng.team21.dao.UserCredentialsDAO;
@@ -10,7 +11,8 @@ import gr.softeng.team21.contact.EmailAddress;
 /**
  * Presenter for the Customer Registration screen.
  * Coordinates the logic for creating new customer instances, generating
- * unique identifiers, and ensuring data is saved asynchronously in both domain and auth DAOs.
+ * unique identifiers, handling image URIs, and ensuring data is saved asynchronously.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class RegisterPresenter {
@@ -34,18 +36,19 @@ public class RegisterPresenter {
     /**
      * Orchestrates the asynchronous registration process.
      * Validates fields, creates a new {@link Customer}, generates a {@link UUID},
-     * and persists data in Firebase/Memory asynchronously.
+     * attaches the profile image URI, and persists data in Firebase/Memory asynchronously.
+     *
      * @param username  The desired login name.
      * @param firstname The user's given name.
      * @param password The account password.
      * @param lastname The user's family name.
      * @param phone The contact telephone number.
      * @param emailStr  The raw email address string.
+     * @param profileImageUri The URI of the selected profile image (can be null).
      */
     public void register(String username, String firstname, String password,
-                         String lastname, String phone, String emailStr) {
+                         String lastname, String phone, String emailStr, Uri profileImageUri) {
 
-        // Basic validation for mandatory fields
         if (username.trim().isEmpty() || password.trim().isEmpty() || emailStr.trim().isEmpty()) {
             if (view != null) view.showErrorMessage("Παρακαλώ συμπληρώστε τα απαραίτητα πεδία.");
             return;
@@ -59,21 +62,28 @@ public class RegisterPresenter {
             Customer newCustomer = new Customer(username, firstname, password, lastname,
                     phone, emailObj, randomId, currentDate);
 
-            // Asynchronous saving chain: Save customer -> then save credentials -> then update UI
+            // Attach the local image URI if the user selected one.
+            if (profileImageUri != null) {
+                newCustomer.setProfileImageUrl(profileImageUri.toString());
+            }
+
             customerDAO.addCustomer(newCustomer)
                     .thenCompose(aVoid -> credentialsDAO.addUser(newCustomer))
                     .thenAccept(aVoid -> {
                         if (view != null) {
                             view.showSuccessMessage("Επιτυχής εγγραφή! ID: " + randomId);
                             view.clearInputFields();
+                            view.clearImagePreview();
                         }
                     })
                     .exceptionally(e -> {
-                        if (view != null) view.showErrorMessage("Registration error: " + e.getMessage());
+                        e.printStackTrace();
+                        if (view != null) view.showErrorMessage("Σφάλμα εγγραφής: " + e.getMessage());
                         return null;
                     });
 
         } catch (Exception e) {
+            e.printStackTrace();
             if (view != null) view.showErrorMessage("Σφάλμα δεδομένων: " + e.getMessage());
         }
     }

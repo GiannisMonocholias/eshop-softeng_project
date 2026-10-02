@@ -10,6 +10,7 @@ import gr.softeng.team21.domain.EmployeeRole;
  * Mediates between the Employee repositories and the View, handling profile loading,
  * navigation logic, and the administrative process of account deletion asynchronously.
  * Utilizes Dependency Injection to decouple data sources from the presentation logic.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class DelivererMenuPresenter {
@@ -32,23 +33,28 @@ public class DelivererMenuPresenter {
     /**
      * Prepares the view by fetching and displaying employee details asynchronously.
      * Explicitly requests the DELIVERY role to ensure subclass instantiation.
+     * Fetches both the full name and the profile image URL securely.
+     *
      * @param employeeId The unique ID of the deliverer.
      */
     public void onViewCreated(String employeeId) {
-        // Explicitly request the specific role
         employeeDAO.getEmployee(employeeId, EmployeeRole.DELIVERY).thenAccept(employee -> {
-
-            // Validate the subclass and cast
             if (employee instanceof Deliverer) {
                 Deliverer deliverer = (Deliverer) employee;
                 if (view != null) {
-                    view.showEmployeeName(deliverer.getFirstname() + " " + deliverer.getLastname());
+                    // Update Name safely
+                    String firstName = deliverer.getFirstname() != null ? deliverer.getFirstname() : "";
+                    String lastName = deliverer.getLastname() != null ? deliverer.getLastname() : "";
+                    view.showEmployeeName(firstName + " " + lastName);
+
+                    // Update Profile Image safely
+                    view.loadProfileImage(deliverer.getProfileImageUrl());
                 }
             } else {
                 if (view != null) view.showMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
-
         }).exceptionally(e -> {
+            e.printStackTrace(); // Logs the exact error location in Logcat for debugging
             if (view != null) view.showMessage("Σφάλμα φόρτωσης στοιχείων: " + e.getMessage());
             return null;
         });
@@ -83,10 +89,7 @@ public class DelivererMenuPresenter {
      * @param employeeId The ID of the employee to be deleted.
      */
     public void onDeleteAccountConfirmed(String employeeId) {
-        // Explicitly request the specific role
         employeeDAO.getEmployee(employeeId, EmployeeRole.DELIVERY).thenAccept(employee -> {
-
-            // Validate the subclass and cast
             if (employee instanceof Deliverer) {
                 Deliverer deliverer = (Deliverer) employee;
 
@@ -108,7 +111,6 @@ public class DelivererMenuPresenter {
             } else {
                 if (view != null) view.showMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε ή δεν έχει τον σωστό ρόλο.");
             }
-
         }).exceptionally(e -> {
             if (view != null) view.showMessage("Σφάλμα ανάκτησης δεδομένων: " + e.getMessage());
             return null;

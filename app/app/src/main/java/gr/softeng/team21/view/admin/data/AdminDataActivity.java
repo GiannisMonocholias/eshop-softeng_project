@@ -1,24 +1,36 @@
 package gr.softeng.team21.view.admin.data;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.File;
 
 import gr.softeng.team21.R;
 
 /**
  * Activity responsible for displaying and updating the administrator's personal data.
  * Implements MVP and uses OnBackPressedDispatcher for unsaved changes warning.
- * @author Αλέξανδρος Δρακάκης
+ * Now includes Profile Image management (Camera & Gallery) using custom photo_menu.xml.
+ *
+ * @author Alexandros Drakakis
  */
 public class AdminDataActivity extends AppCompatActivity implements AdminDataView {
 
@@ -27,6 +39,18 @@ public class AdminDataActivity extends AppCompatActivity implements AdminDataVie
     private TextInputEditText etUsername, etPassword, etEmail, etFirstName, etLastName, etPhone;
     private TextInputEditText etStreet, etStreetNo, etCity, etZip;
     private Button btnSave;
+
+    // Photo Selection UI
+    private ImageView ivProfileImage;
+    private FloatingActionButton fabEditPhoto;
+
+    // Photo URI Variables
+    private Uri selectedImageUri = null;
+    private Uri cameraImageUri = null;
+
+    // Launchers for picking/taking photos
+    private ActivityResultLauncher<String> galleryLauncher;
+    private ActivityResultLauncher<Uri> cameraLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +65,24 @@ public class AdminDataActivity extends AppCompatActivity implements AdminDataVie
         });
 
         initializeViews();
+        setupPhotoLaunchers();
 
         presenter = new AdminDataPresenter(this);
 
         presenter.loadAdminData();
 
-        btnSave.setOnClickListener(v -> presenter.onSaveClicked());
+        // Listeners for Photo change
+        fabEditPhoto.setOnClickListener(v -> showPhotoMenu());
+        ivProfileImage.setOnClickListener(v -> showPhotoMenu());
 
-        // Back Button management
+        // Pass the selected image URI to the presenter when saving
+        btnSave.setOnClickListener(v -> presenter.onSaveClicked(selectedImageUri));
+
+        // Back Button management passing the selectedImageUri to detect unsaved photo changes
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                presenter.onBackPressed();
+                presenter.onBackPressed(selectedImageUri);
             }
         });
     }
@@ -71,6 +101,85 @@ public class AdminDataActivity extends AppCompatActivity implements AdminDataVie
         etZip = findViewById(R.id.etAdminZip);
 
         btnSave = findViewById(R.id.btnSaveAdminData);
+
+        ivProfileImage = findViewById(R.id.ivProfileImage);
+        fabEditPhoto = findViewById(R.id.fabEditPhoto);
+    }
+
+    /**
+     * Sets up the ActivityResultLaunchers for Camera and Gallery.
+     */
+    private void setupPhotoLaunchers() {
+        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            if (uri != null) {
+                selectedImageUri = uri;
+                loadPreviewImage();
+            }
+        });
+
+        cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), success -> {
+            if (success && cameraImageUri != null) {
+                selectedImageUri = cameraImageUri;
+                loadPreviewImage();
+            }
+        });
+    }
+
+    /**
+     * Displays a PopupMenu to let the admin choose the photo source,
+     * inflating the options from the custom photo_menu.xml resource.
+     */
+    private void showPhotoMenu() {
+        PopupMenu popup = new PopupMenu(this, fabEditPhoto);
+        popup.getMenuInflater().inflate(R.menu.photo_menu, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.action_camera) {
+                cameraImageUri = createImageFileUri();
+                if (cameraImageUri != null) {
+                    cameraLauncher.launch(cameraImageUri);
+                }
+                return true;
+            } else if (id == R.id.action_gallery) {
+                galleryLauncher.launch("image/*");
+                return true;
+            } else if (id == R.id.action_remove) {
+                selectedImageUri = null;
+                ivProfileImage.setImageResource(R.drawable.ic_person);
+                return true;
+            }
+            return false;
+        });
+        popup.show();
+    }
+
+    /**
+     * Creates a temporary file for the camera to store the captured image.
+     */
+    private Uri createImageFileUri() {
+        try {
+            File storageDir = getCacheDir();
+            File imageFile = new File(storageDir, "temp_admin_profile_" + System.currentTimeMillis() + ".jpg");
+            return FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", imageFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Σφάλμα κατά τη δημιουργία αρχείου εικόνας.");
+            return null;
+        }
+    }
+
+    /**
+     * Loads the newly selected image into the ImageView using Glide.
+     */
+    private void loadPreviewImage() {
+        if (selectedImageUri != null) {
+            Glide.with(this)
+                    .load(selectedImageUri)
+                    .placeholder(R.drawable.ic_person)
+                    .into(ivProfileImage);
+        }
     }
 
     @Override public String getUsername() { return etUsername.getText() != null ? etUsername.getText().toString() : ""; }
@@ -97,6 +206,22 @@ public class AdminDataActivity extends AppCompatActivity implements AdminDataVie
         etStreetNo.setText(streetNo);
         etCity.setText(city);
         etZip.setText(zip);
+    }
+
+    @Override
+    public void loadProfileImage(String imageUrl) {
+        runOnUiThread(() -> {
+            if (ivProfileImage != null) {
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(imageUrl)
+                            .placeholder(R.drawable.ic_person)
+                            .into(ivProfileImage);
+                } else {
+                    ivProfileImage.setImageResource(R.drawable.ic_person);
+                }
+            }
+        });
     }
 
     @Override

@@ -8,6 +8,7 @@ import gr.softeng.team21.dao.UserCredentialsDAO;
  * Coordinates user actions, retrieves employee profile data asynchronously from the DAO,
  * and executes the logic for account management and navigation.
  * Utilizes Dependency Injection to decouple data sources from the presentation logic.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class CustomerServiceMenuPresenter {
@@ -29,16 +30,27 @@ public class CustomerServiceMenuPresenter {
 
     /**
      * Triggered upon view creation to prepare the screen data.
-     * Fetches employee full name asynchronously and requests the view to display it.
+     * Fetches employee full name and profile image URL asynchronously securely.
+     *
      * @param employeeId The ID of the currently logged-in employee.
      */
     public void onViewCreated(String employeeId) {
         employeeDAO.getEmployee(employeeId).thenAccept(employee -> {
             if (employee != null) {
-                view.showEmployeeName(employee.getFirstname() + " " + employee.getLastname());
+                // Update Name safely
+                String firstName = employee.getFirstname() != null ? employee.getFirstname() : "";
+                String lastName = employee.getLastname() != null ? employee.getLastname() : "";
+                if (view != null) {
+                    view.showEmployeeName(firstName + " " + lastName);
+                    // Update Profile Image safely
+                    view.loadProfileImage(employee.getProfileImageUrl());
+                }
+            } else {
+                if (view != null) view.showMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
             }
         }).exceptionally(e -> {
-            view.showMessage("Error loading employee data: " + e.getMessage());
+            e.printStackTrace(); // Logs the exact error location in Logcat for debugging
+            if (view != null) view.showMessage("Error loading employee data: " + e.getMessage());
             return null;
         });
     }
@@ -84,21 +96,23 @@ public class CustomerServiceMenuPresenter {
             if (employee != null) {
                 userCredentialsDAO.removeUser(employee.getUsername()).thenAccept(v1 -> {
                     employeeDAO.removeEmployee(employee).thenAccept(v2 -> {
-                        view.showMessage("Ο λογαριασμός διαγράφηκε επιτυχώς.");
-                        view.navigateToLogin();
+                        if (view != null) {
+                            view.showMessage("Ο λογαριασμός διαγράφηκε επιτυχώς.");
+                            view.navigateToLogin();
+                        }
                     }).exceptionally(e -> {
-                        view.showMessage("Σφάλμα διαγραφής προφίλ: " + e.getMessage());
+                        if (view != null) view.showMessage("Σφάλμα διαγραφής προφίλ: " + e.getMessage());
                         return null;
                     });
                 }).exceptionally(e -> {
-                    view.showMessage("Σφάλμα διαγραφής κωδικών: " + e.getMessage());
+                    if (view != null) view.showMessage("Σφάλμα διαγραφής κωδικών: " + e.getMessage());
                     return null;
                 });
             } else {
-                view.showMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
+                if (view != null) view.showMessage("Σφάλμα: Ο υπάλληλος δεν βρέθηκε.");
             }
         }).exceptionally(e -> {
-            view.showMessage("Σφάλμα ανάκτησης δεδομένων: " + e.getMessage());
+            if (view != null) view.showMessage("Σφάλμα ανάκτησης δεδομένων: " + e.getMessage());
             return null;
         });
     }

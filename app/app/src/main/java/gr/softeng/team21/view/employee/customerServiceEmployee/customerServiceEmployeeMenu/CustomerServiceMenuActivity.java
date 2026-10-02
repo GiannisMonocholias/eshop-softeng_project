@@ -1,18 +1,20 @@
 package gr.softeng.team21.view.employee.customerServiceEmployee.customerServiceEmployeeMenu;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import gr.softeng.team21.R;
@@ -30,6 +32,7 @@ import gr.softeng.team21.view.employee.customerServiceEmployee.orderStatus.Order
  * Handles UI components, click listeners, and navigation via Android Intents.
  * Implements {@link CustomerServiceMenuView} and uses runOnUiThread to safely update
  * the interface based on asynchronous Presenter logic.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public class CustomerServiceMenuActivity extends AppCompatActivity implements CustomerServiceMenuView {
@@ -37,6 +40,12 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
     private CustomerServiceMenuPresenter presenter;
     private static final String EMP_ID_EXTRA = "CUSTOMER_SERVICE_EMPLOYEE_ID";
     private String employeeId;
+
+    // UI Reference for the Profile Image
+    private ImageView ivProfileImage;
+
+    // Launcher used to detect when the user returns from the Edit Data screen
+    private ActivityResultLauncher<Intent> editProfileLauncher;
 
     /**
      * Initializes the activity layout, injects DAOs into the presenter, and
@@ -54,6 +63,9 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
             return insets;
         });
 
+        // Initialize Image View mapping to the XML ID
+        ivProfileImage = findViewById(R.id.imgUserProfile);
+
         // DEPENDENCY INJECTION
         EmployeeDAO employeeDAO = new EmployeeDAOFirebase();
         UserCredentialsDAO userCredentialsDAO = UserCredentialsDAOMemory.getInstance(); // Replace with Firebase equivalent later
@@ -63,6 +75,9 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
         employeeId = getIntent().getStringExtra(EMP_ID_EXTRA);
 
         presenter.onViewCreated(employeeId);
+
+        // Setup the ActivityResultLauncher for the Edit Data activity
+        setupLaunchers();
 
         findViewById(R.id.btnCustomerServiceEmployeeMenuEmailInbox).setOnClickListener(v ->
                 presenter.onInboxSelected(employeeId)
@@ -86,12 +101,47 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
     }
 
     /**
+     * Registers the ActivityResultLauncher to listen for the result of the UserEditDataActivity.
+     * Triggers a data refresh when returning from that specific screen.
+     */
+    private void setupLaunchers() {
+        editProfileLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (employeeId != null && presenter != null) {
+                        presenter.onViewCreated(employeeId);
+                    }
+                }
+        );
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void showEmployeeName(String fullname) {
         runOnUiThread(() -> {
             ((TextView) findViewById(R.id.txtCustomerServiceEmployeeMenuName)).setText(fullname);
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     * Uses Glide library to load the profile image asynchronously.
+     */
+    @Override
+    public void loadProfileImage(String profileImageUrl) {
+        runOnUiThread(() -> {
+            if (ivProfileImage != null) {
+                if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(profileImageUrl)
+                            .placeholder(R.drawable.ic_person)
+                            .into(ivProfileImage);
+                } else {
+                    ivProfileImage.setImageResource(R.drawable.ic_person);
+                }
+            }
         });
     }
 
@@ -156,7 +206,8 @@ public class CustomerServiceMenuActivity extends AppCompatActivity implements Cu
         runOnUiThread(() -> {
             Intent intent = new Intent(this, UserEditDataActivity.class);
             intent.putExtra("user_id", employeeId);
-            startActivity(intent);
+            // Launch using the editProfileLauncher to trigger refresh on return
+            editProfileLauncher.launch(intent);
         });
     }
 

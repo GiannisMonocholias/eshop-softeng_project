@@ -4,6 +4,7 @@ package gr.softeng.team21.view.employee.deliverer.delivererMenu;
  * Defines the essential UI operations for displaying profile info,
  * navigating to delivery lists, and handling account lifecycle actions.
  * Acts as the contract between the Presenter and the Activity for asynchronous operations.
+ *
  * @author Γιάννης Μονοχολιάς
  */
 public interface DelivererMenuView {
@@ -13,6 +14,12 @@ public interface DelivererMenuView {
      * @param fullName The concatenated first and last name of the employee.
      */
     void showEmployeeName(String fullName);
+
+    /**
+     * Asynchronously loads and displays the deliverer's profile image.
+     * @param profileImageUrl The download URL of the profile image stored in Cloud Storage.
+     */
+    void loadProfileImage(String profileImageUrl);
 
     /**
      * Navigates to the screen displaying orders assigned for delivery.

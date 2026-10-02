@@ -4,7 +4,8 @@ package gr.softeng.team21.view.admin.data;
  * View contract for editing Admin details.
  * Defines methods for retrieving user input, populating fields, and
  * showing feedback or confirmation dialogs.
- * @author Αλέξανδρος Δρακάκης
+ *
+ * @author Alexandros Drakakis
  */
 public interface AdminDataView {
 
@@ -22,6 +23,12 @@ public interface AdminDataView {
     /** Fills the UI fields with the loaded admin data. */
     void setAdminData(String username, String password, String email, String firstName, String lastName, String phone,
                       String street, String streetNo, String city, String zip);
+
+    /**
+     * Asynchronously loads and displays the Admin's profile image.
+     * @param imageUrl The URL or URI string of the profile image.
+     */
+    void loadProfileImage(String imageUrl);
 
     /** Shows an error message dialog. */
     void showError(String message);
